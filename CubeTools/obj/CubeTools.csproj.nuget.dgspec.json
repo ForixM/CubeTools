@@ -46,15 +46,19 @@
           "dependencies": {
             "Avalonia": {
               "target": "Package",
-              "version": "[0.10.10, )"
+              "version": "[0.10.11, )"
             },
             "Avalonia.Desktop": {
               "target": "Package",
-              "version": "[0.10.10, )"
+              "version": "[0.10.11, )"
+            },
+            "Avalonia.Diagnostics": {
+              "target": "Package",
+              "version": "[0.10.11, )"
             },
             "Avalonia.ReactiveUI": {
               "target": "Package",
-              "version": "[0.10.10, )"
+              "version": "[0.10.11, )"
             }
           },
           "imports": [
