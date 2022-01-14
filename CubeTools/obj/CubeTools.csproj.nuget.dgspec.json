@@ -59,6 +59,10 @@
             "Avalonia.ReactiveUI": {
               "target": "Package",
               "version": "[0.10.11, )"
+            },
+            "Squid-Box.SevenZipSharp": {
+              "target": "Package",
+              "version": "[1.5.0.366, )"
             }
           },
           "imports": [
