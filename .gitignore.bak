@@ -3,8 +3,7 @@ bin
 obj
 
 #VisualStudio
-*.csproj.user
-.vs
+.csproj.user
 
 # Rider
 .idea
