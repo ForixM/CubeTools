@@ -3,6 +3,11 @@ using SevenZip;
 
 namespace CubeTools
 {
+    public enum CompressAlgo
+    {
+        ZIP,
+        LZMA
+    }
     public class Compression
     {
         public static void CompressFiles(string[] files, string dest)
