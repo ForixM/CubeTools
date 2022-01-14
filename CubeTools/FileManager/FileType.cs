@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CubeTools.FileManager
 {
-    internal class FileReader
+    internal class FileType
     {
-        bool IsFile(string path)
-        {
-            return File.Exists(path);
-        }
+        private string path;
+        private string type;
     }
 }
