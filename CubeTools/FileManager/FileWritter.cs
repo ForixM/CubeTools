@@ -12,5 +12,14 @@ namespace CubeTools.FileManager
         void Rename(string path)
         {
         }
+
+        void Copy(string path)
+        {
+        }
+
+        void Create(string path)
+        {
+
+        }
     }
 }

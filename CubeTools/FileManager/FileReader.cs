@@ -11,7 +11,6 @@ namespace CubeTools.FileManager
     internal class FileReader
     {
 
-
         // IsFile : Returns if the given path is a file 
         public bool IsFile(string path)
         {

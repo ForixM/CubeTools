@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using SevenZip;
 
 namespace CubeTools
@@ -10,11 +12,27 @@ namespace CubeTools
     }
     public class Compression
     {
-        public static void CompressFiles(string[] files, string dest)
+        public static void CompressFiles(string[] files, string dest, CompressAlgo algo)
         {
-            SevenZipCompressor compressor = new SevenZipCompressor();
-            compressor.ScanOnlyWritable = true;
-            compressor.CompressFiles(dest, files);
+            if (algo == CompressAlgo.LZMA)
+            {
+                SevenZipCompressor compressor = new SevenZipCompressor();
+                compressor.ScanOnlyWritable = true;
+                compressor.CompressFiles(dest, files);
+                return;
+            }
+
+            if (algo == CompressAlgo.ZIP)
+            {
+                using (ZipArchive zip = ZipFile.Open(dest, ZipArchiveMode.Create))
+                {
+                    foreach (string file in files)
+                    {
+                        zip.CreateEntryFromFile(file, file);
+                    }
+                    
+                }
+            }
         }
     }
 }

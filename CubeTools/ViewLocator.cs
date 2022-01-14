@@ -9,6 +9,7 @@ namespace CubeTools
     {
         public IControl Build(object data)
         {
+            Console.WriteLine("wesh mon khey");
             var name = data.GetType().FullName!.Replace("ViewModel", "View");
             var type = Type.GetType(name);
 
