@@ -1,3 +1,4 @@
+using Aspose.Zip.SevenZip;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -11,6 +12,7 @@ namespace CubeTools
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
+            
         }
 
         public override void OnFrameworkInitializationCompleted()

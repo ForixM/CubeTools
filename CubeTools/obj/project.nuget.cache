@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "0tfoYlltorGUn0hvS2GMSD0mQxRIe9nqfjjH1lHztQk/ARtNe0A8tA1MR41JcPNbMcH/VqM9/VsOzB04WWlA2w==",
+  "dgSpecHash": "i1DYEBXNJ2KkfFiksXOVCAGKG6llx93QtaAyBW1lgM0ty4QcO1EUIPsO8EqTTbu7uc13u1XJW4kuz5EJGLqr8w==",
   "success": true,
   "projectFilePath": "C:\\Users\\forix\\Documents\\CubeTools\\CubeTools\\CubeTools.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\forix\\.nuget\\packages\\aspose.zip\\21.11.0\\aspose.zip.21.11.0.nupkg.sha512",
     "C:\\Users\\forix\\.nuget\\packages\\avalonia\\0.10.11\\avalonia.0.10.11.nupkg.sha512",
     "C:\\Users\\forix\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.0.2020091801\\avalonia.angle.windows.natives.2.1.0.2020091801.nupkg.sha512",
     "C:\\Users\\forix\\.nuget\\packages\\avalonia.controls.datagrid\\0.10.11\\avalonia.controls.datagrid.0.10.11.nupkg.sha512",
@@ -43,7 +44,7 @@
     "C:\\Users\\forix\\.nuget\\packages\\system.collections.immutable\\1.5.0\\system.collections.immutable.1.5.0.nupkg.sha512",
     "C:\\Users\\forix\\.nuget\\packages\\system.componentmodel.annotations\\4.5.0\\system.componentmodel.annotations.4.5.0.nupkg.sha512",
     "C:\\Users\\forix\\.nuget\\packages\\system.diagnostics.debug\\4.3.0\\system.diagnostics.debug.4.3.0.nupkg.sha512",
-    "C:\\Users\\forix\\.nuget\\packages\\system.drawing.common\\4.5.0\\system.drawing.common.4.5.0.nupkg.sha512",
+    "C:\\Users\\forix\\.nuget\\packages\\system.drawing.common\\4.5.1\\system.drawing.common.4.5.1.nupkg.sha512",
     "C:\\Users\\forix\\.nuget\\packages\\system.dynamic.runtime\\4.3.0\\system.dynamic.runtime.4.3.0.nupkg.sha512",
     "C:\\Users\\forix\\.nuget\\packages\\system.globalization\\4.3.0\\system.globalization.4.3.0.nupkg.sha512",
     "C:\\Users\\forix\\.nuget\\packages\\system.io\\4.3.0\\system.io.4.3.0.nupkg.sha512",

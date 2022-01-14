@@ -10,6 +10,7 @@
     <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Aspose.Zip" Version="21.11.0" />
     <PackageReference Include="Avalonia" Version="0.10.11" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.11" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->

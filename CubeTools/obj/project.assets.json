@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     "net5.0": {
+      "Aspose.Zip/21.11.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Drawing.Common": "4.5.1",
+          "System.Text.Encoding.CodePages": "4.5.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Aspose.Zip.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Aspose.Zip.dll": {}
+        }
+      },
       "Avalonia/0.10.11": {
         "type": "package",
         "dependencies": {
@@ -790,7 +803,7 @@
           "ref/netstandard1.3/_._": {}
         }
       },
-      "System.Drawing.Common/4.5.0": {
+      "System.Drawing.Common/4.5.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.0.0",
@@ -1236,6 +1249,27 @@
     }
   },
   "libraries": {
+    "Aspose.Zip/21.11.0": {
+      "sha512": "D1+7AoAukNUJImeLb57AjDQHEU8A7CDn4M2Zpt++RNGFt0I1ksvsSAJ4qRgZkLwGCHkAB1EnrCQd+miX3b5TAw==",
+      "type": "package",
+      "path": "aspose.zip/21.11.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Help/Aspose.ZIP.chm",
+        "License/End User License Agreement.html",
+        "License/thirdpartylicenses.Aspose.ZIP.for.NET.pdf",
+        "aspose.zip.21.11.0.nupkg.sha512",
+        "aspose.zip.nuspec",
+        "lib/net20/Aspose.Zip.dll",
+        "lib/net20/Aspose.Zip.xml",
+        "lib/net40/Aspose.Zip.dll",
+        "lib/net40/Aspose.Zip.xml",
+        "lib/netstandard2.0/Aspose.Zip.dll",
+        "lib/netstandard2.0/Aspose.Zip.xml",
+        "lib/readme.txt"
+      ]
+    },
     "Avalonia/0.10.11": {
       "sha512": "2PSE+dB4vGJfG+1M+y+Hwaxiqze5mbBTTG9hjwc2Z3U/9yJE/GThBEst2WwI0yBt13hsfAfbABzt1PA3mtbFdw==",
       "type": "package",
@@ -2489,10 +2523,10 @@
         "system.diagnostics.debug.nuspec"
       ]
     },
-    "System.Drawing.Common/4.5.0": {
-      "sha512": "AiJFxxVPdeITstiRS5aAu8+8Dpf5NawTMoapZ53Gfirml24p7HIfhjmCRxdXnmmf3IUA3AX3CcW7G73CjWxW/Q==",
+    "System.Drawing.Common/4.5.1": {
+      "sha512": "GiyeGi/v4xYDz1vCNFwFvhz9k1XddOG7VD3jxRqzRBCbTHji+s3HxxbxtoymuK4OadEpgotI8zQ5+GEEH9sUEQ==",
       "type": "package",
-      "path": "system.drawing.common/4.5.0",
+      "path": "system.drawing.common/4.5.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2516,7 +2550,7 @@
         "ref/xamarinwatchos10/_._",
         "runtimes/unix/lib/netcoreapp2.0/System.Drawing.Common.dll",
         "runtimes/win/lib/netcoreapp2.0/System.Drawing.Common.dll",
-        "system.drawing.common.4.5.0.nupkg.sha512",
+        "system.drawing.common.4.5.1.nupkg.sha512",
         "system.drawing.common.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -4329,6 +4363,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "Aspose.Zip >= 21.11.0",
       "Avalonia >= 0.10.11",
       "Avalonia.Desktop >= 0.10.11",
       "Avalonia.Diagnostics >= 0.10.11",
@@ -4379,6 +4414,10 @@
       "net5.0": {
         "targetAlias": "net5.0",
         "dependencies": {
+          "Aspose.Zip": {
+            "target": "Package",
+            "version": "[21.11.0, )"
+          },
           "Avalonia": {
             "target": "Package",
             "version": "[0.10.11, )"

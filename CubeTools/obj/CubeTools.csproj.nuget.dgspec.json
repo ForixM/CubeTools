@@ -44,6 +44,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Aspose.Zip": {
+              "target": "Package",
+              "version": "[21.11.0, )"
+            },
             "Avalonia": {
               "target": "Package",
               "version": "[0.10.11, )"
