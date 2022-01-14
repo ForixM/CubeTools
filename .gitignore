@@ -1,0 +1,10 @@
+# Binaries
+bin
+obj
+
+#VisualStudio
+.csproj.user
+
+# Rider
+.idea
+*.userprefs 
