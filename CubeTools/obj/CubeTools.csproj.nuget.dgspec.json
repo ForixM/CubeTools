@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mateo\\OneDrive\\Documents\\GitHub\\CubeTools\\CubeTools\\CubeTools.csproj": {}
+    "C:\\Users\\forix\\Documents\\CubeTools\\CubeTools\\CubeTools.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mateo\\OneDrive\\Documents\\GitHub\\CubeTools\\CubeTools\\CubeTools.csproj": {
+    "C:\\Users\\forix\\Documents\\CubeTools\\CubeTools\\CubeTools.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mateo\\OneDrive\\Documents\\GitHub\\CubeTools\\CubeTools\\CubeTools.csproj",
+        "projectUniqueName": "C:\\Users\\forix\\Documents\\CubeTools\\CubeTools\\CubeTools.csproj",
         "projectName": "CubeTools",
-        "projectPath": "C:\\Users\\mateo\\OneDrive\\Documents\\GitHub\\CubeTools\\CubeTools\\CubeTools.csproj",
-        "packagesPath": "C:\\Users\\mateo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mateo\\OneDrive\\Documents\\GitHub\\CubeTools\\CubeTools\\obj\\",
+        "projectPath": "C:\\Users\\forix\\Documents\\CubeTools\\CubeTools\\CubeTools.csproj",
+        "packagesPath": "C:\\Users\\forix\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\forix\\Documents\\CubeTools\\CubeTools\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\mateo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\forix\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -63,10 +63,6 @@
             "Avalonia.ReactiveUI": {
               "target": "Package",
               "version": "[0.10.11, )"
-            },
-            "Squid-Box.SevenZipSharp": {
-              "target": "Package",
-              "version": "[1.5.0.366, )"
             }
           },
           "imports": [
@@ -79,12 +75,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[5.0.13, 5.0.13]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
