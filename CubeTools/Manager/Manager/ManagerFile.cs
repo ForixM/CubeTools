@@ -38,7 +38,6 @@ namespace Manager
 
         #region Init
 
-        // Default Constructor
         // Constructors
         public FileType()
         {
@@ -61,6 +60,7 @@ namespace Manager
             AbsPath = path;
             Type = type;
         }
+
         #endregion
 
         #region Delete

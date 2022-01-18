@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 
 namespace Manager
 {
@@ -6,9 +7,9 @@ namespace Manager
     {
         #region Properties
         // This region contains every function that give information of the file given with the path
-        // Basicaly => bool function
+        // Basicaly => bool functions
 
-        // IsFile : Returns if the given path is a file 
+        // IsFunction :
         // Implementation : Check
         public static bool IsFile(string path)
         {
@@ -52,33 +53,57 @@ namespace Manager
         // This region contains all Get function that also give information of
         // files and also directories
 
-        // GetParent : Returns the parent dir using a file or dir contained in it
-        
+        /// <summary>
+        ///  Get the dir name of a file or dir contained in it
+        ///  Implementation : Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>Returns the parent dir using</returns>
         public static string GetParent(string path)
         {
-            if (File.Exists(path))
+            FileInfo fi = new FileInfo(path);
+            if (fi.DirectoryName != null)
             {
-                return Path.GetDirectoryName(path);
+                return GetPathToName(fi.DirectoryName);
             }
             else
             {
                 return "";
             }
         }
-        // GetFileCreationDate : Returns the creation date of a file given with the path
-        // Implementation : Check
+
+        /// <summary>
+        ///  Get date of a file given with the path
+        ///  Implementation : Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>Returns the creation date</returns>
         public static string GetFileCreationDate(string path)
         {
-            return File.GetCreationTime(path).ToString();
+            if (File.Exists(path))
+                return File.GetCreationTime(path).ToString();
+            return "";
         }
-        // GetFileLastEdition : Returns the last edition of a file
-        // Implementation : Check
+
+        /// <summary>
+        /// Get the last time a file has been edited using its path
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>A string time</returns>
         public static string GetFileLastEdition(string path)
         {
-            return File.GetLastWriteTime(path).ToString();
+            if (File.Exists(path))
+                return File.GetLastWriteTime(path).ToString();
+            return "";
         }
-        // GetFileSize : Returns the size of a file
-        // Implementation : Check
+
+        /// <summary>
+        /// Get the file size in byte
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>0 or the size of the file</returns>
         public static string GetFileSize(string path)
         {
             if (File.Exists(path))
@@ -88,6 +113,38 @@ namespace Manager
             }
             return "0";
         }
+
+        /// <summary>
+        /// Reformat an absolute path to the name of the file or dir
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>A string that represents the name of an absolute path</returns>
+        public static string GetPathToName(string path)
+        {
+            int i = path.Length - 1;
+            string res = "";
+            while (i >= 0 && path[i] != '/' && path[i] != '\\')
+            {
+                res = path[i] + res;
+                i--;
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// Reformat a ame to the absolute path if the given path is correct
+        /// Implementation : NOT Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetNameToPath(string name)
+        {
+            if (File.Exists(name))
+                return (Path.GetFullPath(name));
+            return name;
+        }
+
         #endregion
 
         #region Saver
