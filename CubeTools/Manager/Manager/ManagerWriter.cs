@@ -6,12 +6,29 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 
-namespace CubeTools.FileManager
+namespace Manager
 {
-    public static class FileWritter
+    public static class ManagerWriter
     {
+        #region Properties
+        // This region contains every function that set information of the file given with the path
+        // Basicaly => setters of properties
+
+        // SetProperties functions : Basicaly set the property for the file given in argument
+
+        // Implementation : Check
+        public static void SetFileHidden(string path) { File.SetAttributes(path, FileAttributes.Hidden); }
+        // Implementation : Not check
+        public static void SetFileCompressed(string path) { File.SetAttributes(path,FileAttributes.Compressed); }
+        // Implementation : Check
+        public static void SetFileSystem(string path) { File.SetAttributes(path, FileAttributes.System); }
+        // Implementation : Check
+        public static void SetFileArchived(string path) { File.SetAttributes(path, FileAttributes.Archive); }
+
+        #endregion
+
         #region Action
-        
+
         // Basic Functions
         // RENAME FUNCTIONS
 
@@ -51,19 +68,23 @@ namespace CubeTools.FileManager
         }
         // CREATE FUNCTIONS
         // Create(string path)
-        public static FileType Create(string path)
+        public static FileType Create(string path, bool isFileType)
         {
             File.Create(path);
-            if (File.Exists(path))
+            if (File.Exists(path) && isFileType)
             {
                 FileType ft = new FileType(path);
+                return ft;
             }
             else
             {
-                return null;
+                return new FileType();
             }
+        }
 
-            return null;
+        public static void Create(string path)
+        {
+            File.CreateText(path);
         }
 
         public static void Create(string path, string type)
@@ -86,10 +107,6 @@ namespace CubeTools.FileManager
             file.AbsPath = Path.ChangeExtension(file.AbsPath, newType);
             file.Path = Path.GetFileName(file.AbsPath);
             file.Type = newType;
-            if (FileType.type.Contains(newType))
-            {
-                file.IconUI = null; // Modified here the new icon to put
-            }
         }
 
         public static void ChangeReadOnly(bool readonly_)

@@ -6,9 +6,8 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
-using SkiaSharp;
 
-namespace CubeTools.FileManager
+namespace Manager
 {
     public class FileType
     {
@@ -35,9 +34,6 @@ namespace CubeTools.FileManager
 
         public bool Hidden { get; set; }
 
-        // UI
-        public Icon IconUI { get; set; }
-
         #endregion
 
         #region Init
@@ -46,14 +42,13 @@ namespace CubeTools.FileManager
         // Constructors
         public FileType()
         {
-            Path = null;
-            AbsPath = null;
+            Path = "";
+            AbsPath = "";
             Type = "";
             Size = 0;
-            Date = null;
+            Date = "";
             Hidden = false;
             ReadOnly = false;
-            IconUI = null;
         }
 
         public FileType(string path) : base()
@@ -74,7 +69,7 @@ namespace CubeTools.FileManager
         // Destructor and Garbage Collector
         ~FileType()
         {
-            FileWritter.SaveFileType(this);
+            ManagerWriter.SaveFileType(this);
         }
 
         public void Dispose()

@@ -4,9 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CubeTools.FileManager;
 
-namespace CubeTools.Manager
+namespace Manager
 {
     public class DirectoryType
     {
@@ -21,15 +20,16 @@ namespace CubeTools.Manager
         // Constructors
         DirectoryType()
         {
-            _path = null;
-            _abs_path = null;
-            _children_files = null;
+            _path = "";
+            _abs_path = "";
+            _children_files = new List<FileType>();
+            _size = 0;
+            _hide = false;
+            _readOnly = false;
+            _date = "";
         }
 
-        DirectoryType(string path)
-        {
-
-        }
+        DirectoryType(string path) : base() => _path = path;
         // Methods
         public void ChildrenFiles()
         {
@@ -40,7 +40,7 @@ namespace CubeTools.Manager
         {
             foreach (var file in _children_files)
             {
-                FileWritter.SaveFileType(file);
+                ManagerWriter.SaveFileType(file);
                 file.Dispose();
             }
         }
