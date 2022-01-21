@@ -30,7 +30,7 @@ namespace CubeTools
                     {
                         zip.CreateEntryFromFile(file, file);
                     }
-                    
+
                 }
             }
         }
