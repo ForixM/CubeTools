@@ -10,14 +10,13 @@ namespace Manager
     public class DirectoryType
     {
         #region Variables
+
         // Attributes
         private string _path;
-        private string _abs_path;
         public List<FileType> _childrenFiles;
         private int _size;
         private string _date;
         private bool _hide;
-        private bool _readOnly;
 
         // Getter and Setter
         public string Path { get { return _path; } set { _path = value; } }
@@ -32,13 +31,11 @@ namespace Manager
         public DirectoryType()
         {
             _path = Directory.GetCurrentDirectory();
-            _abs_path = "";
             _childrenFiles = new List<FileType>();
             foreach (var file in Directory.GetFiles(_path))
                 _childrenFiles.Add(GetChild(file));
             _size = 0;
             _hide = false;
-            _readOnly = false;
             _date = "";
         }
 
@@ -47,7 +44,6 @@ namespace Manager
         #endregion
 
         #region FileType
-        // Methods
 
         /// <summary>
         /// This function creates a FileType and return it using a path
@@ -56,8 +52,11 @@ namespace Manager
         /// <returns></returns>
         public FileType GetChild(string path)
         {
-            if (path == null)
-                return null;
+            if (path == null || !File.Exists(path) || !Directory.Exists(path))
+            {
+                FileType ft = new();
+                return ft;
+            }
             else
             {
                 FileType fileType = new FileType(path);
@@ -78,6 +77,7 @@ namespace Manager
             _childrenFiles.Clear();
             foreach (var file in Directory.GetFiles(Path))
                 _childrenFiles.Add(GetChild(file));
+            
         }
 
         #endregion
@@ -90,7 +90,7 @@ namespace Manager
             foreach(var file in _childrenFiles)
             {
                 Console.Write(file.LastDate + "    ");
-                if (ManagerReader.IsDirectory(file.Path))
+                if (file.IsDir)
                     Console.Write("    ");
                 else
                     Console.Write(file.Size + "    ");
@@ -106,12 +106,23 @@ namespace Manager
         public void ChangeDirectory()
         {
             foreach (var file in _childrenFiles)
-            {
-                ManagerWriter.SaveFileType(file);
                 file.Dispose();
-            }
+            _path = "";
+            _size = 0;
         }
 
+        #endregion
+
+        #region Debug
+
+        public void PrintInformation()
+        {
+            Console.WriteLine("----------------------");
+            Console.WriteLine("Directory : " + _path);
+            Console.WriteLine("----------------------");
+            foreach (var child in _childrenFiles)
+                child.PrintInformation();
+        }
         #endregion
     }
 }

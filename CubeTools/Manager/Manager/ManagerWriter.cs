@@ -35,6 +35,7 @@ namespace Manager
         /// Overload 1 : Rename with no path dest <br></br>
         /// Rename a file without specified name and does not overwrite the file if there is one which has the same path <br></br>
         /// Instead of deleting the file, the function add a number ${i} as a name
+        /// Implementation : Check
         /// </summary>
         /// <param name="path"></param>
         public static void Rename(string path)
@@ -53,6 +54,7 @@ namespace Manager
         /// Overload 2 : Rename with a path dest<br></br>
         /// Rename a file with newPath and does not overwrite the file if there is one which has the same path <br></br>
         /// Instead of deleting the file, the function add a number ${i} as a name <br></br>
+        /// Implementation : Check
         /// </summary>
         /// <param name="path"></param>
         /// <param name="newPath"></param>
@@ -62,16 +64,17 @@ namespace Manager
             {
                 if (File.Exists(path))
                 {
-                    int i = 1;
-                    while (File.Exists(path + "(" + i + ")"))
+                    if (File.Exists(newPath))
                     {
-                        i += 1;
+                        int i = 1;
+                        while (File.Exists(path + "(" + i + ")"))
+                        {
+                            i += 1;
+                        }
+                        File.Move(path, path + "(" + i + ")");
                     }
-                    File.Move(path, path + "(" + i + ")");
-                }
-                else
-                {
-                    File.Move(path, newPath);
+                    else
+                        File.Move(path, newPath);
                 }
             }
         }
@@ -81,6 +84,7 @@ namespace Manager
         /// <summary>
         /// Overload 1 : Copy function without copy file name <br></br>
         /// Copy the content of the file path and create a copy of it using path(${i}) format
+        /// Implementation : Check
         /// </summary>
         /// <param name="path">The source path</param>
         public static void Copy(string path)
@@ -99,6 +103,7 @@ namespace Manager
         /// <summary>
         /// Overload 2 : Copy the content in the source file into the dest file
         /// If the dest file already exists, then rename the copy
+        /// Implementation : Check
         /// </summary>
         /// <param name="source">The source file</param>
         /// <param name="dest">The dest file</param>
@@ -113,40 +118,37 @@ namespace Manager
             } 
         }
 
+        // CREATE/DELETE FUNCTIONS
+
         /// <summary>
-        /// Overload 3 : Copy the content and choose to overwrite or not
+        /// Create a file
+        /// Implementation : Check
         /// </summary>
-        /// <param name="source"></param>
-        /// <param name="dest"></param>
-        /// <param name="overwrite"></param>
-        public static void Copy(string source, string dest, bool overwrite)
-        {
-            if (File.Exists(source))
-            {
-                if (!overwrite && File.Exists(dest))
-                    File.Delete(dest);
-                Copy(source, dest);
-            }
-        }
-
-        // CREATE FUNCTIONS
-
-        // Create(string path)
-        
-
+        /// <param name="path"></param>
         public static void Create(string path)
         {
-            File.CreateText(path);
+            if (!File.Exists(path) && !Directory.Exists(path))
+                File.Create(path);
         }
 
+        /// <summary>
+        /// Create a file with an extension
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="path"></param>
         public static void Create(string path, string type)
         {
-
+            File.Create(path+"."+type);
         }
 
+        /// <summary>
+        /// Create a dir and if it already exists, modify the document name
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="path"></param>
         public static void CreateDir(string path)
         {
-            if (Directory.Exists(path))
+            if (File.Exists(path))
             {
                 int i = 1;
                 while (Directory.Exists($"{path}({i})")) ;
@@ -155,43 +157,22 @@ namespace Manager
                 }
                 Directory.CreateDirectory($"{path}({i})");
             }
-            Directory.CreateDirectory(path);
-        }
-
-        public static void Delete(string abs_path)
-        {
-            if (File.Exists(abs_path))
+            else
             {
-                File.Delete(abs_path);
+                Directory.CreateDirectory(path);
             }
         }
 
+        // Implementation Check
+        public static void Delete(string path) { File.Delete(path); }
+        // Implementation Check
         public static void DeleteDir(string path)
         {
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
         }
 
-        // ChangeExtension : Modify the extension a file and verify if the given 
-        public static void ChangeExtension(string newType, FileType file)
-        {
-            file.AbsPath = Path.ChangeExtension(file.AbsPath, newType);
-            file.Path = Path.GetFileName(file.AbsPath);
-            file.Type = newType;
-        }
-
-        public static void ChangeReadOnly(bool readonly_)
-        {
-
-        }
         #endregion
-
-        public static void SaveFileType(FileType file)
-        {
-            if (File.Exists(file.Path))
-            {
-                // Insert code to automatically save the file
-            }
-        }
+    
     }
 }

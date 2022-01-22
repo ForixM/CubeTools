@@ -74,14 +74,16 @@ namespace Manager
         }
 
         /// <summary>
-        ///  Get date of a file given with the path
+        ///  Get the date with a given path
         ///  Implementation : Check
         /// </summary>
         /// <param name="path"></param>
         /// <returns>Returns the creation date</returns>
         public static string GetFileCreationDate(string path)
         {
-            if (File.Exists(path))
+            if (Directory.Exists(path))
+                return Directory.GetCreationTime(path).ToString();
+            else if (File.Exists(path))
                 return File.GetCreationTime(path).ToString();
             return "";
         }
@@ -94,7 +96,9 @@ namespace Manager
         /// <returns>A string time</returns>
         public static string GetFileLastEdition(string path)
         {
-            if (File.Exists(path))
+            if (Directory.Exists(path))
+                return Directory.GetLastWriteTime(path).ToString();
+            else if (File.Exists(path))
                 return File.GetLastWriteTime(path).ToString();
             return "";
         }
@@ -107,7 +111,12 @@ namespace Manager
         /// <returns>0 or the size of the file</returns>
         public static string GetFileSize(string path)
         {
-            if (File.Exists(path))
+            if (Directory.Exists(path))
+            {
+                DirectoryInfo di = new DirectoryInfo(path);
+                return di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length).ToString();
+            }
+            else if (File.Exists(path))
             {
                 FileInfo fi = new FileInfo(path);
                 return fi.Length.ToString();
@@ -156,58 +165,84 @@ namespace Manager
         {
             return Path.GetExtension(path);
         }
-        
+
         #endregion
 
         #region Saver
         // In this section, every function is related to the save of file and the creation of FileType
         // instance to simplify the interaction with UI
 
-        // ReadFile : Get the file using its path and save its information in a FileType
+        /// <summary>
+        /// Reads the properties of a File, modifies and inits its associated FileType
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static FileType ReadFileType(string path)
         {
-            FileType ft = new FileType(path);
-            ft.AbsPath = path;
             if (File.Exists(path))
             {
-                FileAttributes fa = File.GetAttributes(ft.AbsPath);
+                FileType ft = new FileType(path);
+                ReadFileType(ref ft);
+                return ft;
             }
-
-            return null;
+            else
+            {
+                FileType ft = new FileType();
+                return ft;
+            }
         }
 
-        // ReadFileType(ref FileType ft) : modify parameters of ft 
+        /// <summary>
+        /// Update FileType passed by reference
+        /// </summary>
+        /// <param name="ft"></param>
         public static void ReadFileType(ref FileType ft)
         {
-            if (File.Exists(ft.AbsPath))
+            if (Directory.Exists(ft.Path))
             {
-                ft.ReadOnly = ((File.GetAttributes(ft.AbsPath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly);
-                ft.Hidden = ((File.GetAttributes(ft.AbsPath) & FileAttributes.Hidden) == FileAttributes.Hidden);
-                ft.Size = int.Parse(GetFileSize(ft.AbsPath));
-                ft.Date = GetFileCreationDate(ft.AbsPath);
-                ft.LastDate = GetFileLastEdition(ft.AbsPath);
-                ft.Type = GetFileExtension(ft.AbsPath);
+                ft.ReadOnly = false;
+                ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
+                ft.Size = int.Parse(GetFileSize(ft.Path));
+                ft.Date = GetFileCreationDate(ft.Path);
+                ft.LastDate = GetFileLastEdition(ft.Path);
+                ft.Type = "Directory";
+                ft.IsDir = true;
+            }
+            else if (File.Exists(ft.Path))
+            {
+                ft.ReadOnly = ((File.GetAttributes(ft.Path) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly);
+                ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
+                ft.Size = int.Parse(GetFileSize(ft.Path));
+                ft.Date = GetFileCreationDate(ft.Path);
+                ft.LastDate = GetFileLastEdition(ft.Path);
+                ft.Type = GetFileExtension(ft.Path);
+                ft.IsDir = false;
             }
             else
                 ft.Dispose();
         }
+        
         #endregion
 
         #region CommandLine
 
+        // Implemented Check
         public static void ReadContent(string path)
         {
             if (File.Exists(path))
             {
                 using (StreamReader fs = new StreamReader(path))
                 {
-                    while (fs != null)
+                    var input = fs.ReadLine();
+                    while (input != null)
                     {
-                        Console.WriteLine(fs.ReadLine());
+                        Console.WriteLine(input);
+                        input = fs.ReadLine();
                     }
                 }
             }
         }
+
         #endregion
     }
 

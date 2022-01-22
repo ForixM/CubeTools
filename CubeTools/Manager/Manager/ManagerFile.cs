@@ -13,7 +13,8 @@ namespace Manager
     {
         #region Variables
 
-        private bool disposed;
+        // Use for dynamic allocation of the class
+        private bool _disposed;
 
         public static List<string> type = new List<string>()
             {"png", "pdf", "exe", "cs", "csv", ""};
@@ -21,19 +22,17 @@ namespace Manager
         // Basics
         public string Path { get; set; }
 
-        public string AbsPath { get; set; }
-
         public string Type { get; set; }
 
         // Properties
         public int Size { get; set; }
 
         public string Date { get; set; }
+        public string LastDate { get; set; }
 
         public bool ReadOnly { get; set; }
 
         public bool Hidden { get; set; }
-        public string LastDate { get; set; }
         public bool IsDir { get; set; }
 
         #endregion
@@ -41,27 +40,37 @@ namespace Manager
         #region Init
 
         // Constructors
+        // Implemented Check
         public FileType()
         {
             Path = Directory.GetCurrentDirectory();
-            AbsPath = "";
             Type = "";
             Size = 0;
             Date = "";
             Hidden = false;
+            LastDate = "";
             ReadOnly = false;
-            IsDir = ManagerReader.IsDirectory(Path);
+            IsDir = false;
         }
 
-        public FileType(string path) : base()
+        // Implemented Check
+        public FileType(string path) : this()
         {
             Path = path;
         }
 
-        public FileType(string path, string type) : base()
+        // Implemented Check
+        public FileType(string path, string type) : this()
         {
-            AbsPath = path;
+            Path = path;
             Type = type;
+        }
+
+        // Initializers
+        // Implemented Check
+        public void Init(ref FileType ft)
+        {
+            ManagerReader.ReadFileType(ref ft);
         }
 
         #endregion
@@ -72,7 +81,6 @@ namespace Manager
         // Destructor and Garbage Collector
         ~FileType()
         {
-            ManagerWriter.SaveFileType(this);
         }
 
         public void Dispose()
@@ -83,7 +91,7 @@ namespace Manager
 
         private void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this._disposed)
             {
                 return;
             }
@@ -93,6 +101,21 @@ namespace Manager
                 ////Number of instance you want to dispose
             }
         }
+        #endregion
+
+        #region Debug
+        public void PrintInformation()
+        {
+            Console.WriteLine("--FileType DEBUG--");
+            Console.WriteLine("Path : " + this.Path);
+            Console.WriteLine("Type : " + this.Type);
+            Console.WriteLine("Size : " + this.Size);
+            Console.WriteLine("Date : " + this.Date);
+            Console.WriteLine("LastDate : " + this.LastDate);
+            Console.WriteLine("ReadOnly : " + this.ReadOnly);
+            Console.WriteLine("Hidden : " + this.Hidden);
+            Console.WriteLine("Directory : " + this.IsDir);
+    }
         #endregion
     }
 }
