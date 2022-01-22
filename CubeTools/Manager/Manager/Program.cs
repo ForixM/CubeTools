@@ -8,8 +8,8 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Reader.GetParent("ref"));
-            Console.WriteLine();
+            CommandLine commandline = new CommandLine();
+            commandline.Process();
         }
     }
 }

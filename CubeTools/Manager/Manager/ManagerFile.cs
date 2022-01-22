@@ -33,6 +33,8 @@ namespace Manager
         public bool ReadOnly { get; set; }
 
         public bool Hidden { get; set; }
+        public string LastDate { get; set; }
+        public bool IsDir { get; set; }
 
         #endregion
 
@@ -41,13 +43,14 @@ namespace Manager
         // Constructors
         public FileType()
         {
-            Path = "";
+            Path = Directory.GetCurrentDirectory();
             AbsPath = "";
             Type = "";
             Size = 0;
             Date = "";
             Hidden = false;
             ReadOnly = false;
+            IsDir = ManagerReader.IsDirectory(Path);
         }
 
         public FileType(string path) : base()

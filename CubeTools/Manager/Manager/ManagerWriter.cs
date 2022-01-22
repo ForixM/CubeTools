@@ -144,6 +144,20 @@ namespace Manager
 
         }
 
+        public static void CreateDir(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                int i = 1;
+                while (Directory.Exists($"{path}({i})")) ;
+                {
+                    i += 1;
+                }
+                Directory.CreateDirectory($"{path}({i})");
+            }
+            Directory.CreateDirectory(path);
+        }
+
         public static void Delete(string abs_path)
         {
             if (File.Exists(abs_path))
@@ -152,6 +166,11 @@ namespace Manager
             }
         }
 
+        public static void DeleteDir(string path)
+        {
+            if (Directory.Exists(path))
+                Directory.Delete(path, true);
+        }
 
         // ChangeExtension : Modify the extension a file and verify if the given 
         public static void ChangeExtension(string newType, FileType file)

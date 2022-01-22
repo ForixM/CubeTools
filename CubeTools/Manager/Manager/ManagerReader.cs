@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 
 namespace Manager
@@ -145,6 +146,17 @@ namespace Manager
             return name;
         }
 
+        /// <summary>
+        /// Basicaly returns the extension of a file
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetFileExtension(string path)
+        {
+            return Path.GetExtension(path);
+        }
+        
         #endregion
 
         #region Saver
@@ -171,16 +183,31 @@ namespace Manager
             {
                 ft.ReadOnly = ((File.GetAttributes(ft.AbsPath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly);
                 ft.Hidden = ((File.GetAttributes(ft.AbsPath) & FileAttributes.Hidden) == FileAttributes.Hidden);
+                ft.Size = int.Parse(GetFileSize(ft.AbsPath));
+                ft.Date = GetFileCreationDate(ft.AbsPath);
+                ft.LastDate = GetFileLastEdition(ft.AbsPath);
+                ft.Type = GetFileExtension(ft.AbsPath);
             }
             else
-            {
                 ft.Dispose();
-            }
         }
         #endregion
 
-        #region Processing
+        #region CommandLine
 
+        public static void ReadContent(string path)
+        {
+            if (File.Exists(path))
+            {
+                using (StreamReader fs = new StreamReader(path))
+                {
+                    while (fs != null)
+                    {
+                        Console.WriteLine(fs.ReadLine());
+                    }
+                }
+            }
+        }
         #endregion
     }
 
