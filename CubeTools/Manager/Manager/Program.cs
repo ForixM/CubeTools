@@ -8,7 +8,7 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            CommandLine commandline = new CommandLine();
+            CommandLine commandline = new CommandLine("C:/");
             commandline.Process();
         }
     }

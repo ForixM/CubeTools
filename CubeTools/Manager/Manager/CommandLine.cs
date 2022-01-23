@@ -39,6 +39,7 @@ namespace Manager
         {
             Console.WriteLine("CubeTools command line project");
             Console.WriteLine("Type help to get any information about the available commands");
+            Console.Write("\n");
             while(true)
             {
                 Console.Write(_directoryType.Path);
@@ -128,6 +129,9 @@ namespace Manager
                                 _directoryType = new DirectoryType(read[1]);
                             }
                             break;
+                        case "pwd":
+                            Console.WriteLine(_directoryType.Path);
+                            break;
                         case "exit":
                             End();
                             break;
@@ -170,6 +174,7 @@ namespace Manager
             Console.WriteLine("rm : delete the specified file");
             Console.WriteLine("touch : create an empty file with a given name");
             Console.WriteLine("cd : change the directory given with the second parameter");
+            Console.WriteLine("pwd : display the current directory");
             Console.WriteLine("exit : leave the console");
             Console.WriteLine("_____________________________________________________");
         }

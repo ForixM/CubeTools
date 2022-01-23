@@ -21,11 +21,11 @@ namespace Manager
 
         // Basics
         public string Path { get; set; }
-
+        public string Name { get; set; }
         public string Type { get; set; }
 
         // Properties
-        public int Size { get; set; }
+        public long Size { get; set; }
 
         public string Date { get; set; }
         public string LastDate { get; set; }
@@ -43,7 +43,8 @@ namespace Manager
         // Implemented Check
         public FileType()
         {
-            Path = Directory.GetCurrentDirectory();
+            Path = "";
+            Name = "";
             Type = "";
             Size = 0;
             Date = "";
@@ -56,14 +57,11 @@ namespace Manager
         // Implemented Check
         public FileType(string path) : this()
         {
-            Path = path;
-        }
-
-        // Implemented Check
-        public FileType(string path, string type) : this()
-        {
-            Path = path;
-            Type = type;
+            if (File.Exists(path) || Directory.Exists(path))
+            {
+                Name = System.IO.Path.GetFileName(path);
+            }
+            Path = System.IO.Path.GetFullPath(path);
         }
 
         // Initializers
@@ -116,6 +114,7 @@ namespace Manager
             Console.WriteLine("Hidden : " + this.Hidden);
             Console.WriteLine("Directory : " + this.IsDir);
     }
+        
         #endregion
     }
 }

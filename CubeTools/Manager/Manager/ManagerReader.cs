@@ -30,6 +30,18 @@ namespace Manager
             return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.Hidden) != 0);
 
         }
+        // IsDirHidden : Verify if the directory is hidden
+        // Implementation Check
+        public static bool IsDirHidden(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                return ((directoryInfo.Attributes & FileAttributes.Hidden) != 0);
+            }
+
+            return false;
+        }
         // IsFileCompressed : Verify if the file has the property Compressed
         // Implementation : Check
         public static bool IsFileCompressed(string path)
@@ -109,19 +121,19 @@ namespace Manager
         /// </summary>
         /// <param name="path"></param>
         /// <returns>0 or the size of the file</returns>
-        public static string GetFileSize(string path)
+        public static long GetFileSize(string path)
         {
             if (Directory.Exists(path))
             {
                 DirectoryInfo di = new DirectoryInfo(path);
-                return di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length).ToString();
+                return di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
             }
             else if (File.Exists(path))
             {
                 FileInfo fi = new FileInfo(path);
-                return fi.Length.ToString();
+                return fi.Length;
             }
-            return "0";
+            return 0;
         }
 
         /// <summary>
@@ -200,9 +212,10 @@ namespace Manager
         {
             if (Directory.Exists(ft.Path))
             {
+                ft.Name = Path.GetDirectoryName(ft.Path);
                 ft.ReadOnly = false;
                 ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
-                ft.Size = int.Parse(GetFileSize(ft.Path));
+                ft.Size = GetFileSize(ft.Path);
                 ft.Date = GetFileCreationDate(ft.Path);
                 ft.LastDate = GetFileLastEdition(ft.Path);
                 ft.Type = "Directory";
@@ -210,9 +223,10 @@ namespace Manager
             }
             else if (File.Exists(ft.Path))
             {
+                ft.Name = Path.GetFileName(ft.Path);
                 ft.ReadOnly = ((File.GetAttributes(ft.Path) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly);
                 ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
-                ft.Size = int.Parse(GetFileSize(ft.Path));
+                ft.Size = GetFileSize(ft.Path);
                 ft.Date = GetFileCreationDate(ft.Path);
                 ft.LastDate = GetFileLastEdition(ft.Path);
                 ft.Type = GetFileExtension(ft.Path);

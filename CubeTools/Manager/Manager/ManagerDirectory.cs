@@ -14,7 +14,7 @@ namespace Manager
         // Attributes
         private string _path;
         public List<FileType> _childrenFiles;
-        private int _size;
+        private long _size;
         private string _date;
         private bool _hide;
 
@@ -34,12 +34,24 @@ namespace Manager
             _childrenFiles = new List<FileType>();
             foreach (var file in Directory.GetFiles(_path))
                 _childrenFiles.Add(GetChild(file));
-            _size = 0;
-            _hide = false;
-            _date = "";
+            _size = ManagerReader.GetFileSize(_path);
+            _hide = ManagerReader.IsDirHidden(_path);
+            _date = ManagerReader.GetFileCreationDate(_path);
+            Directory.SetCurrentDirectory(_path);
         }
 
-        public DirectoryType(string path) : base() => _path = path;
+        public DirectoryType(string path) : base() { 
+            _path = path;
+            if (_childrenFiles != null)
+                _childrenFiles.Clear();
+            else
+                _childrenFiles = new List<FileType> ();
+            foreach (var file in Directory.GetFiles(_path))
+                _childrenFiles.Add(GetChild(file));
+            foreach (var dir in Directory.GetDirectories(_path))
+                _childrenFiles.Add(GetChild(dir));
+            Directory.SetCurrentDirectory(_path);
+        }
 
         #endregion
 
@@ -52,16 +64,16 @@ namespace Manager
         /// <returns></returns>
         public FileType GetChild(string path)
         {
-            if (path == null || !File.Exists(path) || !Directory.Exists(path))
+            if (path != null && (File.Exists(path) || Directory.Exists(path)))
             {
-                FileType ft = new();
+                FileType ft = new FileType(path);
+                ManagerReader.ReadFileType(ref ft);
                 return ft;
             }
             else
             {
-                FileType fileType = new FileType(path);
-                ManagerReader.ReadFileType(ref fileType);
-                return fileType;
+                FileType ft = new FileType();
+                return ft;
             }
         }
 
@@ -77,6 +89,8 @@ namespace Manager
             _childrenFiles.Clear();
             foreach (var file in Directory.GetFiles(Path))
                 _childrenFiles.Add(GetChild(file));
+            foreach (var dir in Directory.GetDirectories(_path))
+                _childrenFiles.Add(GetChild(dir));
             
         }
 
@@ -94,7 +108,7 @@ namespace Manager
                     Console.Write("    ");
                 else
                     Console.Write(file.Size + "    ");
-                Console.WriteLine(ManagerReader.GetPathToName(file.Path));
+                Console.WriteLine(ManagerReader.GetPathToName(file.Name));
             }
             Console.WriteLine("");
         }
