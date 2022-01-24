@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,24 @@ namespace Manager
             Console.WriteLine("CubeTools command line project");
             Console.WriteLine("Type help to get any information about the available commands");
             Console.Write("\n");
-            while(true)
+            using var watcher = new FileSystemWatcher(_directoryType.Path);
+
+            watcher.NotifyFilter = NotifyFilters.Attributes
+                                 | NotifyFilters.CreationTime
+                                 | NotifyFilters.DirectoryName
+                                 | NotifyFilters.FileName
+                                 | NotifyFilters.LastAccess
+                                 | NotifyFilters.LastWrite
+                                 | NotifyFilters.Security
+                                 | NotifyFilters.Size;
+
+            watcher.Changed += _directoryType.ActualizeFiles();
+            watcher.Created += _directoryType.ActualizeFiles();
+            watcher.Deleted += _directoryType.ActualizeFiles();
+            watcher.IncludeSubdirectories = true;
+            watcher.EnableRaisingEvents = true;
+
+            while (true)
             {
                 Console.Write(_directoryType.Path);
                 Console.Write(_promptLine + " ");
@@ -130,7 +148,11 @@ namespace Manager
                             }
                             break;
                         case "pwd":
+                            Console.WriteLine();
+                            Console.WriteLine("Path");
+                            Console.WriteLine("-----");
                             Console.WriteLine(_directoryType.Path);
+                            Console.WriteLine();
                             break;
                         case "exit":
                             End();

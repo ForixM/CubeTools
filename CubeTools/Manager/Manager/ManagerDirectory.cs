@@ -37,11 +37,11 @@ namespace Manager
             _size = ManagerReader.GetFileSize(_path);
             _hide = ManagerReader.IsDirHidden(_path);
             _date = ManagerReader.GetFileCreationDate(_path);
-            Directory.SetCurrentDirectory(_path);
         }
 
-        public DirectoryType(string path) : base() { 
-            _path = path;
+        public DirectoryType(string path) : base() {
+            Directory.SetCurrentDirectory(path);
+            _path = Directory.GetCurrentDirectory();
             if (_childrenFiles != null)
                 _childrenFiles.Clear();
             else
@@ -50,7 +50,7 @@ namespace Manager
                 _childrenFiles.Add(GetChild(file));
             foreach (var dir in Directory.GetDirectories(_path))
                 _childrenFiles.Add(GetChild(dir));
-            Directory.SetCurrentDirectory(_path);
+            
         }
 
         #endregion
@@ -94,23 +94,52 @@ namespace Manager
             
         }
 
+        public FileSystemEventHandler ActualizeFiles() {
+            return null;
+        }
         #endregion
 
         #region CommandLine
         
         public void DisplayChildren()
         {
-            Console.WriteLine("LastWriteTime              Size      Name");
+            Console.WriteLine();
+            Console.WriteLine("LastWriteTime               Size                     Name");
+            Console.WriteLine("-------------               ----                     ----");
             foreach(var file in _childrenFiles)
             {
-                Console.Write(file.LastDate + "    ");
+                Console.Write(ConstructMessage("LWT", file.LastDate));
                 if (file.IsDir)
-                    Console.Write("    ");
+                    Console.Write("                            ");
                 else
-                    Console.Write(file.Size + "    ");
-                Console.WriteLine(ManagerReader.GetPathToName(file.Name));
+                    Console.Write(ConstructMessage("S", file.Size.ToString()));
+                Console.WriteLine(ConstructMessage("N", file.Name));
             }
             Console.WriteLine("");
+        }
+        // Construct message with specific size of string.
+        // Type is just a string value 
+        public string ConstructMessage(string type, string value)
+        {
+            string msg = value;
+            int max_size = 0;
+            switch (type)
+            {
+                case "LWT":
+                    max_size = 28;
+                    break;
+                case "S":
+                    max_size = 28;
+                    break;
+                case "N":
+                    max_size = 32;
+                    break;
+            }
+            for (int i = 0; i < max_size - value.Length; i++)
+            {
+                msg += " ";
+            }
+            return msg;
         }
 
         #endregion

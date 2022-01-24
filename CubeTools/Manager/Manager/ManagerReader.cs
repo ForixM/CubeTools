@@ -212,7 +212,7 @@ namespace Manager
         {
             if (Directory.Exists(ft.Path))
             {
-                ft.Name = Path.GetDirectoryName(ft.Path);
+                ft.Name = GetPathToName(ft.Path);
                 ft.ReadOnly = false;
                 ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
                 ft.Size = GetFileSize(ft.Path);
