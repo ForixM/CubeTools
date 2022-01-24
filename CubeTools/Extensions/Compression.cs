@@ -12,26 +12,40 @@ namespace CubeTools
     }
     public class Compression
     {
+        public static void CompressDirectory(string directory, string dest, CompressAlgo algo)
+        {
+            switch (algo)
+            {
+                case CompressAlgo.ZIP:
+                    ZipFile.CreateFromDirectory(directory, dest);
+                    break;
+                case CompressAlgo.LZMA:
+                    SevenZipCompressor compressor = new SevenZipCompressor();
+                    compressor.ScanOnlyWritable = true;
+                    compressor.CompressDirectory(directory, dest);
+                    break;
+            }
+        }
+
         public static void CompressFiles(string[] files, string dest, CompressAlgo algo)
         {
-            if (algo == CompressAlgo.LZMA)
+            switch (algo)
             {
-                SevenZipCompressor compressor = new SevenZipCompressor();
-                compressor.ScanOnlyWritable = true;
-                compressor.CompressFiles(dest, files);
-                return;
-            }
-
-            if (algo == CompressAlgo.ZIP)
-            {
-                using (ZipArchive zip = ZipFile.Open(dest, ZipArchiveMode.Create))
-                {
-                    foreach (string file in files)
+                case CompressAlgo.ZIP:
+                    using (ZipArchive zip = ZipFile.Open(dest, ZipArchiveMode.Create))
                     {
-                        zip.CreateEntryFromFile(file, file);
+                        foreach (string file in files)
+                        {
+                            FileInfo info = new FileInfo(file);
+                            zip.CreateEntryFromFile(file, info.Name);
+                        }
                     }
-
-                }
+                    break;
+                case CompressAlgo.LZMA:
+                    SevenZipCompressor compressor = new SevenZipCompressor();
+                    compressor.ScanOnlyWritable = true;
+                    compressor.CompressFiles(dest, files);
+                    break;
             }
         }
     }
