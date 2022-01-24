@@ -8,8 +8,8 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(Reader.GetParent("ref"));
-            Console.WriteLine();
+            CommandLine commandline = new CommandLine("C:/Users/mateo/OneDrive");
+            commandline.Process();
         }
     }
 }

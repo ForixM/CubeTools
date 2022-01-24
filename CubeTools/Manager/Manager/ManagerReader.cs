@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 
 namespace Manager
@@ -28,6 +29,18 @@ namespace Manager
         {
             return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.Hidden) != 0);
 
+        }
+        // IsDirHidden : Verify if the directory is hidden
+        // Implementation Check
+        public static bool IsDirHidden(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                return ((directoryInfo.Attributes & FileAttributes.Hidden) != 0);
+            }
+
+            return false;
         }
         // IsFileCompressed : Verify if the file has the property Compressed
         // Implementation : Check
@@ -73,14 +86,16 @@ namespace Manager
         }
 
         /// <summary>
-        ///  Get date of a file given with the path
+        ///  Get the date with a given path
         ///  Implementation : Check
         /// </summary>
         /// <param name="path"></param>
         /// <returns>Returns the creation date</returns>
         public static string GetFileCreationDate(string path)
         {
-            if (File.Exists(path))
+            if (Directory.Exists(path))
+                return Directory.GetCreationTime(path).ToString();
+            else if (File.Exists(path))
                 return File.GetCreationTime(path).ToString();
             return "";
         }
@@ -93,7 +108,9 @@ namespace Manager
         /// <returns>A string time</returns>
         public static string GetFileLastEdition(string path)
         {
-            if (File.Exists(path))
+            if (Directory.Exists(path))
+                return Directory.GetLastWriteTime(path).ToString();
+            else if (File.Exists(path))
                 return File.GetLastWriteTime(path).ToString();
             return "";
         }
@@ -104,14 +121,19 @@ namespace Manager
         /// </summary>
         /// <param name="path"></param>
         /// <returns>0 or the size of the file</returns>
-        public static string GetFileSize(string path)
+        public static long GetFileSize(string path)
         {
-            if (File.Exists(path))
+            if (Directory.Exists(path))
+            {
+                DirectoryInfo di = new DirectoryInfo(path);
+                return di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+            }
+            else if (File.Exists(path))
             {
                 FileInfo fi = new FileInfo(path);
-                return fi.Length.ToString();
+                return fi.Length;
             }
-            return "0";
+            return 0;
         }
 
         /// <summary>
@@ -145,41 +167,95 @@ namespace Manager
             return name;
         }
 
+        /// <summary>
+        /// Basicaly returns the extension of a file
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetFileExtension(string path)
+        {
+            return Path.GetExtension(path);
+        }
+
         #endregion
 
         #region Saver
         // In this section, every function is related to the save of file and the creation of FileType
         // instance to simplify the interaction with UI
 
-        // ReadFile : Get the file using its path and save its information in a FileType
+        /// <summary>
+        /// Reads the properties of a File, modifies and inits its associated FileType
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static FileType ReadFileType(string path)
         {
-            FileType ft = new FileType(path);
-            ft.AbsPath = path;
             if (File.Exists(path))
             {
-                FileAttributes fa = File.GetAttributes(ft.AbsPath);
-            }
-
-            return null;
-        }
-
-        // ReadFileType(ref FileType ft) : modify parameters of ft 
-        public static void ReadFileType(ref FileType ft)
-        {
-            if (File.Exists(ft.AbsPath))
-            {
-                ft.ReadOnly = ((File.GetAttributes(ft.AbsPath) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly);
-                ft.Hidden = ((File.GetAttributes(ft.AbsPath) & FileAttributes.Hidden) == FileAttributes.Hidden);
+                FileType ft = new FileType(path);
+                ReadFileType(ref ft);
+                return ft;
             }
             else
             {
-                ft.Dispose();
+                FileType ft = new FileType();
+                return ft;
             }
         }
+
+        /// <summary>
+        /// Update FileType passed by reference
+        /// </summary>
+        /// <param name="ft"></param>
+        public static void ReadFileType(ref FileType ft)
+        {
+            if (Directory.Exists(ft.Path))
+            {
+                ft.Name = GetPathToName(ft.Path);
+                ft.ReadOnly = false;
+                ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
+                ft.Size = GetFileSize(ft.Path);
+                ft.Date = GetFileCreationDate(ft.Path);
+                ft.LastDate = GetFileLastEdition(ft.Path);
+                ft.Type = "Directory";
+                ft.IsDir = true;
+            }
+            else if (File.Exists(ft.Path))
+            {
+                ft.Name = Path.GetFileName(ft.Path);
+                ft.ReadOnly = ((File.GetAttributes(ft.Path) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly);
+                ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
+                ft.Size = GetFileSize(ft.Path);
+                ft.Date = GetFileCreationDate(ft.Path);
+                ft.LastDate = GetFileLastEdition(ft.Path);
+                ft.Type = GetFileExtension(ft.Path);
+                ft.IsDir = false;
+            }
+            else
+                ft.Dispose();
+        }
+        
         #endregion
 
-        #region Processing
+        #region CommandLine
+
+        // Implemented Check
+        public static void ReadContent(string path)
+        {
+            if (File.Exists(path))
+            {
+                using (StreamReader fs = new StreamReader(path))
+                {
+                    var input = fs.ReadLine();
+                    while (input != null)
+                    {
+                        Console.WriteLine(input);
+                        input = fs.ReadLine();
+                    }
+                }
+            }
+        }
 
         #endregion
     }
