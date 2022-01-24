@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
-using Manager;
+
 using SevenZip;
 
 namespace CubeTools
@@ -14,6 +14,11 @@ namespace CubeTools
     }
     public class Compression
     {
+        public static void Init()
+        {
+            var path = "Assets/7z.dll";
+            SevenZipBase.SetLibraryPath(path);
+        }
         public static void CompressDirectory(string directory, string dest, CompressAlgo algo)
         {
             switch (algo)

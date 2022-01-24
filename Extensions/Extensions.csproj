@@ -5,4 +5,15 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FluentFTP" Version="36.1.0" />
+    <PackageReference Include="Squid-Box.SevenZipSharp" Version="1.5.0.366" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\7z.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
