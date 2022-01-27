@@ -1,0 +1,37 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:UI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="960" d:DesignHeight="720"
+        x:Class="UI.Views.MainWindow"
+        Icon="/Assets/CubeTools.ico"
+        Title="CubeTools">
+	    
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="25"/>
+		</Grid.RowDefinitions>
+
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			
+		</Grid.ColumnDefinitions>
+
+		<StackPanel Grid.Column="1">
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Text="Test de colomne" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</StackPanel>
+		</StackPanel>
+
+		<StackPanel Grid.Column="2">
+			<StackPanel Orientation="Vertical">
+				<TextBlock Text="Mehdi est vraiment super beau c'est fou genre" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			</StackPanel>
+		</StackPanel>
+	</Grid>
+</Window>
