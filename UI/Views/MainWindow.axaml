@@ -6,32 +6,63 @@
         mc:Ignorable="d" d:DesignWidth="960" d:DesignHeight="720"
         x:Class="UI.Views.MainWindow"
         Icon="/Assets/CubeTools.ico"
-        Title="CubeTools">
-	    
+		Title="CubeTools"
+		MinHeight="400" MinWidth="650">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="25"/>
+			<RowDefinition Height="35"/>
+			<RowDefinition Height="45"/>
+			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition/>
-			
-		</Grid.ColumnDefinitions>
-
-		<StackPanel Grid.Column="1">
-			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Test de colomne" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		
+		
+		<StackPanel Grid.Row="0" Background="#fffef2">
+			<StackPanel Orientation="Vertical">
+				<TextBlock Text="les onglets seront genre là"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"/>
 			</StackPanel>
 		</StackPanel>
-
-		<StackPanel Grid.Column="2">
+		
+		<StackPanel Grid.Row="1" Background="Purple">
 			<StackPanel Orientation="Vertical">
-				<TextBlock Text="Mehdi est vraiment super beau c'est fou genre" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				<TextBlock Text="là c'est la barre d'adresse tsais comme dans firefox"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"/>
 			</StackPanel>
+		</StackPanel>
+		
+		
+
+		<StackPanel Grid.Row="2" Background="Red">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="250"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+			
+				<StackPanel Grid.Column="0" Background="Yellow">
+					<StackPanel>
+						<TextBlock Text="donc la c'est les dossiers"
+								   HorizontalAlignment="Center"
+									VerticalAlignment="Center"/>
+					</StackPanel>
+				</StackPanel>
+			
+				<StackPanel Grid.Column="1" Background="Green">
+					<StackPanel>
+						<TextBlock Text="et la tu vois les photos de petits chats owo"
+								   HorizontalAlignment="Center"
+									VerticalAlignment="Center"/>
+					</StackPanel>
+				</StackPanel>
+			</Grid>
+		
 		</StackPanel>
 	</Grid>
 </Window>
