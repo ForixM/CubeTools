@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Manager;
 
 
 namespace CubeTools.Views
@@ -10,7 +9,6 @@ namespace CubeTools.Views
     {
         public MainWindow()
         {
-            Manager.DirectoryType dir = new DirectoryType("C:/");
             InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
