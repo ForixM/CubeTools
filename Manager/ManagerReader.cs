@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -116,6 +117,21 @@ namespace Manager
         }
 
         /// <summary>
+        /// Get the last time a file has been accessed using its path
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>A string time</returns>
+        public static string GetFileAccessDate(string path)
+        {
+            if (Directory.Exists(path))
+                return Directory.GetLastAccessTime(path).ToString();
+            else if (File.Exists(path))
+                return File.GetLastAccessTime(path).ToString();
+            return "";
+        }
+
+        /// <summary>
         /// Get the file size in byte
         /// Implementation : Check
         /// </summary>
@@ -218,6 +234,7 @@ namespace Manager
                 ft.Size = GetFileSize(ft.Path);
                 ft.Date = GetFileCreationDate(ft.Path);
                 ft.LastDate = GetFileLastEdition(ft.Path);
+                ft.AccessDate = GetFileAccessDate(ft.Path);
                 ft.Type = "Directory";
                 ft.IsDir = true;
             }
@@ -235,7 +252,137 @@ namespace Manager
             else
                 ft.Dispose();
         }
-        
+
+        #endregion
+
+        #region Algorithm
+
+        // Basic Algorithm for basic Treatment
+
+        /// <summary>
+        /// This function takes a path and generate a new path to avoid overwritte an existing file
+        /// Implementation : NOT Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GenerateFileNameForCopy(string path)
+        {
+            int i = 0;
+            string temp = path;
+            while (File.Exists(temp))
+            {
+                i += 1;
+                temp = path + $"({i})";
+            }
+            return temp;
+        }
+
+        /// <summary>
+        /// This function takes a path and generate a new path to avoid overwritte an existing dir
+        /// Implementation : NOT Check
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GenerateDirectoryNameForCopy(string path)
+        {
+            int i = 0;
+            string temp = path;
+            while (Directory.Exists(temp))
+            {
+                i += 1;
+                temp = path + $"({i})";
+            }
+            return temp;
+        }
+
+        // Sort Algorithm
+
+        /// <summary>
+        /// Comapres 2 strings and returns true if the first string is greater than the other one
+        /// Implemenation : NOT Check
+        /// </summary>
+        /// <param name="s1"></param>
+        /// <param name="s2"></param>
+        /// <returns></returns>
+        private static bool GreaterThan(string s1, string s2)
+        {
+            int i = 0;
+            int j = 0;
+            int limit1 = s1.Count();
+            int limit2 = s2.Count();
+            while (i < limit1 && j < limit2)
+            {
+                if (s1[i] > s1[j])
+                    return true;
+                else if (s2[j] > s1[i])
+                    return false;
+                else
+                {
+                    i += 1;
+                    j += 1;
+                }
+            }
+            return i != limit1;
+        }
+
+        /// <summary>
+        /// Create a new sorted list using merge algorithm
+        /// This functions takes two FileType list sorted and returns a new one sorted with all the elements
+        /// Implemenation : NOT Check
+        /// </summary>
+        /// <param name="ftList"></param>
+        /// <returns></returns>
+        private static List<FileType> MergeSortFileType(List<FileType> ftList1, List<FileType> ftList2)
+        {
+            List<FileType> ftReturned = new List<FileType>();
+            
+            int i = 0;
+            int j = 0;
+            int limit1 = ftList1.Count;
+            int limit2 = ftList2.Count;
+
+            while (i < limit1 && j < limit2)
+            {
+                if (GreaterThan(ftList1[i].Name, ftList2[j].Name))
+                {
+                    ftReturned.Add(ftList1[i]);
+                    i += 1;
+                }
+                else
+                {
+                    ftReturned.Add(ftList2[j]);
+                    j += 1;
+                }
+            }
+            if (i != limit1)
+            {
+                while (i < limit1)
+                {
+                    ftReturned.Add(ftList1[i]);
+                    i += 1;
+                }
+            }
+            else
+            {
+                while (j < limit2)
+                {
+                    ftReturned.Add(ftList2[j]);
+                    j += 1;
+                }
+            }
+            
+            return ftReturned;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ftList"></param>
+        /// <returns></returns>
+        public static List<FileType> SortByName(List<FileType> ftList)
+        {
+            return ftList;
+        }
+
         #endregion
 
         #region CommandLine

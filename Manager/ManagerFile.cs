@@ -23,17 +23,19 @@ namespace Manager
         public string Path { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-
-        // Properties
         public long Size { get; set; }
 
+        // Date
         public string Date { get; set; }
         public string LastDate { get; set; }
+        public string AccessDate { get; set;}
 
+        // Attributes
         public bool ReadOnly { get; set; }
 
         public bool Hidden { get; set; }
         public bool IsDir { get; set; }
+        
 
         #endregion
 
@@ -48,8 +50,9 @@ namespace Manager
             Type = "";
             Size = 0;
             Date = "";
-            Hidden = false;
             LastDate = "";
+            AccessDate = "";
+            Hidden = false;
             ReadOnly = false;
             IsDir = false;
         }
@@ -110,6 +113,7 @@ namespace Manager
             Console.WriteLine("Size : " + this.Size);
             Console.WriteLine("Date : " + this.Date);
             Console.WriteLine("LastDate : " + this.LastDate);
+            Console.WriteLine("AccessDate :"  + this.AccessDate);
             Console.WriteLine("ReadOnly : " + this.ReadOnly);
             Console.WriteLine("Hidden : " + this.Hidden);
             Console.WriteLine("Directory : " + this.IsDir);

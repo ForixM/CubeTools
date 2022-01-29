@@ -13,7 +13,7 @@ namespace Manager
 
         // Attributes
         private string _path;
-        public List<FileType> _childrenFiles;
+        private List<FileType> _childrenFiles;
         private long _size;
         private string _date;
         private bool _hide;

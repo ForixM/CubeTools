@@ -79,44 +79,83 @@ namespace Manager
             }
         }
 
-        // COPY FUNCTIONS
+        // COPY FUNCTIONS : using paths
 
         /// <summary>
         /// Overload 1 : Copy function without copy file name <br></br>
         /// Copy the content of the file path and create a copy of it using path(${i}) format
-        /// Implementation : Check
+        /// Implementation : NOT Check
         /// </summary>
         /// <param name="path">The source path</param>
         public static void Copy(string path)
         {
             if (File.Exists(path))
             {
-                int i = 1;
-                while (File.Exists($"{path}({i})"));
-                {
-                    i += 1;
-                }
-                File.Copy(path, $"{path}({i})");
+                File.Copy(path, ManagerReader.GenerateFileNameForCopy(path));
             }
         }
         
         /// <summary>
         /// Overload 2 : Copy the content in the source file into the dest file
         /// If the dest file already exists, then rename the copy
-        /// Implementation : Check
+        /// Implementation : NOT Check
         /// </summary>
         /// <param name="source">The source file</param>
         /// <param name="dest">The dest file</param>
-        public static void Copy(string source, string dest)
+        public static void Copy(string source, string dest, bool replace)
         {
             if (File.Exists(source))
             {
                 if (File.Exists(dest))
-                    Copy(dest);
+                    File.Copy(source, ManagerReader.GenerateFileNameForCopy(dest));
                 else
                     File.Copy(source, dest);
             } 
         }
+
+        // COPY FUNCTIONS : using fileType
+
+        /// <summary>
+        /// Overload 3 : Copy the content in the source file into the dest file
+        /// If the dest file already exists, then rename the copy
+        /// Implementation : NOT Check
+        /// </summary>
+        /// <param name="source">The source file</param>
+        /// <param name="dest">The dest file</param>
+        public static void Copy(FileType ft, string dest, bool replace)
+        {
+            if (File.Exists(ft.Path))
+            {
+                if (File.Exists(dest))
+                    File.Copy(ft.Path, ManagerReader.GenerateFileNameForCopy(dest));
+                else
+                    File.Copy(ft.Path, dest);
+            }
+        }
+
+        // COPY FUNCTIONS : using directoryType
+
+        /// <summary>
+        /// Overload 3 : Copy the content in the source file into the dest file
+        /// If the dest file already exists, then rename the copy
+        /// Implementation : NOT Check
+        /// </summary>
+        /// <param name="source">The source file</param>
+        /// <param name="dest">The dest file</param>
+        public static void Copy(DirectoryType dt, string dest, bool replace)
+        {
+            if (Directory.Exists(dt.Path))
+            {
+                foreach (FileType fileType in dt.ChildrenFiles)
+                {
+                    Copy(fileType, $"{dest}/{fileType.Name}");
+                }
+            }
+        }
+
+        // COPY FUNCTIONS : with replace
+
+
 
         // CREATE/DELETE FUNCTIONS
 
