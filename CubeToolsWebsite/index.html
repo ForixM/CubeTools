@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>CubeToolsWebsite</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/7d696a38c8.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <nav class="sidebar close">
+                <header>
+                    <div class="image-text">
+                        <div class="image">
+                            <img src="myicons/CubeToolsIcon.png" alt="CubeToolsIcon">
+                        </div>
+
+                        <div class="header-text">
+                            <h2>A KM3 project</h2>
+                        </div>
+                    </div>
+
+                    <i class='fas fa-arrow-circle-right toggle'></i>
+
+                </header>
+                
+                <div class="menu">
+                    <ul>
+                        <li> 
+                            <a href="#home">
+                                <i class="fas fa-home icon"></i>
+                                <span class="text">Home</span>
+                            </a> 
+                        </li>
+                        <li> 
+                            <a href="#about">
+                                <i class="fas fa-address-card icon"></i>
+                                <span class="text">About</span>
+                            </a>
+                        </li>
+                        <li> 
+                            <a href="#project">
+                                <i class="fas fa-cube icon"></i>
+                                <span class="text">Project</span>
+                            </a> 
+                        </li>
+                        <li> 
+                            <a href="#services">
+                                <i class="fas fa-clipboard-list icon"></i>
+                                <span class="text">Services</span>
+                            </a> 
+                        </li>
+                        <li> 
+                            <a href="#contact">
+                                <i class="fab fa-telegram icon"></i>
+                                <span class="text">Contact us</span>
+                            </a> 
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="others">
+                    <a href="https://discord.gg/zUU5Xe4n"><i class="fab fa-discord"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="https://www.epita.fr/"><img src="myicons/epitaLogo.png" alt="EpitaIcon"></a>
+                </div>
+            </nav>
+        </div>
+        <div class="main">
+            <h2 id="home">Home</h2>
+                
+            <h2 id="about">About</h2>
+            <div class="card">
+                <div class="box">
+                    <div class="imgbox">
+                        <img src="/images/mateo.jpg">
+                    </div>
+                    <div class="content">
+                        <h3>Mateo Lelong <br><span>Developer</span></h3>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="imgbox">
+                        <img src="/images/kevin.jpg">
+                    </div>
+                    <div class="content">
+                        <h3>Kevin Jamet <br><span>Developer</span></h3>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="imgbox">
+                        <img src="/images/mehdi.jpg">
+                    </div>
+                    <div class="content">
+                        <h3>Medhi El-Alaoui <br><span>Developer</span></h3>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="imgbox">
+                        <img src="/images/max.jpg">
+                    </div>
+                    <div class="content">
+                        <h3>Max Sailly <br><span>Developer</span></h3>
+                    </div>
+                </div>
+                <div class="invisible">
+                    <p>space <br> space <br> space <br> space <br> space <br> space <br> space <br> space <br> space <br> space <br> space <br> space <br> space <br> space <br> space <br>
+                        space <br> space <br> space <br> space <br> space <br> space <br> space <br> space <br> space <br>space <br> space <br> space <br>space <br> space <br> space <br></p>
+                </div>
+            </div>
+            <h2 id="project">Project</h2>
+            <h2 id="services">Services</h2>
+            <div class="grid">
+                <article class="serv-grid grid1"><p>BKAKABKABKABKAB1 <br> dzdjeojezoiefjzi</p></article>
+                <article class="serv-grid grid2"><p>BKAKABKABKABKAB2</p></article>
+                <article class="serv-grid grid3"><p>BKAKABKABKABKAB3</p></article>
+                <article class="serv-grid grid4"><p>BKAKABKABKABKAB4</p></article>
+                <article class="serv-grid grid5"><p>BKAKABKABKABKAB5</p></article>
+            </div>
+            <h2 id="contact">Contact us</h2>
+            <div class="conBar">
+                <div class="conBox">
+                    <div class="conInfo">
+                        <form>
+                            <h2>Envoyez nous un message !</h2>
+                            <div class="inputBox">
+                                <input type="text" name="" required="required">
+                                <span>Nom complet</span>
+                            </div>
+                            <div class="inputBox">
+                                <input type="text" name="" required="required">
+                                <span>Email</span>
+                            </div>
+                            <div class="inputBox">
+                                <textarea required="required"></textarea>
+                                <span>Ecris nous ici ...</span>
+                            </div>
+                            <div class="inputBox">
+                                <input type="submit" name="" required="Send">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const wrapper = document.querySelector('.wrapper'),
+                  sidebar = wrapper.querySelector('nav'),
+                  toggle = wrapper.querySelector('.toggle');
+            
+                  toggle.addEventListener("click" , () => {
+                   sidebar.classList.toggle("close");
+                  })
+        </script>
+    </body>
+</html>
