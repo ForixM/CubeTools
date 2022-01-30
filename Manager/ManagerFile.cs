@@ -12,9 +12,7 @@ namespace Manager
     public class FileType
     {
         #region Variables
-
-        // Use for dynamic allocation of the class
-        private bool _disposed;
+        // This region contains every variables that stores the information of the file
 
         public static List<string> type = new List<string>()
             {"png", "pdf", "exe", "cs", "csv", ""};
@@ -42,7 +40,7 @@ namespace Manager
         #region Init
 
         // Constructors
-        // Implemented Check
+        // Implementation : Check
         public FileType()
         {
             Path = "";
@@ -57,7 +55,7 @@ namespace Manager
             IsDir = false;
         }
 
-        // Implemented Check
+        // Implementation : Check
         public FileType(string path) : this()
         {
             if (File.Exists(path) || Directory.Exists(path))
@@ -77,7 +75,7 @@ namespace Manager
         #endregion
 
         #region Delete
-
+        // This region is not completed, memory will be fixed later
 
         // Destructor and Garbage Collector
         ~FileType()
@@ -92,11 +90,6 @@ namespace Manager
 
         private void Dispose(bool disposing)
         {
-            if (this._disposed)
-            {
-                return;
-            }
-
             if (disposing)
             {
                 ////Number of instance you want to dispose

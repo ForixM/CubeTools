@@ -12,7 +12,6 @@ namespace Manager
     {
         #region Properties
         // This region contains every function that set information of the file given with the path
-        // Basicaly => setters of properties
 
         // SetProperties functions : Basicaly set the property for the file given in argument
 
@@ -37,7 +36,6 @@ namespace Manager
         /// Instead of deleting the file, the function add a number ${i} as a name
         /// Implementation : Check
         /// </summary>
-        /// <param name="path"></param>
         public static void Rename(string path)
         {
             if (File.Exists(path))
@@ -56,8 +54,6 @@ namespace Manager
         /// Instead of deleting the file, the function add a number ${i} as a name <br></br>
         /// Implementation : Check
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="newPath"></param>
         public static void Rename(string path, string newPath)
         {
             if (newPath != null)
@@ -84,9 +80,8 @@ namespace Manager
         /// <summary>
         /// Overload 1 : Copy function without copy file name <br></br>
         /// Copy the content of the file path and create a copy of it using path(${i}) format
-        /// Implementation : NOT Check
+        /// Implementation : Check
         /// </summary>
-        /// <param name="path">The source path</param>
         public static void Copy(string path)
         {
             if (File.Exists(path))
@@ -98,10 +93,8 @@ namespace Manager
         /// <summary>
         /// Overload 2 : Copy the content in the source file into the dest file
         /// If the dest file already exists, then rename the copy
-        /// Implementation : NOT Check
+        /// Implementation : Check
         /// </summary>
-        /// <param name="source">The source file</param>
-        /// <param name="dest">The dest file</param>
         public static void Copy(string source, string dest, bool replace)
         {
             if (File.Exists(source))
@@ -120,8 +113,6 @@ namespace Manager
         /// If the dest file already exists, then rename the copy
         /// Implementation : NOT Check
         /// </summary>
-        /// <param name="source">The source file</param>
-        /// <param name="dest">The dest file</param>
         public static void Copy(FileType ft, string dest, bool replace)
         {
             if (File.Exists(ft.Path))
@@ -140,22 +131,16 @@ namespace Manager
         /// If the dest file already exists, then rename the copy
         /// Implementation : NOT Check
         /// </summary>
-        /// <param name="source">The source file</param>
-        /// <param name="dest">The dest file</param>
         public static void Copy(DirectoryType dt, string dest, bool replace)
         {
             if (Directory.Exists(dt.Path))
             {
                 foreach (FileType fileType in dt.ChildrenFiles)
                 {
-                    Copy(fileType, $"{dest}/{fileType.Name}");
+                    Copy(fileType, $"{dest}/{fileType.Name}", replace);
                 }
             }
         }
-
-        // COPY FUNCTIONS : with replace
-
-
 
         // CREATE/DELETE FUNCTIONS
 
@@ -163,7 +148,6 @@ namespace Manager
         /// Create a file
         /// Implementation : Check
         /// </summary>
-        /// <param name="path"></param>
         public static void Create(string path)
         {
             if (!File.Exists(path) && !Directory.Exists(path))
@@ -174,7 +158,6 @@ namespace Manager
         /// Create a file with an extension
         /// Implementation : Check
         /// </summary>
-        /// <param name="path"></param>
         public static void Create(string path, string type)
         {
             File.Create(path+"."+type);
@@ -184,13 +167,12 @@ namespace Manager
         /// Create a dir and if it already exists, modify the document name
         /// Implementation : Check
         /// </summary>
-        /// <param name="path"></param>
         public static void CreateDir(string path)
         {
             if (File.Exists(path))
             {
                 int i = 1;
-                while (Directory.Exists($"{path}({i})")) ;
+                while (Directory.Exists($"{path}({i})"))
                 {
                     i += 1;
                 }
@@ -202,16 +184,31 @@ namespace Manager
             }
         }
 
-        // Implementation Check
+        /// <summary>
+        /// Delete a file
+        /// Implementation : Check
+        /// </summary>
         public static void Delete(string path) { File.Delete(path); }
-        // Implementation Check
+        public static void Delete(FileType ft) { Delete(ft.Name); }
+
+        /// <summary>
+        /// Delete a dir
+        /// Implementation : Check
+        /// </summary>
         public static void DeleteDir(string path)
         {
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
         }
 
+        /// <summary>
+        /// // Not Implemented
+        /// </summary>
+        public static void DeleteDir(DirectoryType dt)
+        {
+        }
+
         #endregion
-    
+
     }
 }

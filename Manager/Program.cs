@@ -11,8 +11,8 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            CommandLine commandline = new CommandLine("C:/Users/mateo/OneDrive");
-            commandline.Process();
+            CommandLine commandLine = new CommandLine("C:/Users/mateo/OneDrive");
+            commandLine.Process();
         }
     }
 }

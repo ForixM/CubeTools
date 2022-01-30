@@ -51,10 +51,11 @@ namespace Manager
                                  | NotifyFilters.LastWrite
                                  | NotifyFilters.Security
                                  | NotifyFilters.Size;
-
+            /*
             watcher.Changed += _directoryType.ActualizeFiles();
             watcher.Created += _directoryType.ActualizeFiles();
             watcher.Deleted += _directoryType.ActualizeFiles();
+            */
             watcher.IncludeSubdirectories = true;
             watcher.EnableRaisingEvents = true;
 

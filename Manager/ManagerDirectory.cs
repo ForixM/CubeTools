@@ -10,6 +10,7 @@ namespace Manager
     public class DirectoryType
     {
         #region Variables
+        // This region contains every variables of the DirectoryType class
 
         // Attributes
         private string _path;
@@ -20,12 +21,13 @@ namespace Manager
 
         // Getter and Setter
         public string Path { get { return _path; } set { _path = value; } }
-        public List<FileType> ChildrenFiles {get {return _childrenFiles;}}
+        public List<FileType> ChildrenFiles { get { return _childrenFiles; }}
 
 
         #endregion
 
         #region Init
+        // This region will generate correctly the DirectoryType with FileTypes
 
         // Constructors
         public DirectoryType()
@@ -56,12 +58,12 @@ namespace Manager
         #endregion
 
         #region FileType
+        // This region contains every functions that can have access to fileType through directoryType
 
         /// <summary>
         /// This function creates a FileType and return it using a path
+        /// Implementation : NOT Check
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
         public FileType GetChild(string path)
         {
             if (path != null && (File.Exists(path) || Directory.Exists(path)))
@@ -70,15 +72,12 @@ namespace Manager
                 ManagerReader.ReadFileType(ref ft);
                 return ft;
             }
-            else
-            {
-                FileType ft = new FileType();
-                return ft;
-            }
+            return new FileType();
         }
 
         /// <summary>
         /// Remove every children in childrenfiles and set them
+        /// Implemantion : NOT Check
         /// </summary>
         public void SetChildrenFiles()
         {
@@ -94,13 +93,35 @@ namespace Manager
             
         }
 
-        public FileSystemEventHandler ActualizeFiles() {
+        /// <summary>
+        /// NOT IMPLEMENTED
+        /// </summary>
+        /// <returns></returns>
+        private FileSystemEventHandler ActualizeFiles() {
             return null;
         }
+
+        #endregion
+
+        #region Delete
+
+        /// <summary>
+        /// Chnage the current directory and remove children files
+        /// Implentation : Check
+        /// </summary>
+        public void ChangeDirectory()
+        {
+            foreach (var file in _childrenFiles)
+                file.Dispose();
+            _path = "";
+            _size = 0;
+        }
+
         #endregion
 
         #region CommandLine
-        
+        // NO NEED TO BE IMPLEMENTED, DEBUG FUNCTIONS
+
         public void DisplayChildren()
         {
             Console.WriteLine();
@@ -117,9 +138,10 @@ namespace Manager
             }
             Console.WriteLine("");
         }
+
         // Construct message with specific size of string.
         // Type is just a string value 
-        public string ConstructMessage(string type, string value)
+        private string ConstructMessage(string type, string value)
         {
             string msg = value;
             int max_size = 0;
@@ -144,18 +166,6 @@ namespace Manager
 
         #endregion
 
-        #region Delete
-
-        public void ChangeDirectory()
-        {
-            foreach (var file in _childrenFiles)
-                file.Dispose();
-            _path = "";
-            _size = 0;
-        }
-
-        #endregion
-
         #region Debug
 
         public void PrintInformation()
@@ -166,6 +176,7 @@ namespace Manager
             foreach (var child in _childrenFiles)
                 child.PrintInformation();
         }
+
         #endregion
     }
 }
