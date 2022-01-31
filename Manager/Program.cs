@@ -11,8 +11,9 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            CommandLine commandLine = new CommandLine("C:/Users/mateo/OneDrive");
-            commandLine.Process();
+            DirectoryType directoryType = new DirectoryType("C:/Users/mateo/OneDrive/Documents/Professional");
+            foreach (var ft in Reader.SortByModifiedDate(directoryType.ChildrenFiles))
+                Console.WriteLine(ft.Date);
         }
     }
 }

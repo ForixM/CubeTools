@@ -350,8 +350,58 @@ namespace Manager
         }
 
         /// <summary>
+        /// Verifies if the fist given date is greater than the second one
+        /// Must respect the format : day/month/year hour/minute/second format
+        /// Implementation : Check
+        /// </summary>
+        /// <returns>Returns if the first one is more recent than the other</returns>
+        public static bool MoreRecentThanDate(string date1, string date2)
+        {
+            string[] date1List = date1.Split(' '); // [1/28/2022, 12:17:56, PM]
+            string[] date2List = date2.Split(' ');
+            if (date1List.Length != 3 || date1List.Length != 3)
+                return false;
+
+            string[] day1 = date1List[0].Split('/');
+            string[] day2 = date2List[0].Split('/');
+            string[] hour1 = date1List[1].Split(':');
+            string[] hour2 = date2List[1].Split(':');
+
+            if (day1.Length != 3 || day2.Length != 3)
+                return false;
+
+            // Compare dates
+            for (int i = day1.Length - 1; i >= 0; i--)
+            {
+                if (int.Parse(day1[i]) > int.Parse(day2[i]))
+                    return true;
+                 else if (int.Parse(day1[i]) < int.Parse(day2[i]))
+                    return false;
+            }
+
+            // Compares Hours format
+            string hourFormat = DateTime.Now.ToString().Split(' ')[2];
+            if (hourFormat == date1List[2] && hourFormat != date2List[2])
+                return true;
+            else if (hourFormat != date1List[2] && hourFormat == date2List[2])
+                return false;
+
+            // Comapares Hours
+            string[] hour = DateTime.Now.ToString().Split(' ')[1].Split(':');
+            for (int i = hour.Length - 1; i < hour.Length; i--)
+            {
+                if (int.Parse(hour1[i]) > int.Parse(hour2[i]))
+                    return true;
+                else if (int.Parse(hour1[i]) < int.Parse(hour2[i]))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Select FileTypes in a FileType list using a minimum size for their names
-        /// Implementation : NOT Check
+        /// Implementation : Check
         /// </summary>
         private static List<FileType> SelectFileTypeByNameSize(List<FileType> fileTypes, int minimumNameSize)
         {
@@ -396,7 +446,6 @@ namespace Manager
         /// This functions takes two FileType list sorted them using their NAMES and returns a new one sorted with all the elements
         /// Implementation : Check
         /// </summary>
-        /// <returns></returns>
         private static List<FileType> MergeSortFileTypeByName(List<FileType> ftList1, List<FileType> ftList2)
         {
             List<FileType> ftReturned = new List<FileType>();
@@ -437,41 +486,6 @@ namespace Manager
             }
             
             return ftReturned;
-        }
-
-        // Sort functions
-
-        /// <summary>
-        /// MergeSort algorithm to sort files (by names)
-        /// Implementation : Check
-        /// </summary>
-        /// <param name="ftList"></param>
-        /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortByName(List<FileType> ftList)
-        {
-            return DivideAndMergeAlgorithm(ftList, "name");
-        }
-
-        /// <summary>
-        /// MergeSort algorithm to sort files (by sizes)
-        /// Implementation : Check
-        /// </summary>
-        /// <param name="ftList"></param>
-        /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortBySize(List<FileType> ftList)
-        {
-            return DivideAndMergeAlgorithm(ftList, "size");
-        }
-
-        /// <summary>
-        /// MergeSort algorithm to sort files (by types)
-        /// Implementation : Check
-        /// </summary>
-        /// <param name="ftList"></param>
-        /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortByType(List<FileType> ftList)
-        {
-            return DivideAndMergeAlgorithm(ftList, "type");
         }
 
         /// <summary>
@@ -570,6 +584,96 @@ namespace Manager
             return ftReturned;
         }
 
+        /// <summary>
+        /// Create a new sorted list using merge algorithm
+        /// This functions takes two FileType list sorted them using their MODIFIED DATES and returns a new one sorted with all the elements
+        /// Implementation : NOT Checks
+        /// </summary>
+        private static List<FileType> MergeSortFileTypeByModifiedDate(List<FileType> ftList1, List<FileType> ftList2)
+        {
+            List<FileType> ftReturned = new List<FileType>();
+
+            int i = 0;
+            int j = 0;
+            int limit1 = ftList1.Count;
+            int limit2 = ftList2.Count;
+
+            while (i < limit1 && j < limit2)
+            {
+                if (!MoreRecentThanDate(ftList1[i].Name, ftList2[j].Name))
+                {
+                    ftReturned.Add(ftList1[i]);
+                    i += 1;
+                }
+                else
+                {
+                    ftReturned.Add(ftList2[j]);
+                    j += 1;
+                }
+            }
+            if (i != limit1)
+            {
+                while (i < limit1)
+                {
+                    ftReturned.Add(ftList1[i]);
+                    i += 1;
+                }
+            }
+            else
+            {
+                while (j < limit2)
+                {
+                    ftReturned.Add(ftList2[j]);
+                    j += 1;
+                }
+            }
+
+            return ftReturned;
+        }
+        
+        // Sort functions
+
+        /// <summary>
+        /// MergeSort algorithm to sort files (by names)
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="ftList"></param>
+        /// <returns>Returns the sorted list of filetype</returns>
+        public static List<FileType> SortByName(List<FileType> ftList)
+        {
+            return DivideAndMergeAlgorithm(ftList, "name");
+        }
+
+        /// <summary>
+        /// MergeSort algorithm to sort files (by sizes)
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="ftList"></param>
+        /// <returns>Returns the sorted list of filetype</returns>
+        public static List<FileType> SortBySize(List<FileType> ftList)
+        {
+            return DivideAndMergeAlgorithm(ftList, "size");
+        }
+
+        /// <summary>
+        /// MergeSort algorithm to sort files (by types)
+        /// Implementation : Check
+        /// </summary>
+        /// <param name="ftList"></param>
+        /// <returns>Returns the sorted list of filetype</returns>
+        public static List<FileType> SortByType(List<FileType> ftList)
+        {
+            return DivideAndMergeAlgorithm(ftList, "type");
+        }
+
+        /// <summary>
+        /// Sort a FileType list using the last modified date parameter
+        /// </summary>
+        public static List<FileType> SortByModifiedDate(List<FileType> ftList)
+        {
+            return DivideAndMergeAlgorithm(ftList, "date");
+        }
+        
         // Main functions
 
         /// <summary>
@@ -610,6 +714,8 @@ namespace Manager
                     return MergeSortFileTypeByType(ftList1,ftList2);
                 case "name":
                     return MergeSortFileTypeByName(ftList1, ftList2);
+                case "date":
+                    return MergeSortFileTypeByModifiedDate(ftList1, ftList2);
                 default:
                     return null;
             }

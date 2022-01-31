@@ -3,66 +3,15 @@
         xmlns:vm="using:UI.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="960" d:DesignHeight="720"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="UI.Views.MainWindow"
-        Icon="/Assets/CubeTools.ico"
-		Title="CubeTools"
-		MinHeight="400" MinWidth="650">
+        Icon="/Assets/avalonia-logo.ico"
+        Title="UI">
 
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
 
-	<Design.DataContext>
-		<vm:MainWindowViewModel/>
-	</Design.DataContext>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="35"/>
-			<RowDefinition Height="45"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
-		
-		
-		<StackPanel Grid.Row="0" Background="#fffef2">
-			<StackPanel Orientation="Vertical">
-				<TextBlock Text="les onglets seront genre là"
-					HorizontalAlignment="Center"
-					VerticalAlignment="Center"/>
-			</StackPanel>
-		</StackPanel>
-		
-		<StackPanel Grid.Row="1" Background="Purple">
-			<StackPanel Orientation="Vertical">
-				<TextBlock Text="là c'est la barre d'adresse tsais comme dans firefox"
-					HorizontalAlignment="Center"
-					VerticalAlignment="Center"/>
-			</StackPanel>
-		</StackPanel>
-		
-		
+    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-		<StackPanel Grid.Row="2" Background="Red">
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="250"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-			
-				<StackPanel Grid.Column="0" Background="Yellow">
-					<StackPanel>
-						<TextBlock Text="donc la c'est les dossiers"
-								   HorizontalAlignment="Center"
-									VerticalAlignment="Center"/>
-					</StackPanel>
-				</StackPanel>
-			
-				<StackPanel Grid.Column="1" Background="Green">
-					<StackPanel>
-						<TextBlock Text="et la tu vois les photos de petits chats owo"
-								   HorizontalAlignment="Center"
-									VerticalAlignment="Center"/>
-					</StackPanel>
-				</StackPanel>
-			</Grid>
-		
-		</StackPanel>
-	</Grid>
 </Window>
