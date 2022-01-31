@@ -5,13 +5,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="UI.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="UI">
+        Icon="/Assets/cubetools.ico"
+        Title="CubeTools" Height="450" Width="800"
+		MinHeight="400" MinWidth="650">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<!-- Structure des lignes du grid-->
+	
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="25"/>
+			<RowDefinition Height="25"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+
+		<!-- Première ligne-->
+		
+		<Grid Background="Red" Grid.Row="0" Grid.ColumnSpan="2">
+			<Border BorderThickness="1" BorderBrush="Beige"/>
+
+			<TextBlock Text="Prout"
+					   Foreground="Black"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"/>
+		</Grid>
+
+		<!-- Deuxième ligne-->
+		
+		<Grid Background="Aquamarine" Grid.Row="1" Grid.ColumnSpan="2">
+			<Border BorderThickness="1" BorderBrush="Beige"/>
+
+			<TextBlock Text="Prout"
+					   Foreground="Black"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"/>
+		</Grid>
+
+		<!-- Troisième ligne-->
+		
+		<Grid Background="Magenta" Grid.Row="2">
+			
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="100"/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+
+			<!-- Partie Gauche de la troisième ligne-->
+			
+			<Grid Grid.Column="0">
+				<Border BorderThickness="1" BorderBrush="Beige"/>
+
+				<TextBlock Text="Prout"
+						   Foreground="Black"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Center"/>
+			</Grid>
+
+			<!-- Partie Droite de la troisième ligne-->
+			
+			<Grid Grid.Column="1">
+				<Border BorderThickness="1" BorderBrush="Beige"/>
+
+				<TextBlock Text="Prout"
+					   Foreground="Black"
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"/>
+			</Grid>
+			
+		</Grid>			
+	</Grid>
 
 </Window>
