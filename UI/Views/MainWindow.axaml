@@ -6,8 +6,12 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="UI.Views.MainWindow"
         Icon="/Assets/cubetools.ico"
-        Title="CubeTools" Height="450" Width="800"
-		MinHeight="400" MinWidth="650">
+        Title="CubeTools" Height="600" Width="1000"
+		MinHeight="400" MinWidth="650"
+		WindowStartupLocation="CenterScreen"
+		ExtendClientAreaToDecorationsHint="True"
+		ExtendClientAreaTitleBarHeightHint="-1"
+		CanResize="False">
 
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
@@ -17,14 +21,14 @@
 	
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="25"/>
+			<RowDefinition Height="31"/>
 			<RowDefinition Height="25"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 
 		<!-- Première ligne-->
 		
-		<Grid Background="Red" Grid.Row="0" Grid.ColumnSpan="2">
+		<Grid Background="#E6E3E3" Grid.Row="0" Grid.ColumnSpan="2">
 			<Border BorderThickness="1" BorderBrush="Beige"/>
 
 			<TextBlock Text="Prout"
