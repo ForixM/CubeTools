@@ -13,7 +13,7 @@
 		ExtendClientAreaToDecorationsHint="True"
 		ExtendClientAreaTitleBarHeightHint="-1"
 		CanResize="False">
-
+	
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
@@ -48,7 +48,7 @@
 				<ColumnDefinition Width="75"/>
 				<ColumnDefinition Width="75"/>
 				<ColumnDefinition Width="75"/>
-				<ColumnDefinition Width="425"/>
+				<ColumnDefinition/>
 				<ColumnDefinition Width="75"/>
 			</Grid.ColumnDefinitions>
 
@@ -59,7 +59,7 @@
 						HorizontalAlignment="Center"
 						Width="75" Height="40">
 					<StackPanel>
-						<Image Source="/Assets/left-arrow.png"
+						<Image Source="/Assets\left-arrow.ico"
 							   Width="50"
 							   Height="30"/>
 					</StackPanel>
@@ -74,7 +74,7 @@
 						HorizontalAlignment="Center"
 						Width="75" Height="40">
 					<StackPanel>
-						<Image Source="/Assets/right-arrow.png"
+						<Image Source="/Assets\right-arrow.ico"
 							   Width="50"
 							   Height="30"/>
 					</StackPanel>
@@ -90,7 +90,7 @@
 						HorizontalAlignment="Center"
 						Width="75" Height="40">
 					<StackPanel>
-						<Image Source="/Assets/up.png"
+						<Image Source="/Assets\up.ico"
 							   Width="50"
 							   Height="30"/>
 					</StackPanel>
@@ -105,7 +105,7 @@
 						HorizontalAlignment="Center"
 						Width="75" Height="40">
 					<StackPanel>
-						<Image Source="/Assets/sync.png"
+						<Image Source="/Assets\sync.ico"
 							   Width="50"
 							   Height="30"/>
 					</StackPanel>
@@ -129,7 +129,7 @@
 						HorizontalAlignment="Center"
 						Width="75" Height="40">
 					<StackPanel>
-						<Image Source="/Assets/settings.png"
+						<Image Source="/Assets\settings.ico"
 							   Width="50"
 							   Height="30"/>
 					</StackPanel>
