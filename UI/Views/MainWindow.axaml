@@ -12,7 +12,7 @@
 		WindowStartupLocation="CenterScreen"
 		ExtendClientAreaToDecorationsHint="True"
 		ExtendClientAreaTitleBarHeightHint="-1"
-		CanResize="False">
+		CanResize="True">
 	
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
@@ -22,7 +22,7 @@
 	
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="31"/>
+			<RowDefinition Height="50"/>
 			<RowDefinition Height="40"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
@@ -41,78 +41,82 @@
 
 		<!-- Deuxième ligne-->
 		
-		<Grid Background="Aquamarine" Grid.Row="1">
+		<Grid Background="#EEEDED" Grid.Row="1">
 			
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="75"/>
-				<ColumnDefinition Width="75"/>
-				<ColumnDefinition Width="75"/>
-				<ColumnDefinition Width="75"/>
+				<ColumnDefinition Width="45"/>
+				<ColumnDefinition Width="45"/>
+				<ColumnDefinition Width="45"/>
+				<ColumnDefinition Width="45"/>
 				<ColumnDefinition/>
-				<ColumnDefinition Width="75"/>
+				<ColumnDefinition Width="45"/>
 			</Grid.ColumnDefinitions>
 
-			<Grid Grid.Column="0">
+			<Grid Grid.Column="0"><!-- Back -->
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 				<Button Name="Left_btn"
 						VerticalAlignment="Center"
-						HorizontalAlignment="Center"
-						Width="75" Height="40">
+						HorizontalAlignment="Left"
+						Width="45" Height="40"
+						CornerRadius="8">
 					<StackPanel>
 						<Image Source="/Assets\left-arrow.ico"
 							   Width="50"
-							   Height="30"/>
+							   Height="23"/>
 					</StackPanel>
 				</Button>
 			</Grid>
 
-			<Grid Grid.Column="1">
+			<Grid Grid.Column="1"> <!-- Right -->
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 
 				<Button Name="Right_btn"
 						VerticalAlignment="Center"
-						HorizontalAlignment="Center"
-						Width="75" Height="40">
+						HorizontalAlignment="Left"
+						Width="45" Height="40"
+						CornerRadius="8">
 					<StackPanel>
 						<Image Source="/Assets\right-arrow.ico"
 							   Width="50"
-							   Height="30"/>
+							   Height="23"/>
 					</StackPanel>
 				</Button>
 				
 			</Grid>
 
-			<Grid Grid.Column="2">
+			<Grid Grid.Column="2"><!-- Up -->
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 
 				<Button Name="Up_btn"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center"
-						Width="75" Height="40">
+						Width="45" Height="40"
+						CornerRadius="8">
 					<StackPanel>
 						<Image Source="/Assets\up.ico"
 							   Width="50"
-							   Height="30"/>
+							   Height="25"/>
 					</StackPanel>
 				</Button>
 			</Grid>
 
-			<Grid Grid.Column="3">
+			<Grid Grid.Column="3"> <!-- Sync -->
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 
 				<Button Name="Sync_btn"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center"
-						Width="75" Height="40">
+						Width="45" Height="40"
+						CornerRadius="8">
 					<StackPanel>
 						<Image Source="/Assets\sync.ico"
 							   Width="50"
-							   Height="30"/>
+							   Height="25"/>
 					</StackPanel>
 				</Button>
 			</Grid>
 			
-			<Grid Grid.Column="4">
+			<Grid Grid.Column="4">   <!-- File Path -->
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 
 				<TextBlock Text="File Path"
@@ -121,15 +125,16 @@
 						   HorizontalAlignment="Center"/>
 			</Grid>
 
-			<Grid Grid.Column="5">
+			<Grid Grid.Column="5"> <!-- Settings -->
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 
 				<Button Name="Settings_btn"
 						VerticalAlignment="Center"
-						HorizontalAlignment="Center"
-						Width="75" Height="40">
+						HorizontalAlignment="Right"
+						Width="45" Height="40"
+						CornerRadius="8">
 					<StackPanel>
-						<Image Source="/Assets\settings.ico"
+						<Image Source="/Assets\setting.ico"
 							   Width="50"
 							   Height="30"/>
 					</StackPanel>
@@ -140,8 +145,7 @@
 
 		<!-- Troisième ligne-->
 		
-		<Grid Background="Magenta" Grid.Row="2">
-			
+		<Grid Background="#FFFFFF" Grid.Row="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="200"/>
 				<ColumnDefinition/>
@@ -150,6 +154,7 @@
 			<!-- Partie Gauche de la troisième ligne-->
 			
 			<Grid Grid.Column="0">
+				
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 
 				<TextBlock Text="Fares"
@@ -160,13 +165,159 @@
 
 			<!-- Partie Droite de la troisième ligne-->
 			
-			<Grid Grid.Column="1">
-				<Border BorderThickness="1" BorderBrush="Beige"/>
+			<Grid Grid.Column="1" Background="#FFFFFF">
+				
+				<Grid.RowDefinitions>
+					<RowDefinition Height="41"/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
 
-				<TextBlock Text="Fares"
-					   Foreground="Black"
-					   VerticalAlignment="Center"
-					   HorizontalAlignment="Center"/>
+				<Grid Grid.Row="0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="45"/>
+						<ColumnDefinition Width="45"/>
+						<ColumnDefinition Width="45"/>
+						<ColumnDefinition Width="45"/>
+						<ColumnDefinition Width="45"/>
+						<ColumnDefinition Width="45"/>
+						<ColumnDefinition/>
+						<ColumnDefinition Width="45"/>
+						<ColumnDefinition Width="45"/>
+					</Grid.ColumnDefinitions>
+
+					<Grid Grid.Column="0"> <!-- Create -->
+						<Border BorderThickness="1" BorderBrush="Beige"/>
+						<Button Name="create"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Left"
+								Width="45" Height="40"
+								CornerRadius="8">
+							<StackPanel>
+								<Image Source="/Assets\add.ico"
+									   Width="50"
+									   Height="28"
+									   HorizontalAlignment="Left"/>
+								
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="1"><!-- Copy -->
+						<Border BorderThickness="1" BorderBrush="Beige"/>
+						<Button Name="copy"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Left"
+								Width="45" Height="40"
+								CornerRadius="8">
+							<StackPanel>
+								<Image Source="/Assets\copy.ico"
+									   Width="50"
+									   Height="28"
+									   HorizontalAlignment="Left"/>
+
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="2"> <!-- Cut -->
+						<Border BorderThickness="1" BorderBrush="Beige"/>
+						<Button Name="cut"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Left"
+								Width="45" Height="40"
+								CornerRadius="8">
+							<StackPanel>
+								<Image Source="/Assets\cut.ico"
+									   Width="50"
+									   Height="28"
+									   HorizontalAlignment="Left"/>
+
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="3"><!-- Paste -->
+						<Border BorderThickness="1" BorderBrush="Beige"/>
+						<Button Name="paste"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Left"
+								Width="45" Height="40"
+								CornerRadius="8">
+							<StackPanel>
+								<Image Source="/Assets\paste.ico"
+									   Width="50"
+									   Height="28"
+									   HorizontalAlignment="Left"/>
+
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="4"><!-- Rename -->
+						<Border BorderThickness="1" BorderBrush="Beige"/>
+						<Button Name="rename"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Center"
+								Width="45" Height="40"
+								CornerRadius="8">
+							<StackPanel>
+								<Image Source="/Assets\rename.ico"
+									   Width="50"
+									   Height="30"/>
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="5"> <!-- Delete -->
+						<Border BorderThickness="1" BorderBrush="Beige"/>
+						<Button Name="delete"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Center"
+								Width="45" Height="40"
+								CornerRadius="8">
+							<StackPanel>
+								<Image Source="/Assets\delete.ico"
+									   Width="50"
+									   Height="28"/>
+							</StackPanel>
+						</Button>
+					</Grid>
+					
+					<Grid Grid.Column="6" Background="#EEEDED"/><!-- Blank Space Responsive -->
+
+					<Grid Grid.Column="7"> <!-- Nearby Send -->
+						<Border BorderThickness="1" BorderBrush="Beige"/>
+						<Button Name="nearbysend"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Center"
+								Width="45" Height="40"
+								CornerRadius="8">
+							<StackPanel>
+								<Image Source="/Assets\nearbysend.ico"
+									   Width="50"
+									   Height="28"/>
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="8"> <!-- Search-->
+						<Border BorderThickness="1" BorderBrush="Beige"/>
+						<Button Name="search"
+								VerticalAlignment="Center"
+								HorizontalAlignment="Left"
+								Width="45" Height="40"
+								CornerRadius="8">
+							<StackPanel>
+								<Image Source="/Assets\search.ico"
+									   Width="50"
+									   Height="28"
+									   HorizontalAlignment="Left"/>
+							</StackPanel>
+						</Button>
+					</Grid>
+
+				</Grid>
+				<Border BorderThickness="1" BorderBrush="Beige"/>
 			</Grid>
 			
 		</Grid>			
