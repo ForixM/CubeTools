@@ -23,7 +23,7 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="31"/>
-			<RowDefinition Height="25"/>
+			<RowDefinition Height="40"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 
@@ -54,38 +54,62 @@
 
 			<Grid Grid.Column="0">
 				<Border BorderThickness="1" BorderBrush="Beige"/>
-
-				<Button Content="Gauche"
+				<Button Name="Left_btn"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center"
-						Width="75"/>
+						Width="75" Height="40">
+					<StackPanel>
+						<Image Source="/Assets/left-arrow.png"
+							   Width="50"
+							   Height="30"/>
+					</StackPanel>
+				</Button>
 			</Grid>
 
 			<Grid Grid.Column="1">
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 
-				<Button Content="Droite"
+				<Button Name="Right_btn"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center"
-						Width="75"/>
+						Width="75" Height="40">
+					<StackPanel>
+						<Image Source="/Assets/right-arrow.png"
+							   Width="50"
+							   Height="30"/>
+					</StackPanel>
+				</Button>
+				
 			</Grid>
 
 			<Grid Grid.Column="2">
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 
-				<Button Content="Dessus"
+				<Button Name="Up_btn"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center"
-						Width="75"/>
+						Width="75" Height="40">
+					<StackPanel>
+						<Image Source="/Assets/up.png"
+							   Width="50"
+							   Height="30"/>
+					</StackPanel>
+				</Button>
 			</Grid>
 
 			<Grid Grid.Column="3">
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 
-				<Button Content="arrière"
+				<Button Name="Sync_btn"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center"
-						Width="75"/>
+						Width="75" Height="40">
+					<StackPanel>
+						<Image Source="/Assets/sync.png"
+							   Width="50"
+							   Height="30"/>
+					</StackPanel>
+				</Button>
 			</Grid>
 			
 			<Grid Grid.Column="4">
@@ -100,10 +124,16 @@
 			<Grid Grid.Column="5">
 				<Border BorderThickness="1" BorderBrush="Beige"/>
 
-				<Button Content="Tools"
+				<Button Name="Settings_btn"
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center"
-						Width="75"/>
+						Width="75" Height="40">
+					<StackPanel>
+						<Image Source="/Assets/settings.png"
+							   Width="50"
+							   Height="30"/>
+					</StackPanel>
+				</Button>
 			</Grid>
 			
 		</Grid>
