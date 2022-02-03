@@ -11,6 +11,9 @@
     <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Include="Fonts\Karla.ttf" />
+  </ItemGroup>
+  <ItemGroup>
     <AvaloniaXaml Include="Assets\left-arrow.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AvaloniaXaml>
