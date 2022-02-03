@@ -89,7 +89,7 @@ namespace Manager
         }
 
         /// <summary>
-        /// => For UI Implementation <br></br>
+        /// => UI Implementation <br></br>
         /// Overload 3 : Try to rename a FileType using a newPath <br></br>
         /// - Action : Rename a FileType class path and its associated file using a string path <br></br>
         /// - Specification : Can be used for the UI implementation thanks to the list of <see cref="DirectoryType"/> class <br></br>
@@ -160,6 +160,7 @@ namespace Manager
             }
             return true;
         }
+        
         // COPY FUNCTIONS
 
         /// <summary>
@@ -211,7 +212,7 @@ namespace Manager
         }
 
         /// <summary>
-        /// => FOR UI Implementation
+        /// => UI Implementation
         /// Overload 3 : Copy recursively the content of the source file/dir into the dest file/dir for each dir <br></br>
         /// - Action :  <br></br>
         /// ->   if it is a file, basic call to Copy function  <br></br>
@@ -247,10 +248,14 @@ namespace Manager
         }
 
         /// <summary>
-        /// Overload 4 : Copy contents recursively of directories using two DirectoryInfos
-        /// -Action : Copy files and directories and call the function again and again until there are not directory
-        /// Implementation : Check (Protype : issued encountered)
+        /// Overload 4 : Copy contents recursively of directories using two DirectoryInfos <br></br>
+        /// -Action : Copy files and directories and call the function again and again until there are not directory <br></br>
+        /// - Implementation : Check (Protype : issued encountered)
         /// </summary>
+        /// <param name="source">the DirectoryInfo of the source</param>
+        /// <param name="target">the DirectoryInfo of the destination</param>
+        /// <param name="replace">if the directory have to be replaced if it exists</param>
+        /// <returns>the success of the action</returns>
         public static bool Copy(DirectoryInfo source, DirectoryInfo target, bool replace)
         {
             if (!Directory.Exists(target.FullName))
@@ -273,7 +278,7 @@ namespace Manager
         /// Overload 5 : Copy a directory and its children files <br></br>
         /// - Action : If the dest directory already exists, then rename the copy <br></br>
         /// - Specification : this function can only be useful when you want to make a self copy of the current dir <br></br>
-        /// - Implementation : NOT Check - NOT Useful
+        /// - Implementation : DEPRECATED OVERLOAD OF COPY, consider using <see cref="Copy(FileType, string, bool)"></see> instead/>
         /// </summary>
         public static void Copy(ref DirectoryType dt, string dest, bool replace)
         {
@@ -293,43 +298,164 @@ namespace Manager
             }
         }
 
-        // CREATE/DELETE FUNCTIONS
+        // CREATE FUNCTIONS
 
         /// <summary>
-        /// Overload 1 : Create a file and add it an extension or not <br></br>
-        /// - Action : Create a file with the extension. If file already exists, nothing is done <br></br>
+        /// => UI Implementation <br></br>
+        /// Overload 1 : Create a FILE with no name given <br></br>
+        /// - Action : Create a file without any information unless the extension <br></br>
+        /// - Specification : this function will be useful for creating file using Create Button <br></br>
         /// - Implementation : Check
         /// </summary>
-        /// <param name="path">the given file name</param>
         /// <param name="extension">the extension given to the file. Default value is "" for directories</param>
-        public static void Create(string path, string extension = "")
+        /// <returns>a new fileType linked to the file</returns>
+        public static FileType Create(string extension = "")
         {
-            if (extension != "")
-                path = Path.GetFileNameWithoutExtension(path) + "." + extension;
-            if (!File.Exists(path) && !Directory.Exists(path))
-                File.Create(path);
+            string filename = ManagerReader.GenerateFileNameForModification($"New {extension.ToUpper()} File.{extension}");
+            if (extension == "")
+                filename = ManagerReader.GenerateFileNameForModification("New File");
+            File.Create(filename).Close();
+            return new FileType(filename);
         }
 
         /// <summary>
-        /// Overload 1 : Create a file and add it an extension or not <br></br>
+        /// => UI Implementation <br></br>
+        /// Overload 2 : Create a FILE using a dest name and an extension if given <br></br>
         /// - Action : Create a file with the extension. If file already exists, nothing is done <br></br>
+        /// - Specification : If you do not need specific file name, consider using <see cref="Create(string)"/> <br></br>
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="dest">the given file name</param>
+        /// <param name="extension">the extension given to the file. Default value is "" for directories</param>
+        /// <returns>the associated FileType for UI</returns>
+        public static FileType Create(string dest, string extension = "")
+        {
+            if (extension != "")
+                dest = Path.GetFileNameWithoutExtension(dest) + "." + extension;
+            if (!File.Exists(dest))
+            {
+                File.Create(dest).Close();
+                return ManagerReader.ReadFileType(dest);
+            }
+            return new FileType();
+        }
+
+        /// <summary>
+        /// => UI Implementation <br></br>
+        /// Overload 1 : Create a DIR with no name <br></br>
+        /// - Action : Create a directory using no name : "New Folder" basic path value <br></br>
+        /// - Specification : this function can be used to create empty directory with no given name <br></br>
+        /// - Implementation : Check
+        /// </summary>
+        /// <returns>the associated fileType for the directory</returns>
+        public static FileType CreateDir()
+        {
+            string dest = ManagerReader.GenerateDirectoryNameForModification("New Folder");
+            Directory.CreateDirectory(dest);
+            return ManagerReader.ReadFileType(dest);
+        }
+
+        /// <summary>
+        /// => UI Implementation <br></br>
+        /// Overload 2 : Create a DIR a name <br></br>
+        /// - Action : Create a directory using a name, "New Folder" basic path value <br></br>
+        /// - Specification : consider using <see cref="CreateDir()"></see> if you juste want to create a directory/><br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the dir path</param>
-        public static void CreateDir(string path)
+        /// <returns>the associated filetype linked to the directory</returns>
+        public static FileType CreateDir(string path = "New Folder")
         {
             if (Directory.Exists(path))
-                Directory.CreateDirectory(ManagerReader.GenerateDirectoryNameForModification(path));
+            {
+                string dest = ManagerReader.GenerateDirectoryNameForModification(path);
+                Directory.CreateDirectory(dest);
+                return ManagerReader.ReadFileType(dest);
+            }
             else
+            {
                 Directory.CreateDirectory(path);
+                return ManagerReader.ReadFileType(path);
+            }
+        }
+
+        // DELETED FUNCTIONS
+
+        /// <summary>
+        /// Overload 1 : Delete a file using its path if it exists <br></br>
+        /// - Action : Delelte a file <br></br>
+        /// - Specification : consider using <see cref="Delete(ref DirectoryType, FileType)"></see> for UI/> <br></br>
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="path">the path of the file</param>
+        /// <returns>the success of the delete action</returns>
+        public static bool Delete(string path) {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
-        /// Delete a file
-        /// Implementation : Check
+        /// Overload 2 : Delete a file using its associated FileType <br></br>
+        /// - Action : Delete a file <br></br>
+        /// - Specification : consider using <see cref="Delete(ref DirectoryType, FileType)"></see> for UI/> <br></br>
+        /// - Implementation : NOT Check
         /// </summary>
-        public static void Delete(string path) { File.Delete(path); }
-        public static void Delete(FileType ft) { Delete(ft.Name); }
+        /// <param name="ft">a fileType that is associated to a file</param>
+        /// <returns>the success of the delete action</returns>
+        public static bool Delete(FileType ft) { 
+            if (Delete(ft.Path))
+            {
+                ft.Dispose();
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// => UI Implementation (better using <see cref="Delete(ref DirectoryType, List{FileType})"/>) <br></br>
+        /// Overload 3 : Delete a FileType contained in a DirectoryType <br></br>
+        /// - Action : delete a FileType and its associated file, remove the child <br></br>
+        /// - Implementation : NOT Check
+        /// </summary>
+        /// <param name="dt">a DirectoryType associated to the current directory</param>
+        /// <param name="ft">a FileType children of dt</param>
+        /// <returns></returns>
+        public static bool Delete(ref DirectoryType dt, FileType ft)
+        {
+            if (Directory.Exists(dt.Path))
+            {
+
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// => UI Implementation <br></br>
+        /// Overload 4 : Delete a list of FileType in a Directory 
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="ftList"></param>
+        /// <returns></returns>
+        public static bool Delete(ref DirectoryType dt, List<FileType> ftList)
+        {
+            bool result = true;
+            foreach (var ft in ftList)
+            {
+                if (dt.ChildrenFiles.Contains(ft))
+                {
+                    dt.ChildrenFiles.Remove(ft);
+                    result &= Delete(ft);
+                }
+                else
+                    result = false;
+            }
+                
+            return result;
+        }
 
         /// <summary>
         /// Delete a dir

@@ -245,7 +245,7 @@ namespace Manager
         /// <returns></returns>
         public static FileType ReadFileType(string path)
         {
-            if (File.Exists(path))
+            if (File.Exists(path) || Directory.Exists(path))
             {
                 FileType ft = new FileType(path);
                 ReadFileType(ref ft);
