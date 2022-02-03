@@ -52,7 +52,6 @@ namespace Manager
                 _childrenFiles.Add(GetChild(file));
             foreach (var dir in Directory.GetDirectories(_path))
                 _childrenFiles.Add(GetChild(dir));
-            
         }
 
         #endregion
@@ -90,7 +89,21 @@ namespace Manager
                 _childrenFiles.Add(GetChild(file));
             foreach (var dir in Directory.GetDirectories(_path))
                 _childrenFiles.Add(GetChild(dir));
-            
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>if the directoryType has the given child</returns>
+        public bool HasChild(string path)
+        {
+            foreach (FileType ft in _childrenFiles)
+            {
+                if (ft.Path == path)
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>

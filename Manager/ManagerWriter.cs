@@ -328,7 +328,7 @@ namespace Manager
         /// <param name="dest">the given file name</param>
         /// <param name="extension">the extension given to the file. Default value is "" for directories</param>
         /// <returns>the associated FileType for UI</returns>
-        public static FileType Create(string dest, string extension = "")
+        public static FileType Create(string dest, string extension)
         {
             if (extension != "")
                 dest = Path.GetFileNameWithoutExtension(dest) + "." + extension;
@@ -337,7 +337,7 @@ namespace Manager
                 File.Create(dest).Close();
                 return ManagerReader.ReadFileType(dest);
             }
-            return new FileType();
+            return new FileType(dest);
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace Manager
         /// Overload 2 : Delete a file using its associated FileType <br></br>
         /// - Action : Delete a file <br></br>
         /// - Specification : consider using <see cref="Delete(ref DirectoryType, FileType)"></see> for UI/> <br></br>
-        /// - Implementation : NOT Check
+        /// - Implementation : Check
         /// </summary>
         /// <param name="ft">a fileType that is associated to a file</param>
         /// <returns>the success of the delete action</returns>
@@ -419,59 +419,110 @@ namespace Manager
         /// => UI Implementation (better using <see cref="Delete(ref DirectoryType, List{FileType})"/>) <br></br>
         /// Overload 3 : Delete a FileType contained in a DirectoryType <br></br>
         /// - Action : delete a FileType and its associated file, remove the child <br></br>
-        /// - Implementation : NOT Check
+        /// - Implementation : Check
         /// </summary>
         /// <param name="dt">a DirectoryType associated to the current directory</param>
         /// <param name="ft">a FileType children of dt</param>
         /// <returns></returns>
         public static bool Delete(ref DirectoryType dt, FileType ft)
         {
-            if (Directory.Exists(dt.Path))
+            if (Directory.Exists(dt.Path) && File.Exists(ft.Path) && dt.HasChild(ft.Path) && Delete(ft))
             {
-
+                dt.ChildrenFiles.Remove(ft);
+                return true;
             }
             return false;
         }
 
         /// <summary>
-        /// => UI Implementation <br></br>
-        /// Overload 4 : Delete a list of FileType in a Directory 
+        /// => UI Implementation
+        /// Overload 4 : 
+        /// - Action : Delete FileType of a dierctoryType and their associated files if they exist
+        /// - Specification : Prefere using this function to remove a single file to simplify the usage of the delete function
+        /// - Implementation : Check
         /// </summary>
-        /// <param name="dt"></param>
-        /// <param name="ftList"></param>
-        /// <returns></returns>
+        /// <param name="dt">the current directory type</param>
+        /// <param name="ftList">a list of FileType that has to be deleted</param>
+        /// <returns>the success of the action</returns>
         public static bool Delete(ref DirectoryType dt, List<FileType> ftList)
         {
             bool result = true;
-            foreach (var ft in ftList)
+            foreach (FileType ft in ftList)
             {
-                if (dt.ChildrenFiles.Contains(ft))
-                {
-                    dt.ChildrenFiles.Remove(ft);
-                    result &= Delete(ft);
-                }
-                else
-                    result = false;
+                result &= Delete(ref dt, ft);
             }
-                
+
             return result;
         }
 
         /// <summary>
-        /// Delete a dir
-        /// Implementation : Check
+        /// Overload 1 : Delete a directory using its path
+        /// - Action : Delete a directory using its path, recursive variable indicate if all subdirectories has to be deleted
+        /// - Implementation : Check
         /// </summary>
-        public static void DeleteDir(string path)
+        /// <param name="path">the directory path</param>
+        /// <param name="recursive"></param>
+        /// <returns></returns>
+        public static bool DeleteDir(string path, bool recursive = true)
         {
             if (Directory.Exists(path))
+            {
+                if (!recursive)
+                {
+                    try {
+                        Directory.Delete(path, false);
+                        return true;
+                    }
+                    catch (IOException)
+                    {
+                        return false;
+                    }
+                }
                 Directory.Delete(path, true);
+                return true;
+            }
+            return false;
+                
         }
 
         /// <summary>
-        /// // Not Implemented
+        /// Overload 2 : Delete a directory using its associated class
+        /// - Action : Delete a directory using its class, recursive variable indicate if all subdirectories has to be deleted
+        /// - Implementation : Check
         /// </summary>
-        public static void DeleteDir(DirectoryType dt)
+        /// <param name="ft"></param>
+        /// <param name="recursive"></param>
+        /// <returns>the success</returns>
+        public static bool DeleteDir(FileType ft, bool recursive = true)
         {
+            if (ft.IsDir)
+            {
+                if (DeleteDir(ft.Path, recursive))
+                {
+                    ft.Dispose();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// => UI Implementation
+        /// Overload 3 : Delete a directories
+        /// - Action : Delete a directories using their classes, recursive variable indicate if all subdirectories / files have to be deleted
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="ftList">the fileType list</param>
+        /// <param name="recursive">if it has to suppress all sub-dierctories</param>
+        /// <returns>the success</returns>
+        public static bool DeleteDir(List<FileType> ftList, bool recursive = true)
+        {
+            bool result = true;
+            foreach (FileType ft in ftList)
+            {
+                result &= DeleteDir(ft, recursive);
+            }
+            return result;
         }
 
         #endregion
