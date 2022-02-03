@@ -179,7 +179,7 @@ namespace Manager
         /// Same as GetPathToName but does not give the extension of the file
         /// Implementation : Check
         /// </summary>
-        /// <returns>A sring that represents the name of the file without its extension</returns>
+        /// <returns>A string that represents the name of the file without its extension</returns>
         public static string GetPathToNameNoExtension(string name)
         {
             string res = "";
@@ -216,6 +216,19 @@ namespace Manager
             if (Directory.Exists(path))
                 return "";
             return Path.GetExtension(path);
+        }
+
+        /// <summary>
+        /// - Action : returns the file name of a absolute path using Path class
+        /// - Implementation : NOT Check
+        /// </summary>
+        /// <param name="full_path">full_path is supposed to exist</param>
+        /// <returns>the name of the file with its extension</returns>
+        public static string GetFileNameWithExtension(string full_path, string new_extension = "") { 
+            if (new_extension == "")
+                return Path.GetFileName(Path.GetFullPath(full_path));
+            else
+                return $"{Path.GetFileNameWithoutExtension(Path.GetFullPath(full_path))}{new_extension}";
         }
 
         #endregion
@@ -287,23 +300,23 @@ namespace Manager
         // This region contains every algorithm used for basic treatment
 
         /// <summary>
-        /// This function takes a path and generate a new path to avoid overwritte an existing file
+        /// This function takes a path and generate a new path to avoid overwritte an existing file <br></br>
         /// Implementation : Check
         /// </summary>
         /// <returns>Generate a file name to create a copy</returns>
-        public static string GenerateFileNameForCopy(string path)
+        public static string GenerateFileNameForModification(string path)
         {
             int i = 0;
-            string temp = path;
+            string res = path;
             string extension = GetFileExtension(path);
             string name = GetPathToNameNoExtension(path);
 
-            while (File.Exists(temp))
+            while (File.Exists(res) || Directory.Exists(res))
             {
                 i += 1;
-                temp = $"{name}({i}){extension}";
+                res = $"{name}({i}){extension}";
             }
-            return temp;
+            return res;
         }
 
         /// <summary>
@@ -311,16 +324,16 @@ namespace Manager
         /// Implementation : Check
         /// </summary>
         /// <returns>Generate a directory name to create a copy</returns>
-        public static string GenerateDirectoryNameForCopy(string path)
+        public static string GenerateDirectoryNameForModification(string path)
         {
             int i = 0;
-            string temp = path;
-            while (Directory.Exists(temp))
+            string res = path;
+            while (Directory.Exists(res) || File.Exists(res))
             {
                 i += 1;
-                temp = path + $"({i})";
+                res = path + $"({i})";
             }
-            return temp;
+            return res;
         }
 
         /// <summary>
@@ -350,8 +363,8 @@ namespace Manager
         }
 
         /// <summary>
-        /// Verifies if the fist given date is greater than the second one
-        /// Must respect the format : day/month/year hour/minute/second format
+        /// Verifies if the fist given date is greater than the second one <br></br>
+        /// Must respect the format : day/month/year hour/minute/second format <br></br>
         /// Implementation : Check
         /// </summary>
         /// <returns>Returns if the first one is more recent than the other</returns>
