@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,6 +8,11 @@
   <ItemGroup>
     <PackageReference Include="FluentFTP" Version="36.1.0" />
     <PackageReference Include="Squid-Box.SevenZipSharp" Version="1.5.0.366" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Manager\Manager.csproj" />
+    <ProjectReference Include="..\UI\UI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

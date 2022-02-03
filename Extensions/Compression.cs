@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
-
+using System.Threading.Tasks;
+using Manager;
 using SevenZip;
 
 namespace CubeTools
@@ -16,44 +18,63 @@ namespace CubeTools
     {
         public static void Init()
         {
-            var path = "Assets/7z.dll";
+            var path = @"C:\Users\forix\Documents\CubeTools\Extensions\bin\Debug\net5.0\Assets\7z.dll";
             SevenZipBase.SetLibraryPath(path);
+            Console.WriteLine(SevenZipBase.CurrentLibraryFeatures);
         }
-        public static void CompressDirectory(string directory, string dest, CompressAlgo algo)
+        public static Task CompressDirectory(DirectoryType directory, FileType dest, CompressAlgo algo)
         {
             switch (algo)
             {
                 case CompressAlgo.ZIP:
-                    ZipFile.CreateFromDirectory(directory, dest);
-                    break;
+                    Action<object> action = (object obj) =>
+                    {
+                        ZipFile.CreateFromDirectory(directory.Path, dest.Path);
+                    };
+                    Task task = new Task(action, "compression");
+                    task.Start();
+                    return task;
                 case CompressAlgo.LZMA:
                     SevenZipCompressor compressor = new SevenZipCompressor();
                     compressor.ScanOnlyWritable = true;
-                    compressor.CompressDirectory(directory, dest);
-                    break;
+                    //compressor.CompressDirectory(directory.Path, dest.Path);
+                    return compressor.CompressDirectoryAsync(directory.Path, dest.Path);
             }
+
+            return null;
         }
 
-        public static void CompressFiles(string[] files, string dest, CompressAlgo algo)
+        public static Task CompressFiles(FileType[] files, FileType dest, CompressAlgo algo)
         {
             switch (algo)
             {
                 case CompressAlgo.ZIP:
-                    using (ZipArchive zip = ZipFile.Open(dest, ZipArchiveMode.Create))
+                    Action<object> action = (object obj) =>
                     {
-                        foreach (string file in files)
+                        using (ZipArchive zip = ZipFile.Open(dest.Path, ZipArchiveMode.Create))
                         {
-                            FileInfo info = new FileInfo(file);
-                            zip.CreateEntryFromFile(file, info.Name);
+                            foreach (FileType file in files)
+                            {
+                                zip.CreateEntryFromFile(file.Path, file.Name);
+                            }
                         }
-                    }
+                    };
+                    Task task = new Task(action, "compression");
+                    task.Start();
+                    return task;
                     break;
                 case CompressAlgo.LZMA:
                     SevenZipCompressor compressor = new SevenZipCompressor();
                     compressor.ScanOnlyWritable = true;
-                    compressor.CompressFiles(dest, files);
-                    break;
+                    string[] filePaths = new string[files.Length];
+                    for (int i = 0; i < files.Length; i++)
+                    {
+                        filePaths[i] = files[i].Path;
+                    }
+                    return compressor.CompressFilesAsync(dest.Path, filePaths);
             }
+
+            return null;
         }
     }
 }
