@@ -13,11 +13,17 @@
 		ExtendClientAreaToDecorationsHint="True"
 		ExtendClientAreaTitleBarHeightHint="-1"
 		CanResize="True">
+
+	<Window.Styles>
+		<Style Selector="TextBlock">
+			<Setter Property="FontFamily" Value="Georgia"/>
+		</Style>
+	</Window.Styles>
 	
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
-
+	
 	<!-- Structure des lignes du grid-->
 	
 	<Grid>
@@ -26,20 +32,26 @@
 			<RowDefinition Height="45"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
-
+		
+		<Grid.Background>
+			<ImageBrush Stretch="Fill" Source="/Assets/WhiteBck.jpg"/>
+		</Grid.Background>
 		<!-- Première ligne-->
 		
-		<Grid Background="#E6E3E3" Grid.Row="0">
-			<TextBlock Text="Fares"
-					   Foreground="Black"
-					   VerticalAlignment="Center"
-					   HorizontalAlignment="Center"
-					   FontFamily="Assets/Karla.ttf"/>
+		<Grid Grid.Row="0" Margin="0 5 0 0">
+			<Image Source="/Assets/cubetools.ico"
+				   HorizontalAlignment="Left"
+				   Margin="10 0 0 0"/>
+			<TextBlock VerticalAlignment="Center"
+					   Margin="60 0 0 0"
+					   FontSize="20">
+				Cube Tools
+			</TextBlock>
 		</Grid>
 
 		<!-- Deuxième ligne-->
 		
-		<Grid Background="#1A067B" Grid.Row="1">
+		<Grid Grid.Row="1" Margin="10 0 0 0">
 			
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="45"/>
@@ -55,8 +67,7 @@
 						VerticalAlignment="Center"
 						HorizontalAlignment="Left"
 						Width="45" Height="40"
-						CornerRadius="8"
-						Background="Gray">
+						CornerRadius="8">
 					<StackPanel>
 						<Image Source="/Assets\left-arrow.ico"
 							   Width="50"
@@ -70,8 +81,7 @@
 						VerticalAlignment="Center"
 						HorizontalAlignment="Left"
 						Width="45" Height="40"
-						CornerRadius="8"
-						Background="Gray">
+						CornerRadius="8">
 					<StackPanel>
 						<Image Source="/Assets\right-arrow.ico"
 							   Width="50"
@@ -86,8 +96,7 @@
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center"
 						Width="45" Height="40"
-						CornerRadius="8"
-						Background="Gray">
+						CornerRadius="8">
 					<StackPanel>
 						<Image Source="/Assets\up.ico"
 							   Width="50"
@@ -101,8 +110,7 @@
 						VerticalAlignment="Center"
 						HorizontalAlignment="Center"
 						Width="45" Height="40"
-						CornerRadius="8"
-						Background="Gray">
+						CornerRadius="8">
 					<StackPanel>
 						<Image Source="/Assets\sync.ico"
 							   Width="50"
@@ -123,8 +131,7 @@
 						VerticalAlignment="Center"
 						HorizontalAlignment="Right"
 						Width="45" Height="40"
-						CornerRadius="8"
-						Background="Gray">
+						CornerRadius="8">
 					<StackPanel>
 						<Image Source="/Assets\setting.ico"
 							   Width="50"
@@ -137,7 +144,7 @@
 
 		<!-- Troisième ligne-->
 		
-		<Grid Background="#1A067B" Grid.Row="2">
+		<Grid Grid.Row="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="200"/>
 				<ColumnDefinition/>
@@ -289,7 +296,7 @@
 
 			<!-- Partie Droite de la troisième ligne-->
 			
-			<Grid Grid.Column="1" Background="#FFFFFF">
+			<Grid Grid.Column="1">
 				
 				<Grid.RowDefinitions>
 					<RowDefinition Height="41"/>
@@ -431,16 +438,8 @@
 							</StackPanel>
 						</Button>
 					</Grid>
-
-				</Grid>
-
-				<Grid Grid.Row="1">
-					<Grid.Background>
-						<ImageBrush Stretch="Fill" Source="/Assets/background.png"/>
-					</Grid.Background>
 				</Grid>
 			</Grid>
-			
 		</Grid>			
 	</Grid>
 
