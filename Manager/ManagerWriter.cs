@@ -435,10 +435,10 @@ namespace Manager
         }
 
         /// <summary>
-        /// => UI Implementation
-        /// Overload 4 : 
-        /// - Action : Delete FileType of a dierctoryType and their associated files if they exist
-        /// - Specification : Prefere using this function to remove a single file to simplify the usage of the delete function
+        /// => UI Implementation <br></br>
+        /// Overload 4 : <br></br>
+        /// - Action : Delete FileType of a dierctoryType and their associated files if they exist <br></br>
+        /// - Specification : Prefere using this function to remove a single file to simplify the usage of the delete function <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="dt">the current directory type</param>
@@ -456,8 +456,8 @@ namespace Manager
         }
 
         /// <summary>
-        /// Overload 1 : Delete a directory using its path
-        /// - Action : Delete a directory using its path, recursive variable indicate if all subdirectories has to be deleted
+        /// Overload 1 : Delete a directory using its path <br></br>
+        /// - Action : Delete a directory using its path, recursive variable indicate if all subdirectories has to be deleted <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the directory path</param>
@@ -486,8 +486,8 @@ namespace Manager
         }
 
         /// <summary>
-        /// Overload 2 : Delete a directory using its associated class
-        /// - Action : Delete a directory using its class, recursive variable indicate if all subdirectories has to be deleted
+        /// Overload 2 : Delete a directory using its associated class <br></br>
+        /// - Action : Delete a directory using its class, recursive variable indicate if all subdirectories has to be deleted <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="ft"></param>
@@ -507,9 +507,9 @@ namespace Manager
         }
 
         /// <summary>
-        /// => UI Implementation
-        /// Overload 3 : Delete a directories
-        /// - Action : Delete a directories using their classes, recursive variable indicate if all subdirectories / files have to be deleted
+        /// => UI Implementation <br></br>
+        /// Overload 3 : Delete a directories <br></br>
+        /// - Action : Delete a directories using their classes, recursive variable indicate if all subdirectories / files have to be deleted <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="ftList">the fileType list</param>

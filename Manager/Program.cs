@@ -14,14 +14,8 @@ namespace Manager
         {
             DirectoryType dt = new DirectoryType("C:/Users/mateo/OneDrive/Documents");
             FileType ft = Writer.CreateDir("test");
-            FileType ft2 = Writer.CreateDir("test/test2");
+            FileType ft2 = Writer.Create("test", "txt");
             FileType ft3 = Writer.CreateDir("test3");
-            List<FileType> list = new List<FileType>();
-            list.Add(ft);
-            list.Add(ft2);
-            list.Add(ft3);
-            Console.WriteLine(Writer.DeleteDir(list, true));
-            dt.SetChildrenFiles();
         }
     }
 }

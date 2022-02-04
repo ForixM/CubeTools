@@ -67,22 +67,33 @@ namespace Manager
         // This region contains all Get function that also give information of files and directories
 
         /// <summary>
-        ///  Get the dir name of a file or dir contained in it
-        ///  Implementation : Check
+        /// Overload 1
+        ///  - Action Get the dir name of a file or dir contained in it <br></br>
+        ///  - Implementation : Check
         /// </summary>
+        /// <param name="path">the filename or directory name</param>
         /// <returns>Returns the parent dir using GetPathToName function</returns>
         public static string GetParent(string path)
         {
-            FileInfo fi = new FileInfo(path);
-            if (fi.DirectoryName != null)
-                return GetPathToName(fi.DirectoryName);
+            if (File.Exists(path))
+                return GetPathToName(new FileInfo(path).DirectoryName);
+            else if (Directory.Exists(path))
+                return GetPathToName(new DirectoryInfo(path).Parent.FullName);
             else
                 return "";
         }
 
         /// <summary>
-        ///  Get the date with a given path
-        ///  Implementation : Check
+        /// Overload 2 : see 
+        ///  <see cref="GetParent(string)"/>
+        /// </summary>
+        /// <param name="path">the filename or directory name</param>
+        /// <returns>Returns the parent dir using GetPathToName function</returns>
+        public static string GetParent(FileType ft) { return GetParent(ft.Path); }
+
+        /// <summary>
+        ///  - Action : Get the date with a given path <br></br>
+        ///  - Implementation : Check <br></br>
         /// </summary>
         /// <returns>Returns the creation date either of a file or a directory</returns>
         public static string GetFileCreationDate(string path)
@@ -95,8 +106,8 @@ namespace Manager
         }
 
         /// <summary>
-        /// Get the last time a file has been edited using its path
-        /// Implementation : Check
+        /// - Action : Get the last time a file has been edited using its path <br></br>
+        /// - Implementation : Check
         /// </summary>
         /// <returns>A string value that represents the last time the file or directory was modified</returns>
         public static string GetFileLastEdition(string path)
@@ -109,7 +120,7 @@ namespace Manager
         }
 
         /// <summary>
-        /// Get the last time a file has been accessed using its path
+        /// Get the last time a file has been accessed using its path <br></br>
         /// Implementation : Check
         /// </summary>
         /// <returns>A string value that represents the last time the file or directory was accessed</returns>
@@ -123,8 +134,8 @@ namespace Manager
         }
 
         /// <summary>
-        /// Get the file size in byte
-        /// Implementation : Check => prototype
+        /// - Action : Get the file size in byte <br></br>
+        /// - Implementation : Check (prototype)
         /// </summary>
         /// <returns>0 or the size of the file</returns>
         public static long GetFileSize(string path)
@@ -137,8 +148,8 @@ namespace Manager
         }
 
         /// <summary>
-        /// Get the file size in byte using recursive method
-        /// Implementation : Recursion not efficient
+        /// -Action : Get the file size in byte using recursive method <br></br>
+        /// - Implementation : Recursion not efficient => DEPRECATED
         /// </summary>
         /// <returns>0 or the size of the file</returns>
         private static long GetFileSizeDeprecated(string path)
@@ -159,7 +170,7 @@ namespace Manager
         }
 
         /// <summary>
-        /// Reformat an absolute path to the name of the file or dir
+        /// - Action : Reformat an absolute path to the name of the file or dir <br></br>
         /// Implementation : Check
         /// </summary>
         /// <returns>A string that represents the name of an absolute path</returns>
@@ -176,7 +187,7 @@ namespace Manager
         }
 
         /// <summary>
-        /// Same as GetPathToName but does not give the extension of the file
+        /// -Action : Same as GetPathToName but does not give the extension of the file <br></br>
         /// Implementation : Check
         /// </summary>
         /// <returns>A string that represents the name of the file without its extension</returns>
@@ -194,8 +205,8 @@ namespace Manager
         }
 
         /// <summary>
-        /// Reformat a name to the absolute path if the given name and current directory are correct
-        /// Implementation : Check
+        /// - Action : Reformat a name to the absolute path if the given name and current directory are correct <br></br>
+        /// - Implementation : Check
         /// </summary>
         /// <returns>The full path of a file or directory</returns>
         public static string GetNameToPath(string name)
@@ -206,9 +217,8 @@ namespace Manager
         }
 
         /// <summary>
-        /// Returns the extension of a file.
-        /// If it is a directory, it will return ""
-        /// Implementation : Check
+        /// - Action : Returns the extension of a file. If it is a directory, it will return "" <br></br>
+        /// - Implementation : Check
         /// </summary>
         /// <returns>Extension of a file</returns>
         public static string GetFileExtension(string path)
