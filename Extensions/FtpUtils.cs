@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text.Json;
+using System.Threading.Tasks;
 using FluentFTP;
+using Manager;
 
 namespace Extensions
 {
@@ -37,7 +39,8 @@ namespace Extensions
             {
                 if (item.Type == FtpFileSystemObjectType.File)
                 {
-                    files.Add(item.Name);
+                    Console.WriteLine(item.FullName);
+                    files.Add(item.FullName);
                 }
             }
 
@@ -59,6 +62,14 @@ namespace Extensions
             return directories;
         }
 
+        public Task<FtpStatus> DownloadFile(string remotePath, FileType destination)
+        {
+            return client.DownloadFileAsync(destination.Path, remotePath);
+        }
 
+        public Task<FtpStatus> UploadFile(string remoteDestination, FileType source)
+        {
+            return client.UploadFileAsync(source.Path, remoteDestination);
+        }
     }
 }
