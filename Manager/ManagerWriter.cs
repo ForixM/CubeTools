@@ -12,17 +12,23 @@ namespace Manager
     {
         #region Properties
         // This region contains every function that set information of the file given with the path
-
-        // SetProperties functions : Basicaly set the property for the file given in argument
-
-        // Implementation : Check
+        
+        // Implementation : NOT Check
         public static void SetFileHidden(string path) { File.SetAttributes(path, FileAttributes.Hidden); }
-        // Implementation : Not check
+
+        public static void SetFileHidden(FileType ft)
+        {
+            SetFileHidden(ft.Path);
+        }
+        // Implementation : NOT CHECK
         public static void SetFileCompressed(string path) { File.SetAttributes(path, FileAttributes.Compressed); }
-        // Implementation : Check
+        public static void SetFileCompressed(FileType ft) { SetFileCompressed(ft.Path); }
+        // Implementation : NOT Check
         public static void SetFileSystem(string path) { File.SetAttributes(path, FileAttributes.System); }
-        // Implementation : Check
+        public static void SetFileSystem(FileType ft) { SetFileSystem(ft.Path); }
+        // Implementation : NOT Check
         public static void SetFileArchived(string path) { File.SetAttributes(path, FileAttributes.Archive); }
+        public static void SetFileArchived(FileType ft) { SetFileArchived(ft.Path); }
 
         #endregion
 
@@ -508,7 +514,7 @@ namespace Manager
 
         /// <summary>
         /// => UI Implementation <br></br>
-        /// Overload 3 : Delete a directories <br></br>
+        /// Overload 3 : Delete directories <br></br>
         /// - Action : Delete a directories using their classes, recursive variable indicate if all subdirectories / files have to be deleted <br></br>
         /// - Implementation : Check
         /// </summary>

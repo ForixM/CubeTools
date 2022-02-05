@@ -17,6 +17,8 @@ namespace Manager
         private List<FileType> _childrenFiles;
         private long _size;
         private string _date;
+        private string _lastDate;
+        private string _accessDate;
         private bool _hide;
 
         // Getter and Setter
@@ -39,6 +41,8 @@ namespace Manager
             _size = ManagerReader.GetFileSize(_path);
             _hide = ManagerReader.IsDirHidden(_path);
             _date = ManagerReader.GetFileCreationDate(_path);
+            _lastDate = ManagerReader.GetFileLastEdition(_path);
+            _accessDate = ManagerReader.GetFileAccessDate(_path);
         }
 
         public DirectoryType(string path) : base() {
@@ -121,6 +125,7 @@ namespace Manager
         /// <summary>
         /// Chnage the current directory and remove children files
         /// Implentation : Check
+        /// NOT PERFECT
         /// </summary>
         public void ChangeDirectory()
         {

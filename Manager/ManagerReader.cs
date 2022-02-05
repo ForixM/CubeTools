@@ -61,6 +61,7 @@ namespace Manager
         {
             return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.System) != 0);
         }
+        
         #endregion
 
         #region Get
@@ -248,7 +249,7 @@ namespace Manager
         // instance to simplify the interaction with UI
 
         /// <summary>
-        /// Reads the properties of a File, modifies and inits its associated FileType
+        /// Reads the properties of a File, modifies and inits its associated FileType <br></br>
         /// Implementation : Check
         /// </summary>
         /// <param name="path"></param>

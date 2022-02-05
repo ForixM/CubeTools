@@ -13,9 +13,6 @@ namespace Manager
         static void Main(string[] args)
         {
             DirectoryType dt = new DirectoryType("C:/Users/mateo/OneDrive/Documents");
-            FileType ft = Writer.CreateDir("test");
-            FileType ft2 = Writer.Create("test", "txt");
-            FileType ft3 = Writer.CreateDir("test3");
         }
     }
 }
