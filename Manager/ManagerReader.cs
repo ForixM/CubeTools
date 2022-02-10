@@ -8,6 +8,7 @@ namespace Manager
     public static class ManagerReader
     {
         #region Properties
+
         // This region contains every function that give information of the file given with the path
         // Basicaly => bool functions
 
@@ -24,13 +25,14 @@ namespace Manager
         {
             return Directory.Exists(path);
         }
+
         // IsFileHidden : Verify if the file has the property Hidden
         // Implementation : Check
         public static bool IsFileHidden(string path)
         {
             return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.Hidden) != 0);
-
         }
+
         // IsDirHidden : Verify if the directory is hidden
         // Implementation Check
         public static bool IsDirHidden(string path)
@@ -43,28 +45,51 @@ namespace Manager
 
             return false;
         }
+        
+
         // IsFileCompressed : Verify if the file has the property Compressed
         // Implementation : Check
         public static bool IsFileCompressed(string path)
         {
             return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.Compressed) != 0);
         }
+
         // IsFileArchived : Verify if the file has the property Archived
         // Implementation : Check
         public static bool IsFileArchived(string path)
         {
             return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.Archive) != 0);
         }
+
         // IsASystemFile : Verify if the file has the property File System
         // Implementation : Check
         public static bool IsASystemFile(string path)
         {
             return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.System) != 0);
         }
-        
+        // IsAReadOnlyFile : Verify if the file has the property Read Only
+        // Implementation : Check
+        public static bool IsAReadOnlyFile(string path)
+        {
+            return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.ReadOnly) != 0);
+        }
+        // IsDirReadOnly : Verify if the dir has the property Read Only
+        // Implementation : Check
+        public static bool IsDirReadOnly(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                return ((directoryInfo.Attributes & FileAttributes.ReadOnly) != 0);
+            }
+
+            return false;
+        }
+
         #endregion
 
         #region Get
+
         // This region contains all Get function that also give information of files and directories
 
         /// <summary>
@@ -90,7 +115,10 @@ namespace Manager
         /// </summary>
         /// <param name="path">the filename or directory name</param>
         /// <returns>Returns the parent dir using GetPathToName function</returns>
-        public static string GetParent(FileType ft) { return GetParent(ft.Path); }
+        public static string GetParent(FileType ft)
+        {
+            return GetParent(ft.Path);
+        }
 
         /// <summary>
         ///  - Action : Get the date with a given path <br></br>
@@ -167,6 +195,7 @@ namespace Manager
             }
             else if (File.Exists(path))
                 return new FileInfo(path).Length;
+
             return 0;
         }
 
@@ -184,6 +213,7 @@ namespace Manager
                 res = path[i] + res;
                 i--;
             }
+
             return res;
         }
 
@@ -197,11 +227,12 @@ namespace Manager
             string res = "";
             string[] listRes = GetPathToName(name).Split(".");
             int i = 0;
-            while (i < listRes.Count()-1)
+            while (i < listRes.Count() - 1)
             {
                 res += listRes[i];
                 i += 1;
             }
+
             return res;
         }
 
@@ -235,7 +266,8 @@ namespace Manager
         /// </summary>
         /// <param name="full_path">full_path is supposed to exist</param>
         /// <returns>the name of the file with its extension</returns>
-        public static string GetFileNameWithExtension(string full_path, string new_extension = "") { 
+        public static string GetFileNameWithExtension(string full_path, string new_extension = "")
+        {
             if (new_extension == "")
                 return Path.GetFileName(Path.GetFullPath(full_path));
             else
@@ -245,6 +277,7 @@ namespace Manager
         #endregion
 
         #region Saver
+
         // In this section, every function is related to the save of file and the creation of FileType
         // instance to simplify the interaction with UI
 
@@ -281,6 +314,7 @@ namespace Manager
                 ft.Name = GetPathToName(ft.Path);
                 ft.ReadOnly = false;
                 ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
+                // Add ft.Archived
                 ft.Size = GetFileSize(ft.Path);
                 ft.Date = GetFileCreationDate(ft.Path);
                 ft.LastDate = GetFileLastEdition(ft.Path);
@@ -308,6 +342,7 @@ namespace Manager
         #region Algorithm
 
         #region Basics
+
         // This region contains every algorithm used for basic treatment
 
         /// <summary>
@@ -327,6 +362,7 @@ namespace Manager
                 i += 1;
                 res = $"{name}({i}){extension}";
             }
+
             return res;
         }
 
@@ -344,6 +380,7 @@ namespace Manager
                 i += 1;
                 res = path + $"({i})";
             }
+
             return res;
         }
 
@@ -370,6 +407,7 @@ namespace Manager
                     j += 1;
                 }
             }
+
             return i != limit1;
         }
 
@@ -399,7 +437,7 @@ namespace Manager
             {
                 if (int.Parse(day1[i]) > int.Parse(day2[i]))
                     return true;
-                 else if (int.Parse(day1[i]) < int.Parse(day2[i]))
+                else if (int.Parse(day1[i]) < int.Parse(day2[i]))
                     return false;
             }
 
@@ -429,17 +467,20 @@ namespace Manager
         /// </summary>
         private static List<FileType> SelectFileTypeByNameSize(List<FileType> fileTypes, int minimumNameSize)
         {
-            List <FileType> res = new List<FileType>();
+            List<FileType> res = new List<FileType>();
             foreach (FileType ft in fileTypes)
             {
                 if (ft.Name.Count() >= minimumNameSize)
                     res.Add(ft);
             }
+
             return res;
         }
+
         #endregion
 
         #region Calculus
+
         // This region contains every function that deal with algorithm for calculus
 
         /// <summary>
@@ -473,7 +514,7 @@ namespace Manager
         private static List<FileType> MergeSortFileTypeByName(List<FileType> ftList1, List<FileType> ftList2)
         {
             List<FileType> ftReturned = new List<FileType>();
-            
+
             int i = 0;
             int j = 0;
             int limit1 = ftList1.Count;
@@ -492,6 +533,7 @@ namespace Manager
                     j += 1;
                 }
             }
+
             if (i != limit1)
             {
                 while (i < limit1)
@@ -508,7 +550,7 @@ namespace Manager
                     j += 1;
                 }
             }
-            
+
             return ftReturned;
         }
 
@@ -540,6 +582,7 @@ namespace Manager
                     j += 1;
                 }
             }
+
             if (i != limit1)
             {
                 while (i < limit1)
@@ -588,6 +631,7 @@ namespace Manager
                     j += 1;
                 }
             }
+
             if (i != limit1)
             {
                 while (i < limit1)
@@ -635,6 +679,7 @@ namespace Manager
                     j += 1;
                 }
             }
+
             if (i != limit1)
             {
                 while (i < limit1)
@@ -654,7 +699,7 @@ namespace Manager
 
             return ftReturned;
         }
-        
+
         // Sort functions
 
         /// <summary>
@@ -697,7 +742,7 @@ namespace Manager
         {
             return DivideAndMergeAlgorithm(ftList, "date");
         }
-        
+
         // Main functions
 
         /// <summary>
@@ -713,6 +758,7 @@ namespace Manager
             {
                 return ftList;
             }
+
             // If not empty divide them and call the function again
             List<FileType> ftList1 = new List<FileType>();
             List<FileType> ftList2 = new List<FileType>();
@@ -720,7 +766,8 @@ namespace Manager
                 ftList1.Add(ftList[i]);
             for (int i = ftList.Count / 2; i < ftList.Count(); i++)
                 ftList2.Add(ftList[i]);
-            return MergeSortFileType(DivideAndMergeAlgorithm(ftList1, argument), DivideAndMergeAlgorithm(ftList2, argument), argument);
+            return MergeSortFileType(DivideAndMergeAlgorithm(ftList1, argument),
+                DivideAndMergeAlgorithm(ftList2, argument), argument);
         }
 
         /// <summary>
@@ -733,9 +780,9 @@ namespace Manager
             switch (argument)
             {
                 case "size":
-                    return MergeSortFileTypeBySize(ftList1,ftList2);
+                    return MergeSortFileTypeBySize(ftList1, ftList2);
                 case "type":
-                    return MergeSortFileTypeByType(ftList1,ftList2);
+                    return MergeSortFileTypeByType(ftList1, ftList2);
                 case "name":
                     return MergeSortFileTypeByName(ftList1, ftList2);
                 case "date":
@@ -744,7 +791,7 @@ namespace Manager
                     return null;
             }
         }
-        
+
         #endregion
 
         #region Search
@@ -761,9 +808,14 @@ namespace Manager
                 if (ft.Name == fullName)
                     return ft;
             }
+
             return null;
         }
-        public static FileType SearchByFullName(DirectoryType directoryType, string fullName) { return SearchByFullName(directoryType.ChildrenFiles,fullName); }
+
+        public static FileType SearchByFullName(DirectoryType directoryType, string fullName)
+        {
+            return SearchByFullName(directoryType.ChildrenFiles, fullName);
+        }
 
         /// <summary>
         /// Naive research of a fileType using an indeterminatedName which will get the most revelant file
@@ -791,6 +843,7 @@ namespace Manager
                         else
                             break;
                     }
+
                     if (_current_occ == indeterminedName.Length)
                         return ft;
                     else if (_current_occ > _max_occ)
@@ -800,6 +853,7 @@ namespace Manager
                     }
                 }
             }
+
             return bestFitft;
         }
 
@@ -828,5 +882,4 @@ namespace Manager
 
         #endregion
     }
-
 }

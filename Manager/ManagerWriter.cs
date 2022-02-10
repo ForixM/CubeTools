@@ -11,24 +11,130 @@ namespace Manager
     public static class ManagerWriter
     {
         #region Properties
-        // This region contains every function that set information of the file given with the path
-        
-        // Implementation : NOT Check
-        public static void SetFileHidden(string path) { File.SetAttributes(path, FileAttributes.Hidden); }
 
-        public static void SetFileHidden(FileType ft)
+        // This region contains every function that set information of the file given with the path
+
+        /// <summary>
+        /// - Action : Remove an attribute <br></br>
+        /// - Implementation : NOT Check
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <param name="attributesToRemove"></param>
+        /// <returns>the new file attributes</returns>
+        private static FileAttributes RemoveFileAttribute(FileAttributes attributes, FileAttributes attributesToRemove)
         {
-            SetFileHidden(ft.Path);
+            return attributes & ~attributesToRemove;
         }
-        // Implementation : NOT CHECK
-        public static void SetFileCompressed(string path) { File.SetAttributes(path, FileAttributes.Compressed); }
-        public static void SetFileCompressed(FileType ft) { SetFileCompressed(ft.Path); }
+
+        /// <summary>
+        /// - Action : Add an attribute to a file <br></br>
+        /// - Implementation : NOT Check
+        /// </summary>
+        /// <param name="path">the path that has to be modified</param>
+        /// <param name="attributes">attributes to add </param>
+        private static void AddFileAttribute(string path, FileAttributes attributes)
+        {
+            File.SetAttributes(path, attributes);
+        }
+
+        /// <summary>
+        /// - Action : Remove a directory attributes  <br></br>
+        /// - Implementation : NOT Check
+        /// </summary>
+        /// <param name="di">the directory that has to be modified</param>
+        /// <param name="attributesToRemove">the attribute to remove</param>
+        private static void RemoveDirAttribute(DirectoryInfo di, FileAttributes attributesToRemove)
+        {
+            di.Attributes = di.Attributes & ~attributesToRemove;
+        }
+
+        /// <summary>
+        /// - Action : Add an attribute to a directory given with a directoryInfo
+        /// </summary>
+        /// <param name="di">the directory that has to be modified</param>
+        /// <param name="attribute">the attribute that has to be added</param>
+        private static void AddDirAttribute(DirectoryInfo di, FileAttributes attribute)
+        {
+            di.Attributes |= attribute;
+        }
+
         // Implementation : NOT Check
-        public static void SetFileSystem(string path) { File.SetAttributes(path, FileAttributes.System); }
-        public static void SetFileSystem(FileType ft) { SetFileSystem(ft.Path); }
-        // Implementation : NOT Check
-        public static void SetFileArchived(string path) { File.SetAttributes(path, FileAttributes.Archive); }
-        public static void SetFileArchived(FileType ft) { SetFileArchived(ft.Path); }
+        private static bool SetAttributes(string path, bool set, FileAttributes fa)
+        {
+            if (File.Exists(path))
+            {
+                if (set)
+                    AddFileAttribute(path, fa);
+                else
+                    RemoveFileAttribute(new FileInfo(path).Attributes, fa);
+                return true;
+            }
+
+            if (Directory.Exists(path))
+            {
+                if (set)
+                    AddDirAttribute(new DirectoryInfo(path), fa);
+                else
+                    RemoveDirAttribute(new DirectoryInfo(path), fa);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// - Action : Modify the Hidden attributes of a fileType and its associated file
+        /// - Implementation : NOT Check
+        /// </summary>
+        /// <param name="ft">the fileType</param>
+        /// <param name="set">set or unset the attribute</param>
+        /// <returns> the success of the function</returns>
+        public static bool ModifyAttributesHidden(FileType ft, bool set)
+        {
+            if (SetAttributes(ft.Path, set, FileAttributes.Hidden))
+            {
+                ft.Hidden = set;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// - Action : Modify the Compressed attributes of a fileType and its associated file
+        /// - Implementation : NOT Check => BETTER USING EXTENSION ALGORITHMS
+        /// </summary>
+        /// <param name="ft">the fileType</param>
+        /// <param name="set">set or unset the attribute</param>
+        /// <returns> the success of the function</returns>
+        public static bool ModifyAttributesCompressed(FileType ft, bool set)
+        {
+            if (SetAttributes(ft.Path, set, FileAttributes.Compressed))
+            {
+                ft.Compressed = set;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// - Action : Modify the Archived attributes of a fileType and its associated file
+        /// - Implementation : NOT Check => BETTER USING EXTENSION ALGORITHMS
+        /// </summary>
+        /// <param name="ft">the fileType</param>
+        /// <param name="set">set or unset the attribute</param>
+        /// <returns> the success of the function</returns>
+        public static bool ModifyAttributesArchived(FileType ft, bool set)
+        {
+            if (SetAttributes(ft.Path, set, FileAttributes.Archive))
+            {
+                ft.Archived = set;
+                return true;
+            }
+
+            return false;
+        }
 
         #endregion
 
@@ -50,7 +156,7 @@ namespace Manager
             {
                 File.Move(dest, ManagerReader.GenerateFileNameForModification(dest));
                 return true;
-            } 
+            }
             else if (Directory.Exists(dest))
             {
                 Directory.Move(dest, ManagerReader.GenerateDirectoryNameForModification(dest));
@@ -60,7 +166,6 @@ namespace Manager
             {
                 return false;
             }
-                
         }
 
         /// <summary>
@@ -91,6 +196,7 @@ namespace Manager
                 else
                     File.Move(source, ManagerReader.GetFileNameWithExtension(dest, Path.GetExtension(source)));
             }
+
             return true;
         }
 
@@ -124,6 +230,7 @@ namespace Manager
                 }
                 else
                     File.Move(ft.Path, dest, true);
+
                 ft.Path = dest;
                 ManagerReader.ReadFileType(ref ft);
             }
@@ -137,6 +244,7 @@ namespace Manager
                 ManagerReader.ReadFileType(ref ft);
                 return true;
             }
+
             return true;
         }
 
@@ -164,9 +272,10 @@ namespace Manager
                     Directory.Delete(dest, true);
                 Rename(source, ManagerReader.GetFileNameWithExtension(dest));
             }
+
             return true;
         }
-        
+
         // COPY FUNCTIONS
 
         /// <summary>
@@ -184,6 +293,7 @@ namespace Manager
                 File.Copy(source, ManagerReader.GenerateFileNameForModification(source));
                 return true;
             }
+
             return false;
         }
 
@@ -207,13 +317,14 @@ namespace Manager
                     else if (Directory.Exists(dest))
                         Directory.Delete(dest, true);
                 }
-                    
+
                 if (File.Exists(dest))
                     File.Copy(source, ManagerReader.GenerateFileNameForModification(dest));
                 else
                     File.Copy(source, dest);
                 return true;
             }
+
             return false;
         }
 
@@ -241,7 +352,8 @@ namespace Manager
                         return Copy(new DirectoryInfo(ft.Path), new DirectoryInfo(dest), replace);
                     }
                     else
-                        return Copy(new DirectoryInfo(ft.Path), new DirectoryInfo(ManagerReader.GenerateDirectoryNameForModification(dest)), replace);
+                        return Copy(new DirectoryInfo(ft.Path),
+                            new DirectoryInfo(ManagerReader.GenerateDirectoryNameForModification(dest)), replace);
                 }
                 else
                 {
@@ -277,6 +389,7 @@ namespace Manager
                 DirectoryInfo nextTargetSubDir = target.CreateSubdirectory(diSourceSubDir.Name);
                 Copy(diSourceSubDir, nextTargetSubDir, replace);
             }
+
             return true;
         }
 
@@ -317,7 +430,8 @@ namespace Manager
         /// <returns>a new fileType linked to the file</returns>
         public static FileType Create(string extension = "")
         {
-            string filename = ManagerReader.GenerateFileNameForModification($"New {extension.ToUpper()} File.{extension}");
+            string filename =
+                ManagerReader.GenerateFileNameForModification($"New {extension.ToUpper()} File.{extension}");
             if (extension == "")
                 filename = ManagerReader.GenerateFileNameForModification("New File");
             File.Create(filename).Close();
@@ -343,6 +457,7 @@ namespace Manager
                 File.Create(dest).Close();
                 return ManagerReader.ReadFileType(dest);
             }
+
             return new FileType(dest);
         }
 
@@ -395,12 +510,14 @@ namespace Manager
         /// </summary>
         /// <param name="path">the path of the file</param>
         /// <returns>the success of the delete action</returns>
-        public static bool Delete(string path) {
+        public static bool Delete(string path)
+        {
             if (File.Exists(path))
             {
                 File.Delete(path);
                 return true;
             }
+
             return false;
         }
 
@@ -412,12 +529,14 @@ namespace Manager
         /// </summary>
         /// <param name="ft">a fileType that is associated to a file</param>
         /// <returns>the success of the delete action</returns>
-        public static bool Delete(FileType ft) { 
+        public static bool Delete(FileType ft)
+        {
             if (Delete(ft.Path))
             {
                 ft.Dispose();
                 return true;
             }
+
             return false;
         }
 
@@ -437,6 +556,7 @@ namespace Manager
                 dt.ChildrenFiles.Remove(ft);
                 return true;
             }
+
             return false;
         }
 
@@ -475,7 +595,8 @@ namespace Manager
             {
                 if (!recursive)
                 {
-                    try {
+                    try
+                    {
                         Directory.Delete(path, false);
                         return true;
                     }
@@ -484,11 +605,12 @@ namespace Manager
                         return false;
                     }
                 }
+
                 Directory.Delete(path, true);
                 return true;
             }
+
             return false;
-                
         }
 
         /// <summary>
@@ -509,6 +631,7 @@ namespace Manager
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -528,10 +651,10 @@ namespace Manager
             {
                 result &= DeleteDir(ft, recursive);
             }
+
             return result;
         }
 
         #endregion
-
     }
 }

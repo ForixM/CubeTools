@@ -7,440 +7,440 @@
         x:Class="UI.Views.MainWindow"
         Icon="/Assets/cubetools.ico"
         Title="CubeTools"
-		Width="800" Height="450"
-		MinHeight="420" MinWidth="650"
-		WindowStartupLocation="CenterScreen"
-		ExtendClientAreaToDecorationsHint="True"
-		ExtendClientAreaTitleBarHeightHint="-1"
-		CanResize="True">
+        Width="800" Height="450"
+        MinHeight="420" MinWidth="650"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        CanResize="True">
 
-	<Window.Styles>
-		<Style Selector="TextBlock">
-			<Setter Property="FontFamily" Value="Georgia"/>
-		</Style>
-	</Window.Styles>
-	
-	<Design.DataContext>
-		<vm:MainWindowViewModel/>
-	</Design.DataContext>
-	
-	<!-- Structure des lignes du grid-->
-	
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="45"/>
-			<RowDefinition Height="45"/>
-			<RowDefinition/>
-		</Grid.RowDefinitions>
-		
-		<Grid.Background>
-			<ImageBrush Stretch="Fill" Source="/Assets/WhiteBck.jpg"/>
-		</Grid.Background>
-		<!-- Première ligne-->
-		
-		<Grid Grid.Row="0" Margin="0 5 0 0">
-			<Image Source="/Assets/cubetools.ico"
-				   HorizontalAlignment="Left"
-				   Margin="10 0 0 0"/>
-			<TextBlock VerticalAlignment="Center"
-					   Margin="60 0 0 0"
-					   FontSize="20">
-				Cube Tools
-			</TextBlock>
-		</Grid>
+    <Window.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="FontFamily" Value="Georgia" />
+        </Style>
+    </Window.Styles>
 
-		<!-- Deuxième ligne-->
-		
-		<Grid Grid.Row="1" Margin="10 0 0 0">
-			
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="45"/>
-				<ColumnDefinition Width="45"/>
-				<ColumnDefinition Width="45"/>
-				<ColumnDefinition Width="45"/>
-				<ColumnDefinition/>
-				<ColumnDefinition Width="45"/>
-			</Grid.ColumnDefinitions>
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
 
-			<Grid Grid.Column="0"><!-- Left -->
-				<Button Name="Left_btn"
-						VerticalAlignment="Center"
-						HorizontalAlignment="Left"
-						Width="45" Height="40"
-						CornerRadius="8">
-					<StackPanel>
-						<Image Source="/Assets\left-arrow.ico"
-							   Width="50"
-							   Height="23"/>
-					</StackPanel>
-				</Button>
-			</Grid>
+    <!-- Structure des lignes du grid-->
 
-			<Grid Grid.Column="1"> <!-- Right -->
-				<Button Name="Right_btn"
-						VerticalAlignment="Center"
-						HorizontalAlignment="Left"
-						Width="45" Height="40"
-						CornerRadius="8">
-					<StackPanel>
-						<Image Source="/Assets\right-arrow.ico"
-							   Width="50"
-							   Height="23"/>
-					</StackPanel>
-				</Button>
-				
-			</Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45" />
+            <RowDefinition Height="45" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-			<Grid Grid.Column="2"><!-- Up -->
-				<Button Name="Up_btn"
-						VerticalAlignment="Center"
-						HorizontalAlignment="Center"
-						Width="45" Height="40"
-						CornerRadius="8">
-					<StackPanel>
-						<Image Source="/Assets\up.ico"
-							   Width="50"
-							   Height="25"/>
-					</StackPanel>
-				</Button>
-			</Grid>
+        <Grid.Background>
+            <ImageBrush Stretch="Fill" Source="/Assets/WhiteBck.jpg" />
+        </Grid.Background>
+        <!-- Première ligne-->
 
-			<Grid Grid.Column="3"> <!-- Sync -->
-				<Button Name="Sync_btn"
-						VerticalAlignment="Center"
-						HorizontalAlignment="Center"
-						Width="45" Height="40"
-						CornerRadius="8">
-					<StackPanel>
-						<Image Source="/Assets\sync.ico"
-							   Width="50"
-							   Height="25"/>
-					</StackPanel>
-				</Button>
-			</Grid>
-			
-			<Grid Grid.Column="4">   <!-- File Path -->
-				<TextBlock Text="File Path"
-						   Foreground="Black"
-						   VerticalAlignment="Center"
-						   HorizontalAlignment="Center"/>
-			</Grid>
+        <Grid Grid.Row="0" Margin="0 5 0 0">
+            <Image Source="/Assets/cubetools.ico"
+                   HorizontalAlignment="Left"
+                   Margin="10 0 0 0" />
+            <TextBlock VerticalAlignment="Center"
+                       Margin="60 0 0 0"
+                       FontSize="20">
+                Cube Tools
+            </TextBlock>
+        </Grid>
 
-			<Grid Grid.Column="5"> <!-- Settings -->
-				<Button Name="Settings_btn"
-						VerticalAlignment="Center"
-						HorizontalAlignment="Right"
-						Width="45" Height="40"
-						CornerRadius="8">
-					<StackPanel>
-						<Image Source="/Assets\setting.ico"
-							   Width="50"
-							   Height="30"/>
-					</StackPanel>
-				</Button>
-			</Grid>
-			
-		</Grid>
+        <!-- Deuxième ligne-->
 
-		<!-- Troisième ligne-->
-		
-		<Grid Grid.Row="2">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="200"/>
-				<ColumnDefinition/>
-			</Grid.ColumnDefinitions>
+        <Grid Grid.Row="1" Margin="10 0 0 0">
 
-			<!-- Partie Gauche de la troisième ligne-->
-			
-			<Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="45" />
+                <ColumnDefinition Width="45" />
+                <ColumnDefinition Width="45" />
+                <ColumnDefinition Width="45" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="45" />
+            </Grid.ColumnDefinitions>
 
-				<Grid.RowDefinitions>
-					<RowDefinition Height="45"/>
-					<RowDefinition Height="45"/>
-					<RowDefinition Height="45"/>
-					<RowDefinition Height="45"/>
-					<RowDefinition Height="45"/>
-					<RowDefinition Height="45"/>
-					<RowDefinition Height="45"/>
-					<RowDefinition Height="45"/>
-					<RowDefinition Height="45"/>
-				</Grid.RowDefinitions>
+            <Grid Grid.Column="0"><!-- Left -->
+                <Button Name="Left_btn"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Width="45" Height="40"
+                        CornerRadius="8">
+                    <StackPanel>
+                        <Image Source="/Assets\left-arrow.ico"
+                               Width="50"
+                               Height="23" />
+                    </StackPanel>
+                </Button>
+            </Grid>
 
-				<Grid Grid.Row="1">
-					<Button Name="Home"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center"
-							Width="180" Height="45"
-							CornerRadius="8">
-						<StackPanel >
-							<Image Source="/Assets\home.ico"
-								   Width="50"
-								   Height="28"
-								   HorizontalAlignment="Left"/>
-							<TextBlock HorizontalAlignment="Center"
-									   Text="Home"
-									   Margin="-20"/>
-						</StackPanel>
-					</Button>
-				</Grid>
+            <Grid Grid.Column="1"> <!-- Right -->
+                <Button Name="Right_btn"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Width="45" Height="40"
+                        CornerRadius="8">
+                    <StackPanel>
+                        <Image Source="/Assets\right-arrow.ico"
+                               Width="50"
+                               Height="23" />
+                    </StackPanel>
+                </Button>
 
-				<Grid Grid.Row="2">
-					<Button Name="Desktop"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center"
-							Width="180" Height="45"
-							CornerRadius="8">
-						<StackPanel>
-							<Image Source="/Assets\computer.ico"
-								   Width="50"
-								   Height="28"
-								   HorizontalAlignment="Left"/>
-							<TextBlock HorizontalAlignment="Center"
-									   Text="Desktop"
-									   Margin="-20"/>
-						</StackPanel>
-					</Button>
-				</Grid>
+            </Grid>
 
-				<Grid Grid.Row="3">
-					<Button Name="Documents"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center"
-							Width="180" Height="45"
-							CornerRadius="8">
-						<StackPanel>
-							<Image Source="/Assets\documents-folder.ico"
-								   Width="50"
-								   Height="28"
-								   HorizontalAlignment="Left"/>
-							<TextBlock HorizontalAlignment="Center"
-									   Text="Documents"
-									   Margin="-20"/>
-						</StackPanel>
-					</Button>
-				</Grid>
+            <Grid Grid.Column="2"><!-- Up -->
+                <Button Name="Up_btn"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="45" Height="40"
+                        CornerRadius="8">
+                    <StackPanel>
+                        <Image Source="/Assets\up.ico"
+                               Width="50"
+                               Height="25" />
+                    </StackPanel>
+                </Button>
+            </Grid>
 
-				<Grid Grid.Row="4">
-					<Button Name="Downloads"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center"
-							Width="180" Height="45"
-							CornerRadius="8">
-						<StackPanel>
-							<Image Source="/Assets\download.ico"
-								   Width="50"
-								   Height="28"
-								   HorizontalAlignment="Left"/>
-							<TextBlock HorizontalAlignment="Center"
-									   Text="Download"
-									   Margin="-20"/>
-						</StackPanel>
-					</Button>
-				</Grid>
+            <Grid Grid.Column="3"> <!-- Sync -->
+                <Button Name="Sync_btn"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Width="45" Height="40"
+                        CornerRadius="8">
+                    <StackPanel>
+                        <Image Source="/Assets\sync.ico"
+                               Width="50"
+                               Height="25" />
+                    </StackPanel>
+                </Button>
+            </Grid>
 
-				<Grid Grid.Row="5">
-					<Button Name="Pictures"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center"
-							Width="180" Height="45"
-							CornerRadius="8">
-						<StackPanel>
-							<Image Source="/Assets\gallery.ico"
-								   Width="50"
-								   Height="28"
-								   HorizontalAlignment="Left"/>
-							<TextBlock HorizontalAlignment="Center"
-									   Text="Picture"
-									   Margin="-20"/>
-						</StackPanel>
-					</Button>
-				</Grid>
+            <Grid Grid.Column="4">   <!-- File Path -->
+                <TextBlock Text="File Path"
+                           Foreground="Black"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center" />
+            </Grid>
 
-				<Grid Grid.Row="6">
-					<Button Name="Music"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center"
-							Width="180" Height="45"
-							CornerRadius="8">
-						<StackPanel>
-							<Image Source="/Assets\music.ico"
-								   Width="50"
-								   Height="28"
-								   HorizontalAlignment="Left"/>
-							<TextBlock HorizontalAlignment="Center"
-									   Text="Music"
-									   Margin="-20"/>
-						</StackPanel>
-					</Button>
-				</Grid>
+            <Grid Grid.Column="5"> <!-- Settings -->
+                <Button Name="Settings_btn"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Right"
+                        Width="45" Height="40"
+                        CornerRadius="8">
+                    <StackPanel>
+                        <Image Source="/Assets\setting.ico"
+                               Width="50"
+                               Height="30" />
+                    </StackPanel>
+                </Button>
+            </Grid>
 
-				<Grid Grid.Row="7">
-					<Button Name="Trash"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center"
-							Width="180" Height="45"
-							CornerRadius="8">
-						<StackPanel>
-							<Image Source="/Assets\trash-can.ico"
-								   Width="50"
-								   Height="28"
-								   HorizontalAlignment="Left"/>
-							<TextBlock HorizontalAlignment="Center"
-									   Text="Trash"
-									   Margin="-20"/>
-						</StackPanel>
-					</Button>
-				</Grid>
-				
-			</Grid>
+        </Grid>
 
-			<!-- Partie Droite de la troisième ligne-->
-			
-			<Grid Grid.Column="1">
-				
-				<Grid.RowDefinitions>
-					<RowDefinition Height="41"/>
-					<RowDefinition/>
-				</Grid.RowDefinitions>
+        <!-- Troisième ligne-->
 
-				<Grid Grid.Row="0">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="45"/>
-						<ColumnDefinition Width="45"/>
-						<ColumnDefinition Width="45"/>
-						<ColumnDefinition Width="45"/>
-						<ColumnDefinition Width="45"/>
-						<ColumnDefinition Width="45"/>
-						<ColumnDefinition/>
-						<ColumnDefinition Width="45"/>
-						<ColumnDefinition Width="45"/>
-					</Grid.ColumnDefinitions>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
 
-					<Grid Grid.Column="0"> <!-- Create -->
-						<Button Name="create"
-								VerticalAlignment="Center"
-								HorizontalAlignment="Left"
-								Width="45" Height="40"
-								CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\add.ico"
-									   Width="50"
-									   Height="28"
-									   HorizontalAlignment="Left"/>
-								
-							</StackPanel>
-						</Button>
-					</Grid>
+            <!-- Partie Gauche de la troisième ligne-->
 
-					<Grid Grid.Column="1"><!-- Copy -->
-						<Button Name="copy"
-								VerticalAlignment="Center"
-								HorizontalAlignment="Left"
-								Width="45" Height="40"
-								CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\copy.ico"
-									   Width="50"
-									   Height="28"
-									   HorizontalAlignment="Left"/>
+            <Grid Grid.Column="0">
 
-							</StackPanel>
-						</Button>
-					</Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="45" />
+                </Grid.RowDefinitions>
 
-					<Grid Grid.Column="2"> <!-- Cut -->
-						<Button Name="cut"
-								VerticalAlignment="Center"
-								HorizontalAlignment="Left"
-								Width="45" Height="40"
-								CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\cut.ico"
-									   Width="50"
-									   Height="28"
-									   HorizontalAlignment="Left"/>
+                <Grid Grid.Row="1">
+                    <Button Name="Home"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="180" Height="45"
+                            CornerRadius="8">
+                        <StackPanel>
+                            <Image Source="/Assets\home.ico"
+                                   Width="50"
+                                   Height="28"
+                                   HorizontalAlignment="Left" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Home"
+                                       Margin="-20" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
 
-							</StackPanel>
-						</Button>
-					</Grid>
+                <Grid Grid.Row="2">
+                    <Button Name="Desktop"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="180" Height="45"
+                            CornerRadius="8">
+                        <StackPanel>
+                            <Image Source="/Assets\computer.ico"
+                                   Width="50"
+                                   Height="28"
+                                   HorizontalAlignment="Left" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Desktop"
+                                       Margin="-20" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
 
-					<Grid Grid.Column="3"><!-- Paste -->
-						<Button Name="paste"
-								VerticalAlignment="Center"
-								HorizontalAlignment="Left"
-								Width="45" Height="40"
-								CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\paste.ico"
-									   Width="50"
-									   Height="28"
-									   HorizontalAlignment="Left"/>
+                <Grid Grid.Row="3">
+                    <Button Name="Documents"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="180" Height="45"
+                            CornerRadius="8">
+                        <StackPanel>
+                            <Image Source="/Assets\documents-folder.ico"
+                                   Width="50"
+                                   Height="28"
+                                   HorizontalAlignment="Left" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Documents"
+                                       Margin="-20" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
 
-							</StackPanel>
-						</Button>
-					</Grid>
+                <Grid Grid.Row="4">
+                    <Button Name="Downloads"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="180" Height="45"
+                            CornerRadius="8">
+                        <StackPanel>
+                            <Image Source="/Assets\download.ico"
+                                   Width="50"
+                                   Height="28"
+                                   HorizontalAlignment="Left" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Download"
+                                       Margin="-20" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
 
-					<Grid Grid.Column="4"><!-- Rename -->
-						<Button Name="rename"
-								VerticalAlignment="Center"
-								HorizontalAlignment="Center"
-								Width="45" Height="40"
-								CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\rename.ico"
-									   Width="50"
-									   Height="30"/>
-							</StackPanel>
-						</Button>
-					</Grid>
+                <Grid Grid.Row="5">
+                    <Button Name="Pictures"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="180" Height="45"
+                            CornerRadius="8">
+                        <StackPanel>
+                            <Image Source="/Assets\gallery.ico"
+                                   Width="50"
+                                   Height="28"
+                                   HorizontalAlignment="Left" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Picture"
+                                       Margin="-20" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
 
-					<Grid Grid.Column="5"> <!-- Delete -->
-						<Button Name="delete"
-								VerticalAlignment="Center"
-								HorizontalAlignment="Center"
-								Width="45" Height="40"
-								CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\delete.ico"
-									   Width="50"
-									   Height="28"/>
-							</StackPanel>
-						</Button>
-					</Grid>
-					
-					<Grid Grid.Column="6" Background="#EEEDED"/><!-- Blank Space Responsive -->
+                <Grid Grid.Row="6">
+                    <Button Name="Music"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="180" Height="45"
+                            CornerRadius="8">
+                        <StackPanel>
+                            <Image Source="/Assets\music.ico"
+                                   Width="50"
+                                   Height="28"
+                                   HorizontalAlignment="Left" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Music"
+                                       Margin="-20" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
 
-					<Grid Grid.Column="7"> <!-- Nearby Send -->
-						<Button Name="nearbysend"
-								VerticalAlignment="Center"
-								HorizontalAlignment="Center"
-								Width="45" Height="40"
-								CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\nearbysend.ico"
-									   Width="50"
-									   Height="28"/>
-							</StackPanel>
-						</Button>
-					</Grid>
+                <Grid Grid.Row="7">
+                    <Button Name="Trash"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="180" Height="45"
+                            CornerRadius="8">
+                        <StackPanel>
+                            <Image Source="/Assets\trash-can.ico"
+                                   Width="50"
+                                   Height="28"
+                                   HorizontalAlignment="Left" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Trash"
+                                       Margin="-20" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
 
-					<Grid Grid.Column="8"> <!-- Search-->
-						<Button Name="search"
-								VerticalAlignment="Center"
-								HorizontalAlignment="Left"
-								Width="45" Height="40"
-								CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\search.ico"
-									   Width="50"
-									   Height="28"
-									   HorizontalAlignment="Left"/>
-							</StackPanel>
-						</Button>
-					</Grid>
-				</Grid>
-			</Grid>
-		</Grid>			
-	</Grid>
+            </Grid>
+
+            <!-- Partie Droite de la troisième ligne-->
+
+            <Grid Grid.Column="1">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="41" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="45" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0"> <!-- Create -->
+                        <Button Name="create"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Width="45" Height="40"
+                                CornerRadius="8">
+                            <StackPanel>
+                                <Image Source="/Assets\add.ico"
+                                       Width="50"
+                                       Height="28"
+                                       HorizontalAlignment="Left" />
+
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Column="1"><!-- Copy -->
+                        <Button Name="copy"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Width="45" Height="40"
+                                CornerRadius="8">
+                            <StackPanel>
+                                <Image Source="/Assets\copy.ico"
+                                       Width="50"
+                                       Height="28"
+                                       HorizontalAlignment="Left" />
+
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Column="2"> <!-- Cut -->
+                        <Button Name="cut"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Width="45" Height="40"
+                                CornerRadius="8">
+                            <StackPanel>
+                                <Image Source="/Assets\cut.ico"
+                                       Width="50"
+                                       Height="28"
+                                       HorizontalAlignment="Left" />
+
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Column="3"><!-- Paste -->
+                        <Button Name="paste"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Width="45" Height="40"
+                                CornerRadius="8">
+                            <StackPanel>
+                                <Image Source="/Assets\paste.ico"
+                                       Width="50"
+                                       Height="28"
+                                       HorizontalAlignment="Left" />
+
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Column="4"><!-- Rename -->
+                        <Button Name="rename"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Width="45" Height="40"
+                                CornerRadius="8">
+                            <StackPanel>
+                                <Image Source="/Assets\rename.ico"
+                                       Width="50"
+                                       Height="30" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Column="5"> <!-- Delete -->
+                        <Button Name="delete"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Width="45" Height="40"
+                                CornerRadius="8">
+                            <StackPanel>
+                                <Image Source="/Assets\delete.ico"
+                                       Width="50"
+                                       Height="28" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Column="6" Background="#EEEDED" /><!-- Blank Space Responsive -->
+
+                    <Grid Grid.Column="7"> <!-- Nearby Send -->
+                        <Button Name="nearbysend"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Width="45" Height="40"
+                                CornerRadius="8">
+                            <StackPanel>
+                                <Image Source="/Assets\nearbysend.ico"
+                                       Width="50"
+                                       Height="28" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <Grid Grid.Column="8"> <!-- Search-->
+                        <Button Name="search"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Width="45" Height="40"
+                                CornerRadius="8">
+                            <StackPanel>
+                                <Image Source="/Assets\search.ico"
+                                       Width="50"
+                                       Height="28"
+                                       HorizontalAlignment="Left" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
 
 </Window>

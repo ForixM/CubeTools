@@ -13,10 +13,9 @@ namespace Extensions
     {
         static void Main(string[] args)
         {
-            
             FtpUtils ftp = new FtpUtils("127.0.0.1", "forix", "lolmdr");
 
-            
+
             /*List<string> files = ftp.GetFiles();
             foreach (string file in files)
             {
@@ -31,8 +30,6 @@ namespace Extensions
             {
                 Console.WriteLine(file);
             }*/
-
-
         }
     }
 }

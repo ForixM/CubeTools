@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Extensions", "Extensions\Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Manager", "Manager\Manager.csproj", "{2F2D2D5A-2360-421A-9800-AB7FBAF2ED5B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagerTests", "ManagerTests\ManagerTests.csproj", "{C6809C96-10B2-4AB3-80D1-8B40E9381978}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{2F2D2D5A-2360-421A-9800-AB7FBAF2ED5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F2D2D5A-2360-421A-9800-AB7FBAF2ED5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F2D2D5A-2360-421A-9800-AB7FBAF2ED5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6809C96-10B2-4AB3-80D1-8B40E9381978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6809C96-10B2-4AB3-80D1-8B40E9381978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6809C96-10B2-4AB3-80D1-8B40E9381978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6809C96-10B2-4AB3-80D1-8B40E9381978}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

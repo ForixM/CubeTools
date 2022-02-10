@@ -10,6 +10,7 @@ namespace Manager
     internal class CommandLine
     {
         #region Variables
+
         // Attributes
         private static DirectoryType _directoryType;
         private static string _promptLine;
@@ -44,13 +45,13 @@ namespace Manager
             using var watcher = new FileSystemWatcher(_directoryType.Path);
 
             watcher.NotifyFilter = NotifyFilters.Attributes
-                                 | NotifyFilters.CreationTime
-                                 | NotifyFilters.DirectoryName
-                                 | NotifyFilters.FileName
-                                 | NotifyFilters.LastAccess
-                                 | NotifyFilters.LastWrite
-                                 | NotifyFilters.Security
-                                 | NotifyFilters.Size;
+                                   | NotifyFilters.CreationTime
+                                   | NotifyFilters.DirectoryName
+                                   | NotifyFilters.FileName
+                                   | NotifyFilters.LastAccess
+                                   | NotifyFilters.LastWrite
+                                   | NotifyFilters.Security
+                                   | NotifyFilters.Size;
             /*
             watcher.Changed += _directoryType.ActualizeFiles();
             watcher.Created += _directoryType.ActualizeFiles();
@@ -66,6 +67,7 @@ namespace Manager
                 ReadCommand();
             }
         }
+
         // This function ends the process of the app
         public void End()
         {
@@ -147,6 +149,7 @@ namespace Manager
                                 _directoryType.ChangeDirectory();
                                 _directoryType = new DirectoryType(read[1]);
                             }
+
                             break;
                         case "pwd":
                             Console.WriteLine();
@@ -178,9 +181,8 @@ namespace Manager
                     Console.WriteLine("");
                 }
             }
-            
         }
-        
+
         // Help command
         public void Help()
         {
@@ -201,6 +203,7 @@ namespace Manager
             Console.WriteLine("exit : leave the console");
             Console.WriteLine("_____________________________________________________");
         }
+
         #endregion
     }
 }

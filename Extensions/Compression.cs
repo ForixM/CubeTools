@@ -14,6 +14,7 @@ namespace CubeTools
         ZIP,
         LZMA
     }
+
     public class Compression
     {
         public static void Init()
@@ -22,15 +23,13 @@ namespace CubeTools
             SevenZipBase.SetLibraryPath(path);
             Console.WriteLine(SevenZipBase.CurrentLibraryFeatures);
         }
+
         public static Task CompressDirectory(DirectoryType directory, FileType dest, CompressAlgo algo)
         {
             switch (algo)
             {
                 case CompressAlgo.ZIP:
-                    Action<object> action = (object obj) =>
-                    {
-                        ZipFile.CreateFromDirectory(directory.Path, dest.Path);
-                    };
+                    Action<object> action = (object obj) => { ZipFile.CreateFromDirectory(directory.Path, dest.Path); };
                     Task task = new Task(action, "compression");
                     task.Start();
                     return task;
@@ -71,6 +70,7 @@ namespace CubeTools
                     {
                         filePaths[i] = files[i].Path;
                     }
+
                     return compressor.CompressFilesAsync(dest.Path, filePaths);
             }
 
