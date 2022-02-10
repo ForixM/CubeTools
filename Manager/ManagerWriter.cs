@@ -154,12 +154,12 @@ namespace Manager
         {
             if (File.Exists(dest))
             {
-                File.Move(dest, ManagerReader.GenerateFileNameForModification(dest));
+                File.Move(dest, ManagerReader.GenerateNameForModification(dest));
                 return true;
             }
             else if (Directory.Exists(dest))
             {
-                Directory.Move(dest, ManagerReader.GenerateDirectoryNameForModification(dest));
+                Directory.Move(dest, ManagerReader.GenerateNameForModification(dest));
                 return true;
             }
             else
@@ -170,7 +170,7 @@ namespace Manager
 
         /// <summary>
         /// Overload 2 : Rename a file / dir using a path dest : no extension conversion<br></br>
-        /// - Action : Rename a file or dir with a dest. Generate a copy by default => <see cref="ManagerReader.GenerateFileNameForModification(string)"/><br></br>
+        /// - Action : Rename a file or dir with a dest. Generate a copy by default => <see cref="ManagerReader.GenerateNameForModification(string)"/><br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="source">the source file name or dir name</param>
@@ -184,9 +184,9 @@ namespace Manager
             else if (File.Exists(dest) || Directory.Exists(dest)) // The dest file exists
             {
                 if (ManagerReader.IsDirectory(source))
-                    Directory.Move(source, ManagerReader.GenerateDirectoryNameForModification(dest));
+                    Directory.Move(source, ManagerReader.GenerateNameForModification(dest));
                 else
-                    File.Move(source, ManagerReader.GenerateFileNameForModification(dest));
+                    File.Move(source, ManagerReader.GenerateNameForModification(dest));
                 return true;
             }
             else
@@ -237,9 +237,9 @@ namespace Manager
             else
             {
                 if (ft.IsDir)
-                    Directory.Move(ft.Path, ManagerReader.GenerateDirectoryNameForModification(dest));
+                    Directory.Move(ft.Path, ManagerReader.GenerateNameForModification(dest));
                 else
-                    File.Move(ft.Path, ManagerReader.GenerateFileNameForModification(dest));
+                    File.Move(ft.Path, ManagerReader.GenerateNameForModification(dest));
                 ft.Path = dest;
                 ManagerReader.ReadFileType(ref ft);
                 return true;
@@ -280,7 +280,7 @@ namespace Manager
 
         /// <summary>
         /// Overload 1 : Copy the file with no dest name <br></br>
-        /// - Action : Copy a file using format <see cref="ManagerReader.GenerateFileNameForModification(string)"/><br></br>
+        /// - Action : Copy a file using format <see cref="ManagerReader.GenerateNameForModification(string)"/><br></br>
         /// - Specification : If you want to specify the name of the copy, consider using <see cref="Copy(string, string, bool)"/><br></br>
         /// - Implementation : Check
         /// </summary>
@@ -290,7 +290,7 @@ namespace Manager
         {
             if (File.Exists(source))
             {
-                File.Copy(source, ManagerReader.GenerateFileNameForModification(source));
+                File.Copy(source, ManagerReader.GenerateNameForModification(source));
                 return true;
             }
 
@@ -319,7 +319,7 @@ namespace Manager
                 }
 
                 if (File.Exists(dest))
-                    File.Copy(source, ManagerReader.GenerateFileNameForModification(dest));
+                    File.Copy(source, ManagerReader.GenerateNameForModification(dest));
                 else
                     File.Copy(source, dest);
                 return true;
@@ -353,7 +353,7 @@ namespace Manager
                     }
                     else
                         return Copy(new DirectoryInfo(ft.Path),
-                            new DirectoryInfo(ManagerReader.GenerateDirectoryNameForModification(dest)), replace);
+                            new DirectoryInfo(ManagerReader.GenerateNameForModification(dest)), replace);
                 }
                 else
                 {
@@ -431,9 +431,9 @@ namespace Manager
         public static FileType Create(string extension = "")
         {
             string filename =
-                ManagerReader.GenerateFileNameForModification($"New {extension.ToUpper()} File.{extension}");
+                ManagerReader.GenerateNameForModification($"New {extension.ToUpper()} File.{extension}");
             if (extension == "")
-                filename = ManagerReader.GenerateFileNameForModification("New File");
+                filename = ManagerReader.GenerateNameForModification("New File");
             File.Create(filename).Close();
             return new FileType(filename);
         }
@@ -471,7 +471,7 @@ namespace Manager
         /// <returns>the associated fileType for the directory</returns>
         public static FileType CreateDir()
         {
-            string dest = ManagerReader.GenerateDirectoryNameForModification("New Folder");
+            string dest = ManagerReader.GenerateNameForModification("New Folder");
             Directory.CreateDirectory(dest);
             return ManagerReader.ReadFileType(dest);
         }
@@ -489,7 +489,7 @@ namespace Manager
         {
             if (Directory.Exists(path))
             {
-                string dest = ManagerReader.GenerateDirectoryNameForModification(path);
+                string dest = ManagerReader.GenerateNameForModification(path);
                 Directory.CreateDirectory(dest);
                 return ManagerReader.ReadFileType(dest);
             }

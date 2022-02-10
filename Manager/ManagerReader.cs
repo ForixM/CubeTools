@@ -221,10 +221,8 @@ namespace Manager
         /// <returns>A string that represents the name of the file without its extension</returns>
         public static string GetPathToNameNoExtension(string path)
         {
-            if (File.Exists(path))
+            if (File.Exists(path) || Directory.Exists(path))
                 return Path.GetFileNameWithoutExtension(path);
-            if (Directory.Exists(path))
-                return Path.GetDirectoryName(path);
             return "";
         }
 
@@ -251,7 +249,6 @@ namespace Manager
         /// <returns>Extension of a file</returns>
         public static string GetFileExtension(string path)
         {
-            
             return Path.GetExtension(path);
         }
 
@@ -345,7 +342,7 @@ namespace Manager
         /// Implementation : Check
         /// </summary>
         /// <returns>Generate a file name to create a copy</returns>
-        public static string GenerateFileNameForModification(string path)
+        public static string GenerateNameForModification(string path)
         {
             int i = 0;
             string res = path;
@@ -357,25 +354,6 @@ namespace Manager
                 i += 1;
                 res = $"{name}({i}){extension}";
             }
-
-            return res;
-        }
-
-        /// <summary>
-        /// This function takes a path and generate a new path to avoid overwritte an existing dir
-        /// Implementation : Check
-        /// </summary>
-        /// <returns>Generate a directory name to create a copy</returns>
-        public static string GenerateDirectoryNameForModification(string path)
-        {
-            int i = 0;
-            string res = path;
-            while (Directory.Exists(res) || File.Exists(res))
-            {
-                i += 1;
-                res = path + $"({i})";
-            }
-
             return res;
         }
 
@@ -394,21 +372,18 @@ namespace Manager
             {
                 if (s1[i] > s1[j])
                     return true;
-                else if (s2[j] > s1[i])
+                if (s2[j] > s1[i])
                     return false;
-                else
-                {
-                    i += 1;
-                    j += 1;
-                }
+                i += 1;
+                j += 1;
             }
 
             return i != limit1;
         }
 
         /// <summary>
-        /// Verifies if the fist given date is greater than the second one <br></br>
-        /// Must respect the format : day/month/year hour/minute/second format <br></br>
+        /// - Action: Verifies if the fist given date is greater than the second one <br></br>
+        /// - FORMAT: MONT/DAY/YEAR HOUR/MIN/SEC PM/AM <br></br>
         /// Implementation : Check
         /// </summary>
         /// <returns>Returns if the first one is more recent than the other</returns>
@@ -445,11 +420,11 @@ namespace Manager
 
             // Comapares Hours
             string[] hour = DateTime.Now.ToString().Split(' ')[1].Split(':');
-            for (int i = hour.Length - 1; i < hour.Length; i--)
+            for (int i = hour.Length - 1; i >= 0; i--)
             {
                 if (int.Parse(hour1[i]) > int.Parse(hour2[i]))
                     return true;
-                else if (int.Parse(hour1[i]) < int.Parse(hour2[i]))
+                if (int.Parse(hour1[i]) < int.Parse(hour2[i]))
                     return false;
             }
 
@@ -487,12 +462,11 @@ namespace Manager
         {
             if (size < 1024)
                 return $"{size} B";
-            else if (size < 1048576)
+            if (size < 1048576)
                 return $"{size / 1024} KB";
-            else if (size < 1073741824)
+            if (size < 1073741824)
                 return $"{size / 1048576} MB";
-            else
-                return $"{size / 1073741824} GB";
+            return $"{size / 1073741824} GB";
         }
 
         #endregion
@@ -848,8 +822,12 @@ namespace Manager
                     }
                 }
             }
-
             return bestFitft;
+        }
+        
+        public static FileType SearchByIndeterminedName(DirectoryType directoryType, string fullName)
+        {
+            return SearchByIndeterminedName(directoryType.ChildrenFiles, fullName);
         }
 
         #endregion

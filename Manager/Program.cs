@@ -12,8 +12,12 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            CommandLine cl = new CommandLine("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/ReaderTests");
-            cl.Process();
+            DirectoryType env = new DirectoryType(
+                "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/ReaderTests");
+            foreach (var ft in ManagerReader.SortBySize(env.ChildrenFiles))
+            {
+                Console.WriteLine(ft.Size);
+            }
         }
     }
 }
