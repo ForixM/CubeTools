@@ -103,10 +103,13 @@ namespace Manager
         {
             if (File.Exists(path))
                 return GetPathToName(new FileInfo(path).DirectoryName);
-            else if (Directory.Exists(path))
-                return GetPathToName(new DirectoryInfo(path).Parent.FullName);
-            else
-                return "";
+            if (Directory.Exists(path))
+            {
+                var directoryInfo = new DirectoryInfo(path).Parent;
+                if (directoryInfo != null)
+                    return GetPathToName(directoryInfo.FullName);
+            }
+            return "";
         }
 
         /// <summary>
@@ -129,7 +132,7 @@ namespace Manager
         {
             if (Directory.Exists(path))
                 return Directory.GetCreationTime(path).ToString();
-            else if (File.Exists(path))
+            if (File.Exists(path))
                 return File.GetCreationTime(path).ToString();
             return "";
         }
@@ -157,7 +160,7 @@ namespace Manager
         {
             if (Directory.Exists(path))
                 return Directory.GetLastAccessTime(path).ToString();
-            else if (File.Exists(path))
+            if (File.Exists(path))
                 return File.GetLastAccessTime(path).ToString();
             return "";
         }
@@ -201,20 +204,14 @@ namespace Manager
 
         /// <summary>
         /// - Action : Reformat an absolute path to the name of the file or dir <br></br>
-        /// Implementation : Check
+        /// - Implementation : Check
         /// </summary>
         /// <returns>A string that represents the name of an absolute path</returns>
         public static string GetPathToName(string path)
         {
-            int i = path.Length - 1;
-            string res = "";
-            while (i >= 0 && path[i] != '/' && path[i] != '\\')
-            {
-                res = path[i] + res;
-                i--;
-            }
-
-            return res;
+            if (File.Exists(path) || Directory.Exists(path))
+                return Path.GetFileName(path);
+            return "";
         }
 
         /// <summary>
@@ -222,18 +219,13 @@ namespace Manager
         /// Implementation : Check
         /// </summary>
         /// <returns>A string that represents the name of the file without its extension</returns>
-        public static string GetPathToNameNoExtension(string name)
+        public static string GetPathToNameNoExtension(string path)
         {
-            string res = "";
-            string[] listRes = GetPathToName(name).Split(".");
-            int i = 0;
-            while (i < listRes.Count() - 1)
-            {
-                res += listRes[i];
-                i += 1;
-            }
-
-            return res;
+            if (File.Exists(path))
+                return Path.GetFileNameWithoutExtension(path);
+            if (Directory.Exists(path))
+                return Path.GetDirectoryName(path);
+            return "";
         }
 
         /// <summary>
@@ -244,7 +236,11 @@ namespace Manager
         public static string GetNameToPath(string name)
         {
             if (File.Exists(name) || Directory.Exists(name))
-                return (Path.GetFullPath(name));
+            {
+                string fullPath = Path.GetFullPath(name);
+                fullPath = fullPath.Replace("\\", "/");
+                return fullPath;
+            }
             return name;
         }
 
@@ -255,8 +251,7 @@ namespace Manager
         /// <returns>Extension of a file</returns>
         public static string GetFileExtension(string path)
         {
-            if (Directory.Exists(path))
-                return "";
+            
             return Path.GetExtension(path);
         }
 

@@ -35,7 +35,7 @@ public class FileTests
     [Test]
     [TestCase("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/FileTests/init.txt", true)]
     [TestCase("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/FileTests/it.txt", false)]
-    
+    [TestCase("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/FileTests/reader", true)]
     public void Init(string filename, bool exist)
     {
         FileType ft = new FileType(filename);

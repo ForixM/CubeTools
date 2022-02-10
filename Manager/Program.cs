@@ -12,7 +12,8 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            DirectoryType dt = new DirectoryType("C:/Users/mateo/OneDrive/Documents");
+            CommandLine cl = new CommandLine("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/ReaderTests");
+            cl.Process();
         }
     }
 }
