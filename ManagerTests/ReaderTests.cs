@@ -39,7 +39,7 @@ public class ReaderTests
     }
     
     [Test] // see : IsFileHidden > ManagerReader
-    [TestCase("readerHidden", false)]
+    [TestCase("readerHidden", true)]
     [TestCase("reader.txt", false)]
     [TestCase("none", false)]
     [TestCase("readerHidden.txt", true)]
@@ -50,7 +50,7 @@ public class ReaderTests
     }
     
     [Test] // see : IsDirHidden > ManagerReader
-    [TestCase("readerHidden.txt", false)]
+    [TestCase("readerHidden.txt", true)]
     [TestCase("reader.txt", false)]
     [TestCase("none", false)]
     [TestCase("readerHidden", true)]
@@ -73,7 +73,7 @@ public class ReaderTests
     
     [Test] // see : IsFileArchived > ManagerReader
     [TestCase("readerArchived.txt", true)]
-    [TestCase("reader", false)]
+    [TestCase("reader", true)]
     [TestCase("none", false)]
     [TestCase("readerHidden", false)]
     public void IsFileArchived(string name, bool archived)
@@ -105,7 +105,7 @@ public class ReaderTests
     }
     
     [Test] // see : IsDirReadOnly > ManagerReader
-    [TestCase("readerReadOnly.txt", false)]
+    [TestCase("readerReadOnly.txt", true)]
     [TestCase("readerReadOnly", true)]
     [TestCase("readerCompressed.txt", false)]
     [TestCase("non existent", false)]
@@ -119,6 +119,17 @@ public class ReaderTests
             n.Attributes |= FileAttributes.ReadOnly;
         }
         Assert.AreEqual(readOnly, ManagerReader.IsDirReadOnly(name));
+    }
+
+    [Test]
+    [TestCase("size", FileAttributes.Archive, true)]
+    [TestCase("size.txt", FileAttributes.ReadOnly, true)]
+    [TestCase("readerHidden.txt", FileAttributes.Hidden, true)]
+    [TestCase("none existent", FileAttributes.Archive, false)]
+    public void HasAttribute(string name, FileAttributes fa, bool res)
+    {
+        name = env.Path + "/" + name;
+        Assert.AreEqual(res, ManagerReader.HasAttribute(fa, name));
     }
     
     #endregion
@@ -344,6 +355,8 @@ public class ReaderTests
     [Test]
     [TestCase("re", "reader.txt")]
     [TestCase("reader.","reader.txt")]
+    [TestCase("readerS", "readerSystem.txt")]
+    [TestCase("la", "lastEditionDate.txt")]
     public void SearchByIndeterminedName(string fullname, string res)
     {
         Assert.AreEqual(res, ManagerReader.SearchByIndeterminedName(env, fullname).Name);

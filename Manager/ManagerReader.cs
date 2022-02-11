@@ -30,20 +30,14 @@ namespace Manager
         // Implementation : Check
         public static bool IsFileHidden(string path)
         {
-            return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.Hidden) != 0);
+            return HasAttribute(FileAttributes.Hidden, path);
         }
 
         // IsDirHidden : Verify if the directory is hidden
         // Implementation Check
         public static bool IsDirHidden(string path)
         {
-            if (Directory.Exists(path))
-            {
-                DirectoryInfo directoryInfo = new DirectoryInfo(path);
-                return ((directoryInfo.Attributes & FileAttributes.Hidden) != 0);
-            }
-
-            return false;
+            return HasAttribute(FileAttributes.Hidden, path);
         }
         
 
@@ -51,21 +45,21 @@ namespace Manager
         // Implementation : Check
         public static bool IsFileCompressed(string path)
         {
-            return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.Compressed) != 0);
+            return HasAttribute(FileAttributes.Compressed, path);
         }
 
         // IsFileArchived : Verify if the file has the property Archived
         // Implementation : Check
         public static bool IsFileArchived(string path)
         {
-            return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.Archive) != 0);
+            return HasAttribute(FileAttributes.Archive, path);
         }
 
         // IsASystemFile : Verify if the file has the property File System
         // Implementation : Check
         public static bool IsASystemFile(string path)
         {
-            return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.System) != 0);
+            return HasAttribute(FileAttributes.System, path);
         }
         // IsAReadOnlyFile : Verify if the file has the property Read Only
         // Implementation : Check
@@ -77,10 +71,19 @@ namespace Manager
         // Implementation : Check
         public static bool IsDirReadOnly(string path)
         {
+            return HasAttribute(FileAttributes.ReadOnly, path);
+        }
+
+        public static bool HasAttribute(FileAttributes fa, string path)
+        {
+            if (File.Exists(path))
+            {
+                return (File.GetAttributes(path) & fa) != 0;
+            }
+
             if (Directory.Exists(path))
             {
-                DirectoryInfo directoryInfo = new DirectoryInfo(path);
-                return ((directoryInfo.Attributes & FileAttributes.ReadOnly) != 0);
+                return (new DirectoryInfo(path).Attributes & fa) != 0;
             }
 
             return false;
@@ -116,7 +119,7 @@ namespace Manager
         /// Overload 2 : see 
         ///  <see cref="GetParent(string)"/>
         /// </summary>
-        /// <param name="path">the filename or directory name</param>
+        /// <param name="ft">the fileType pointer to the path</param>
         /// <returns>Returns the parent dir using GetPathToName function</returns>
         public static string GetParent(FileType ft)
         {
@@ -296,7 +299,7 @@ namespace Manager
 
         /// <summary>
         /// Update FileType passed by reference
-        /// Implemenation : Check 
+        /// Implementation : Check 
         /// </summary>
         /// <param name="ft"></param>
         public static void ReadFileType(ref FileType ft)
@@ -317,12 +320,16 @@ namespace Manager
             else if (File.Exists(ft.Path))
             {
                 ft.Name = Path.GetFileName(ft.Path);
-                ft.ReadOnly = ((File.GetAttributes(ft.Path) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly);
-                ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
-                ft.Size = GetFileSize(ft.Path);
-                ft.Date = GetFileCreationDate(ft.Path);
-                ft.LastDate = GetFileLastEdition(ft.Path);
-                ft.Type = GetFileExtension(ft.Path);
+                if (ft.Path != null)
+                {
+                    ft.ReadOnly = ((File.GetAttributes(ft.Path) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly);
+                    ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
+                    ft.Size = GetFileSize(ft.Path);
+                    ft.Date = GetFileCreationDate(ft.Path);
+                    ft.LastDate = GetFileLastEdition(ft.Path);
+                    ft.Type = GetFileExtension(ft.Path);
+                }
+
                 ft.IsDir = false;
             }
             else
@@ -355,6 +362,18 @@ namespace Manager
                 res = $"{name}({i}){extension}";
             }
             return res;
+        }
+
+        public static bool IsPathCorrect(string path)
+        {
+            string name = Path.GetFileName(path);
+            if (name.Length > 165 || path.Length > 255)
+                return false;
+            if (path.Contains('/') || path.Contains('\\') || path.Contains(':') || path.Contains('*') ||
+                path.Contains('"') || path.Contains('<') || path.Contains('<') || path.Contains('>') ||
+                path.Contains('|'))
+                return false;
+            return true;
         }
 
         /// <summary>
@@ -804,21 +823,21 @@ namespace Manager
                     return ft;
                 else
                 {
-                    int _current_occ = 0;
-                    while (_current_occ < indeterminedName.Length)
+                    int currentOcc = 0;
+                    while (currentOcc < indeterminedName.Length)
                     {
-                        if (ft.Name[_current_occ] == indeterminedName[_current_occ])
-                            _current_occ++;
+                        if (ft.Name[currentOcc] == indeterminedName[currentOcc])
+                            currentOcc++;
                         else
                             break;
                     }
 
-                    if (_current_occ == indeterminedName.Length)
+                    if (currentOcc == indeterminedName.Length)
                         return ft;
-                    else if (_current_occ > _max_occ)
+                    else if (currentOcc > _max_occ)
                     {
                         bestFitft = ft;
-                        _max_occ = _current_occ;
+                        _max_occ = currentOcc;
                     }
                 }
             }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Manager
 {
@@ -28,7 +29,7 @@ namespace Manager
 
         /// <summary>
         /// - Action : Add an attribute to a file <br></br>
-        /// - Implementation : NOT Check
+        /// - Implementation : Check
         /// </summary>
         /// <param name="path">the path that has to be modified</param>
         /// <param name="attributes">attributes to add </param>
@@ -39,7 +40,7 @@ namespace Manager
 
         /// <summary>
         /// - Action : Remove a directory attributes  <br></br>
-        /// - Implementation : NOT Check
+        /// - Implementation : Check
         /// </summary>
         /// <param name="di">the directory that has to be modified</param>
         /// <param name="attributesToRemove">the attribute to remove</param>
@@ -58,8 +59,15 @@ namespace Manager
             di.Attributes |= attribute;
         }
 
-        // Implementation : NOT Check
-        private static bool SetAttributes(string path, bool set, FileAttributes fa)
+        /// <summary>
+        /// - Action : Set an attribute given in parameter
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="path">the path of the file</param>
+        /// <param name="set">whether it has to be set or not</param>
+        /// <param name="fa">the attribute that has to be set or not</param>
+        /// <returns>if it has been a success</returns>
+        public static bool SetAttributes(string path, bool set, FileAttributes fa)
         {
             if (File.Exists(path))
             {
@@ -83,57 +91,16 @@ namespace Manager
         }
 
         /// <summary>
-        /// - Action : Modify the Hidden attributes of a fileType and its associated file
-        /// - Implementation : NOT Check
+        /// - Action : Set an attribute given in parameter
+        /// - Implementation : Check
         /// </summary>
-        /// <param name="ft">the fileType</param>
-        /// <param name="set">set or unset the attribute</param>
-        /// <returns> the success of the function</returns>
-        public static bool ModifyAttributesHidden(FileType ft, bool set)
+        /// <param name="ft">a fileType associated to a file</param>
+        /// <param name="set">whether it has to be set or not</param>
+        /// <param name="fa">the attribute that has to be set or not</param>
+        /// <returns>if it has been a success</returns>
+        public static bool SetAttributes(FileType ft, bool set, FileAttributes fa)
         {
-            if (SetAttributes(ft.Path, set, FileAttributes.Hidden))
-            {
-                ft.Hidden = set;
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// - Action : Modify the Compressed attributes of a fileType and its associated file
-        /// - Implementation : NOT Check => BETTER USING EXTENSION ALGORITHMS
-        /// </summary>
-        /// <param name="ft">the fileType</param>
-        /// <param name="set">set or unset the attribute</param>
-        /// <returns> the success of the function</returns>
-        public static bool ModifyAttributesCompressed(FileType ft, bool set)
-        {
-            if (SetAttributes(ft.Path, set, FileAttributes.Compressed))
-            {
-                ft.Compressed = set;
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// - Action : Modify the Archived attributes of a fileType and its associated file
-        /// - Implementation : NOT Check => BETTER USING EXTENSION ALGORITHMS
-        /// </summary>
-        /// <param name="ft">the fileType</param>
-        /// <param name="set">set or unset the attribute</param>
-        /// <returns> the success of the function</returns>
-        public static bool ModifyAttributesArchived(FileType ft, bool set)
-        {
-            if (SetAttributes(ft.Path, set, FileAttributes.Archive))
-            {
-                ft.Archived = set;
-                return true;
-            }
-
-            return false;
+            return SetAttributes(ft.Path, set, fa);
         }
 
         #endregion
@@ -145,59 +112,76 @@ namespace Manager
         /// <summary>
         /// Overload 1 : Rename with no path dest <br></br>
         /// - Action : Rename a file without specified name and does not overwrite the file if there is one which has the same path <br></br>
-        /// - Specification : This function is not really usefull, consider using <see cref="Rename(string, string)"/><br></br>
-        /// - Implementation : Check
+        /// - Specification : This function is not really useful, consider using <see cref="Rename(string, string)"/><br></br>
+        /// - Possible errors : All avoided, UnauthorizedAccess controlled <br></br>
+        /// - Implementation : NOT Check
         /// </summary>
-        /// <param name="dest">the destination file name or dir name</param>
+        /// <param name="source">the destination file PATH or dir NAME</param>
         /// <returns>The success of the rename function</returns>
-        public static bool Rename(string dest)
+        public static bool Rename(string source)
         {
-            if (File.Exists(dest))
+            if (File.Exists(source))
             {
-                File.Move(dest, ManagerReader.GenerateNameForModification(dest));
-                return true;
-            }
-            else if (Directory.Exists(dest))
-            {
-                Directory.Move(dest, ManagerReader.GenerateNameForModification(dest));
-                return true;
-            }
-            else
-            {
+                string env = new FileInfo(source).Directory.FullName;
+                string dest = env + "/" + ManagerReader.GenerateNameForModification(Path.GetFileName(source));
+                if (ManagerReader.IsPathCorrect(dest))
+                {
+                    try
+                    {
+                        File.Move(source, dest);
+                    }
+                    catch { IOException errorException; } {return false;}
+                    return true;
+                }
                 return false;
             }
+            if (Directory.Exists(source))
+            {
+                string path = env + "/" + ManagerReader.GenerateNameForModification(Path.GetFileName(source));
+                if (ManagerReader.IsPathCorrect(path))
+                {
+                    try { Directory.Move(source, ManagerReader.GenerateNameForModification(source)); }
+                    catch (UnauthorizedAccessException errorException) { return false; }
+                    return true;
+                }
+                return false;
+            }
+
+            return false;
         }
 
         /// <summary>
-        /// Overload 2 : Rename a file / dir using a path dest : no extension conversion<br></br>
+        /// Overload 2 : Rename a file / dir using a path dest : no extension conversion <br></br>
         /// - Action : Rename a file or dir with a dest. Generate a copy by default => <see cref="ManagerReader.GenerateNameForModification(string)"/><br></br>
-        /// - Implementation : Check
+        /// - Possible Errors : All avoided, UnauthorizedAccess controlled, IOException controlled
+        /// - Implementation : NOT Check
         /// </summary>
-        /// <param name="source">the source file name or dir name</param>
-        /// <param name="dest">the destination file name or dir name</param>
+        /// <param name="source">the source path</param>
+        /// <param name="dest">the destination path</param>
         /// <returns>The success of the rename function</returns>
-        public static bool Rename(string source, string dest)
+        public static bool Rename(string source, string dest, string env)
         {
             if (!File.Exists(source) && !Directory.Exists(source)) // The source file exists
                 return false;
-
-            else if (File.Exists(dest) || Directory.Exists(dest)) // The dest file exists
+            
+            if (ManagerReader.IsDirectory(source) && ManagerReader.IsPathCorrect(source))
             {
-                if (ManagerReader.IsDirectory(source))
-                    Directory.Move(source, ManagerReader.GenerateNameForModification(dest));
-                else
-                    File.Move(source, ManagerReader.GenerateNameForModification(dest));
+                try { Directory.Move(source, dest); }
+                catch (IOException ioException) { return false; }
+                catch (UnauthorizedAccessException unauthorizedAccessException) { return false; }
                 return true;
             }
-            else
-            {
-                if (ManagerReader.IsDirectory(source))
-                    Directory.Move(source, dest);
-                else
-                    File.Move(source, ManagerReader.GetFileNameWithExtension(dest, Path.GetExtension(source)));
-            }
 
-            return true;
+            if (ManagerReader.IsFile(source) && ManagerReader.IsPathCorrect(source))
+            {
+                try
+                { File.Move(source, ManagerReader.GetFileNameWithExtension(dest, Path.GetExtension(source))); }
+                catch (IOException ioException) { return false; } // To be sure
+                catch (UnauthorizedAccessException unauthorizedAccessException) { return false; } // Access Exception
+                return true;
+            }
+                
+            return false;
         }
 
         /// <summary>
