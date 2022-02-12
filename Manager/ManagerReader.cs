@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -134,9 +135,9 @@ namespace Manager
         public static string GetFileCreationDate(string path)
         {
             if (Directory.Exists(path))
-                return Directory.GetCreationTime(path).ToString();
+                return Directory.GetCreationTime(path).ToString(CultureInfo.CurrentCulture);
             if (File.Exists(path))
-                return File.GetCreationTime(path).ToString();
+                return File.GetCreationTime(path).ToString(CultureInfo.CurrentCulture);
             return "";
         }
 
@@ -148,9 +149,9 @@ namespace Manager
         public static string GetFileLastEdition(string path)
         {
             if (Directory.Exists(path))
-                return Directory.GetLastWriteTime(path).ToString();
+                return Directory.GetLastWriteTime(path).ToString(CultureInfo.CurrentCulture);
             else if (File.Exists(path))
-                return File.GetLastWriteTime(path).ToString();
+                return File.GetLastWriteTime(path).ToString(CultureInfo.CurrentCulture);
             return "";
         }
 
@@ -162,9 +163,9 @@ namespace Manager
         public static string GetFileAccessDate(string path)
         {
             if (Directory.Exists(path))
-                return Directory.GetLastAccessTime(path).ToString();
+                return Directory.GetLastAccessTime(path).ToString(CultureInfo.CurrentCulture);
             if (File.Exists(path))
-                return File.GetLastAccessTime(path).ToString();
+                return File.GetLastAccessTime(path).ToString(CultureInfo.CurrentCulture);
             return "";
         }
 
@@ -179,29 +180,6 @@ namespace Manager
                 return new DirectoryInfo(path).EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
             else if (File.Exists(path))
                 return new FileInfo(path).Length;
-            return 0;
-        }
-
-        /// <summary>
-        /// -Action : Get the file size in byte using recursive method <br></br>
-        /// - Implementation : Recursion not efficient => DEPRECATED
-        /// </summary>
-        /// <returns>0 or the size of the file</returns>
-        private static long GetFileSizeDeprecated(string path)
-        {
-            if (Directory.Exists(path))
-            {
-                DirectoryInfo di = new DirectoryInfo(path);
-                long size = 0;
-                foreach (var fi in di.GetFiles())
-                    size += fi.Length;
-                foreach (var dic in di.GetDirectories())
-                    size += GetFileSizeDeprecated(dic.FullName);
-                return size;
-            }
-            else if (File.Exists(path))
-                return new FileInfo(path).Length;
-
             return 0;
         }
 
@@ -259,14 +237,15 @@ namespace Manager
         /// - Action : returns the file name of a absolute path using Path class
         /// - Implementation : NOT Check
         /// </summary>
-        /// <param name="full_path">full_path is supposed to exist</param>
+        /// <param name="fullPath">fullPath is supposed to exist</param>
+        /// <param name="newExtension">the extension of the file</param>
         /// <returns>the name of the file with its extension</returns>
-        public static string GetFileNameWithExtension(string full_path, string new_extension = "")
+        public static string GetFileNameWithExtension(string fullPath, string newExtension = "")
         {
-            if (new_extension == "")
-                return Path.GetFileName(Path.GetFullPath(full_path));
+            if (newExtension == "")
+                return Path.GetFileName(Path.GetFullPath(fullPath));
             else
-                return $"{Path.GetFileNameWithoutExtension(Path.GetFullPath(full_path))}{new_extension}";
+                return $"{Path.GetFileNameWithoutExtension(Path.GetFullPath(fullPath))}{newExtension}";
         }
 
         #endregion
@@ -345,21 +324,38 @@ namespace Manager
         // This region contains every algorithm used for basic treatment
 
         /// <summary>
-        /// This function takes a path and generate a new path to avoid overwritte an existing file <br></br>
-        /// Implementation : Check
+        /// - Action : This function takes a path and generate a new path to avoid overwrite an existing file <br></br>
+        /// - Error : 
+        /// - Implementation : NOT Check
         /// </summary>
-        /// <returns>Generate a file name to create a copy</returns>
+        /// <returns>Generate a file name</returns>
         public static string GenerateNameForModification(string path)
         {
             int i = 0;
             string res = path;
+            string dir = "";
+            if (File.Exists(path))
+            {
+                DirectoryInfo parent = new FileInfo(path).Directory;
+                if (parent != null)
+                    dir = parent.FullName;
+            }
+            else if (Directory.Exists(path))
+            {
+                DirectoryInfo parent = new DirectoryInfo(path).Parent;
+                if (parent != null)
+                    dir = parent.FullName;
+            }
+            else
+                return path;
+
             string extension = GetFileExtension(path);
             string name = GetPathToNameNoExtension(path);
 
             while (File.Exists(res) || Directory.Exists(res))
             {
                 i += 1;
-                res = $"{name}({i}){extension}";
+                res = $"{dir}/{name}({i}){extension}";
             }
             return res;
         }
@@ -369,7 +365,9 @@ namespace Manager
             string name = Path.GetFileName(path);
             if (name.Length > 165 || path.Length > 255)
                 return false;
-            if (path.Contains('/') || path.Contains('\\') || path.Contains(':') || path.Contains('*') ||
+            if (name.Contains('/') || name.Contains('\\') || name.Contains(':') || name.Contains('*') ||
+                name.Contains('"') || name.Contains('<') || name.Contains('<') || name.Contains('>') ||
+                name.Contains('|') || path.Contains('\\') || path.Contains('*') ||
                 path.Contains('"') || path.Contains('<') || path.Contains('<') || path.Contains('>') ||
                 path.Contains('|'))
                 return false;
@@ -431,14 +429,14 @@ namespace Manager
             }
 
             // Compares Hours format
-            string hourFormat = DateTime.Now.ToString().Split(' ')[2];
+            string hourFormat = DateTime.Now.ToString(CultureInfo.CurrentCulture).Split(' ')[2];
             if (hourFormat == date1List[2] && hourFormat != date2List[2])
                 return true;
             else if (hourFormat != date1List[2] && hourFormat == date2List[2])
                 return false;
 
             // Comapares Hours
-            string[] hour = DateTime.Now.ToString().Split(' ')[1].Split(':');
+            string[] hour = DateTime.Now.ToString(CultureInfo.CurrentCulture).Split(' ')[1].Split(':');
             for (int i = hour.Length - 1; i >= 0; i--)
             {
                 if (int.Parse(hour1[i]) > int.Parse(hour2[i]))
@@ -806,8 +804,8 @@ namespace Manager
         }
 
         /// <summary>
-        /// Naive research of a fileType using an indeterminatedName which will get the most revelant file
-        /// Implemenation : Check
+        /// Naive research of a fileType using an indeterminatedName which will get the most relevant file <br></br>
+        /// Implementation : Check
         /// </summary>
         /// <returns>return the fileType that has to be find</returns>
         public static FileType SearchByIndeterminedName(List<FileType> fileTypes, string indeterminedName)
@@ -815,9 +813,9 @@ namespace Manager
             if (fileTypes == null)
                 return null;
             FileType bestFitft = fileTypes[0];
-            int _max_occ = bestFitft.Name.Length;
-            List<FileType> _list = SelectFileTypeByNameSize(fileTypes, indeterminedName.Length);
-            foreach (FileType ft in _list)
+            int maxOcc = bestFitft.Name.Length;
+            List<FileType> list = SelectFileTypeByNameSize(fileTypes, indeterminedName.Length);
+            foreach (FileType ft in list)
             {
                 if (ft.Name == indeterminedName)
                     return ft;
@@ -834,10 +832,10 @@ namespace Manager
 
                     if (currentOcc == indeterminedName.Length)
                         return ft;
-                    else if (currentOcc > _max_occ)
+                    else if (currentOcc > maxOcc)
                     {
                         bestFitft = ft;
-                        _max_occ = currentOcc;
+                        maxOcc = currentOcc;
                     }
                 }
             }

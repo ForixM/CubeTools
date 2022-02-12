@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Manager
 {
@@ -12,12 +13,8 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            DirectoryType env = new DirectoryType(
-                "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/ReaderTests");
-            foreach (var ft in ManagerReader.SortBySize(env.ChildrenFiles))
-            {
-                Console.WriteLine(ft.Size);
-            }
+            DirectoryType env = new DirectoryType("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/ReaderTests");
+            env.AddFile("test", "txt");
         }
     }
 }

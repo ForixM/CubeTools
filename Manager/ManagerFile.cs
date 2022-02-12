@@ -14,6 +14,37 @@ namespace Manager
 {
     public class FileType
     {
+        protected bool Equals(FileType other)
+        {
+            return Path == other.Path && Name == other.Name && Type == other.Type && Size == other.Size && Date == other.Date && LastDate == other.LastDate && AccessDate == other.AccessDate && ReadOnly == other.ReadOnly && Hidden == other.Hidden && Compressed == other.Compressed && Archived == other.Archived && IsDir == other.IsDir;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((FileType) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = new HashCode();
+            hashCode.Add(Path);
+            hashCode.Add(Name);
+            hashCode.Add(Type);
+            hashCode.Add(Size);
+            hashCode.Add(Date);
+            hashCode.Add(LastDate);
+            hashCode.Add(AccessDate);
+            hashCode.Add(ReadOnly);
+            hashCode.Add(Hidden);
+            hashCode.Add(Compressed);
+            hashCode.Add(Archived);
+            hashCode.Add(IsDir);
+            return hashCode.ToHashCode();
+        }
+
         #region Variables
 
         // This region contains every variables that stores the information of the file
@@ -99,16 +130,7 @@ namespace Manager
 
         public void Dispose()
         {
-            this.Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                ////Number of instance you want to dispose
-            }
         }
 
         #endregion

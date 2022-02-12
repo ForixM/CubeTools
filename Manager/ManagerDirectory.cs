@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Security;
 
 namespace Manager
 {
     public class DirectoryType
     {
+        
         #region Variables
 
         // This region contains every variables of the DirectoryType class
@@ -65,12 +64,13 @@ namespace Manager
             _readOnly = false;
         }
 
-        public DirectoryType(string path) : base()
+        public DirectoryType(string path)
         {
             if (Directory.Exists(path))
             {
-                Directory.SetCurrentDirectory(path);
-                _path = Directory.GetCurrentDirectory();
+                try { Directory.SetCurrentDirectory(path); }
+                catch (SecurityException) { }
+                _path = path;
                 _childrenFiles = new List<FileType>();
                 foreach (var file in Directory.GetFiles(_path))
                     _childrenFiles.Add(GetChild(file));
@@ -78,6 +78,20 @@ namespace Manager
                     _childrenFiles.Add(GetChild(dir));
             }
 
+        }
+
+        // Others
+        protected bool Equals(DirectoryType other)
+        {
+            return _path == other._path && _name == other._name && Equals(_childrenFiles, other._childrenFiles) && _size == other._size && _date == other._date && _lastDate == other._lastDate && _accessDate == other._accessDate && _hidden == other._hidden && _readOnly == other._readOnly;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DirectoryType) obj);
         }
 
         #endregion
@@ -137,6 +151,26 @@ namespace Manager
         }
 
         /// <summary>
+        /// - Action : Add a file and create it to the directory
+        /// </summary>
+        /// <param name="name">the name of the file with no extension</param>
+        /// <param name="extension">the extension of the file</param>
+        public void AddFile(string name, string extension)
+        {
+            string path = $"{_path}/{name}.{extension}";
+            FileType ft = ManagerWriter.Create(path, extension);
+            ManagerReader.ReadFileType(ref ft);
+            _childrenFiles.Add(ft);
+        }
+
+        public void AddDir(string name)
+        {
+            FileType ft = ManagerWriter.CreateDir(_path + "/" + name);
+            ManagerReader.ReadFileType(ref ft);
+            _childrenFiles.Add(ft);
+        }
+
+        /// <summary>
         /// NOT IMPLEMENTED
         /// </summary>
         /// <returns></returns>
@@ -150,61 +184,58 @@ namespace Manager
         #region Delete
 
         /// <summary>
-        /// Chnage the current directory and remove children files
-        /// Implentation : Check
+        /// Change the current directory and remove children files
+        /// Implentation : NOT Check
         /// NOT PERFECT
         /// </summary>
-        public void ChangeDirectory()
+        public bool ChangeDirectory(string dest)
         {
-            foreach (var file in _childrenFiles)
-                file.Dispose();
+            if (Directory.Exists(dest))
+            {
+                Directory.SetCurrentDirectory(dest);
+                this.Delete();
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Delete()
+        {
+            // Delete all files
+            foreach (var ft in _childrenFiles)
+            {
+                ManagerWriter.Delete(ft);
+            }
+            _childrenFiles = new List<FileType>();
+            // Delete directory
+            ManagerWriter.DeleteDir(_path);
             _path = "";
             _size = 0;
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
 
         #endregion
 
         #region Operator
-        
-        private bool IsNull()
-        {
-            if (!Directory.Exists(this._path))
-            {
-                return true;
-            }
 
-            return false;
-        }
+        private bool IsNull() => !Directory.Exists(_path);
         public static bool operator==(DirectoryType dir1, DirectoryType dir2)
         {
-            if (dir1 is null && dir2 is null)
-                return true;
-            if ( (Directory.Exists(dir1._path) && dir1.IsNull()) || ((!Directory.Exists(dir2._path)) && dir1.IsNull() ) )
-                return true;
-            if (dir1._name != "" && dir2.Name != null)
-            {
-                bool res = true;
-                res &= (dir1.Path == dir2.Path);
-                res &= (dir1.Name == dir2.Name);
-                res &= (dir1.Size == dir2.Size);
-                res &= (dir1.Date == dir2.Date);
-                res &= (dir1.LastDate == dir2.LastDate);
-                res &= (dir1.AccessDate == dir2.AccessDate);
-                res &= (dir1.Hidden == dir2.Hidden);
-                res &= (dir1.ReadOnly == dir2.ReadOnly);
-                return res;
-            }
-
-            return false;
+            return Equals(dir1, dir2);
         }
-        
-
         public static bool operator!=(DirectoryType dir1, DirectoryType dir2)
         {
-            return !(dir1 == dir2);
+            return !Equals(dir1, dir2);
         }
         
         #endregion
+        
         #region CommandLine
 
         // NO NEED TO BE IMPLEMENTED, DEBUG FUNCTIONS
@@ -232,21 +263,21 @@ namespace Manager
         private string ConstructMessage(string type, string value)
         {
             string msg = value;
-            int max_size = 0;
+            int maxSize = 0;
             switch (type)
             {
                 case "LWT":
-                    max_size = 28;
+                    maxSize = 28;
                     break;
                 case "S":
-                    max_size = 28;
+                    maxSize = 28;
                     break;
                 case "N":
-                    max_size = 32;
+                    maxSize = 32;
                     break;
             }
 
-            for (int i = 0; i < max_size - value.Length; i++)
+            for (int i = 0; i < maxSize - value.Length; i++)
             {
                 msg += " ";
             }

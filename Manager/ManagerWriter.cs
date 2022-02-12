@@ -114,7 +114,7 @@ namespace Manager
         /// - Action : Rename a file without specified name and does not overwrite the file if there is one which has the same path <br></br>
         /// - Specification : This function is not really useful, consider using <see cref="Rename(string, string)"/><br></br>
         /// - Possible errors : All avoided, UnauthorizedAccess controlled <br></br>
-        /// - Implementation : NOT Check
+        /// - Implementation : Check
         /// </summary>
         /// <param name="source">the destination file PATH or dir NAME</param>
         /// <returns>The success of the rename function</returns>
@@ -122,29 +122,38 @@ namespace Manager
         {
             if (File.Exists(source))
             {
-                string env = new FileInfo(source).Directory.FullName;
-                string dest = env + "/" + ManagerReader.GenerateNameForModification(Path.GetFileName(source));
-                if (ManagerReader.IsPathCorrect(dest))
+                FileInfo env = new FileInfo(source);
+                if (env.DirectoryName != null)
                 {
-                    try
+                    string dest = env.DirectoryName.Replace('\\','/') + "/" + ManagerReader.GenerateNameForModification(source);
+                    Console.Write(dest);
+                    if (ManagerReader.IsPathCorrect(dest))
                     {
-                        File.Move(source, dest);
+                        try { File.Move(source, dest); }
+                        catch (IOException) { return false; }
+                        catch (UnauthorizedAccessException) { return false;}
+                        return true;
                     }
-                    catch { IOException errorException; } {return false;}
-                    return true;
                 }
-                return false;
             }
             if (Directory.Exists(source))
             {
-                string path = env + "/" + ManagerReader.GenerateNameForModification(Path.GetFileName(source));
-                if (ManagerReader.IsPathCorrect(path))
+                FileInfo env = new FileInfo(source);
+                if (env.DirectoryName != null)
                 {
-                    try { Directory.Move(source, ManagerReader.GenerateNameForModification(source)); }
-                    catch (UnauthorizedAccessException errorException) { return false; }
-                    return true;
+                    string path = env.DirectoryName + "/" + ManagerReader.GenerateNameForModification(Path.GetFileName(source));
+                    if (ManagerReader.IsPathCorrect(path))
+                    {
+                        try { Directory.Move(source, ManagerReader.GenerateNameForModification(source)); }
+                        catch (UnauthorizedAccessException) { return false; }
+                        catch (IOException) { return false;}
+                        return true;
+                    }
+                    return false;
                 }
+
                 return false;
+
             }
 
             return false;
@@ -154,33 +163,33 @@ namespace Manager
         /// Overload 2 : Rename a file / dir using a path dest : no extension conversion <br></br>
         /// - Action : Rename a file or dir with a dest. Generate a copy by default => <see cref="ManagerReader.GenerateNameForModification(string)"/><br></br>
         /// - Possible Errors : All avoided, UnauthorizedAccess controlled, IOException controlled
-        /// - Implementation : NOT Check
+        /// - Implementation : Check
         /// </summary>
         /// <param name="source">the source path</param>
         /// <param name="dest">the destination path</param>
         /// <returns>The success of the rename function</returns>
-        public static bool Rename(string source, string dest, string env)
+        public static bool Rename(string source, string dest)
         {
-            if (!File.Exists(source) && !Directory.Exists(source)) // The source file exists
-                return false;
-            
-            if (ManagerReader.IsDirectory(source) && ManagerReader.IsPathCorrect(source))
+            if (!File.Exists(source) && !Directory.Exists(source))
             {
-                try { Directory.Move(source, dest); }
-                catch (IOException ioException) { return false; }
-                catch (UnauthorizedAccessException unauthorizedAccessException) { return false; }
+                return false; 
+            }
+            if (Directory.Exists(source) && ManagerReader.IsPathCorrect(source))
+            {
+                try { Directory.Move(source, ManagerReader.GenerateNameForModification(dest)); }
+                catch (IOException) { return false; }
+                catch (UnauthorizedAccessException) { return false; }
                 return true;
             }
 
             if (ManagerReader.IsFile(source) && ManagerReader.IsPathCorrect(source))
             {
-                try
-                { File.Move(source, ManagerReader.GetFileNameWithExtension(dest, Path.GetExtension(source))); }
-                catch (IOException ioException) { return false; } // To be sure
-                catch (UnauthorizedAccessException unauthorizedAccessException) { return false; } // Access Exception
+                try { File.Move(source, ManagerReader.GenerateNameForModification(dest)); }
+                catch (IOException) { return false; } // To be sure
+                catch (UnauthorizedAccessException) { return false; } // Access Exception
                 return true;
             }
-                
+
             return false;
         }
 
@@ -189,7 +198,7 @@ namespace Manager
         /// Overload 3 : Try to rename a FileType using a newPath <br></br>
         /// - Action : Rename a FileType class path and its associated file using a string path <br></br>
         /// - Specification : Can be used for the UI implementation thanks to the list of <see cref="DirectoryType"/> class <br></br>
-        /// - Implementation : Check
+        /// - Implementation : NOT Check
         /// </summary>
         /// <param name="ft">the source file linked to FileType Class</param>
         /// <param name="dest">the destination file name or dir name</param>
@@ -197,46 +206,20 @@ namespace Manager
         /// <returns>The success of the rename action</returns>
         public static bool Rename(FileType ft, string dest, bool overwrite = false)
         {
-            if (!File.Exists(ft.Path) && !ft.IsDir)
-                return false;
-            else if (overwrite)
+            if (Rename(ft.Path, dest, overwrite))
             {
-                if (ft.IsDir)
-                {
-                    if (File.Exists(dest))
-                        return false;
-                    else
-                    {
-                        if (Directory.Exists(dest))
-                            Directory.Delete(dest, true);
-                        Directory.Move(ft.Path, dest);
-                    }
-                }
-                else
-                    File.Move(ft.Path, dest, true);
-
-                ft.Path = dest;
-                ManagerReader.ReadFileType(ref ft);
-            }
-            else
-            {
-                if (ft.IsDir)
-                    Directory.Move(ft.Path, ManagerReader.GenerateNameForModification(dest));
-                else
-                    File.Move(ft.Path, ManagerReader.GenerateNameForModification(dest));
-                ft.Path = dest;
                 ManagerReader.ReadFileType(ref ft);
                 return true;
             }
-
-            return true;
+            return false;
         }
 
         /// <summary>
-        /// Overload 4 : Rename with no path dest <br></br>
+        /// Overload 4 : Rename with path dest and overwrite option <br></br>
         /// - Action : Rename a file using two path (source and dest). Overwrite functionnality is enabled using the last parameter<br></br>
         /// - Specification : If you do not use the overwrite functionnality, consider using <see cref="Rename(string, string)"/><br></br>
-        /// - Implementation : Check
+        /// - Errors : All avoided thanks to <see cref="Rename(string, string)"/> and catch statement with the delete action<br></br>
+        /// - Implementation : NOT Check
         /// </summary>
         /// <param name="source">the source file name or dir name</param>
         /// <param name="dest">the destination file name or dir name</param>
@@ -244,20 +227,42 @@ namespace Manager
         /// <returns>The success of the rename function</returns>
         public static bool Rename(string source, string dest, bool overwrite = true)
         {
-            if (!File.Exists(source) || Directory.Exists(source))
+            if (!File.Exists(source) && !Directory.Exists(source))
                 return false;
-            else if (!overwrite)
-                Rename(source, dest);
-            else
+            if (!overwrite)
             {
-                if (File.Exists(dest))
-                    File.Delete(dest);
-                else if (Directory.Exists(dest))
-                    Directory.Delete(dest, true);
-                Rename(source, ManagerReader.GetFileNameWithExtension(dest));
+                return Rename(source, dest);
+            }
+                
+            if (File.Exists(dest))
+            {
+                // First Delete the last File
+                try { File.Delete(dest); }
+                catch (IOException) { return false; }
+                catch (UnauthorizedAccessException) { return false; }
+                // Then rename it
+                try { File.Move(source, ManagerReader.GenerateNameForModification(dest)); }
+                catch (IOException) { return false; }
+                catch (UnauthorizedAccessException) { return false; }
+
+                return true;
+
+            }
+            if (Directory.Exists(dest))
+            {
+                // First Delete the last File
+                try { Directory.Delete(dest); }
+                catch (IOException) { return false; }
+                catch (UnauthorizedAccessException) { return false; }
+                // Then rename it
+                try { Directory.Move(source, ManagerReader.GenerateNameForModification(dest)); }
+                catch (IOException) { return false; }
+                catch (UnauthorizedAccessException) { return false; }
+
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         // COPY FUNCTIONS
@@ -490,7 +495,7 @@ namespace Manager
         /// Overload 1 : Delete a file using its path if it exists <br></br>
         /// - Action : Delelte a file <br></br>
         /// - Specification : consider using <see cref="Delete(ref DirectoryType, FileType)"></see> for UI/> <br></br>
-        /// - Implementation : Check
+        /// - Implementation : NOT Check
         /// </summary>
         /// <param name="path">the path of the file</param>
         /// <returns>the success of the delete action</returns>
@@ -498,7 +503,8 @@ namespace Manager
         {
             if (File.Exists(path))
             {
-                File.Delete(path);
+                try { File.Delete(path); }
+                catch (IOException) { return false;}
                 return true;
             }
 
@@ -528,7 +534,8 @@ namespace Manager
         /// => UI Implementation (better using <see cref="Delete(ref DirectoryType, List{FileType})"/>) <br></br>
         /// Overload 3 : Delete a FileType contained in a DirectoryType <br></br>
         /// - Action : delete a FileType and its associated file, remove the child <br></br>
-        /// - Implementation : Check
+        /// - WARNING : THIS FUNCTION IS NOT CORRECT, CONSIDER USING <see cref="Delete(ref DirectoryType, List{FileType})"/> <br></br>
+        /// - Implementation : NOT Check
         /// </summary>
         /// <param name="dt">a DirectoryType associated to the current directory</param>
         /// <param name="ft">a FileType children of dt</param>
