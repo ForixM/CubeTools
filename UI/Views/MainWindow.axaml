@@ -11,8 +11,7 @@
         MinHeight="420" MinWidth="650"
         WindowStartupLocation="CenterScreen"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaTitleBarHeightHint="-1"
-        CanResize="True">
+        ExtendClientAreaTitleBarHeightHint="-1">
 
     <Window.Styles>
         <Style Selector="TextBlock">
@@ -32,10 +31,6 @@
             <RowDefinition Height="45" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
-        <Grid.Background>
-            <ImageBrush Stretch="Fill" Source="/Assets/WhiteBck.jpg" />
-        </Grid.Background>
         <!-- Première ligne-->
 
         <Grid Grid.Row="0" Margin="0 5 0 0">
