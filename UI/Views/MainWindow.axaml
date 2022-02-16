@@ -161,6 +161,7 @@
                     <RowDefinition Height="45" />
                 </Grid.RowDefinitions>
 
+				
                 <Grid Grid.Row="1">
                     <Button Name="Home"
                             VerticalAlignment="Center"
@@ -316,7 +317,9 @@
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Width="45" Height="40"
-                                CornerRadius="8">
+                                CornerRadius="8"
+								ClickMode="Press"
+								Command="{Binding _CreateButtonClicked}">
                             <StackPanel>
                                 <Image Source="/Assets\add.ico"
                                        Width="50"
