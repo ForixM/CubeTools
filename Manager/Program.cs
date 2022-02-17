@@ -13,8 +13,8 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            DirectoryType env = new DirectoryType("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/ReaderTests");
-            env.AddFile("test", "txt");
+            CommandLine cl = new CommandLine("C:/Users/mateo/OneDrive");
+            cl.Process();
         }
     }
 }

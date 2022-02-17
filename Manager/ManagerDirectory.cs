@@ -5,6 +5,10 @@ using System.Security;
 
 namespace Manager
 {
+    /// <summary>
+    /// This class represents a pointer to a loaded directory
+    /// It will managed our file tree and will use actions to modify files efficiently
+    /// </summary>
     public class DirectoryType
     {
         
@@ -49,8 +53,11 @@ namespace Manager
         #region Init
 
         // This region will generate correctly the DirectoryType with FileTypes
-
-        // Constructors
+        //
+        /// <summary>
+        /// - Action : Default constructor of DirectoryType class
+        /// - Implementation : Check
+        /// </summary>
         public DirectoryType()
         {
             _name = "";
@@ -64,34 +71,50 @@ namespace Manager
             _readOnly = false;
         }
 
+        /// <summary>
+        /// - Action : Load a pointer to a directory given in the parameter with its path
+        /// - Implementation : Check
+        /// - Errors : avoided Security and IO
+        /// </summary>
+        /// <param name="path">the path of the directory</param>
         public DirectoryType(string path)
         {
             if (Directory.Exists(path))
             {
-                try { Directory.SetCurrentDirectory(path); }
-                catch (SecurityException) { }
-                _path = path;
-                _childrenFiles = new List<FileType>();
-                foreach (var file in Directory.GetFiles(_path))
-                    _childrenFiles.Add(GetChild(file));
-                foreach (var dir in Directory.GetDirectories(_path))
-                    _childrenFiles.Add(GetChild(dir));
+                try
+                {
+                    Directory.SetCurrentDirectory(path);
+                }
+                catch (IOException)
+                {
+                    _path = "";
+                } // TODO IOException for DT
+                catch (SecurityException)
+                {
+                    _path = "";
+                } // TODO Security exception for DT
+                catch (UnauthorizedAccessException)
+                {
+                    _path = "";
+                }
+                finally
+                {
+                    _path = path;
+                    _name = ManagerReader.GetPathToName(path);
+                    _date = ManagerReader.GetFileCreationDate(path);
+                    _lastDate = ManagerReader.GetFileLastEdition(path);
+                    _accessDate = ManagerReader.GetFileAccessDate(path);
+                    _size = ManagerReader.GetFileSize(path);
+                    _hidden = ManagerReader.IsFileHidden(path);
+                    _readOnly = ManagerReader.IsAReadOnlyFile(path);
+                    _childrenFiles = new List<FileType>();
+                    foreach (var file in Directory.GetFiles(_path))
+                        _childrenFiles.Add(GetChild(file));
+                    foreach (var dir in Directory.GetDirectories(_path))
+                        _childrenFiles.Add(GetChild(dir));
+                }
             }
 
-        }
-
-        // Others
-        protected bool Equals(DirectoryType other)
-        {
-            return _path == other._path && _name == other._name && Equals(_childrenFiles, other._childrenFiles) && _size == other._size && _date == other._date && _lastDate == other._lastDate && _accessDate == other._accessDate && _hidden == other._hidden && _readOnly == other._readOnly;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((DirectoryType) obj);
         }
 
         #endregion
@@ -184,22 +207,37 @@ namespace Manager
         #region Delete
 
         /// <summary>
-        /// Change the current directory and remove children files
-        /// Implentation : NOT Check
+        /// -Action : Change the current directory and remove children files
+        /// Implementation : NOT Check
         /// NOT PERFECT
         /// </summary>
         public bool ChangeDirectory(string dest)
         {
             if (Directory.Exists(dest))
             {
-                Directory.SetCurrentDirectory(dest);
-                this.Delete();
-                return true;
+                string newPath = ManagerReader.GetNameToPath(dest);
+                // Erase last directory
+                foreach (var ft in ChildrenFiles)
+                { ft.Dispose(); }
+                ChildrenFiles.Clear();
+                // Replace
+                try
+                { Directory.SetCurrentDirectory(newPath); }
+                catch (IOException) { }
+                catch (SecurityException) {  }
+                finally {
+                    _path = newPath;
+                    SetChildrenFiles();
+                }
             }
 
             return false;
         }
 
+        /// <summary>
+        /// Delete function : delete the directory, its associated files in a high context level
+        /// Implementation : Not Check
+        /// </summary>
         public void Delete()
         {
             // Delete all files
@@ -209,12 +247,15 @@ namespace Manager
             }
             _childrenFiles = new List<FileType>();
             // Delete directory
-            ManagerWriter.DeleteDir(_path);
+            ManagerWriter.DeleteDir(_path, false);
             _path = "";
             _size = 0;
             Dispose();
         }
 
+        /// <summary>
+        /// Dispose the directoryType to 
+        /// </summary>
         public void Dispose()
         {
             GC.SuppressFinalize(this);
@@ -234,6 +275,22 @@ namespace Manager
             return !Equals(dir1, dir2);
         }
         
+        // Others
+        protected bool Equals(DirectoryType other)
+        {
+            return _path == other._path && _name == other._name && Equals(_childrenFiles, other._childrenFiles) 
+                   && _size == other._size && _date == other._date && _lastDate == other._lastDate 
+                   && _accessDate == other._accessDate && _hidden == other._hidden && _readOnly == other._readOnly;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DirectoryType) obj);
+        }
+
         #endregion
         
         #region CommandLine

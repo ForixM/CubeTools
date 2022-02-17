@@ -1,3 +1,4 @@
+using System.IO;
 using Manager;
 using NUnit.Framework;
 
@@ -10,8 +11,13 @@ namespace ManagerTests
         [SetUp]
         public void Setup()
         {
+            Directory.CreateDirectory(
+                "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/FileTests/");
             env = new DirectoryType(
-                "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/FileTests");
+                "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/FileTests/");
+            Directory.SetCurrentDirectory(env.Path);
+            env.AddFile("init", "txt");
+            env.AddFile("init2", "txt");
         }
 
         [Test]
@@ -33,11 +39,12 @@ namespace ManagerTests
         }
 
         [Test]
-        [TestCase("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/FileTests/init.txt", true)]
-        [TestCase("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/FileTests/it.txt", false)]
-        [TestCase("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/FileTests/reader", true)]
+        [TestCase("init.txt", true)]
+        [TestCase("it.txt", false)]
+        [TestCase("reader", true)]
         public void Init(string filename, bool exist)
         {
+            filename = env.Path + filename;
             FileType ft = new FileType(filename);
             FileType.Init(ref ft);
             if (!exist)
@@ -48,6 +55,12 @@ namespace ManagerTests
             {
                 Assert.AreEqual(true, ft == env.GetChild(ft.Name));
             }
+        }
+
+        [OneTimeTearDown]
+        public void TearDown()
+        {
+            env.Delete();
         }
     }
 }

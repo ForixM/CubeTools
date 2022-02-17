@@ -100,8 +100,7 @@ namespace Manager
         {
             if (File.Exists(path) || Directory.Exists(path))
             {
-                Name = System.IO.Path.GetFileName(path);
-                Path = System.IO.Path.GetFullPath(path);
+                Name = ManagerReader.GetPathToName(path);
             }
             else
             {

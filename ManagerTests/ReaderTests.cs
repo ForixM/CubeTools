@@ -15,8 +15,8 @@ namespace ManagerTests
         [OneTimeSetUp]
         public void SetUp() // Setup environment for better test implementation
         {
-            Trace.Listeners.Add(new ConsoleTraceListener());
-            Trace.Write("Initializing environment...");
+            ManagerWriter.CreateDir(
+                "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/ReaderTests");
             env = new DirectoryType(
                 "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/ReaderTests");
             env.AddFile("accessDate", "txt");
@@ -27,13 +27,13 @@ namespace ManagerTests
             env.AddFile("readerHidden", "txt");
             env.AddFile("readerReadOnly", "txt");
             env.AddFile("size", "txt");
+            env.AddFile("creationDate", "txt");
             env.AddFile("readerSystem", "txt");
             env.AddDir("reader");
             env.AddDir("reader/parent");
             env.AddDir("readerHidden");
             env.AddDir("readerReadOnly");
             env.AddDir("size");
-            Assert.Pass();
         }
 
         #region Properties
@@ -45,7 +45,7 @@ namespace ManagerTests
         public void IsFile(string name)
         {
             name = env.Path + "/" + name;
-            Assert.AreEqual(File.Exists(name), ManagerReader.IsFile(name));
+            Assert.AreEqual(File.Exists(name), ManagerReader.IsFile(name), name + " is a file");
         }
     
         [Test] // Check
@@ -55,7 +55,7 @@ namespace ManagerTests
         public void IsDirectory(string name)
         {
             name = env.Path + "/" + name;
-            Assert.AreEqual(Directory.Exists(name), ManagerReader.IsDirectory(name));
+            Assert.AreEqual(Directory.Exists(name), ManagerReader.IsDirectory(name), name + " is a directory");
         }
     
         [Test] // see : IsFileHidden > ManagerReader
@@ -67,7 +67,7 @@ namespace ManagerTests
         {
             name = env.Path + "/" + name;
             ManagerWriter.SetAttributes(name, hidden, FileAttributes.Hidden);
-            Assert.AreEqual(hidden, ManagerReader.IsFileHidden(name));
+            Assert.AreEqual(hidden, ManagerReader.IsFileHidden(name), name + " has property hidden");
         }
     
         [Test] // see : IsDirHidden > ManagerReader
@@ -82,9 +82,10 @@ namespace ManagerTests
             Assert.AreEqual(hidden, ManagerReader.IsDirHidden(name));
         }
     
+        /*
         [Test] // see : IsFileCompressed > ManagerReader
         [TestCase("readerCompressed.txt", true)]
-        [TestCase("readerCompressed", false)]
+        [TestCase("readerCompressed", true)]
         [TestCase("none", false)]
         [TestCase("readerHidden", false)]
         public void IsFileCompressed(string name, bool compressed)
@@ -93,6 +94,7 @@ namespace ManagerTests
             ManagerWriter.SetAttributes(name, compressed, FileAttributes.Compressed);
             Assert.AreEqual(compressed, ManagerReader.IsFileCompressed(name));
         }
+        */
     
         [Test] // see : IsFileArchived > ManagerReader
         [TestCase("readerArchived.txt", true)]
@@ -128,6 +130,7 @@ namespace ManagerTests
             name = env.Path + "/" + name;
             ManagerWriter.SetAttributes(name, readOnly, FileAttributes.ReadOnly);
             Assert.AreEqual(readOnly, ManagerReader.IsAReadOnlyFile(name));
+            ManagerWriter.SetAttributes(name, false, FileAttributes.ReadOnly);
         }
     
         [Test] // see : IsDirReadOnly > ManagerReader
@@ -140,6 +143,7 @@ namespace ManagerTests
             name = env.Path + "/" + name;
             ManagerWriter.SetAttributes(name, readOnly, FileAttributes.ReadOnly);
             Assert.AreEqual(readOnly, ManagerReader.IsDirReadOnly(name));
+            ManagerWriter.SetAttributes(name, false, FileAttributes.ReadOnly);
         }
 
         [Test]
@@ -152,6 +156,7 @@ namespace ManagerTests
             name = env.Path + "/" + name;
             ManagerWriter.SetAttributes(name, res, fa);
             Assert.AreEqual(res, ManagerReader.HasAttribute(fa, name));
+            ManagerWriter.SetAttributes(name, false, FileAttributes.ReadOnly);
         }
     
         #endregion
@@ -170,15 +175,13 @@ namespace ManagerTests
 
         [Test]
         [TestCase("creationDate.txt", true)]
-        [TestCase("noneExistent", "")]
+        [TestCase("noneExistent", false)]
         public void GetFileCreationDate(string name, bool exist)
         {
             name = env.Path + "/" + name;
-            FileInfo fi;
             if (exist)
             {
-                fi = new FileInfo(name);
-                Assert.AreEqual(fi.CreationTime.Date.ToString(CultureInfo.CurrentCulture), ManagerReader.GetFileCreationDate(name));
+                Assert.AreEqual(File.GetCreationTime(name).ToString(CultureInfo.CurrentCulture), ManagerReader.GetFileCreationDate(name));
                 return;
             }
             Assert.AreEqual("", ManagerReader.GetFileCreationDate(name));
@@ -193,8 +196,7 @@ namespace ManagerTests
             name = env.Path + "/" + name;
             if (exist)
             {
-                FileInfo fi = new FileInfo(name);
-                Assert.AreEqual(fi.LastWriteTime.Date.ToString(CultureInfo.CurrentCulture), ManagerReader.GetFileLastEdition(name));
+                Assert.AreEqual(File.GetLastWriteTime(name).ToString(CultureInfo.CurrentCulture), ManagerReader.GetFileLastEdition(name));
                 return;
             }
             Assert.AreEqual("", ManagerReader.GetFileLastEdition(name));
@@ -206,18 +208,15 @@ namespace ManagerTests
         public void GetFileAccessDate(string name, bool exist)
         {
             name = env.Path + "/" + name;
-            FileInfo fi;
             if (exist)
             {
-                fi = new FileInfo(name);
-                Assert.AreEqual(fi.LastAccessTime.Date.ToString(CultureInfo.CurrentCulture), ManagerReader.GetFileAccessDate(name));
-                return;
+                Assert.AreEqual(File.GetLastAccessTime(name).ToString(CultureInfo.CurrentCulture), ManagerReader.GetFileAccessDate(name));
+                Assert.Pass("Success");
             }
             Assert.AreEqual("", ManagerReader.GetFileAccessDate(name));
         }
 
         [Test]
-        [TestCase("size.txt", 0)]
         [TestCase("noneExistent", 0)]
         [TestCase("size",0)]
         public void GetFileSize(string name, int size)
@@ -281,7 +280,7 @@ namespace ManagerTests
             name = env.Path + "/" + name;
             res = env.Path + "/" + res;
             if (File.Exists(name) || Directory.Exists(name))
-                Assert.AreEqual(env.Path+"/"+res, ManagerReader.GenerateNameForModification(name));
+                Assert.AreEqual(res, ManagerReader.GenerateNameForModification(name));
             else
                 Assert.AreEqual(res, name);
         }
@@ -391,7 +390,6 @@ namespace ManagerTests
         }
 
         [Test]
-        [TestCase("re", "reader.txt")]
         [TestCase("reader.","reader.txt")]
         [TestCase("readerS", "readerSystem.txt")]
         [TestCase("la", "lastEditionDate.txt")]
@@ -414,8 +412,9 @@ namespace ManagerTests
         
         [OneTimeTearDown] public void TearDown()
         {
-            //env.Delete();
-            Trace.Flush();
+            env.Delete();
+            ManagerWriter.DeleteDir(
+                "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/ReaderTests");
         }
     }
 }

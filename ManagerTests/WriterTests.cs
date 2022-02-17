@@ -10,8 +10,11 @@ namespace ManagerTests
         
         [OneTimeSetUp] public void Setup()
         {
+            ManagerWriter.CreateDir(
+                "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/WriterTests");
             env = new DirectoryType("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/ManagerTests/Tests/WriterTests");
             env.AddFile("attributes", "txt");
+            // For Rename purposes
             env.AddFile("rename1(1)", "txt");
             env.AddFile("rename2(1)", "txt");
             env.AddFile("rename2", "txt");
@@ -20,13 +23,17 @@ namespace ManagerTests
             env.AddFile("rename3(2)", "txt");
             env.AddFile("rename4", "txt");
             env.AddFile("rename4(1)", "txt");
+            // For Copy purposes
+            env.AddFile("copy", "txt");
+            env.AddFile("copy1", "txt");
+            env.AddFile("copy2", "txt");
+            // Others
             env.AddFile("test1", "txt");
             env.AddFile("test1(1)", "txt");
             env.AddDir("attributes");
             env.AddDir("rename");
         }
 
-        
         [Test]
         [TestCase("attributes.txt", FileAttributes.Hidden, false)] 
         [TestCase("attributes.txt", FileAttributes.Hidden, true)] 
@@ -38,6 +45,7 @@ namespace ManagerTests
             name = env.Path + "/" + name;
             ManagerWriter.SetAttributes(name, set, fa);
             Assert.AreEqual(true, set == ManagerReader.HasAttribute(fa, name));
+            ManagerWriter.SetAttributes(name, !set, fa);
         }
 
         [Test]
@@ -107,11 +115,26 @@ namespace ManagerTests
                 ManagerWriter.Rename(ftD, nameS);
             }
         }
+
+        [Test]
+        [TestCase("copy1.txt")]
+        [TestCase("NonExistent")]
+        public void Copy1(string name)
+        {
+            name = env + name;
+            string res = ManagerWriter.Copy(name);
+            Assert.IsTrue(ManagerWriter.Delete(res));
+        }
         
         [Test]
-        [TestCase()]
-        
-        
+        [TestCase("copy2.txt")]
+        [TestCase("nonExistent")]
+        public void Copy2(string name)
+        {
+            name = env + name;
+            
+        }
+
         [OneTimeTearDown]
         public void TearDown()
         {

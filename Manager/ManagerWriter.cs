@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using System.Security;
 using Microsoft.VisualBasic.FileIO;
 
 namespace Manager
@@ -33,9 +34,9 @@ namespace Manager
         /// </summary>
         /// <param name="path">the path that has to be modified</param>
         /// <param name="attributes">attributes to add </param>
-        private static void AddFileAttribute(string path, FileAttributes attributes)
+        private static void AddFileAttribute(string path, FileAttributes attributes) // TODO Implement exception of AddFileAttributes
         {
-            File.SetAttributes(path, attributes);
+            File.SetAttributes(path, attributes); 
         }
 
         /// <summary>
@@ -44,9 +45,9 @@ namespace Manager
         /// </summary>
         /// <param name="di">the directory that has to be modified</param>
         /// <param name="attributesToRemove">the attribute to remove</param>
-        private static void RemoveDirAttribute(DirectoryInfo di, FileAttributes attributesToRemove)
+        private static void RemoveDirAttribute(DirectoryInfo di, FileAttributes attributesToRemove) // TODO Implement exception of DirAttributes
         {
-            di.Attributes = di.Attributes & ~attributesToRemove;
+            di.Attributes = di.Attributes & ~attributesToRemove; 
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace Manager
         /// </summary>
         /// <param name="di">the directory that has to be modified</param>
         /// <param name="attribute">the attribute that has to be added</param>
-        private static void AddDirAttribute(DirectoryInfo di, FileAttributes attribute)
+        private static void AddDirAttribute(DirectoryInfo di, FileAttributes attribute) // TODO Implement exception of DirAttributes
         {
             di.Attributes |= attribute;
         }
@@ -118,7 +119,7 @@ namespace Manager
         /// </summary>
         /// <param name="source">the destination file PATH or dir NAME</param>
         /// <returns>The success of the rename function</returns>
-        public static bool Rename(string source)
+        public static bool Rename(string source) // TODO Implement exception of Rename
         {
             if (File.Exists(source))
             {
@@ -168,7 +169,7 @@ namespace Manager
         /// <param name="source">the source path</param>
         /// <param name="dest">the destination path</param>
         /// <returns>The success of the rename function</returns>
-        public static bool Rename(string source, string dest)
+        public static bool Rename(string source, string dest) // TODO Implement exception of Rename
         {
             if (!File.Exists(source) && !Directory.Exists(source))
             {
@@ -225,7 +226,7 @@ namespace Manager
         /// <param name="dest">the destination file name or dir name</param>
         /// <param name="overwrite">true : you want to overwrite | false : you want a single copy</param>
         /// <returns>The success of the rename function</returns>
-        public static bool Rename(string source, string dest, bool overwrite = true)
+        public static bool Rename(string source, string dest, bool overwrite = true) // TODO Implement exception of Rename
         {
             if (!File.Exists(source) && !Directory.Exists(source))
                 return false;
@@ -274,16 +275,21 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <param name="source">the source file name or dir full path</param>
-        /// <returns>The success of the rename function</returns>
-        public static bool Copy(string source)
+        /// <returns>The new path created</returns>
+        public static string Copy(string source) //TODO Implement Exception for Overload 2 of Copy function
         {
             if (File.Exists(source))
             {
-                File.Copy(source, ManagerReader.GenerateNameForModification(source));
-                return true;
+                string res = ManagerReader.GenerateNameForModification(source);
+                try
+                { File.Copy(source, res); }
+                catch (IOException) 
+                { return ""; }
+                catch (UnauthorizedAccessException)
+                { return "";}
+                return res;
             }
-
-            return false;
+            return "";
         }
 
         /// <summary>
@@ -291,11 +297,11 @@ namespace Manager
         /// - Action : Copy file source and create one (or replace it) to dest <br></br>
         /// - Implementation : Check
         /// </summary>
-        /// <param name="source"></param>
+        /// <param name="source">the source file or folder</param>
         /// <param name="dest">the dest file or folder</param>
         /// <param name="replace">Replace a file or not : USE WITH PRECAUTION</param>
-        /// <returns></returns>
-        public static bool Copy(string source, string dest, bool replace = false)
+        /// <returns>Returns the new file created, empty for errors</returns>
+        public static string Copy(string source, string dest, bool replace = false) //TODO Implement Exception for Copy Function
         {
             if (File.Exists(source))
             {
@@ -308,13 +314,16 @@ namespace Manager
                 }
 
                 if (File.Exists(dest))
-                    File.Copy(source, ManagerReader.GenerateNameForModification(dest));
-                else
-                    File.Copy(source, dest);
-                return true;
+                {
+                    string res = ManagerReader.GenerateNameForModification(dest);
+                    File.Copy(source, res);
+                    return res;
+                }
+                File.Copy(source, dest);
+                return dest;
             }
 
-            return false;
+            return "";
         }
 
         /// <summary>
@@ -329,7 +338,7 @@ namespace Manager
         /// <param name="dest">the dest path</param>
         /// <param name="replace">files and dirs have to be replaced</param>
         /// <returns>the success of the action</returns>
-        public static bool Copy(FileType ft, string dest, bool replace)
+        public static bool Copy(FileType ft, string dest, bool replace) // TODO Double check UI Implementation
         {
             if (ft.IsDir)
             {
@@ -337,7 +346,7 @@ namespace Manager
                 {
                     if (replace)
                     {
-                        Directory.Delete(dest, true);
+                        Directory.Delete(dest, true); // TODO Verify code structure, maybe better using string or not
                         return Copy(new DirectoryInfo(ft.Path), new DirectoryInfo(dest), replace);
                     }
                     else
@@ -350,8 +359,7 @@ namespace Manager
                     return Copy(new DirectoryInfo(ft.Path), new DirectoryInfo(dest), replace);
                 }
             }
-
-            return Copy(ft.Path, dest, replace);
+            return (Copy(ft.Path, dest, replace) != "");
         }
 
         /// <summary>
@@ -363,7 +371,7 @@ namespace Manager
         /// <param name="target">the DirectoryInfo of the destination</param>
         /// <param name="replace">if the directory have to be replaced if it exists</param>
         /// <returns>the success of the action</returns>
-        public static bool Copy(DirectoryInfo source, DirectoryInfo target, bool replace)
+        public static bool Copy(DirectoryInfo source, DirectoryInfo target, bool replace) // TODO Verification of this function
         {
             if (!Directory.Exists(target.FullName))
                 return false;
@@ -382,30 +390,6 @@ namespace Manager
             return true;
         }
 
-        /// <summary>
-        /// Overload 5 : Copy a directory and its children files <br></br>
-        /// - Action : If the dest directory already exists, then rename the copy <br></br>
-        /// - Specification : this function can only be useful when you want to make a self copy of the current dir <br></br>
-        /// - Implementation : DEPRECATED OVERLOAD OF COPY, consider using <see cref="Copy(FileType, string, bool)"></see> instead/>
-        /// </summary>
-        public static void Copy(ref DirectoryType dt, string dest, bool replace)
-        {
-            if (Directory.Exists(dt.Path))
-            {
-                /*
-                if (Directory.Exists(dest))
-                    dt.Path = ManagerReader.GenerateDirectoryNameForModification(dest);
-                else
-                    dt.Path = dest;
-
-                foreach (FileType fileType in dt.ChildrenFiles)
-                {
-                    Copy(fileType, $"{dest}/{fileType.Name}", replace);
-                }
-                */
-            }
-        }
-
         // CREATE FUNCTIONS
 
         /// <summary>
@@ -417,7 +401,7 @@ namespace Manager
         /// </summary>
         /// <param name="extension">the extension given to the file. Default value is "" for directories</param>
         /// <returns>a new fileType linked to the file</returns>
-        public static FileType Create(string extension = "")
+        public static FileType Create(string extension = "") // TODO Verify Exceptions
         {
             string filename =
                 ManagerReader.GenerateNameForModification($"New {extension.ToUpper()} File.{extension}");
@@ -503,8 +487,12 @@ namespace Manager
         {
             if (File.Exists(path))
             {
-                try { File.Delete(path); }
-                catch (IOException) { return false;}
+                try
+                { File.Delete(path); }
+                catch (IOException)
+                { return false; }
+                catch (SecurityException)
+                { return false;}
                 return true;
             }
 
@@ -597,8 +585,14 @@ namespace Manager
                     }
                 }
 
-                Directory.Delete(path, true);
-                return true;
+                try
+                {
+                    Directory.Delete(path, true);
+                }
+                catch (IOException)
+                {
+                    return false;
+                }
             }
 
             return false;

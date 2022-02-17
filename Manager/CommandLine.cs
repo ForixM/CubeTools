@@ -85,8 +85,6 @@ namespace Manager
             if (ManagerReader.IsDirectory(path))
             {
                 _directoryType.ChangeDirectory(path);
-                _directoryType.Path = path;
-                _directoryType.SetChildrenFiles();
             }
         }
 
@@ -147,7 +145,6 @@ namespace Manager
                             if (read.Count() == 2 && System.IO.Directory.Exists(read[1]))
                             {
                                 _directoryType.ChangeDirectory(read[1]);
-                                _directoryType = new DirectoryType(read[1]);
                             }
                             break;
                         case "pwd":
@@ -156,6 +153,9 @@ namespace Manager
                             Console.WriteLine("-----");
                             Console.WriteLine(_directoryType.Path);
                             Console.WriteLine();
+                            break;
+                        case "refresh":
+                            _directoryType.SetChildrenFiles();
                             break;
                         case "exit":
                             End();

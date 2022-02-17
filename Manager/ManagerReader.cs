@@ -75,7 +75,7 @@ namespace Manager
             return HasAttribute(FileAttributes.ReadOnly, path);
         }
 
-        public static bool HasAttribute(FileAttributes fa, string path)
+        public static bool HasAttribute(FileAttributes fa, string path) // TODO Verify Exception
         {
             if (File.Exists(path))
             {
@@ -103,7 +103,7 @@ namespace Manager
         /// </summary>
         /// <param name="path">the filename or directory name</param>
         /// <returns>Returns the parent dir using GetPathToName function</returns>
-        public static string GetParent(string path)
+        public static string GetParent(string path) // TODO Verify Exceptions
         {
             if (File.Exists(path))
                 return GetPathToName(new FileInfo(path).DirectoryName);
@@ -132,7 +132,7 @@ namespace Manager
         ///  - Implementation : Check <br></br>
         /// </summary>
         /// <returns>Returns the creation date either of a file or a directory</returns>
-        public static string GetFileCreationDate(string path)
+        public static string GetFileCreationDate(string path) // TODO Verify Access right
         {
             if (Directory.Exists(path))
                 return Directory.GetCreationTime(path).ToString(CultureInfo.CurrentCulture);
@@ -146,7 +146,7 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <returns>A string value that represents the last time the file or directory was modified</returns>
-        public static string GetFileLastEdition(string path)
+        public static string GetFileLastEdition(string path) // TODO Verify Access right
         {
             if (Directory.Exists(path))
                 return Directory.GetLastWriteTime(path).ToString(CultureInfo.CurrentCulture);
@@ -160,7 +160,7 @@ namespace Manager
         /// Implementation : Check
         /// </summary>
         /// <returns>A string value that represents the last time the file or directory was accessed</returns>
-        public static string GetFileAccessDate(string path)
+        public static string GetFileAccessDate(string path) // TODO Verify Access right
         {
             if (Directory.Exists(path))
                 return Directory.GetLastAccessTime(path).ToString(CultureInfo.CurrentCulture);
@@ -174,7 +174,7 @@ namespace Manager
         /// - Implementation : Check (prototype)
         /// </summary>
         /// <returns>0 or the size of the file</returns>
-        public static long GetFileSize(string path)
+        public static long GetFileSize(string path) // TODO Verify Access right, Security Exception
         {
             if (Directory.Exists(path))
                 return new DirectoryInfo(path).EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
@@ -231,21 +231,6 @@ namespace Manager
         public static string GetFileExtension(string path)
         {
             return Path.GetExtension(path);
-        }
-
-        /// <summary>
-        /// - Action : returns the file name of a absolute path using Path class
-        /// - Implementation : NOT Check
-        /// </summary>
-        /// <param name="fullPath">fullPath is supposed to exist</param>
-        /// <param name="newExtension">the extension of the file</param>
-        /// <returns>the name of the file with its extension</returns>
-        public static string GetFileNameWithExtension(string fullPath, string newExtension = "")
-        {
-            if (newExtension == "")
-                return Path.GetFileName(Path.GetFullPath(fullPath));
-            else
-                return $"{Path.GetFileNameWithoutExtension(Path.GetFullPath(fullPath))}{newExtension}";
         }
 
         #endregion
@@ -325,11 +310,10 @@ namespace Manager
 
         /// <summary>
         /// - Action : This function takes a path and generate a new path to avoid overwrite an existing file <br></br>
-        /// - Error : 
-        /// - Implementation : NOT Check
+        /// - Implementation : Check <br></br>
         /// </summary>
         /// <returns>Generate a file name</returns>
-        public static string GenerateNameForModification(string path)
+        public static string GenerateNameForModification(string path) // TODO Verify Access right
         {
             int i = 0;
             string res = path;
@@ -338,13 +322,13 @@ namespace Manager
             {
                 DirectoryInfo parent = new FileInfo(path).Directory;
                 if (parent != null)
-                    dir = parent.FullName;
+                    dir = parent.FullName.Replace('\\','/');
             }
             else if (Directory.Exists(path))
             {
                 DirectoryInfo parent = new DirectoryInfo(path).Parent;
                 if (parent != null)
-                    dir = parent.FullName;
+                    dir = parent.FullName.Replace('\\','/');
             }
             else
                 return path;
@@ -375,9 +359,9 @@ namespace Manager
         }
 
         /// <summary>
-        /// Comapres 2 strings and returns true if the first string is greater than the other one
-        /// Implementation : Check
-        /// usage : Sort Algorithm
+        /// - Compares 2 strings and returns true if the first string is greater than the other one <br></br>
+        /// - Implementation : Check <br></br>
+        /// - Usage : Sort Algorithm
         /// </summary>
         private static bool GreaterThan(string s1, string s2)
         {
@@ -401,7 +385,7 @@ namespace Manager
         /// <summary>
         /// - Action: Verifies if the fist given date is greater than the second one <br></br>
         /// - FORMAT: MONT/DAY/YEAR HOUR/MIN/SEC PM/AM <br></br>
-        /// Implementation : Check
+        /// - Implementation : Check
         /// </summary>
         /// <returns>Returns if the first one is more recent than the other</returns>
         public static bool MoreRecentThanDate(string date1, string date2)
@@ -449,8 +433,8 @@ namespace Manager
         }
 
         /// <summary>
-        /// Select FileTypes in a FileType list using a minimum size for their names
-        /// Implementation : Check
+        /// -Action : Select FileTypes in a FileType list using a minimum size for their names <br></br>
+        /// - Implementation : Check
         /// </summary>
         private static List<FileType> SelectFileTypeByNameSize(List<FileType> fileTypes, int minimumNameSize)
         {
@@ -689,42 +673,45 @@ namespace Manager
         // Sort functions
 
         /// <summary>
-        /// MergeSort algorithm to sort files (by names)
-        /// Implementation : Check
+        /// MergeSort algorithm to sort files (by names) <br></br>
+        /// Implementation : Check (Working)
         /// </summary>
-        /// <param name="ftList"></param>
+        /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortByName(List<FileType> ftList)
+        public static List<FileType> SortByName(List<FileType> ftList) // TODO Missing real tests for implementation
         {
             return DivideAndMergeAlgorithm(ftList, "name");
         }
 
         /// <summary>
         /// MergeSort algorithm to sort files (by sizes)
-        /// Implementation : Check
+        /// Implementation : Check (Working)
         /// </summary>
-        /// <param name="ftList"></param>
+        /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortBySize(List<FileType> ftList)
+        public static List<FileType> SortBySize(List<FileType> ftList) // TODO Missing real tests for implementation
         {
             return DivideAndMergeAlgorithm(ftList, "size");
         }
 
         /// <summary>
         /// MergeSort algorithm to sort files (by types)
-        /// Implementation : Check
+        /// Implementation : Check (Working)
         /// </summary>
-        /// <param name="ftList"></param>
+        /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortByType(List<FileType> ftList)
+        public static List<FileType> SortByType(List<FileType> ftList) // TODO Missing real tests for implementation
         {
             return DivideAndMergeAlgorithm(ftList, "type");
         }
 
         /// <summary>
-        /// Sort a FileType list using the last modified date parameter
+        /// MergeSort algorithm to sort files (by modifiedDate) <br></br>
+        /// Implementation : Check (Working)
         /// </summary>
-        public static List<FileType> SortByModifiedDate(List<FileType> ftList)
+        /// <param name="ftList">the lit of pointer to sort</param>
+        /// <returns>the sorted list of filetype</returns>
+        public static List<FileType> SortByModifiedDate(List<FileType> ftList) // TODO Missing real tests for implementation
         {
             return DivideAndMergeAlgorithm(ftList, "date");
         }
@@ -783,18 +770,17 @@ namespace Manager
         #region Search
 
         /// <summary>
-        /// Naive research of a fileType
-        /// Implementation : Check
+        /// - Action : Naive research of a fileType
+        /// - Implementation : Check
         /// </summary>
-        /// <returns>return the fileType that has to be find</returns>
-        public static FileType SearchByFullName(List<FileType> fileTypes, string fullName)
+        /// <returns>return the fileType that has to be find, null if it does not exists</returns>
+        public static FileType SearchByFullName(List<FileType> fileTypes, string fullName) 
         {
             foreach (FileType ft in fileTypes)
             {
                 if (ft.Name == fullName)
                     return ft;
             }
-
             return null;
         }
 
