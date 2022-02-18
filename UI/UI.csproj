@@ -50,4 +50,7 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Manager\Manager.csproj" />
+    </ItemGroup>
 </Project>

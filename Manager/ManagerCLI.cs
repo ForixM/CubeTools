@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Manager
 {
-    internal class CommandLine
+    internal class ManagerCLI
     {
         #region Variables
 
@@ -20,13 +20,13 @@ namespace Manager
         #region Init
 
         // Constructor : OK
-        public CommandLine()
+        public ManagerCLI()
         {
             _directoryType = new DirectoryType();
             _promptLine = ">> ";
         }
 
-        public CommandLine(string path)
+        public ManagerCLI(string path)
         {
             _directoryType = new DirectoryType(path);
             _promptLine = ">> ";

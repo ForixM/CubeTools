@@ -338,7 +338,7 @@ namespace Manager
         /// <param name="dest">the dest path</param>
         /// <param name="replace">files and dirs have to be replaced</param>
         /// <returns>the success of the action</returns>
-        public static bool Copy(FileType ft, string dest, bool replace) // TODO Double check UI Implementation
+        public static bool Copy(FileType ft, string dest, bool replace) // TODO Double check UI Implementation, Exceptions
         {
             if (ft.IsDir)
             {

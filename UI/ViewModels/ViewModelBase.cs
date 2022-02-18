@@ -1,7 +1,5 @@
+using Manager;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace UI.ViewModels
 {
@@ -9,7 +7,6 @@ namespace UI.ViewModels
     {
         public void LeftBtnClick()
         {
-
         }
 
         public void RightBtnClick()
