@@ -13,432 +13,493 @@
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="-1">
 
-    <Window.Styles>
-        <Style Selector="TextBlock">
-            <Setter Property="FontFamily" Value="Georgia" />
-        </Style>
-    </Window.Styles>
+	<Window.Styles>
+		<Style Selector="TextBlock">
+			<Setter Property="FontFamily" Value="Georgia" />
+		</Style>
+	</Window.Styles>
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel />
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainWindowViewModel />
+	</Design.DataContext>
 
-    <!-- Structure des lignes du grid-->
+	<!-- Structure des lignes du grid-->
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="45" />
-            <RowDefinition Height="45" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <!-- Première ligne-->
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="45" />
+			<RowDefinition Height="45" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<!-- Première ligne-->
 
-        <Grid Grid.Row="0" Margin="0 5 0 0">
-            <Image Source="/Assets/cubetools.ico"
+		<Grid Grid.Row="0" Margin="0 5 0 0">
+			<Image Source="/Assets/cubetools.ico"
                    HorizontalAlignment="Left"
                    Margin="10 0 0 0" />
-            <TextBlock VerticalAlignment="Center"
+			<TextBlock FontFamily="/Fonts\NoticiaText-Bold.ttf"
+					   VerticalAlignment="Center"
                        Margin="60 0 0 0"
                        FontSize="20">
-                Cube Tools
-            </TextBlock>
-        </Grid>
+				Cube Tools
+			</TextBlock>
+		</Grid>
 
-        <!-- Deuxième ligne-->
+		<!-- Deuxième ligne-->
 
-        <Grid Grid.Row="1" Margin="10 0 0 0">
+		<Grid Grid.Row="1" Margin="10 0 0 0">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45" />
-                <ColumnDefinition Width="45" />
-                <ColumnDefinition Width="45" />
-                <ColumnDefinition Width="45" />
-                <ColumnDefinition />
-                <ColumnDefinition Width="45" />
-            </Grid.ColumnDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="45" />
+				<ColumnDefinition Width="45" />
+				<ColumnDefinition Width="45" />
+				<ColumnDefinition Width="45" />
+				<ColumnDefinition />
+				<ColumnDefinition Width="45" />
+			</Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0"><!-- Left -->
-                <Button Name="Left_btn"
+			<Grid Grid.Column="0">
+				<!-- Left -->
+				<Button Content="LeftBtn"
+						Command="{Binding LeftBtnClick}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
                         Width="45" Height="40"
                         CornerRadius="8">
-                    <StackPanel>
-                        <Image Source="/Assets\left-arrow.ico"
+					<StackPanel>
+						<Image Source="/Assets\left-arrow.ico"
                                Width="50"
                                Height="23" />
-                    </StackPanel>
-                </Button>
-            </Grid>
+					</StackPanel>
+				</Button>
+			</Grid>
 
-            <Grid Grid.Column="1"> <!-- Right -->
-                <Button Name="Right_btn"
+			<Grid Grid.Column="1">
+				<!-- Right -->
+				<Button Content="RightBtn"
+						Command="{Binding RightBtnClick}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Left"
                         Width="45" Height="40"
                         CornerRadius="8">
-                    <StackPanel>
-                        <Image Source="/Assets\right-arrow.ico"
+					<StackPanel>
+						<Image Source="/Assets\right-arrow.ico"
                                Width="50"
                                Height="23" />
-                    </StackPanel>
-                </Button>
+					</StackPanel>
+				</Button>
 
-            </Grid>
+			</Grid>
 
-            <Grid Grid.Column="2"><!-- Up -->
-                <Button Name="Up_btn"
+			<Grid Grid.Column="2">
+				<!-- Up -->
+				<Button Content="UpBtn"
+						Command="{Binding UpBtnClick}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Width="45" Height="40"
                         CornerRadius="8">
-                    <StackPanel>
-                        <Image Source="/Assets\up.ico"
+					<StackPanel>
+						<Image Source="/Assets\up.ico"
                                Width="50"
                                Height="25" />
-                    </StackPanel>
-                </Button>
-            </Grid>
+					</StackPanel>
+				</Button>
+			</Grid>
 
-            <Grid Grid.Column="3"> <!-- Sync -->
-                <Button Name="Sync_btn"
+			<Grid Grid.Column="3">
+				<!-- Sync -->
+				<Button Content="SyncBtn"
+						Command="{Binding SyncBtnClick}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Width="45" Height="40"
                         CornerRadius="8">
-                    <StackPanel>
-                        <Image Source="/Assets\sync.ico"
+					<StackPanel>
+						<Image Source="/Assets\sync.ico"
                                Width="50"
                                Height="25" />
-                    </StackPanel>
-                </Button>
-            </Grid>
+					</StackPanel>
+				</Button>
+			</Grid>
 
-            <Grid Grid.Column="4">   <!-- File Path -->
-                <TextBlock Text="File Path"
+			<Grid Grid.Column="4">
+				<!-- File Path -->
+				<TextBlock Text="File Path"
                            Foreground="Black"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center" />
-            </Grid>
+			</Grid>
 
-            <Grid Grid.Column="5"> <!-- Settings -->
-                <Button Name="Settings_btn"
+			<Grid Grid.Column="5">
+				<!-- Settings -->
+				<Button Content="SettingsBtn"
+						Command="{Binding SettingsBtnClick}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Width="45" Height="40"
                         CornerRadius="8">
-                    <StackPanel>
-                        <Image Source="/Assets\setting.ico"
+					<StackPanel>
+						<Image Source="/Assets\setting.ico"
                                Width="50"
                                Height="30" />
-                    </StackPanel>
-                </Button>
-            </Grid>
+					</StackPanel>
+				</Button>
+			</Grid>
 
-        </Grid>
+		</Grid>
 
-        <!-- Troisième ligne-->
+		<!-- Troisième ligne-->
 
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+		<Grid Grid.Row="2">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="200" />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
 
-            <!-- Partie Gauche de la troisième ligne-->
+			<!-- Partie Gauche de la troisième ligne-->
 
-            <Grid Grid.Column="0">
+			<Grid Grid.Column="0">
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition Height="45" />
-                </Grid.RowDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="45" />
+					<RowDefinition Height="45" />
+					<RowDefinition Height="45" />
+					<RowDefinition Height="45" />
+					<RowDefinition Height="45" />
+					<RowDefinition Height="45" />
+					<RowDefinition Height="45" />
+					<RowDefinition Height="45" />
+					<RowDefinition Height="45" />
+				</Grid.RowDefinitions>
 
-				
-                <Grid Grid.Row="1">
-                    <Button Name="Home"
+				<Grid Grid.Row="1">
+					<Button Content="HomeBtn"
+						    Command="{Binding GoToHomeBtnClick}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Width="180" Height="45"
                             CornerRadius="8">
-                        <StackPanel>
-                            <Image Source="/Assets\home.ico"
+						<StackPanel>
+							<Image Source="/Assets\home.ico"
                                    Width="50"
                                    Height="28"
                                    HorizontalAlignment="Left" />
-                            <TextBlock HorizontalAlignment="Center"
+							<TextBlock HorizontalAlignment="Center"
                                        Text="Home"
                                        Margin="-20" />
-                        </StackPanel>
-                    </Button>
-                </Grid>
+						</StackPanel>
+					</Button>
+				</Grid>
 
-                <Grid Grid.Row="2">
-                    <Button Name="Desktop"
+				<Grid Grid.Row="2">
+					<Button Content="DesktopBtn"
+						    Command="{Binding GoToDesktopBtnClick}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Width="180" Height="45"
                             CornerRadius="8">
-                        <StackPanel>
-                            <Image Source="/Assets\computer.ico"
+						<StackPanel>
+							<Image Source="/Assets\computer.ico"
                                    Width="50"
                                    Height="28"
                                    HorizontalAlignment="Left" />
-                            <TextBlock HorizontalAlignment="Center"
+							<TextBlock HorizontalAlignment="Center"
                                        Text="Desktop"
                                        Margin="-20" />
-                        </StackPanel>
-                    </Button>
-                </Grid>
+						</StackPanel>
+					</Button>
+				</Grid>
 
-                <Grid Grid.Row="3">
-                    <Button Name="Documents"
+				<Grid Grid.Row="3">
+					<Button Content="DocumentsBtn"
+						    Command="{Binding GoToDocumentsBtnClick}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Width="180" Height="45"
                             CornerRadius="8">
-                        <StackPanel>
-                            <Image Source="/Assets\documents-folder.ico"
+						<StackPanel>
+							<Image Source="/Assets\documents-folder.ico"
                                    Width="50"
                                    Height="28"
                                    HorizontalAlignment="Left" />
-                            <TextBlock HorizontalAlignment="Center"
+							<TextBlock HorizontalAlignment="Center"
                                        Text="Documents"
                                        Margin="-20" />
-                        </StackPanel>
-                    </Button>
-                </Grid>
+						</StackPanel>
+					</Button>
+				</Grid>
 
-                <Grid Grid.Row="4">
-                    <Button Name="Downloads"
+				<Grid Grid.Row="4">
+					<Button Content="DownloadBtn"
+						    Command="{Binding GoToDownloadBtnClick}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Width="180" Height="45"
                             CornerRadius="8">
-                        <StackPanel>
-                            <Image Source="/Assets\download.ico"
+						<StackPanel>
+							<Image Source="/Assets\download.ico"
                                    Width="50"
                                    Height="28"
                                    HorizontalAlignment="Left" />
-                            <TextBlock HorizontalAlignment="Center"
+							<TextBlock HorizontalAlignment="Center"
                                        Text="Download"
                                        Margin="-20" />
-                        </StackPanel>
-                    </Button>
-                </Grid>
+						</StackPanel>
+					</Button>
+				</Grid>
 
-                <Grid Grid.Row="5">
-                    <Button Name="Pictures"
-                            VerticalAlignment="Center"
+				<Grid Grid.Row="5">
+					<Button Content="PictureBtn"
+						    Command="{Binding GoToPictureBtnClick}"
                             HorizontalAlignment="Center"
                             Width="180" Height="45"
                             CornerRadius="8">
-                        <StackPanel>
-                            <Image Source="/Assets\gallery.ico"
+						<StackPanel>
+							<Image Source="/Assets\gallery.ico"
                                    Width="50"
                                    Height="28"
                                    HorizontalAlignment="Left" />
-                            <TextBlock HorizontalAlignment="Center"
+							<TextBlock HorizontalAlignment="Center"
                                        Text="Picture"
                                        Margin="-20" />
-                        </StackPanel>
-                    </Button>
-                </Grid>
+						</StackPanel>
+					</Button>
+				</Grid>
 
-                <Grid Grid.Row="6">
-                    <Button Name="Music"
+				<Grid Grid.Row="6">
+					<Button Content="MusicBtn"
+						    Command="{Binding GoToMusicBtnClick}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Width="180" Height="45"
                             CornerRadius="8">
-                        <StackPanel>
-                            <Image Source="/Assets\music.ico"
+						<StackPanel>
+							<Image Source="/Assets\music.ico"
                                    Width="50"
                                    Height="28"
                                    HorizontalAlignment="Left" />
-                            <TextBlock HorizontalAlignment="Center"
+							<TextBlock HorizontalAlignment="Center"
                                        Text="Music"
                                        Margin="-20" />
-                        </StackPanel>
-                    </Button>
-                </Grid>
+						</StackPanel>
+					</Button>
+				</Grid>
 
-                <Grid Grid.Row="7">
-                    <Button Name="Trash"
+				<Grid Grid.Row="7">
+					<Button Content="TrashBtn"
+						    Command="{Binding GoToTrashBtnClick}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             Width="180" Height="45"
                             CornerRadius="8">
-                        <StackPanel>
-                            <Image Source="/Assets\trash-can.ico"
+						<StackPanel>
+							<Image Source="/Assets\trash-can.ico"
                                    Width="50"
                                    Height="28"
                                    HorizontalAlignment="Left" />
-                            <TextBlock HorizontalAlignment="Center"
+							<TextBlock HorizontalAlignment="Center"
                                        Text="Trash"
                                        Margin="-20" />
-                        </StackPanel>
-                    </Button>
-                </Grid>
+						</StackPanel>
+					</Button>
+				</Grid>
 
-            </Grid>
+			</Grid>
 
-            <!-- Partie Droite de la troisième ligne-->
+			<!-- Partie Droite de la troisième ligne-->
 
-            <Grid Grid.Column="1">
+			<Grid Grid.Column="1">
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="41" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="41" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
 
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="45" />
-                        <ColumnDefinition Width="45" />
-                        <ColumnDefinition Width="45" />
-                        <ColumnDefinition Width="45" />
-                        <ColumnDefinition Width="45" />
-                        <ColumnDefinition Width="45" />
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="45" />
-                        <ColumnDefinition Width="45" />
-                    </Grid.ColumnDefinitions>
+				<Grid Grid.Row="0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+					</Grid.ColumnDefinitions>
 
-                    <Grid Grid.Column="0"> <!-- Create -->
-                        <Button Name="create"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Width="45" Height="40"
-                                CornerRadius="8"
-								ClickMode="Press"
-								Command="{Binding _CreateButtonClicked}">
-                            <StackPanel>
-                                <Image Source="/Assets\add.ico"
-                                       Width="50"
-                                       Height="28"
-                                       HorizontalAlignment="Left" />
-
-                            </StackPanel>
-                        </Button>
-                    </Grid>
-
-                    <Grid Grid.Column="1"><!-- Copy -->
-                        <Button Name="copy"
+					<Grid Grid.Column="0">
+						<!-- Create -->
+						<Button Content="CreateBtn"
+						        Command="{Binding CreateBtnClick}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Width="45" Height="40"
                                 CornerRadius="8">
-                            <StackPanel>
-                                <Image Source="/Assets\copy.ico"
+							<StackPanel>
+								<Image Source="/Assets\add.ico"
                                        Width="50"
                                        Height="28"
                                        HorizontalAlignment="Left" />
 
-                            </StackPanel>
-                        </Button>
-                    </Grid>
+							</StackPanel>
+						</Button>
+					</Grid>
 
-                    <Grid Grid.Column="2"> <!-- Cut -->
-                        <Button Name="cut"
+					<Grid Grid.Column="1">
+						<!-- Copy -->
+						<Button Content="CopyBtn"
+						        Command="{Binding CopyBtnClick}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Width="45" Height="40"
                                 CornerRadius="8">
-                            <StackPanel>
-                                <Image Source="/Assets\cut.ico"
+							<StackPanel>
+								<Image Source="/Assets\copy.ico"
                                        Width="50"
                                        Height="28"
                                        HorizontalAlignment="Left" />
 
-                            </StackPanel>
-                        </Button>
-                    </Grid>
+							</StackPanel>
+						</Button>
+					</Grid>
 
-                    <Grid Grid.Column="3"><!-- Paste -->
-                        <Button Name="paste"
+					<Grid Grid.Column="2">
+						<!-- Cut -->
+						<Button Content="CutBtn"
+						        Command="{Binding CutBtnClick}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Width="45" Height="40"
                                 CornerRadius="8">
-                            <StackPanel>
-                                <Image Source="/Assets\paste.ico"
+							<StackPanel>
+								<Image Source="/Assets\cut.ico"
                                        Width="50"
                                        Height="28"
                                        HorizontalAlignment="Left" />
 
-                            </StackPanel>
-                        </Button>
-                    </Grid>
+							</StackPanel>
+						</Button>
+					</Grid>
 
-                    <Grid Grid.Column="4"><!-- Rename -->
-                        <Button Name="rename"
+					<Grid Grid.Column="3">
+						<!-- Paste -->
+						<Button Content="PasteBtn"
+						        Command="{Binding PasteBtnClick}"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Width="45" Height="40"
+                                CornerRadius="8">
+							<StackPanel>
+								<Image Source="/Assets\paste.ico"
+                                       Width="50"
+                                       Height="28"
+                                       HorizontalAlignment="Left" />
+
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="4">
+						<!-- Rename -->
+						<Button Content="RenameBtn"
+						        Command="{Binding RenameBtnClick}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 Width="45" Height="40"
                                 CornerRadius="8">
-                            <StackPanel>
-                                <Image Source="/Assets\rename.ico"
+							<StackPanel>
+								<Image Source="/Assets\rename.ico"
                                        Width="50"
                                        Height="30" />
-                            </StackPanel>
-                        </Button>
-                    </Grid>
+							</StackPanel>
+						</Button>
+					</Grid>
 
-                    <Grid Grid.Column="5"> <!-- Delete -->
-                        <Button Name="delete"
+					<Grid Grid.Column="5">
+						<!-- Delete -->
+						<Button Content="DeleteBtn"
+						        Command="{Binding DeleteBtnClick}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 Width="45" Height="40"
                                 CornerRadius="8">
-                            <StackPanel>
-                                <Image Source="/Assets\delete.ico"
+							<StackPanel>
+								<Image Source="/Assets\delete.ico"
                                        Width="50"
                                        Height="28" />
-                            </StackPanel>
-                        </Button>
-                    </Grid>
+							</StackPanel>
+						</Button>
+					</Grid>
 
-                    <Grid Grid.Column="6" Background="#EEEDED" /><!-- Blank Space Responsive -->
+					<Grid Grid.Column="6" Background="#EEEDED" />
+					<!-- Blank Space Responsive -->
 
-                    <Grid Grid.Column="7"> <!-- Nearby Send -->
-                        <Button Name="nearbysend"
+					<Grid Grid.Column="7">
+						<!-- Nearby Send -->
+						<Button Content="NearbySendBtn"
+						        Command="{Binding NearbySendBtnClick}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 Width="45" Height="40"
                                 CornerRadius="8">
-                            <StackPanel>
-                                <Image Source="/Assets\nearbysend.ico"
+							<StackPanel>
+								<Image Source="/Assets\nearbysend.ico"
                                        Width="50"
                                        Height="28" />
-                            </StackPanel>
-                        </Button>
-                    </Grid>
+							</StackPanel>
+						</Button>
+					</Grid>
 
-                    <Grid Grid.Column="8"> <!-- Search-->
-                        <Button Name="search"
+					<Grid Grid.Column="8">
+						<!-- Search-->
+						<Button Content="SearchBtn"
+						        Command="{Binding SearchBtnClick}"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Left"
                                 Width="45" Height="40"
                                 CornerRadius="8">
-                            <StackPanel>
-                                <Image Source="/Assets\search.ico"
+							<StackPanel>
+								<Image Source="/Assets\search.ico"
                                        Width="50"
                                        Height="28"
                                        HorizontalAlignment="Left" />
-                            </StackPanel>
-                        </Button>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Grid>
-    </Grid>
+							</StackPanel>
+						</Button>
+					</Grid>
+				</Grid>
+				<Grid Grid.Row="1">
+					<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+								  VerticalScrollBarVisibility="Auto">
+						<ListBox Name="subFilePrinted">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<WrapPanel>
+										<Button Content="{Binding ElementName}"
+												Command="{Binding GoToSubFile}"
+												Margin="0, 7, 7, 7"
+												Width="80"
+												Height="100">
+											<StackPanel>
+												<Image Source="{Binding IconFileOrFolder}"
+													   VerticalAlignment="Center"
+													   HorizontalAlignment="Center"
+													   Height="70"
+													   Width="70"/>
+												<TextBlock Text="{Binding Name}"
+														   HorizontalAlignment="Center"
+														   VerticalAlignment="Bottom"/>
+											</StackPanel>
+										</Button>
+									</WrapPanel>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+					</ScrollViewer>
+				</Grid>
+			</Grid>
+		</Grid>
+	</Grid>
 
 </Window>

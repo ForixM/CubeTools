@@ -5,13 +5,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <Folder Include="Models\"/>
-        <AvaloniaResource Include="Assets\**"/>
-        <AvaloniaResource Remove="Assets\left-arrow.ico"/>
-        <None Remove=".gitignore"/>
+        <Folder Include="Models\" />
+        <AvaloniaResource Include="Assets\**" />
+        <AvaloniaResource Remove="Assets\left-arrow.ico" />
+        <None Remove=".gitignore" />
     </ItemGroup>
     <ItemGroup>
-        <AvaloniaResource Include="Fonts\Karla.ttf"/>
+        <AvaloniaResource Include="Fonts\Karla.ttf" />
     </ItemGroup>
     <ItemGroup>
         <AvaloniaXaml Include="Assets\left-arrow.ico">
@@ -19,11 +19,11 @@
         </AvaloniaXaml>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.10"/>
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.10"/>
+        <PackageReference Include="Avalonia" Version="0.10.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.10"/>
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10"/>
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.10" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
     </ItemGroup>
     <ItemGroup>
         <AvaloniaResource Update="Assets\add.ico">
@@ -44,5 +44,10 @@
         <AvaloniaResource Update="Assets\up.ico">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </AvaloniaResource>
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="Fonts\NoticiaText-Bold.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>
