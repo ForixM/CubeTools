@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Manager.ManagerExceptions;
+using SystemException = System.SystemException;
 
 namespace Manager
 {
@@ -135,10 +136,40 @@ namespace Manager
         {
             try
             {
-                ManagerWriter.Copy(ft, _directory.Path, false);
+                try
+                {
+                    ManagerWriter.Copy(ref _directory, ft, ft.Path, false);
+                }
+                catch (ReplaceException)
+                {
+                    try
+                    {
+                        ManagerWriter.Copy(ref _directory, ft, ft.Path, true);
+                    }
+                    catch (AccessException)
+                    {
+                        // TODO Implement access exception for copy
+                    }
+                    catch (SystemException)
+                    {
+                        // TODO Implement system exception for copy
+                    }
+                    catch (UnknownException)
+                    {
+                        // TODO Implement Unknown exception for copy
+                    }
+                }
             }
             catch (AccessException)
             {
+            }
+            catch (CorruptedDirectoryException)
+            {
+
+            }
+            catch (CorruptedPointerException)
+            {
+                
             }
             catch (UnknownException)
             {

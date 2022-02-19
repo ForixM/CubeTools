@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security;
+using Manager.ManagerExceptions;
 
 namespace Manager
 {
@@ -13,81 +15,129 @@ namespace Manager
         // This region contains every function that give information of the file given with the path
         // Basicaly => bool functions
 
-        // IsFunction :
-        // Implementation : Check
+        /// <summary>
+        /// - Action : Verify if the given path is file or not <br></br>
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="path">the path of the file</param>
+        /// <returns>whether it is a file or not</returns>
         public static bool IsFile(string path)
         {
             return (File.Exists(path)) && (!Directory.Exists(path));
         }
 
-        // IsDirectory : Returns if the given path is a directory
-        // Implementation : Check
+        /// <summary>
+        /// - Action : Verify if the given path is a directory or not <br></br>
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="path">the path to test</param>
+        /// <returns>whether it is a directory or not</returns>
         public static bool IsDirectory(string path)
         {
-            return Directory.Exists(path);
+            return (Directory.Exists(path) && !(File.Exists(path)));
         }
 
-        // IsFileHidden : Verify if the file has the property Hidden
-        // Implementation : Check
+        /// <summary>
+        /// - Action : Verify whether a file or a directory is hidden or not
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="path">the given file or dir</param>
+        /// <returns>hidden or not</returns>
         public static bool IsFileHidden(string path)
         {
             return HasAttribute(FileAttributes.Hidden, path);
         }
 
-        // IsDirHidden : Verify if the directory is hidden
-        // Implementation Check
-        public static bool IsDirHidden(string path)
-        {
-            return HasAttribute(FileAttributes.Hidden, path);
-        }
-        
 
-        // IsFileCompressed : Verify if the file has the property Compressed
-        // Implementation : Check
+        /// <summary>
+        /// - Action : Verify whether a file or directory is compressed
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="path">the given file or dir</param>
+        /// <returns>compressed or not</returns>
         public static bool IsFileCompressed(string path)
         {
             return HasAttribute(FileAttributes.Compressed, path);
         }
 
-        // IsFileArchived : Verify if the file has the property Archived
-        // Implementation : Check
+        /// <summary>
+        /// - Action : Verify whether a file or a directory is archived
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="path">the given file or dir</param>
+        /// <returns>archived or not</returns>
         public static bool IsFileArchived(string path)
         {
             return HasAttribute(FileAttributes.Archive, path);
         }
 
-        // IsASystemFile : Verify if the file has the property File System
-        // Implementation : Check
+        /// <summary>
+        /// - Action : Verify whether a file or directory is part of a the system
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="path">the given file or dir</param>
+        /// <returns>part of system or not</returns>
         public static bool IsASystemFile(string path)
         {
             return HasAttribute(FileAttributes.System, path);
         }
-        // IsAReadOnlyFile : Verify if the file has the property Read Only
-        // Implementation : Check
-        public static bool IsAReadOnlyFile(string path)
-        {
-            return (File.Exists(path) && (File.GetAttributes(path) & FileAttributes.ReadOnly) != 0);
-        }
-        // IsDirReadOnly : Verify if the dir has the property Read Only
-        // Implementation : Check
-        public static bool IsDirReadOnly(string path)
+
+        /// <summary>
+        /// - Action : Verify whether a file or directory is in readOnly
+        /// </summary>
+        /// <param name="path">the given file or dir</param>
+        /// <returns></returns>
+        public static bool IsReadOnly(string path)
         {
             return HasAttribute(FileAttributes.ReadOnly, path);
         }
 
-        public static bool HasAttribute(FileAttributes fa, string path) // TODO Verify Exception
+        /// <summary>
+        /// - Action : Verify whether the given file or directory has fa attribute <br></br>
+        /// - Implementation : Not Check
+        /// </summary>
+        /// <param name="fa">the attribute to test</param>
+        /// <param name="path">the path to test</param>
+        /// <returns></returns>
+        /// <exception cref="InUseException">The given cannot be read because a program is using it</exception>
+        /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
+        /// <exception cref="UnknownException">Error could not be identified</exception>
+        public static bool HasAttribute(FileAttributes fa, string path)
         {
             if (File.Exists(path))
             {
-                return (File.GetAttributes(path) & fa) != 0;
+                FileAttributes fas;
+                try
+                {
+                    fas = File.GetAttributes(path);
+                }
+                catch (IOException)
+                {
+                    throw new InUseException("the file to access " + path + " is used by an external program",
+                        "HasAttribute");
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    throw new AccessException("the file to access " + path + " cannot be read", "HasAttribute");
+                }
+
+                return (fas & fa) != 0;
             }
 
-            if (Directory.Exists(path))
+            else
             {
-                return (new DirectoryInfo(path).Attributes & fa) != 0;
+                try
+                {
+                    return (new DirectoryInfo(path).Attributes & fa) != 0;
+                }
+                catch (Exception e)
+                {
+                    if (e is SecurityException || e is UnauthorizedAccessException)
+                        throw new AccessException("the directory to access # " + path + " # cannot be read",
+                            "HasAttribute");
+                    throw new UnknownException("Unknown exception occured", "HasAttrbute");
+                }
             }
-
-            return false;
         }
 
         #endregion
@@ -98,29 +148,56 @@ namespace Manager
 
         /// <summary>
         /// Overload 1
-        ///  - Action Get the dir name of a file or dir contained in it <br></br>
+        ///  - Action Get the parent directory name <br></br>
         ///  - Implementation : Check
         /// </summary>
-        /// <param name="path">the filename or directory name</param>
-        /// <returns>Returns the parent dir using GetPathToName function</returns>
-        public static string GetParent(string path) // TODO Verify Exceptions
+        /// <param name="path">the given path</param>
+        /// <returns>the parent string name</returns>
+        /// <exception cref="AccessException">the path cannot be accessed</exception>
+        /// <exception cref="UnknownException">An error occured</exception>
+        public static string GetParent(string path)
         {
             if (File.Exists(path))
-                return GetPathToName(new FileInfo(path).DirectoryName);
-            if (Directory.Exists(path))
             {
-                var directoryInfo = new DirectoryInfo(path).Parent;
-                if (directoryInfo != null)
-                    return GetPathToName(directoryInfo.FullName);
+                try
+                {
+                    return new FileInfo(path).DirectoryName;
+                }
+                catch (Exception e)
+                {
+                    if (e is UnauthorizedAccessException or SecurityException)
+                        throw new AccessException(path + " access denied", "GetParent");
+                    throw new UnknownException("Error while trying to get the Directory of " + path, "GetParent");
+                }
             }
-            return "";
+            else
+            {
+                try
+                {
+                    DirectoryInfo dir = new DirectoryInfo(path).Parent;
+                    if (dir != null)
+                    {
+                        string parent = dir.Name;
+                        return parent;
+                    }
+
+                    return "";
+                }
+                catch (Exception e)
+                {
+                    if (e is UnauthorizedAccessException or SecurityException)
+                        throw new AccessException(path + " access denied", "GetParent");
+                    throw new UnknownException("Error while trying to get the Directory of " + path, "GetParent");
+                }
+            }
         }
 
         /// <summary>
         /// Overload 2 : see 
-        ///  <see cref="GetParent(string)"/>
+        /// - Action : <see cref="GetParent(string)"/>
+        /// - Implementation : Check
         /// </summary>
-        /// <param name="ft">the fileType pointer to the path</param>
+        /// <param name="ft">the pointer to the path</param>
         /// <returns>Returns the parent dir using GetPathToName function</returns>
         public static string GetParent(FileType ft)
         {
@@ -128,45 +205,104 @@ namespace Manager
         }
 
         /// <summary>
-        ///  - Action : Get the date with a given path <br></br>
+        /// - Action : Get the date of creation with a given path <br></br>
         ///  - Implementation : Check <br></br>
         /// </summary>
-        /// <returns>Returns the creation date either of a file or a directory</returns>
-        public static string GetFileCreationDate(string path) // TODO Verify Access right
+        /// <param name="path">the file or directory</param>
+        /// <returns>the creation date</returns>
+        /// <exception cref="AccessException">the path cannot be read</exception>
+        public static string GetFileCreationDate(string path)
         {
             if (Directory.Exists(path))
-                return Directory.GetCreationTime(path).ToString(CultureInfo.CurrentCulture);
-            if (File.Exists(path))
-                return File.GetCreationTime(path).ToString(CultureInfo.CurrentCulture);
-            return "";
+            {
+                try
+                {
+                    return Directory.GetCreationTime(path).ToString(CultureInfo.CurrentCulture);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    throw new AccessException(path + " cannot be accessed", "GetFileCreationDate");
+                }
+            }
+
+            else
+            {
+                try
+                {
+                    return File.GetCreationTime(path).ToString(CultureInfo.CurrentCulture);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    throw new AccessException(path + " cannot be accessed","GetFileCreationDate");
+                }
+            }
         }
 
         /// <summary>
-        /// - Action : Get the last time a file has been edited using its path <br></br>
-        /// - Implementation : Check
+        /// - Action : Get the date of last edition with a given path <br></br>
+        ///  - Implementation : Check <br></br>
         /// </summary>
-        /// <returns>A string value that represents the last time the file or directory was modified</returns>
-        public static string GetFileLastEdition(string path) // TODO Verify Access right
+        /// <param name="path">the file or directory</param>
+        /// <returns>the last edition date</returns>
+        /// <exception cref="AccessException">the path cannot be read</exception>
+        public static string GetFileLastEdition(string path)
         {
             if (Directory.Exists(path))
-                return Directory.GetLastWriteTime(path).ToString(CultureInfo.CurrentCulture);
-            else if (File.Exists(path))
-                return File.GetLastWriteTime(path).ToString(CultureInfo.CurrentCulture);
-            return "";
+            {
+                try
+                {
+                    return Directory.GetLastWriteTime(path).ToString(CultureInfo.CurrentCulture);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    throw new AccessException(path + " cannot be accessed", "GetFileLastEdition");
+                }
+            }
+            else
+            {
+                try
+                {
+                    return File.GetLastWriteTime(path).ToString(CultureInfo.CurrentCulture);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    throw new AccessException(path + " cannot be accessed","GetFileLastEdition");
+                }
+            }
         }
 
         /// <summary>
-        /// Get the last time a file has been accessed using its path <br></br>
-        /// Implementation : Check
+        /// - Action : Get the date of access with a given path<br></br>
+        /// - Implementation : Check <br></br>
         /// </summary>
-        /// <returns>A string value that represents the last time the file or directory was accessed</returns>
-        public static string GetFileAccessDate(string path) // TODO Verify Access right
+        /// <param name="path">the file or directory</param>
+        /// <returns>the access date</returns>
+        /// <exception cref="AccessException">the path cannot be read</exception>
+        public static string GetFileAccessDate(string path)
         {
             if (Directory.Exists(path))
-                return Directory.GetLastAccessTime(path).ToString(CultureInfo.CurrentCulture);
-            if (File.Exists(path))
-                return File.GetLastAccessTime(path).ToString(CultureInfo.CurrentCulture);
-            return "";
+            {
+                try
+                {
+                    return Directory.GetLastAccessTime(path).ToString(CultureInfo.CurrentCulture);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    throw new AccessException(path + " cannot be accessed", "GetFileCreationDate");
+                }
+            }
+
+            else
+            {
+                try
+                {
+                    return File.GetLastAccessTime(path).ToString(CultureInfo.CurrentCulture);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    throw new AccessException(path + " cannot be accessed","GetFileCreationDate");
+                }
+            }
         }
 
         /// <summary>
@@ -174,13 +310,32 @@ namespace Manager
         /// - Implementation : Check (prototype)
         /// </summary>
         /// <returns>0 or the size of the file</returns>
-        public static long GetFileSize(string path) // TODO Verify Access right, Security Exception
+        /// <exception cref="AccessException">the path cannot be accessed</exception>
+        public static long GetFileSize(string path)
         {
             if (Directory.Exists(path))
-                return new DirectoryInfo(path).EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
-            else if (File.Exists(path))
-                return new FileInfo(path).Length;
-            return 0;
+            {
+                try
+                {
+                    return new DirectoryInfo(path).EnumerateFiles("*.*", SearchOption.AllDirectories)
+                        .Sum(fi => fi.Length);
+                }
+                catch (SecurityException)
+                {
+                    throw new AccessException(path + " cannot be read", "GetFileSize");
+                }
+            }
+            else
+            {
+                try
+                {
+                    return new FileInfo(path).Length;
+                }
+                catch (SecurityException)
+                {
+                    throw new AccessException(path + " cannot be read", "GetFileSize");
+                }
+            }
         }
 
         /// <summary>
@@ -190,9 +345,7 @@ namespace Manager
         /// <returns>A string that represents the name of an absolute path</returns>
         public static string GetPathToName(string path)
         {
-            if (File.Exists(path) || Directory.Exists(path))
-                return Path.GetFileName(path);
-            return "";
+            return Path.GetFileName(path);
         }
 
         /// <summary>
@@ -202,9 +355,7 @@ namespace Manager
         /// <returns>A string that represents the name of the file without its extension</returns>
         public static string GetPathToNameNoExtension(string path)
         {
-            if (File.Exists(path) || Directory.Exists(path))
-                return Path.GetFileNameWithoutExtension(path);
-            return "";
+            return Path.GetFileNameWithoutExtension(path);
         }
 
         /// <summary>
@@ -212,21 +363,26 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <returns>The full path of a file or directory</returns>
+        /// <exception cref="AccessException">The given path cannot be read</exception>
         public static string GetNameToPath(string name)
         {
-            if (File.Exists(name) || Directory.Exists(name))
+            try
             {
                 string fullPath = Path.GetFullPath(name);
                 fullPath = fullPath.Replace("\\", "/");
                 return fullPath;
             }
-            return name;
+            catch (SecurityException)
+            {
+                throw new AccessException(name + " cannot be read", "GetNameToPath");
+            }
         }
 
         /// <summary>
         /// - Action : Returns the extension of a file. If it is a directory, it will return "" <br></br>
         /// - Implementation : Check
         /// </summary>
+        /// <param name="path">the path to get extension of</param>
         /// <returns>Extension of a file</returns>
         public static string GetFileExtension(string path)
         {
@@ -241,63 +397,48 @@ namespace Manager
         // instance to simplify the interaction with UI
 
         /// <summary>
-        /// Reads the properties of a File, modifies and inits its associated FileType <br></br>
-        /// Implementation : Check
+        /// Overload 1
+        /// - Action : Reads the properties of a File, modifies and inits its associated FileType <br></br>
+        /// - Implementation : Check
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static FileType ReadFileType(string path)
+        /// <param name="path">the path to save into a fileType</param>
+        /// <returns>the file type associated</returns>
+        public static FileType ReadFileType(string path) // TODO Verify exceptions
         {
-            if (File.Exists(path) || Directory.Exists(path))
-            {
-                FileType ft = new FileType(path);
-                ReadFileType(ref ft);
-                return ft;
-            }
-            else
-            {
-                FileType ft = new FileType();
-                return ft;
-            }
+            FileType ft = new FileType(path);
+            ReadFileType(ref ft);
+            return ft;
         }
 
         /// <summary>
-        /// Update FileType passed by reference
-        /// Implementation : Check 
+        /// Overload 2
+        /// - Action : Update FileType passed by reference <br></br>
+        /// - Implementation : Check <br></br>
         /// </summary>
-        /// <param name="ft"></param>
+        /// <param name="ft">the fileType to update</param>
+        /// <exception cref="AccessException">the data cannot be read</exception>
+        /// <exception cref="UnknownException">an unknown exception occured</exception>
+        /// <exception cref="InUseException">the data in being used by another program</exception>
         public static void ReadFileType(ref FileType ft)
         {
+            ft.Name = GetPathToName(ft.Path);
             if (Directory.Exists(ft.Path))
             {
-                ft.Name = GetPathToName(ft.Path);
-                ft.ReadOnly = false;
-                ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
-                // Add ft.Archived
-                ft.Size = GetFileSize(ft.Path);
-                ft.Date = GetFileCreationDate(ft.Path);
-                ft.LastDate = GetFileLastEdition(ft.Path);
-                ft.AccessDate = GetFileAccessDate(ft.Path);
-                ft.Type = "folder";
+                ft.Type = "";
                 ft.IsDir = true;
             }
-            else if (File.Exists(ft.Path))
+            else
             {
-                ft.Name = Path.GetFileName(ft.Path);
-                if (ft.Path != null)
-                {
-                    ft.ReadOnly = ((File.GetAttributes(ft.Path) & FileAttributes.ReadOnly) == FileAttributes.ReadOnly);
-                    ft.Hidden = ((File.GetAttributes(ft.Path) & FileAttributes.Hidden) == FileAttributes.Hidden);
-                    ft.Size = GetFileSize(ft.Path);
-                    ft.Date = GetFileCreationDate(ft.Path);
-                    ft.LastDate = GetFileLastEdition(ft.Path);
-                    ft.Type = GetFileExtension(ft.Path);
-                }
-
+                ft.Type = GetFileExtension(ft.Path);
                 ft.IsDir = false;
             }
-            else
-                ft.Dispose();
+            ft.ReadOnly = HasAttribute(FileAttributes.ReadOnly, ft.Path);
+            ft.Hidden = HasAttribute(FileAttributes.Hidden, ft.Path);
+            ft.Archived = HasAttribute(FileAttributes.Archive, ft.Path);
+            ft.Size = GetFileSize(ft.Path);
+            ft.Date = GetFileCreationDate(ft.Path);
+            ft.LastDate = GetFileLastEdition(ft.Path);
+            ft.AccessDate = GetFileAccessDate(ft.Path);
         }
 
         #endregion
@@ -310,10 +451,10 @@ namespace Manager
 
         /// <summary>
         /// - Action : This function takes a path and generate a new path to avoid overwrite an existing file <br></br>
-        /// - Implementation : Check <br></br>
+        /// - Implementation : Not Check <br></br>
         /// </summary>
         /// <returns>Generate a file name</returns>
-        public static string GenerateNameForModification(string path) // TODO Verify Access right
+        public static string GenerateNameForModification(string path) // TODO Verify Exceptions
         {
             int i = 0;
             string res = path;
@@ -322,13 +463,13 @@ namespace Manager
             {
                 DirectoryInfo parent = new FileInfo(path).Directory;
                 if (parent != null)
-                    dir = parent.FullName.Replace('\\','/');
+                    dir = parent.FullName.Replace('\\', '/');
             }
             else if (Directory.Exists(path))
             {
                 DirectoryInfo parent = new DirectoryInfo(path).Parent;
                 if (parent != null)
-                    dir = parent.FullName.Replace('\\','/');
+                    dir = parent.FullName.Replace('\\', '/');
             }
             else
                 return path;
@@ -341,9 +482,16 @@ namespace Manager
                 i += 1;
                 res = $"{dir}/{name}({i}){extension}";
             }
+
             return res;
         }
 
+        /// <summary>
+        /// - Action : verify whether the path is correct <br></br>
+        /// - Implementation : Check 
+        /// </summary>
+        /// <param name="path">the path to test</param>
+        /// <returns>correct or not</returns>
         public static bool IsPathCorrect(string path)
         {
             string name = Path.GetFileName(path);
@@ -433,9 +581,12 @@ namespace Manager
         }
 
         /// <summary>
-        /// -Action : Select FileTypes in a FileType list using a minimum size for their names <br></br>
+        /// - Action : Select FileTypes in a FileType list using a minimum size for their names <br></br>
         /// - Implementation : Check
         /// </summary>
+        /// <param name="fileTypes">List of fileType supposed to not be corrupted</param>
+        /// <param name="minimumNameSize">the size of name required</param>
+        /// <returns>the selected pointers with conditions</returns>
         private static List<FileType> SelectFileTypeByNameSize(List<FileType> fileTypes, int minimumNameSize)
         {
             List<FileType> res = new List<FileType>();
@@ -711,7 +862,8 @@ namespace Manager
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>the sorted list of filetype</returns>
-        public static List<FileType> SortByModifiedDate(List<FileType> ftList) // TODO Missing real tests for implementation
+        public static List<FileType>
+            SortByModifiedDate(List<FileType> ftList) // TODO Missing real tests for implementation
         {
             return DivideAndMergeAlgorithm(ftList, "date");
         }
@@ -774,14 +926,15 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <returns>return the fileType that has to be find, null if it does not exists</returns>
-        public static FileType SearchByFullName(List<FileType> fileTypes, string fullName) 
+        public static FileType SearchByFullName(List<FileType> fileTypes, string fullName)
         {
             foreach (FileType ft in fileTypes)
             {
                 if (ft.Name == fullName)
                     return ft;
             }
-            return null;
+
+            return SearchByIndeterminedName(fileTypes, fullName);
         }
 
         public static FileType SearchByFullName(DirectoryType directoryType, string fullName)
@@ -825,9 +978,10 @@ namespace Manager
                     }
                 }
             }
+
             return bestFitft;
         }
-        
+
         public static FileType SearchByIndeterminedName(DirectoryType directoryType, string fullName)
         {
             return SearchByIndeterminedName(directoryType.ChildrenFiles, fullName);

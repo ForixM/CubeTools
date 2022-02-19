@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
 using System.Security;
-using Microsoft.VisualBasic.FileIO;
+using Manager.ManagerExceptions;
 
 namespace Manager
 {
@@ -34,9 +30,17 @@ namespace Manager
         /// </summary>
         /// <param name="path">the path that has to be modified</param>
         /// <param name="attributes">attributes to add </param>
-        private static void AddFileAttribute(string path, FileAttributes attributes) // TODO Implement exception of AddFileAttributes
+        /// <exception cref="AccessException">the given path cannot be modified</exception>
+        private static void AddFileAttribute(string path, FileAttributes attributes)
         {
-            File.SetAttributes(path, attributes); 
+            try
+            {
+                File.SetAttributes(path, attributes);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                throw new AccessException(path + " cannot be accessed", "AddFileAttribute");
+            }
         }
 
         /// <summary>
@@ -340,25 +344,42 @@ namespace Manager
         /// <returns>the success of the action</returns>
         public static bool Copy(FileType ft, string dest, bool replace) // TODO Double check UI Implementation, Exceptions
         {
-            if (ft.IsDir)
+            // 1) Pointer is a directory
+            if (ft.IsDir && Directory.Exists(ft.Path))
             {
+                // a) Destination exists
                 if (Directory.Exists(dest))
                 {
+                    // replace
                     if (replace)
                     {
-                        Directory.Delete(dest, true); // TODO Verify code structure, maybe better using string or not
+                        // TODO Verify code structure, maybe better using string or not
+                        try
+                        {
+                            Directory.Delete(dest, true);
+                        }
+                        catch (IOException)
+                        {
+                            // 
+                        }
+                        catch (UnauthorizedAccessException)
+                        {
+                            throw new AccessException("");
+                        }
                         return Copy(new DirectoryInfo(ft.Path), new DirectoryInfo(dest), replace);
                     }
                     else
                         return Copy(new DirectoryInfo(ft.Path),
                             new DirectoryInfo(ManagerReader.GenerateNameForModification(dest)), replace);
                 }
+                // b) Destination does not exist, no replace needed
                 else
                 {
                     Directory.CreateDirectory(dest);
                     return Copy(new DirectoryInfo(ft.Path), new DirectoryInfo(dest), replace);
                 }
             }
+            // 2) Pointer is a file
             return (Copy(ft.Path, dest, replace) != "");
         }
 
@@ -388,6 +409,26 @@ namespace Manager
             }
 
             return true;
+        }
+
+        public static bool Copy(ref DirectoryType dt, FileType copied, string dest, bool replace = false)
+        {
+            if (Directory.Exists(dt.Path) && (File.Exists(copied.Path) || Directory.Exists(copied.Path)))
+            {
+                Copy(copied, dest, replace);
+            }
+            // Corrupted Directory
+            else if (!Directory.Exists(dt.Path))
+            {
+                throw new CorruptedDirectoryException(dt.Name + " has not been well loaded, Copy function aborted");
+            }
+            // Corrupted Pointer
+            else
+            {
+                throw new CorruptedPointerException(copied.Name + " pointer is corrupted, Copy action aborted");
+            }
+
+            return false;
         }
 
         // CREATE FUNCTIONS

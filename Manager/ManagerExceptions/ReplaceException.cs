@@ -2,22 +2,22 @@
 
 namespace Manager.ManagerExceptions
 {
-    public class UnknownException : Exception
+    public class ReplaceException : Exception
     {
-        public UnknownException()
+        public ReplaceException()
         {
             Console.Error.WriteLine("########################################");
-            Console.Error.WriteLine("###     An unknown error occured     ###");
-            Console.Error.WriteLine("  # Critical : Consider rebooting  the application");
+            Console.Error.WriteLine("###    A ReplaceException occured    ###");
+            Console.Error.WriteLine("  # Low : Consider replacing file or directory #");
         }
 
-        public UnknownException(string message) : this()
+        public ReplaceException(string message) : this()
         {
             Console.Error.Write("  # error : ");
             Console.Error.WriteLine(message);
         }
 
-        public UnknownException(string message, string func) : this(message)
+        public ReplaceException(string message, string func) : this(message)
         {
             Console.Error.Write("  # error at : ");
             Console.Error.WriteLine(func);
