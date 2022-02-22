@@ -6,7 +6,7 @@ using Manager.ManagerExceptions;
 
 namespace Manager
 {
-    public static class ManagerWriter
+    public static class ManagerWriter // TODO Implement all exceptions
     {
         #region Properties
 

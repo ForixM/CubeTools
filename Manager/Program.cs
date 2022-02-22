@@ -13,7 +13,7 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            ManagerCLI cl = new ManagerCLI("C:/Users/mateo/OneDrive");
+            ManagerCLI cl = new ManagerCLI(Directory.GetCurrentDirectory());
             cl.Process();
         }
     }

@@ -49,8 +49,8 @@ namespace ManagerTests
                 Assert.AreEqual(dir.Date, ManagerReader.GetFileCreationDate(newPath));
                 Assert.AreEqual(dir.LastDate, ManagerReader.GetFileLastEdition(newPath));
                 Assert.AreEqual(dir.AccessDate, ManagerReader.GetFileAccessDate(newPath));
-                Assert.AreEqual(dir.Hidden, ManagerReader.IsDirHidden(newPath));
-                Assert.AreEqual(dir.ReadOnly, ManagerReader.IsDirReadOnly(newPath));
+                Assert.AreEqual(dir.Hidden, ManagerReader.IsFileHidden(newPath));
+                Assert.AreEqual(dir.ReadOnly, ManagerReader.IsReadOnly(newPath));
             }
             else
             {

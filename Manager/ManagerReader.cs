@@ -135,7 +135,8 @@ namespace Manager
                     if (e is SecurityException || e is UnauthorizedAccessException)
                         throw new AccessException("the directory to access # " + path + " # cannot be read",
                             "HasAttribute");
-                    throw new UnknownException("Unknown exception occured", "HasAttrbute");
+                    Console.WriteLine(e.Message);
+                    return false;
                 }
             }
         }
@@ -426,16 +427,17 @@ namespace Manager
             {
                 ft.Type = "";
                 ft.IsDir = true;
+                ft.Size = 0; // TODO Deal with directorySize
             }
             else
             {
                 ft.Type = GetFileExtension(ft.Path);
                 ft.IsDir = false;
+                ft.Size = GetFileSize(ft.Path);
             }
             ft.ReadOnly = HasAttribute(FileAttributes.ReadOnly, ft.Path);
             ft.Hidden = HasAttribute(FileAttributes.Hidden, ft.Path);
             ft.Archived = HasAttribute(FileAttributes.Archive, ft.Path);
-            ft.Size = GetFileSize(ft.Path);
             ft.Date = GetFileCreationDate(ft.Path);
             ft.LastDate = GetFileLastEdition(ft.Path);
             ft.AccessDate = GetFileAccessDate(ft.Path);
@@ -998,15 +1000,7 @@ namespace Manager
         {
             if (File.Exists(path))
             {
-                using (StreamReader fs = new StreamReader(path))
-                {
-                    var input = fs.ReadLine();
-                    while (input != null)
-                    {
-                        Console.WriteLine(input);
-                        input = fs.ReadLine();
-                    }
-                }
+                Console.WriteLine(new StreamReader(path).ReadToEnd());
             }
         }
 

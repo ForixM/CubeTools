@@ -7,19 +7,19 @@ namespace Manager.ManagerExceptions
         public CorruptedDirectoryException()
         {
             Console.Error.WriteLine("########################################");
-            Console.Error.WriteLine("### An CorruptedDirectory occured ###");
-            Console.Error.WriteLine("  # Critical : You should restart CubeTools ###");
+            Console.Error.WriteLine("###A CorruptedDirectoryException occured###");
+            Console.Error.WriteLine("  # High : the current loaded directory is corrupted");
         }
 
         public CorruptedDirectoryException(string message) : this()
         {
-            Console.Error.Write("# error : ");
+            Console.Error.Write("  # error :");
             Console.Error.WriteLine(message);
         }
 
         public CorruptedDirectoryException(string message, string func) : this(message)
         {
-            Console.Error.Write("  # error at : ");
+            Console.Error.Write("  # error :");
             Console.Error.WriteLine(func);
         }
     }

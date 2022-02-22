@@ -69,19 +69,7 @@ namespace ManagerTests
             ManagerWriter.SetAttributes(name, hidden, FileAttributes.Hidden);
             Assert.AreEqual(hidden, ManagerReader.IsFileHidden(name), name + " has property hidden");
         }
-    
-        [Test] // see : IsDirHidden > ManagerReader
-        [TestCase("readerHidden.txt", true)]
-        [TestCase("reader.txt", false)]
-        [TestCase("none", false)]
-        [TestCase("readerHidden", true)]
-        public void IsDirHidden(string name, bool hidden)
-        {
-            name = env.Path + "/" + name;
-            ManagerWriter.SetAttributes(name, hidden, FileAttributes.Hidden);
-            Assert.AreEqual(hidden, ManagerReader.IsDirHidden(name));
-        }
-    
+        
         /*
         [Test] // see : IsFileCompressed > ManagerReader
         [TestCase("readerCompressed.txt", true)]
@@ -125,27 +113,13 @@ namespace ManagerTests
         [TestCase("reader", false)]
         [TestCase("readerCompressed.txt", false)]
         [TestCase("non existent", false)]
-        public void IsAReadOnlyFile(string name, bool readOnly)
+        public void IsReadOnly(string name, bool readOnly)
         {
             name = env.Path + "/" + name;
             ManagerWriter.SetAttributes(name, readOnly, FileAttributes.ReadOnly);
-            Assert.AreEqual(readOnly, ManagerReader.IsAReadOnlyFile(name));
+            Assert.AreEqual(readOnly, ManagerReader.IsReadOnly(name));
             ManagerWriter.SetAttributes(name, false, FileAttributes.ReadOnly);
         }
-    
-        [Test] // see : IsDirReadOnly > ManagerReader
-        [TestCase("readerReadOnly.txt", true)]
-        [TestCase("readerReadOnly", true)]
-        [TestCase("readerCompressed.txt", false)]
-        [TestCase("non existent", false)]
-        public void IsDirReadOnly(string name, bool readOnly)
-        {
-            name = env.Path + "/" + name;
-            ManagerWriter.SetAttributes(name, readOnly, FileAttributes.ReadOnly);
-            Assert.AreEqual(readOnly, ManagerReader.IsDirReadOnly(name));
-            ManagerWriter.SetAttributes(name, false, FileAttributes.ReadOnly);
-        }
-
         [Test]
         [TestCase("size", FileAttributes.Archive, true)]
         [TestCase("size.txt", FileAttributes.ReadOnly, true)]

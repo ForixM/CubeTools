@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Security;
+using Manager.ManagerExceptions;
 
 namespace Manager
 {
@@ -84,21 +85,6 @@ namespace Manager
                 try
                 {
                     Directory.SetCurrentDirectory(path);
-                }
-                catch (IOException)
-                {
-                    _path = "";
-                } // TODO IOException for DT
-                catch (SecurityException)
-                {
-                    _path = "";
-                } // TODO Security exception for DT
-                catch (UnauthorizedAccessException)
-                {
-                    _path = "";
-                }
-                finally
-                {
                     _path = path;
                     _name = ManagerReader.GetPathToName(path);
                     _date = ManagerReader.GetFileCreationDate(path);
@@ -106,12 +92,17 @@ namespace Manager
                     _accessDate = ManagerReader.GetFileAccessDate(path);
                     _size = ManagerReader.GetFileSize(path);
                     _hidden = ManagerReader.IsFileHidden(path);
-                    _readOnly = ManagerReader.IsAReadOnlyFile(path);
+                    _readOnly = ManagerReader.IsReadOnly(path);
                     _childrenFiles = new List<FileType>();
-                    foreach (var file in Directory.GetFiles(_path))
-                        _childrenFiles.Add(GetChild(file));
-                    foreach (var dir in Directory.GetDirectories(_path))
-                        _childrenFiles.Add(GetChild(dir));
+                    SetChildrenFiles();
+                }
+                catch (Exception e)
+                {
+                    if (e is SecurityException or UnauthorizedAccessException)
+                        throw new AccessException("The path cannot be accessed", "Constructor DirectoryType");
+                    if (e is IOException)
+                        throw new SystemErrorException("IOException occcured", "Constructor DirectoryType");
+                    throw new UnknownException("Unknown error while constructing the directory", "Constructor DirectoryType");
                 }
             }
 
@@ -127,7 +118,7 @@ namespace Manager
         /// This function creates a FileType and return it using a path
         /// Implementation : NOT Check
         /// </summary>
-        public FileType GetChild(string path)
+        public FileType GetChild(string path) // TODO Inform about possible errors
         {
             if (path != null && (File.Exists(path) || Directory.Exists(path)))
             {
@@ -143,18 +134,19 @@ namespace Manager
         /// Remove every children in childrenfiles and set them
         /// Implemantion : NOT Check
         /// </summary>
-        public void SetChildrenFiles()
+        public void SetChildrenFiles() // TODO implement exceptions
         {
             foreach (var file in _childrenFiles)
             {
                 file.Dispose();
             }
-
             _childrenFiles.Clear();
-            foreach (var file in Directory.GetFiles(Path))
-                _childrenFiles.Add(GetChild(file));
+            foreach (var file in Directory.GetFiles(_path))
+            {
+                _childrenFiles.Add(GetChild(file.Replace('\\','/')));
+            }
             foreach (var dir in Directory.GetDirectories(_path))
-                _childrenFiles.Add(GetChild(dir));
+                _childrenFiles.Add(GetChild(dir.Replace('\\', '/')));
         }
 
         /// <summary>

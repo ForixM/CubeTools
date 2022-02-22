@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Manager.ManagerExceptions;
 
 namespace Manager
 {
@@ -14,6 +17,7 @@ namespace Manager
         // Attributes
         private static DirectoryType _directoryType;
         private static string _promptLine;
+        
 
         #endregion
 
@@ -26,6 +30,7 @@ namespace Manager
             _promptLine = ">> ";
         }
 
+        // Constructor : OK
         public ManagerCLI(string path)
         {
             _directoryType = new DirectoryType(path);
@@ -39,27 +44,15 @@ namespace Manager
         // This function deals with the process of the command line
         public void Process()
         {
+            Console.WriteLine(@"
+            ░▒█▀▀▄░█░▒█░█▀▀▄░█▀▀░░░▀▀█▀▀░▄▀▀▄░▄▀▀▄░█░░█▀▀
+            ░▒█░░░░█░▒█░█▀▀▄░█▀▀░░░░▒█░░░█░░█░█░░█░█░░▀▀▄
+            ░▒█▄▄▀░░▀▀▀░▀▀▀▀░▀▀▀░░░░▒█░░░░▀▀░░░▀▀░░▀▀░▀▀▀
+            ");
             Console.WriteLine("CubeTools command line project");
             Console.WriteLine("Type help to get any information about the available commands");
             Console.Write("\n");
-            using var watcher = new FileSystemWatcher(_directoryType.Path);
-
-            watcher.NotifyFilter = NotifyFilters.Attributes
-                                   | NotifyFilters.CreationTime
-                                   | NotifyFilters.DirectoryName
-                                   | NotifyFilters.FileName
-                                   | NotifyFilters.LastAccess
-                                   | NotifyFilters.LastWrite
-                                   | NotifyFilters.Security
-                                   | NotifyFilters.Size;
-            /*
-            watcher.Changed += _directoryType.ActualizeFiles();
-            watcher.Created += _directoryType.ActualizeFiles();
-            watcher.Deleted += _directoryType.ActualizeFiles();
-            */
-            watcher.IncludeSubdirectories = true;
-            watcher.EnableRaisingEvents = true;
-
+            
             while (true)
             {
                 Console.Write(_directoryType.Path);
@@ -69,7 +62,7 @@ namespace Manager
         }
 
         // This function ends the process of the app
-        public void End()
+        public static void End()
         {
             Console.WriteLine("Process finished ...");
             Environment.Exit(0);
@@ -77,132 +70,273 @@ namespace Manager
 
         #endregion
 
-        #region Methods
+        #region Reader
 
-        // This function modifies the current directory
-        public void ChangeDirectory(string path)
+        private void InterpretCommand(string command, List<string> options, List<string> parameters)
         {
-            if (ManagerReader.IsDirectory(path))
+            try
             {
-                _directoryType.ChangeDirectory(path);
+                switch (command)
+                {
+                    case "ls":
+                        ls();
+                        break;
+                    case "clear":
+                        clear();
+                        break;
+                    case "pwd":
+                        pwd();
+                        break;
+                    case "refresh":
+                        refresh();
+                        break;
+                    case "exit":
+                        End();
+                        break;
+                    case "help":
+                        Help();
+                        break;
+                    case "debug":
+                        _directoryType.PrintInformation();
+                        break;
+                    case "cat":
+                        foreach (var name in parameters)
+                        {
+                            cat(name);
+                        }
+
+                        break;
+                    case "rm":
+                        foreach (var name in parameters)
+                        {
+                            rm(name);
+                        }
+
+                        break;
+                    case "mkdir":
+                        foreach (var name in parameters)
+                        {
+                            mkdir(name);
+                        }
+
+                        break;
+                    case "rmdir":
+                        bool rec = options.Contains("r");
+                        foreach (var name in options)
+                        {
+                            rmdir(name, rec);
+                        }
+
+                        break;
+                    case "touch":
+                        foreach (var name in parameters)
+                        {
+                            touch(name);
+                        }
+
+                        break;
+                    case "mv":
+                        bool rep = options.Contains("r");
+                        break;
+                    case "cd":
+                        if (parameters.Count == 1)
+                        {
+                            cd(parameters[0]);
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+
+                refresh();
+            }
+            catch (Exception e)
+            {
+                // ignored
             }
         }
 
+        private string GetCommand(List<string> command)
+        {
+            if (command.Count >= 1 && command[0] != null)
+            {
+                string res = command[0];
+                command.Remove(command[0]);
+                return res;
+            }
+
+            return null;
+        }
+
+        private List<string> GetOptions(List<string> command)
+        {
+            List<string> res = new List<string>();
+            while (command.Count >= 1 && command[0].Length >= 1 && command[0][0] == '-')
+            {
+                string subres = "";
+                for (int i = 1; i < command[0].Length; i++)
+                {
+                    subres += command[0][i];
+                }
+                res.Add(subres);
+                command.Remove(command[0]);
+            }
+
+            return res;
+        }
+
+        private List<string> GetParameters(List<string> command)
+        {
+            List<string> res = new List<string>();
+            while (command.Count >= 1 && command[0].Length >= 1)
+            {
+                res.Add(command[0]);
+                command.Remove(command[0]);
+            }
+
+            return res;
+        }
+
+        private void UnknownCommand()
+        {
+            Console.WriteLine("Please enter a valid command");
+            Console.WriteLine("Consider pressing \"help\" to display commands");
+        }
+
         // This function reads the command that is ask
-        public void ReadCommand()
+        private void ReadCommand()
         {
             var command = Console.ReadLine();
             if (command != null)
             {
-                string[] read = command.Split(' ');
-                if (command != null && read.Length <= 3)
-                {
-                    switch (read[0])
-                    {
-                        case "ls":
-                            _directoryType.DisplayChildren();
-                            break;
-                        case "clear":
-                            Console.Clear();
-                            break;
-                        case "cat":
-                            if (read.Count() == 2)
-                                ManagerReader.ReadContent(read[1]);
-                            else
-                                Console.WriteLine("Cat takes 2 arguments");
-                            break;
-                        case "rm":
-                            if (read.Count() == 2)
-                                ManagerWriter.Delete(read[1]);
-                            else
-                                Console.WriteLine("rm takes 2 arguments");
-                            break;
-                        case "mkdir":
-                            if (read.Count() == 2)
-                                ManagerWriter.CreateDir(read[1]);
-                            else
-                                Console.WriteLine("rm takes 2 arguments");
-                            break;
-                        case "rmdir":
-                            if (read.Count() == 2)
-                                ManagerWriter.DeleteDir(read[1]);
-                            else
-                                Console.WriteLine("rmdir takes 2 arguments");
-                            break;
-                        case "touch":
-                            if (read.Count() == 2)
-                                ManagerWriter.Create(read[1]);
-                            else
-                                Console.WriteLine("touch takes 2 arguments");
-                            break;
-                        case "mv":
-                            if (read.Count() == 3)
-                                ManagerWriter.Rename(read[1], read[2]);
-                            else
-                                Console.WriteLine("touch takes 2 arguments");
-                            break;
-                        case "cd":
-                            if (read.Count() == 2 && System.IO.Directory.Exists(read[1]))
-                            {
-                                _directoryType.ChangeDirectory(read[1]);
-                            }
-                            break;
-                        case "pwd":
-                            Console.WriteLine();
-                            Console.WriteLine("Path");
-                            Console.WriteLine("-----");
-                            Console.WriteLine(_directoryType.Path);
-                            Console.WriteLine();
-                            break;
-                        case "refresh":
-                            _directoryType.SetChildrenFiles();
-                            break;
-                        case "exit":
-                            End();
-                            break;
-                        case "help":
-                            Help();
-                            break;
-                        case "debug":
-                            _directoryType.PrintInformation();
-                            break;
-                        default:
-                            Console.WriteLine("The given command is unknown ...");
-                            Console.WriteLine("Please, enter help to display the available commands");
-                            Console.WriteLine("");
-                            break;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("The given command is unknown ...");
-                    Console.WriteLine("Please, enter help to display the available commands");
-                    Console.WriteLine("");
-                }
+                List<string> read = command.Split(' ').ToList();
+                InterpretCommand(GetCommand(read),GetOptions(read), GetParameters(read));
             }
+            else
+                UnknownCommand();
         }
 
+        #endregion
+        
+        #region Commands
         // Help command
         public void Help()
         {
-            Console.WriteLine("_____________________________________________________");
-            Console.WriteLine(">> Help commands : Here are the available commands <<");
-            Console.WriteLine("_____________________________________________________");
+            Console.WriteLine("__________________________________________________________");
+            Console.WriteLine(">> Help commands : Here are the avail4ble commands <<");
+            Console.WriteLine("__________________________________________________________");
+            Console.WriteLine();
+            Console.WriteLine("------------------------BASICS---------------------------");
             Console.WriteLine("help : open this help prompt");
-            Console.WriteLine("ls : display all files in your directory");
             Console.WriteLine("clear : clear the console");
-            Console.WriteLine("cat : display the content of a given file given in parameter");
-            Console.WriteLine("mkdir : create a directory with the specified name");
-            Console.WriteLine("rmdir : delete a given directory given in the parameter");
-            Console.WriteLine("mv : rename or move a file to a new position using a 2 paths");
-            Console.WriteLine("rm : delete the specified file");
-            Console.WriteLine("touch : create an empty file with a given name");
-            Console.WriteLine("cd : change the directory given with the second parameter");
-            Console.WriteLine("pwd : display the current directory");
             Console.WriteLine("exit : leave the console");
-            Console.WriteLine("_____________________________________________________");
+            Console.WriteLine("-------------------LOADED DIRECTORY----------------------");
+            Console.WriteLine("ls : display all files in your directory");
+            Console.WriteLine(" => \"ls\" will display all file and folders of the current directory");
+            Console.WriteLine("cd : change the directory given with the second parameter");
+            Console.WriteLine(" => \"cd dir\" will change the loaded directory to its child named dir");
+            Console.WriteLine("pwd : display the current loaded directory");
+            Console.WriteLine(" => \"pwd\" will display the path of the loaded directory");
+            Console.WriteLine("------------------------DIRECTORY------------------------");
+            Console.WriteLine("mkdir : create a directory with the specified name");
+            Console.WriteLine(" => \"mkdir dir\" will create a new folder named dir");
+            Console.WriteLine("rmdir : delete a given directory given in the parameter");
+            Console.WriteLine(" => \"rmdir dir\" will delete the directory named dir");
+            Console.WriteLine("--------------------------FILES--------------------------");
+            Console.WriteLine("touch : create an empty file with a given name");
+            Console.WriteLine(" => \"touch file.txt\" will create a file name file.txt");
+            Console.WriteLine("rm : delete the specified file");
+            Console.WriteLine(" => \"rm file.txt\" will delete file.txt contained in the directory");
+            Console.WriteLine("cat : display the content of a given file given in parameter");
+            Console.WriteLine(" => \"cat test.txt\" will display the content of test.txt");
+            Console.WriteLine("----------------------TREATMENT--------------------------");
+            Console.WriteLine("mv : rename or move a file to a new position using a 2 paths");
+            Console.WriteLine(" => \"mv file.txt file2.txt\" will rename file.txt to file2.txt");
+            Console.WriteLine("find : find a file or folder in the current loaded directory");
+            Console.WriteLine(" => \"find te\" will returns the path of test.txt (the more relevant file/folder)");
+            Console.WriteLine("------------------------DEBUG-----------------------------");
+            Console.WriteLine("refresh : refresh manually the current directory");
+            Console.WriteLine("printInf : execute printInformation function on the whole directory");
+            Console.WriteLine("printInfFile : execute printInformation function on one FileType");
+            Console.WriteLine("__________________________________________________________");
         }
 
+        private static void ls()
+        {
+            _directoryType.DisplayChildren();
+        }
+
+        private static void clear()
+        {
+            Console.Clear();
+        }
+
+        private static void cat(string name)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Content of " + name);
+            Console.WriteLine("_________");
+            name = ManagerReader.GetNameToPath(name);
+            ManagerReader.ReadContent(name);
+        }
+
+        private static void mkdir(string name)
+        {
+            name = ManagerReader.GetNameToPath(name);
+            _directoryType.ChildrenFiles.Add(ManagerWriter.CreateDir(name));
+        }
+
+        private static void rmdir(string name, bool rec = false)
+        {
+            name = ManagerReader.GetNameToPath(name);
+            ManagerWriter.DeleteDir(name, rec);
+        }
+
+        private static void mv(string name, string dest, bool rep = false)
+        {
+            name = ManagerReader.GetNameToPath(name);
+            ManagerWriter.Rename(name, dest, rep);
+        }
+
+        private static void rm(string name)
+        {
+            name = ManagerReader.GetNameToPath(name);
+            ManagerWriter.Delete(name);
+        }
+
+        private static void touch(string name)
+        {
+            FileType ft = ManagerWriter.Create(name, ManagerReader.GetFileExtension(name));
+            ManagerReader.ReadFileType(ref ft);
+            _directoryType.ChildrenFiles.Add(ft);
+        }
+
+        private static void cd(string dest)
+        {
+            _directoryType.ChangeDirectory(Path.GetFullPath(dest));
+        }
+        private static void pwd()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Path");
+            Console.WriteLine("-----");
+            Console.WriteLine(_directoryType.Path);
+            Console.WriteLine();
+        }
+
+        private static void find(string fileToFind)
+        {
+            Console.WriteLine("Result of find in the current directory : ");
+            Console.WriteLine(ManagerReader.SearchByIndeterminedName(_directoryType, fileToFind).Path);
+        }
+
+        private static void refresh()
+        {
+            Console.WriteLine("refreshing directory : " + _directoryType.Path);
+            _directoryType.SetChildrenFiles();
+        }
+        
         #endregion
     }
 }

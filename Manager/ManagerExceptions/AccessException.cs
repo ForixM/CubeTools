@@ -7,19 +7,19 @@ namespace Manager.ManagerExceptions
         public AccessException()
         {
             Console.Error.WriteLine("########################################");
-            Console.Error.WriteLine("###    An AccessException occured    ###");
-            Console.Error.WriteLine("  # Medium : CubeTools cannot access your files or directories");
+            Console.Error.WriteLine("###      AccessException occured     ###");
+            Console.Error.WriteLine("  # Low : the file/folder access is denied");
         }
 
         public AccessException(string message) : this()
         {
-            Console.Error.Write("# error : ");
+            Console.Error.Write("  # error :");
             Console.Error.WriteLine(message);
         }
 
         public AccessException(string message, string func) : this(message)
         {
-            Console.Error.Write("# error at : ");
+            Console.Error.Write("  # error at :");
             Console.Error.WriteLine(func);
         }
     }

@@ -98,6 +98,7 @@ namespace Manager
         // Implementation : Check
         public FileType(string path) : this()
         {
+            this.Path = path;
             if (File.Exists(path) || Directory.Exists(path))
             {
                 Name = ManagerReader.GetPathToName(path);

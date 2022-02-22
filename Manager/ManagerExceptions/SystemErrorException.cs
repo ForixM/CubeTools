@@ -2,22 +2,22 @@
 
 namespace Manager.ManagerExceptions
 {
-    public class SystemException : Exception // TODO Edit SystemException
+    public class SystemErrorException : Exception // TODO Edit SystemException
     {
-        public SystemException()
+        public SystemErrorException()
         {
             Console.Error.WriteLine("########################################");
             Console.Error.WriteLine("###    A SystemException occured     ###");
             Console.Error.WriteLine("  # Medium : system crashed the application");
         }
 
-        public SystemException(string message) : this()
+        public SystemErrorException(string message) : this()
         {
             Console.Error.Write("  # error : ");
             Console.Error.WriteLine(message);
         }
 
-        public SystemException(string message, string func) : this(message)
+        public SystemErrorException(string message, string func) : this(message)
         {
             Console.Error.Write("  # error at : ");
             Console.Error.WriteLine(func);
