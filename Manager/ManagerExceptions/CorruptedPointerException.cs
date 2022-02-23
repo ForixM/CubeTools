@@ -2,25 +2,27 @@
 
 namespace Manager.ManagerExceptions
 {
-    public class CorruptedPointerException :  Exception
+    public class CorruptedPointerException :  ManagerException
     {
-        public CorruptedPointerException()
+        public CorruptedPointerException() : base()
         {
-            Console.Error.WriteLine("########################################");
-            Console.Error.WriteLine("###   An CorruptedPointer occured    ###");
-            Console.Error.WriteLine("  # Medium : You should restart CubeTools or Refresh files ###");
+            ErrorType = "Pointer corrupted";
+            CriticalLevel = "High";
+            Errorstd = "CorruptedPointerException";
         }
 
-        public CorruptedPointerException(string message) : this()
+        public CorruptedPointerException(string message) : base("CorruptedPointerException","High","Pointer corrupted",message)
         {
-            Console.Error.Write("# error :");
-            Console.Error.WriteLine(message);
+            ErrorType = "Pointer corrupted";
+            CriticalLevel = "High";
+            Errorstd = "CorruptedPointerException";
         }
 
-        public CorruptedPointerException(string message, string func) : this(message)
+        public CorruptedPointerException(string message, string func) : base("CorruptedPointerException","High","Pointer corrupted",message, func)
         {
-            Console.Error.Write("  # error at :");
-            Console.Error.WriteLine(func);
+            ErrorType = "Pointer corrupted";
+            CriticalLevel = "High";
+            Errorstd = "CorruptedPointerException";
         }
     }
 }

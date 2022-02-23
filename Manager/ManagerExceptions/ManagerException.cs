@@ -14,35 +14,40 @@ namespace Manager.ManagerExceptions
 
         public ManagerException()
         {
-            // READONLY Field
+            // READONLY Field : Modify directly parameters of exception
             ErrorType = "CubeTools crashed";
             CriticalLevel = "Low-Critical";
             // Modified
-            Errorstd = "Unidentified error";
-            ErrorMessage = "";
-            ErrorFunction = "";
+            Errorstd = "  # ??? #  ";
+            ErrorMessage = "  # ??? #  ";
+            ErrorFunction = "  # ??? #  ";
             ReloadFinalMessage();
         }
 
-        public ManagerException(string std)
+        public ManagerException(string std = "Crash", string level = "Low-Critical", string type = "CubeTools crashed") : this()
         {
+            ErrorType = type;
+            CriticalLevel = level;
             Errorstd = std;
-            ErrorType = "CubeTools crashed";
-            CriticalLevel = "Low-Critical";
-            ErrorMessage = "";
-            ErrorFunction = "";
             ReloadFinalMessage();
         }
         
-        public ManagerException(string std, string message) : this(std)
+        public ManagerException(string std,string level, string type, string message) : this()
         {
+            ErrorType = type;
+            CriticalLevel = level;
+            Errorstd = std;
             ErrorMessage = message;
             ReloadFinalMessage();
             Console.Error.WriteLine(FinalMessage);
         }
 
-        public ManagerException(string std, string message, string func) : this(std,message)
+        public ManagerException(string std, string level, string type, string message, string func) : this()
         {
+            ErrorType = type;
+            CriticalLevel = level;
+            Errorstd = std;
+            ErrorMessage = message;
             ErrorFunction = func;
             ReloadFinalMessage();
             Console.Error.WriteLine(FinalMessage);
@@ -51,12 +56,13 @@ namespace Manager.ManagerExceptions
         public void ReloadFinalMessage()
         {
             FinalMessage = "########################################\n" +
-                           $"###         {ErrorType}        ###\n" +
-                           $" # {CriticalLevel} : {Errorstd}";
+                           $"###         {ErrorType}       ###\n" +
+                           $" # {CriticalLevel} : {Errorstd}\n";
             if (!string.IsNullOrEmpty(ErrorMessage))
-                FinalMessage += $" # error : {ErrorMessage}";
+                FinalMessage += $" # error : {ErrorMessage}\n";
             if (!string.IsNullOrEmpty(ErrorFunction))
-                FinalMessage += $" # error at : {ErrorFunction}";
+                FinalMessage += $" # error at : {ErrorFunction}\n";
+            FinalMessage += "########################################\n";
         }
     }
 }

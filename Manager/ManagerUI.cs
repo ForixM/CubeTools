@@ -154,7 +154,7 @@ namespace Manager
                     {
                         // TODO Implement system exception for copy
                     }
-                    catch (UnknownException)
+                    catch (Exception)
                     {
                         // TODO Implement Unknown exception for copy
                     }
@@ -171,7 +171,7 @@ namespace Manager
             {
                 
             }
-            catch (UnknownException)
+            catch (Exception)
             {
             }
         }

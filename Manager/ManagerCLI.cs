@@ -79,16 +79,16 @@ namespace Manager
                 switch (command)
                 {
                     case "ls":
-                        ls();
+                        Ls();
                         break;
                     case "clear":
-                        clear();
+                        Clear();
                         break;
                     case "pwd":
-                        pwd();
+                        Pwd();
                         break;
                     case "refresh":
-                        refresh();
+                        Refresh();
                         break;
                     case "exit":
                         End();
@@ -102,54 +102,52 @@ namespace Manager
                     case "cat":
                         foreach (var name in parameters)
                         {
-                            cat(name);
+                            Cat(name);
                         }
-
                         break;
                     case "rm":
                         foreach (var name in parameters)
                         {
-                            rm(name);
+                            Rm(name);
                         }
-
                         break;
                     case "mkdir":
                         foreach (var name in parameters)
                         {
-                            mkdir(name);
+                            Mkdir(name);
                         }
-
                         break;
                     case "rmdir":
                         bool rec = options.Contains("r");
                         foreach (var name in options)
                         {
-                            rmdir(name, rec);
+                            Rmdir(name, options.Contains("r"));
                         }
-
                         break;
                     case "touch":
                         foreach (var name in parameters)
                         {
-                            touch(name);
+                            Touch(name);
                         }
-
                         break;
                     case "mv":
-                        bool rep = options.Contains("r");
+                        if (parameters.Count == 2)
+                        {
+                            Mv(parameters[0],parameters[1],options.Contains("r"));
+                        }
                         break;
                     case "cd":
                         if (parameters.Count == 1)
                         {
-                            cd(parameters[0]);
+                            Cd(parameters[0]);
                         }
-
                         break;
                     default:
+                        UnknownCommand();
                         break;
                 }
 
-                refresh();
+                Refresh();
             }
             catch (Exception e)
             {
@@ -262,17 +260,17 @@ namespace Manager
             Console.WriteLine("__________________________________________________________");
         }
 
-        private static void ls()
+        private static void Ls()
         {
             _directoryType.DisplayChildren();
         }
 
-        private static void clear()
+        private static void Clear()
         {
             Console.Clear();
         }
 
-        private static void cat(string name)
+        private static void Cat(string name)
         {
             Console.WriteLine();
             Console.WriteLine("Content of " + name);
@@ -281,42 +279,42 @@ namespace Manager
             ManagerReader.ReadContent(name);
         }
 
-        private static void mkdir(string name)
+        private static void Mkdir(string name)
         {
             name = ManagerReader.GetNameToPath(name);
             _directoryType.ChildrenFiles.Add(ManagerWriter.CreateDir(name));
         }
 
-        private static void rmdir(string name, bool rec = false)
+        private static void Rmdir(string name, bool rec = false)
         {
             name = ManagerReader.GetNameToPath(name);
             ManagerWriter.DeleteDir(name, rec);
         }
 
-        private static void mv(string name, string dest, bool rep = false)
+        private static void Mv(string name, string dest, bool rep = false)
         {
             name = ManagerReader.GetNameToPath(name);
             ManagerWriter.Rename(name, dest, rep);
         }
 
-        private static void rm(string name)
+        private static void Rm(string name)
         {
             name = ManagerReader.GetNameToPath(name);
             ManagerWriter.Delete(name);
         }
 
-        private static void touch(string name)
+        private static void Touch(string name)
         {
             FileType ft = ManagerWriter.Create(name, ManagerReader.GetFileExtension(name));
             ManagerReader.ReadFileType(ref ft);
             _directoryType.ChildrenFiles.Add(ft);
         }
 
-        private static void cd(string dest)
+        private static void Cd(string dest)
         {
             _directoryType.ChangeDirectory(Path.GetFullPath(dest));
         }
-        private static void pwd()
+        private static void Pwd()
         {
             Console.WriteLine();
             Console.WriteLine("Path");
@@ -325,13 +323,13 @@ namespace Manager
             Console.WriteLine();
         }
 
-        private static void find(string fileToFind)
+        private static void Find(string fileToFind)
         {
             Console.WriteLine("Result of find in the current directory : ");
             Console.WriteLine(ManagerReader.SearchByIndeterminedName(_directoryType, fileToFind).Path);
         }
 
-        private static void refresh()
+        private static void Refresh()
         {
             Console.WriteLine("refreshing directory : " + _directoryType.Path);
             _directoryType.SetChildrenFiles();

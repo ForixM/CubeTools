@@ -102,7 +102,7 @@ namespace Manager
                         throw new AccessException("The path cannot be accessed", "Constructor DirectoryType");
                     if (e is IOException)
                         throw new SystemErrorException("IOException occcured", "Constructor DirectoryType");
-                    throw new UnknownException("Unknown error while constructing the directory", "Constructor DirectoryType");
+                    throw new ManagerException("","","","Unknown error while constructing the directory", "Constructor DirectoryType");
                 }
             }
 
@@ -118,7 +118,10 @@ namespace Manager
         /// This function creates a FileType and return it using a path
         /// Implementation : NOT Check
         /// </summary>
-        public FileType GetChild(string path) // TODO Inform about possible errors
+        /// <exception cref="AccessException">the data cannot be read</exception>
+        /// <exception cref="Exception">an unknown exception occured</exception>
+        /// <exception cref="InUseException">the data in being used by another program</exception>
+        public FileType GetChild(string path)
         {
             if (path != null && (File.Exists(path) || Directory.Exists(path)))
             {
@@ -131,10 +134,13 @@ namespace Manager
         }
 
         /// <summary>
-        /// Remove every children in childrenfiles and set them
-        /// Implemantion : NOT Check
+        /// - Action : Remove every children in ChildrenFiles and set them
+        /// - Implementation : NOT Check
         /// </summary>
-        public void SetChildrenFiles() // TODO implement exceptions
+        /// <exception cref="AccessException">the data cannot be read</exception>
+        /// <exception cref="Exception">an unknown exception occured</exception>
+        /// <exception cref="InUseException">the data in being used by another program</exception>
+        public void SetChildrenFiles()
         {
             foreach (var file in _childrenFiles)
             {

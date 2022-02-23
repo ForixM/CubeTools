@@ -2,25 +2,27 @@
 
 namespace Manager.ManagerExceptions
 {
-    public class AccessException : Exception // TODO Edit Access Exception
+    public class AccessException : ManagerException
     {
-        public AccessException()
+        public AccessException() : base()
         {
-            Console.Error.WriteLine("########################################");
-            Console.Error.WriteLine("###      AccessException occured     ###");
-            Console.Error.WriteLine("  # Low : the file/folder access is denied");
+            ErrorType = "Data access denied";
+            CriticalLevel = "Medium";
+            Errorstd = "AccessException";
         }
 
-        public AccessException(string message) : this()
+        public AccessException(string message) : base("AccessException","Medium","Data access Denied",message)
         {
-            Console.Error.Write("  # error :");
-            Console.Error.WriteLine(message);
+            ErrorType = "Data access denied";
+            CriticalLevel = "Medium";
+            Errorstd = "AccessException";
         }
 
-        public AccessException(string message, string func) : this(message)
+        public AccessException(string message, string func) : base("AccessException","Medium","Data access Denied",message, func)
         {
-            Console.Error.Write("  # error at :");
-            Console.Error.WriteLine(func);
+            ErrorType = "Data access denied";
+            CriticalLevel = "Medium";
+            Errorstd = "AccessException";
         }
     }
 }

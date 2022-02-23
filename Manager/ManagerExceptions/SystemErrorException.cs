@@ -2,25 +2,27 @@
 
 namespace Manager.ManagerExceptions
 {
-    public class SystemErrorException : Exception // TODO Edit SystemException
+    public class SystemErrorException : ManagerException
     {
-        public SystemErrorException()
+        public SystemErrorException() : base()
         {
-            Console.Error.WriteLine("########################################");
-            Console.Error.WriteLine("###    A SystemException occured     ###");
-            Console.Error.WriteLine("  # Medium : system crashed the application");
+            ErrorType = "System crashed the app";
+            CriticalLevel = "Medium";
+            Errorstd = "SystemErrorException";
         }
 
-        public SystemErrorException(string message) : this()
+        public SystemErrorException(string message) : base("SystemErrorException","Medium","System crashed the app",message)
         {
-            Console.Error.Write("  # error : ");
-            Console.Error.WriteLine(message);
+            ErrorType = "System crashed the app";
+            CriticalLevel = "Medium";
+            Errorstd = "SystemErrorException";
         }
 
-        public SystemErrorException(string message, string func) : this(message)
+        public SystemErrorException(string message, string func) : base("SystemErrorException","Medium","System crashed the app",message, func)
         {
-            Console.Error.Write("  # error at : ");
-            Console.Error.WriteLine(func);
+            ErrorType = "System crashed the app";
+            CriticalLevel = "Medium";
+            Errorstd = "SystemErrorException";
         }
     }
 }

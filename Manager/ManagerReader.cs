@@ -42,7 +42,10 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the given file or dir</param>
-        /// <returns>hidden or not</returns>
+        /// <returns>Whether it is hidden or not</returns>
+        /// <exception cref="InUseException">The given cannot be read because a program is using it</exception>
+        /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
+        /// <exception cref="Exception">Error could not be identified</exception>
         public static bool IsFileHidden(string path)
         {
             return HasAttribute(FileAttributes.Hidden, path);
@@ -54,7 +57,10 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the given file or dir</param>
-        /// <returns>compressed or not</returns>
+        /// <returns>Whether it is compressed or not</returns>
+        /// <exception cref="InUseException">The given cannot be read because a program is using it</exception>
+        /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
+        /// <exception cref="Exception">Error could not be identified</exception>
         public static bool IsFileCompressed(string path)
         {
             return HasAttribute(FileAttributes.Compressed, path);
@@ -65,7 +71,10 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the given file or dir</param>
-        /// <returns>archived or not</returns>
+        /// <returns>Whether it is archived or not</returns>
+        /// <exception cref="InUseException">The given cannot be read because a program is using it</exception>
+        /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
+        /// <exception cref="Exception">Error could not be identified</exception>
         public static bool IsFileArchived(string path)
         {
             return HasAttribute(FileAttributes.Archive, path);
@@ -76,7 +85,10 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the given file or dir</param>
-        /// <returns>part of system or not</returns>
+        /// <returns>If the file/folder is part of system or not</returns>
+        /// <exception cref="InUseException">The given cannot be read because a program is using it</exception>
+        /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
+        /// <exception cref="Exception">Error could not be identified</exception>
         public static bool IsASystemFile(string path)
         {
             return HasAttribute(FileAttributes.System, path);
@@ -84,9 +96,13 @@ namespace Manager
 
         /// <summary>
         /// - Action : Verify whether a file or directory is in readOnly
+        /// - Implementation : Check
         /// </summary>
         /// <param name="path">the given file or dir</param>
-        /// <returns></returns>
+        /// <returns>If the file is in readOnly</returns>
+        /// <exception cref="InUseException">The given cannot be read because a program is using it</exception>
+        /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
+        /// <exception cref="Exception">Error could not be identified</exception>
         public static bool IsReadOnly(string path)
         {
             return HasAttribute(FileAttributes.ReadOnly, path);
@@ -94,34 +110,35 @@ namespace Manager
 
         /// <summary>
         /// - Action : Verify whether the given file or directory has fa attribute <br></br>
-        /// - Implementation : Not Check
+        /// - Implementation : Check
         /// </summary>
         /// <param name="fa">the attribute to test</param>
         /// <param name="path">the path to test</param>
         /// <returns></returns>
         /// <exception cref="InUseException">The given cannot be read because a program is using it</exception>
         /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
-        /// <exception cref="UnknownException">Error could not be identified</exception>
-        public static bool HasAttribute(FileAttributes fa, string path)
+        /// <exception cref="Exception">Error could not be identified</exception>
+        public static bool HasAttribute(FileAttributes fa, string path) // TODO Verify Code
         {
             if (File.Exists(path))
             {
-                FileAttributes fas;
                 try
                 {
-                    fas = File.GetAttributes(path);
+                    return (File.GetAttributes(path) & fa) != 0;
                 }
-                catch (IOException)
+                catch (Exception e)
                 {
-                    throw new InUseException("the file to access " + path + " is used by an external program",
-                        "HasAttribute");
+                    if (e is IOException)
+                    {
+                        throw new InUseException("the file to access " + path + " is used by an external program",
+                            "HasAttribute");
+                    }
+                    if (e is UnauthorizedAccessException)
+                    {
+                        throw new AccessException("the file to access " + path + " cannot be read", "HasAttribute");
+                    }
+                    throw new ManagerException("Reader error", "High","Impossible to read","the given path " + path + " could not be read", "HasAttribute");
                 }
-                catch (UnauthorizedAccessException)
-                {
-                    throw new AccessException("the file to access " + path + " cannot be read", "HasAttribute");
-                }
-
-                return (fas & fa) != 0;
             }
 
             else
@@ -135,8 +152,8 @@ namespace Manager
                     if (e is SecurityException || e is UnauthorizedAccessException)
                         throw new AccessException("the directory to access # " + path + " # cannot be read",
                             "HasAttribute");
-                    Console.WriteLine(e.Message);
-                    return false;
+                    throw new ManagerException("Reader error", "High", "Impossible to read",
+                        "the given path " + path + " could not be read", "HasAttibute");
                 }
             }
         }
@@ -155,8 +172,8 @@ namespace Manager
         /// <param name="path">the given path</param>
         /// <returns>the parent string name</returns>
         /// <exception cref="AccessException">the path cannot be accessed</exception>
-        /// <exception cref="UnknownException">An error occured</exception>
-        public static string GetParent(string path)
+        /// <exception cref="Exception">An error occured</exception>
+        public static string GetParent(string path) // TODO Verify code
         {
             if (File.Exists(path))
             {
@@ -168,7 +185,7 @@ namespace Manager
                 {
                     if (e is UnauthorizedAccessException or SecurityException)
                         throw new AccessException(path + " access denied", "GetParent");
-                    throw new UnknownException("Error while trying to get the Directory of " + path, "GetParent");
+                    throw new ManagerException("Access to parent","High","Parent not found","Error while trying to get the Directory of " + path, "GetParent");
                 }
             }
             else
@@ -188,7 +205,7 @@ namespace Manager
                 {
                     if (e is UnauthorizedAccessException or SecurityException)
                         throw new AccessException(path + " access denied", "GetParent");
-                    throw new UnknownException("Error while trying to get the Directory of " + path, "GetParent");
+                    throw new ManagerException("Access to parent","High","Parent not found","Error while trying to get the Directory of " + path, "GetParent");
                 }
             }
         }
@@ -404,7 +421,10 @@ namespace Manager
         /// </summary>
         /// <param name="path">the path to save into a fileType</param>
         /// <returns>the file type associated</returns>
-        public static FileType ReadFileType(string path) // TODO Verify exceptions
+        /// <exception cref="AccessException">the data cannot be read</exception>
+        /// <exception cref="Exception">an unknown exception occured</exception>
+        /// <exception cref="InUseException">the data in being used by another program</exception>
+        public static FileType ReadFileType(string path)
         {
             FileType ft = new FileType(path);
             ReadFileType(ref ft);
@@ -418,7 +438,7 @@ namespace Manager
         /// </summary>
         /// <param name="ft">the fileType to update</param>
         /// <exception cref="AccessException">the data cannot be read</exception>
-        /// <exception cref="UnknownException">an unknown exception occured</exception>
+        /// <exception cref="Exception">an unknown exception occured</exception>
         /// <exception cref="InUseException">the data in being used by another program</exception>
         public static void ReadFileType(ref FileType ft)
         {
@@ -455,9 +475,15 @@ namespace Manager
         /// - Action : This function takes a path and generate a new path to avoid overwrite an existing file <br></br>
         /// - Implementation : Not Check <br></br>
         /// </summary>
+        /// <param name="path">the path of the file/folder</param>
         /// <returns>Generate a file name</returns>
+        /// <exception cref="PathNotFoundException">the data cannot be read</exception>
         public static string GenerateNameForModification(string path) // TODO Verify Exceptions
         {
+            if (!File.Exists(path) && !Directory.Exists(path))
+                throw new PathNotFoundException("the given path " + path + " does not exist",
+                    "GenerateNameForModification");
+            
             int i = 0;
             string res = path;
             string dir = "";
@@ -842,7 +868,7 @@ namespace Manager
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortBySize(List<FileType> ftList) // TODO Missing real tests for implementation
+        public static List<FileType> SortBySize(List<FileType> ftList)
         {
             return DivideAndMergeAlgorithm(ftList, "size");
         }
@@ -853,7 +879,7 @@ namespace Manager
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortByType(List<FileType> ftList) // TODO Missing real tests for implementation
+        public static List<FileType> SortByType(List<FileType> ftList)
         {
             return DivideAndMergeAlgorithm(ftList, "type");
         }
@@ -865,7 +891,7 @@ namespace Manager
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>the sorted list of filetype</returns>
         public static List<FileType>
-            SortByModifiedDate(List<FileType> ftList) // TODO Missing real tests for implementation
+            SortByModifiedDate(List<FileType> ftList)
         {
             return DivideAndMergeAlgorithm(ftList, "date");
         }

@@ -2,29 +2,27 @@
 
 namespace Manager.ManagerExceptions
 {
-    public class InUseException : Exception // TODO Edit InUseException
+    public class InUseException : ManagerException
     {
-        public InUseException()
+        public InUseException() : base()
         {
-            Console.Error.WriteLine("########################################");
-            Console.Error.WriteLine("###     A InUseException occured     ###");
-            Console.Error.WriteLine("  # Low : a program is using the accessed file or directory");
+            ErrorType = "Data already used";
+            CriticalLevel = "Medium";
+            Errorstd = "InUseException";
         }
 
-        public InUseException(string message) : this()
+        public InUseException(string message) : base("InUseException","Medium","Data already used",message)
         {
-            Console.Error.Write("  # error :");
-            Console.Error.WriteLine(message);
+            ErrorType = "Data already used";
+            CriticalLevel = "Medium";
+            Errorstd = "InUseException";
         }
 
-        public InUseException(string message, string func) : this(message)
+        public InUseException(string message, string func) : base("InUseException","Medium","Data already used",message, func)
         {
-            Console.Error.WriteLine("  # error at :" + func);
-        }
-
-        public InUseException(string message, string func, string program) : this(message, func)
-        {
-            Console.Error.WriteLine("  # program :" + program);
+            ErrorType = "Data already used";
+            CriticalLevel = "Medium";
+            Errorstd = "InUseException";
         }
     }
 }

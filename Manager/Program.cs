@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Collections.Generic;
 using System.IO;
+using Manager.ManagerExceptions;
 
 namespace Manager
 {

@@ -2,25 +2,27 @@
 
 namespace Manager.ManagerExceptions
 {
-    public class CorruptedDirectoryException : Exception
+    public class CorruptedDirectoryException : ManagerException
     {
-        public CorruptedDirectoryException()
+        public CorruptedDirectoryException() : base()
         {
-            Console.Error.WriteLine("########################################");
-            Console.Error.WriteLine("###A CorruptedDirectoryException occured###");
-            Console.Error.WriteLine("  # High : the current loaded directory is corrupted");
+            ErrorType = "Directory corrupted";
+            CriticalLevel = "Critical";
+            Errorstd = "CorruptedDirectoryException";
         }
 
-        public CorruptedDirectoryException(string message) : this()
+        public CorruptedDirectoryException(string message) : base("CorruptedDirectoryException","Critical","Directory corrupted",message)
         {
-            Console.Error.Write("  # error :");
-            Console.Error.WriteLine(message);
+            ErrorType = "Directory corrupted";
+            CriticalLevel = "Critical";
+            Errorstd = "CorruptedDirectoryException";
         }
 
-        public CorruptedDirectoryException(string message, string func) : this(message)
+        public CorruptedDirectoryException(string message, string func) : base("CorruptedDirectoryException","Critical","Directory corrupted",message, func)
         {
-            Console.Error.Write("  # error :");
-            Console.Error.WriteLine(func);
+            ErrorType = "Directory corrupted";
+            CriticalLevel = "Critical";
+            Errorstd = "CorruptedDirectoryException";
         }
     }
 }

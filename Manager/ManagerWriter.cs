@@ -6,7 +6,7 @@ using Manager.ManagerExceptions;
 
 namespace Manager
 {
-    public static class ManagerWriter // TODO Implement all exceptions
+    public static class ManagerWriter
     {
         #region Properties
 
@@ -14,14 +14,17 @@ namespace Manager
 
         /// <summary>
         /// - Action : Remove an attribute <br></br>
-        /// - Implementation : NOT Check
+        /// - Implementation : Check
         /// </summary>
-        /// <param name="attributes"></param>
-        /// <param name="attributesToRemove"></param>
+        /// <param name="fi">FileInfo instance of the given file</param>
+        /// <param name="attributesToRemove">the attribute to remove</param>
         /// <returns>the new file attributes</returns>
-        private static FileAttributes RemoveFileAttribute(FileAttributes attributes, FileAttributes attributesToRemove)
+        /// <exception cref="SecurityException">The path cannot be accessed</exception>
+        /// <exception cref="UnauthorizedAccessException">The path cannot be accessed</exception>
+        /// <exception cref="IOException">System throws a new exception</exception>
+        private static void RemoveFileAttribute(FileInfo fi, FileAttributes attributesToRemove)
         {
-            return attributes & ~attributesToRemove;
+            fi.Attributes &= ~attributesToRemove;
         }
 
         /// <summary>
@@ -30,17 +33,12 @@ namespace Manager
         /// </summary>
         /// <param name="path">the path that has to be modified</param>
         /// <param name="attributes">attributes to add </param>
-        /// <exception cref="AccessException">the given path cannot be modified</exception>
+        /// <exception cref="SecurityException">The path cannot be accessed</exception>
+        /// <exception cref="UnauthorizedAccessException">The path cannot be accessed</exception>
+        /// <exception cref="IOException">System throws a new exception</exception>
         private static void AddFileAttribute(string path, FileAttributes attributes)
         {
-            try
-            {
-                File.SetAttributes(path, attributes);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                throw new AccessException(path + " cannot be accessed", "AddFileAttribute");
-            }
+            File.SetAttributes(path, attributes);
         }
 
         /// <summary>
@@ -49,63 +47,88 @@ namespace Manager
         /// </summary>
         /// <param name="di">the directory that has to be modified</param>
         /// <param name="attributesToRemove">the attribute to remove</param>
-        private static void RemoveDirAttribute(DirectoryInfo di, FileAttributes attributesToRemove) // TODO Implement exception of DirAttributes
+        /// <exception cref="SecurityException">The path cannot be accessed</exception>
+        /// <exception cref="UnauthorizedAccessException">The path cannot be accessed</exception>
+        /// <exception cref="IOException">System throws a new exception</exception>
+        private static void RemoveDirAttribute(DirectoryInfo di, FileAttributes attributesToRemove)
         {
-            di.Attributes = di.Attributes & ~attributesToRemove; 
+            di.Attributes &= ~attributesToRemove;
         }
 
         /// <summary>
         /// - Action : Add an attribute to a directory given with a directoryInfo
+        /// - Implementation : NOT Check
         /// </summary>
         /// <param name="di">the directory that has to be modified</param>
         /// <param name="attribute">the attribute that has to be added</param>
-        private static void AddDirAttribute(DirectoryInfo di, FileAttributes attribute) // TODO Implement exception of DirAttributes
+        /// <exception cref="SecurityException">directory access denied</exception>
+        /// <exception cref="UnauthorizedAccessException">directory access denied</exception>
+        /// <exception cref="IOException">system crashed app</exception>
+        private static void AddDirAttribute(DirectoryInfo di, FileAttributes attribute)
         {
             di.Attributes |= attribute;
         }
 
         /// <summary>
-        /// - Action : Set an attribute given in parameter
+        /// - Action : Set an attribute given in parameter <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the path of the file</param>
         /// <param name="set">whether it has to be set or not</param>
         /// <param name="fa">the attribute that has to be set or not</param>
         /// <returns>if it has been a success</returns>
-        public static bool SetAttributes(string path, bool set, FileAttributes fa)
+        /// <exception cref="AccessException">The file/folder given cannot be accessed</exception>
+        /// 
+        public static void SetAttributes(string path, bool set, FileAttributes fa)
         {
             if (File.Exists(path))
             {
-                if (set)
-                    AddFileAttribute(path, fa);
-                else
-                    RemoveFileAttribute(new FileInfo(path).Attributes, fa);
-                return true;
+                try
+                {
+                    if (set)
+                        AddFileAttribute(path, fa);
+                    else
+                        RemoveFileAttribute(new FileInfo(path), fa);
+                }
+                catch (Exception e)
+                {
+                    if (e is SecurityException or UnauthorizedAccessException)
+                        throw new AccessException("the file given " + path + " access is denied", "SetAttributes");
+                    throw new ManagerException();
+                }
             }
 
             if (Directory.Exists(path))
             {
-                if (set)
-                    AddDirAttribute(new DirectoryInfo(path), fa);
-                else
-                    RemoveDirAttribute(new DirectoryInfo(path), fa);
-                return true;
+                try
+                {
+                    if (set)
+                        AddDirAttribute(new DirectoryInfo(path), fa);
+                    else
+                        RemoveDirAttribute(new DirectoryInfo(path), fa);
+                }
+                catch (Exception e)
+                {
+                    if (e is SecurityException or UnauthorizedAccessException)
+                        throw new AccessException("the file given " + path + " access is denied", "SetAttributes");
+                    throw new ManagerException();
+                }
             }
 
-            return false;
+            throw new PathNotFoundException("the given file does not exist", "SetAttributes");
         }
 
         /// <summary>
-        /// - Action : Set an attribute given in parameter
+        /// - Action : Set an attribute given in parameter <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="ft">a fileType associated to a file</param>
         /// <param name="set">whether it has to be set or not</param>
         /// <param name="fa">the attribute that has to be set or not</param>
         /// <returns>if it has been a success</returns>
-        public static bool SetAttributes(FileType ft, bool set, FileAttributes fa)
+        public static void SetAttributes(FileType ft, bool set, FileAttributes fa)
         {
-            return SetAttributes(ft.Path, set, fa);
+            SetAttributes(ft.Path, set, fa);
         }
 
         #endregion
@@ -118,12 +141,11 @@ namespace Manager
         /// Overload 1 : Rename with no path dest <br></br>
         /// - Action : Rename a file without specified name and does not overwrite the file if there is one which has the same path <br></br>
         /// - Specification : This function is not really useful, consider using <see cref="Rename(string, string)"/><br></br>
-        /// - Possible errors : All avoided, UnauthorizedAccess controlled <br></br>
-        /// - Implementation : Check
+        /// - Implementation : NOT Check
         /// </summary>
         /// <param name="source">the destination file PATH or dir NAME</param>
         /// <returns>The success of the rename function</returns>
-        public static bool Rename(string source) // TODO Implement exception of Rename
+        public static bool Rename(string source) // TODO : Exceptions, whole function
         {
             if (File.Exists(source))
             {
@@ -131,7 +153,6 @@ namespace Manager
                 if (env.DirectoryName != null)
                 {
                     string dest = env.DirectoryName.Replace('\\','/') + "/" + ManagerReader.GenerateNameForModification(source);
-                    Console.Write(dest);
                     if (ManagerReader.IsPathCorrect(dest))
                     {
                         try { File.Move(source, dest); }

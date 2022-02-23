@@ -2,25 +2,27 @@
 
 namespace Manager.ManagerExceptions
 {
-    public class PathNotFoundException : Exception // TODO Edit PathNotFoundException
+    public class PathNotFoundException : ManagerException
     {
-        public PathNotFoundException()
+        public PathNotFoundException() : base()
         {
-            Console.Error.WriteLine("#######################################");
-            Console.Error.WriteLine("### A PathNotFoundException occured ###");
-            Console.Error.WriteLine(" # Low : the path does not exist");
+            ErrorType = "Path does not exist";
+            CriticalLevel = "Low";
+            Errorstd = "PathNotFoundException";
         }
 
-        public PathNotFoundException(string message) : this()
+        public PathNotFoundException(string message) : base("PathNotFoundException","Low","Path does not exist",message)
         {
-            Console.Error.Write("  # error :");
-            Console.Error.WriteLine(message);
+            ErrorType = "Path does not exist";
+            CriticalLevel = "Low";
+            Errorstd = "PathNotFoundException";
         }
 
-        public PathNotFoundException(string message, string func) : this(message)
+        public PathNotFoundException(string message, string func) : base("PathNotFoundException","Low","Path does not exist",message, func)
         {
-            Console.Error.Write("  # error at : ");
-            Console.Error.WriteLine(func);
+            ErrorType = "Path does not exist";
+            CriticalLevel = "Low";
+            Errorstd = "PathNotFoundException";
         }
     }
 }

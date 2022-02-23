@@ -2,25 +2,27 @@
 
 namespace Manager.ManagerExceptions
 {
-    public class ReplaceException : Exception
+    public class ReplaceException : ManagerException
     {
-        public ReplaceException()
+        public ReplaceException() : base()
         {
-            Console.Error.WriteLine("########################################");
-            Console.Error.WriteLine("###    A ReplaceException occured    ###");
-            Console.Error.WriteLine("  # Low : Consider replacing file or directory #");
+            ErrorType = "Replace data failed";
+            CriticalLevel = "Medium";
+            Errorstd = "ReplaceException";
         }
 
-        public ReplaceException(string message) : this()
+        public ReplaceException(string message) : base("ReplaceException","Medium","Replace data failed",message)
         {
-            Console.Error.Write("  # error : ");
-            Console.Error.WriteLine(message);
+            ErrorType = "Replace data failed";
+            CriticalLevel = "Medium";
+            Errorstd = "ReplaceException";
         }
 
-        public ReplaceException(string message, string func) : this(message)
+        public ReplaceException(string message, string func) : base("ReplaceException","Medium","Replace data failed",message, func)
         {
-            Console.Error.Write("  # error at : ");
-            Console.Error.WriteLine(func);
+            ErrorType = "Replace data failed";
+            CriticalLevel = "Medium";
+            Errorstd = "ReplaceException";
         }
     }
 }
