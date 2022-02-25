@@ -13,15 +13,15 @@ namespace Extensions
     {
         static void Main(string[] args)
         {
-            FtpUtils ftp = new FtpUtils("127.0.0.1", "forix", "lolmdr");
-
-
-            /*List<string> files = ftp.GetFiles();
+            FtpUtils ftp = new FtpUtils("127.0.0.1", "forix", "lolmdr", true);
+            Console.WriteLine(ftp.Client.IsEncrypted);
+            // ftp.Rename("/coucou.txt", "alors.txt");
+            List<string> files = ftp.GetFiles();
             foreach (string file in files)
             {
                 Console.WriteLine(file);
             }
-            Console.WriteLine();
+            /*Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine();
             ftp.MoveDir("Oklm");
