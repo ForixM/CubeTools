@@ -19,7 +19,7 @@ namespace Extensions
         public FtpClient Client => client;
 
         /// <summary>
-        /// Constructor of the FTP Client. FTPs isn't fully implemented, so please set ssl bool to false
+        /// Connects to the remote server. FTPs isn't fully implemented, so please set ssl bool to false
         /// </summary>
         /// <param name="host">IP of the remote server</param>
         /// <param name="userID">username registered at the remote server</param>
@@ -50,6 +50,11 @@ namespace Extensions
             SslPolicyErrors sslPolicyErrors)
         {
             return true;
+        }
+
+        public void Disconnect()
+        {
+            client.Disconnect();
         }
 
         /// <summary>
@@ -136,6 +141,30 @@ namespace Extensions
             }
 
             return directories;
+        }
+
+        /// <summary>
+        /// Moves a file asynchronously on the remote file system from one directory to another.
+        /// </summary>
+        /// <param name="path">The full or relative path to the object</param>
+        /// <param name="dest">The new full or relative path including the new name of the object</param>
+        /// <param name="overwrite">Overwrite or not the file at destination if it's already exists</param>
+        /// <returns>The async Task of the action</returns>
+        public Task MoveFile(string path, string dest, bool overwrite)
+        {
+            return client.MoveFileAsync(path, dest, overwrite ? FtpRemoteExists.Overwrite : FtpRemoteExists.Skip);
+        }
+
+        /// <summary>
+        /// Moves a directory asynchronously on the remote file system from one directory to another.
+        /// </summary>
+        /// <param name="path">The full or relative path to the object</param>
+        /// <param name="dest">The new full or relative path including the new name of the object</param>
+        /// <param name="overwrite">Overwrite or not the file at destination if it's already exists</param>
+        /// <returns>The async Task of the action</returns>
+        public Task MoveDirectory(string path, string dest, bool overwrite)
+        {
+            return client.MoveDirectoryAsync(path, dest, overwrite ? FtpRemoteExists.Overwrite : FtpRemoteExists.Skip);
         }
 
         /// <summary>
