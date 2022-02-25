@@ -53,7 +53,7 @@ namespace Extensions
         }
 
         /// <summary>
-        /// Move the current directory to the directory given in the parameted
+        /// Move the current directory to the directory given in the parameter
         /// </summary>
         /// <param name="dir">The next directory to go in</param>
         /// <returns>Whether the action was done or not</returns>
@@ -67,6 +67,36 @@ namespace Extensions
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Create a new directory in the given path
+        /// </summary>
+        /// <param name="path">The path where the directory will be created</param>
+        /// <returns>Whether the action was done or not</returns>
+        public bool MkDir(string path)
+        {
+            return client.CreateDirectory(path);
+        }
+        
+        /// <summary>
+        /// Deletes the given file from the remote server
+        /// </summary>
+        /// <param name="path">The path of the file that will be deleted</param>
+        /// <returns>The async Task of the file deletion</returns>
+        public Task DeleteFile(string path)
+        {
+            return client.DeleteFileAsync(path);
+        }
+
+        /// <summary>
+        /// Deletes the given directory and all his content from the remote server
+        /// </summary>
+        /// <param name="dir">The path of the directory that will be deleted</param>
+        /// <returns>The async Task of the directory deletion</returns>
+        public Task DeleteDirectory(string path)
+        {
+            return client.DeleteDirectoryAsync(path);
         }
 
         /// <summary>
