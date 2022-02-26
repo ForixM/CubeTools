@@ -75,7 +75,6 @@ namespace Manager
         /// <summary>
         /// - Action : Load a pointer to a directory given in the parameter with its path
         /// - Implementation : Check
-        /// - Errors : avoided Security and IO
         /// </summary>
         /// <param name="path">the path of the directory</param>
         public DirectoryType(string path)
@@ -84,7 +83,7 @@ namespace Manager
             {
                 try
                 {
-                    Directory.SetCurrentDirectory(path);
+                    Directory.SetCurrentDirectory(path); 
                     _path = path;
                     _name = ManagerReader.GetPathToName(path);
                     _date = ManagerReader.GetFileCreationDate(path);
@@ -105,7 +104,7 @@ namespace Manager
                     throw new ManagerException("","","","Unknown error while constructing the directory", "Constructor DirectoryType");
                 }
             }
-
+            // TODO add exception
         }
 
         #endregion

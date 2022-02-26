@@ -38,26 +38,6 @@ namespace ManagerTests
 
         #region Properties
 
-        [Test] // Check
-        [TestCase("reader.txt")]
-        [TestCase("nothing")]
-        [TestCase("reader")]
-        public void IsFile(string name)
-        {
-            name = env.Path + "/" + name;
-            Assert.AreEqual(File.Exists(name), ManagerReader.IsFile(name), name + " is a file");
-        }
-    
-        [Test] // Check
-        [TestCase("reader.txt")]
-        [TestCase("reader")]
-        [TestCase("none")]
-        public void IsDirectory(string name)
-        {
-            name = env.Path + "/" + name;
-            Assert.AreEqual(Directory.Exists(name), ManagerReader.IsDirectory(name), name + " is a directory");
-        }
-    
         [Test] // see : IsFileHidden > ManagerReader
         [TestCase("readerHidden", true)]
         [TestCase("reader.txt", false)]

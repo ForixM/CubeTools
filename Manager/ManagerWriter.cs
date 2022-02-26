@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security;
 using Manager.ManagerExceptions;
 
@@ -11,34 +12,66 @@ namespace Manager
         #region Properties
 
         // This region contains every function that set information of the file given with the path
-
+        
         /// <summary>
+        /// - Type : Low Level <br></br>
         /// - Action : Remove an attribute <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="fi">FileInfo instance of the given file</param>
         /// <param name="attributesToRemove">the attribute to remove</param>
         /// <returns>the new file attributes</returns>
-        /// <exception cref="SecurityException">The path cannot be accessed</exception>
-        /// <exception cref="UnauthorizedAccessException">The path cannot be accessed</exception>
-        /// <exception cref="IOException">System throws a new exception</exception>
+        /// <exception cref="AccessException">the file cannot be accessed</exception>
+        /// <exception cref="DiskNotReadyException">the disk is refreshing</exception>
+        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
         private static void RemoveFileAttribute(FileInfo fi, FileAttributes attributesToRemove)
         {
-            fi.Attributes &= ~attributesToRemove;
+            try
+            {
+                fi.Attributes &= ~attributesToRemove;
+            }
+            catch (Exception e)
+            {
+                if (e is SecurityException or UnauthorizedAccessException)
+                    throw new AccessException(  "File could not be accessed", "RemoveFileAttribute");
+                if (e is IOException)
+                    throw new DiskNotReadyException("Disk is refreshing", "RemoveFileAttribute");
+                if (e is FileNotFoundException or DirectoryNotFoundException)
+                    throw new PathNotFoundException("The given file does not exist", "RemoveFileAttrbiute");
+                throw new ManagerException("Reader error", "Medium", "Impossible to read file",
+                    "The file cannot be read", "RemoveFileAttribute");
+            }
         }
 
         /// <summary>
+        /// - Type : Low Level <br></br>
         /// - Action : Add an attribute to a file <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the path that has to be modified</param>
         /// <param name="attributes">attributes to add </param>
-        /// <exception cref="SecurityException">The path cannot be accessed</exception>
-        /// <exception cref="UnauthorizedAccessException">The path cannot be accessed</exception>
-        /// <exception cref="IOException">System throws a new exception</exception>
+        /// <exception cref="AccessException">the given path cannot be accessed</exception>
+        /// <exception cref="DiskNotReadyException">the disk is refreshing</exception>
+        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
         private static void AddFileAttribute(string path, FileAttributes attributes)
         {
-            File.SetAttributes(path, attributes);
+            try
+            {
+                File.SetAttributes(path, attributes);
+            }
+            catch (Exception e)
+            {
+                if (e is SecurityException or UnauthorizedAccessException)
+                    throw new AccessException(  "File could not be accessed", "AddFileAttribute");
+                if (e is IOException)
+                    throw new DiskNotReadyException("Disk is refreshing", "AddFileAttribute");
+                if (e is FileNotFoundException or DirectoryNotFoundException)
+                    throw new PathNotFoundException("The given file does not exist", "AddFileAttribute");
+                throw new ManagerException("Writer error", "Medium", "Impossible to modify file attributes",
+                    "The file cannot be modified", "AddFileAttribute");
+            }
         }
 
         /// <summary>
@@ -47,12 +80,27 @@ namespace Manager
         /// </summary>
         /// <param name="di">the directory that has to be modified</param>
         /// <param name="attributesToRemove">the attribute to remove</param>
-        /// <exception cref="SecurityException">The path cannot be accessed</exception>
-        /// <exception cref="UnauthorizedAccessException">The path cannot be accessed</exception>
-        /// <exception cref="IOException">System throws a new exception</exception>
+        /// <exception cref="AccessException">the given path cannot be accessed</exception>
+        /// <exception cref="DiskNotReadyException">the disk is refreshing</exception>
+        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
         private static void RemoveDirAttribute(DirectoryInfo di, FileAttributes attributesToRemove)
         {
-            di.Attributes &= ~attributesToRemove;
+            try
+            {
+                di.Attributes &= ~attributesToRemove;
+            }
+            catch (Exception e)
+            {
+                if (e is FileNotFoundException or DirectoryNotFoundException)
+                    throw new PathNotFoundException("the given directory does not exist","RemoveDirAttribute");
+                if (e is UnauthorizedAccessException or SecurityException)
+                    throw new AccessException("The given directory cannot be accessed", "RemoveDirAttribute");
+                if (e is IOException)
+                    throw new DiskNotReadyException("the disk is not ready to modify data", "RemoveDirAttribute");
+                throw new ManagerException("Writer error", "Medium", "Impossible to modify directory attributes",
+                    "The path cannot be modified", "RemoveDirAttribute");
+            }
         }
 
         /// <summary>
@@ -61,24 +109,41 @@ namespace Manager
         /// </summary>
         /// <param name="di">the directory that has to be modified</param>
         /// <param name="attribute">the attribute that has to be added</param>
-        /// <exception cref="SecurityException">directory access denied</exception>
-        /// <exception cref="UnauthorizedAccessException">directory access denied</exception>
-        /// <exception cref="IOException">system crashed app</exception>
+        /// <exception cref="AccessException">the given path cannot be accessed</exception>
+        /// <exception cref="DiskNotReadyException">the disk is refreshing</exception>
+        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
         private static void AddDirAttribute(DirectoryInfo di, FileAttributes attribute)
         {
-            di.Attributes |= attribute;
+            try
+            {
+                di.Attributes |= attribute;
+            }
+            catch (Exception e)
+            {
+                if (e is FileNotFoundException or DirectoryNotFoundException)
+                    throw new PathNotFoundException("the given directory does not exist","AddDirAttribute");
+                if (e is UnauthorizedAccessException or SecurityException)
+                    throw new AccessException("The given directory cannot be accessed", "AddDirAttribute");
+                if (e is IOException)
+                    throw new DiskNotReadyException("the disk is not ready to modify data", "AddDirAttribute");
+                throw new ManagerException("Writer error", "Medium", "Impossible to modify directory attributes",
+                    "The path cannot be modified", "AddDirAttribute");
+            }
         }
 
         /// <summary>
+        /// - Type : Low Level <br></br>
         /// - Action : Set an attribute given in parameter <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the path of the file</param>
         /// <param name="set">whether it has to be set or not</param>
         /// <param name="fa">the attribute that has to be set or not</param>
-        /// <returns>if it has been a success</returns>
-        /// <exception cref="AccessException">The file/folder given cannot be accessed</exception>
-        /// 
+        /// <exception cref="AccessException">the given path cannot be accessed</exception>
+        /// <exception cref="DiskNotReadyException">the disk is refreshing</exception>
+        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
         public static void SetAttributes(string path, bool set, FileAttributes fa)
         {
             if (File.Exists(path))
@@ -102,30 +167,34 @@ namespace Manager
             {
                 try
                 {
+                    DirectoryInfo di = new DirectoryInfo(path); // Security Exception
                     if (set)
-                        AddDirAttribute(new DirectoryInfo(path), fa);
+                        AddDirAttribute(di,
+                            fa); // AccessException, DiskNotReadyException, PathNotFoundException, ManagerException
                     else
-                        RemoveDirAttribute(new DirectoryInfo(path), fa);
+                        RemoveDirAttribute(di,
+                            fa); // AccessException, DiskNotReadyException, PathNotFoundException, ManagerException
                 }
-                catch (Exception e)
+                catch (SecurityException)
                 {
-                    if (e is SecurityException or UnauthorizedAccessException)
-                        throw new AccessException("the file given " + path + " access is denied", "SetAttributes");
-                    throw new ManagerException();
+                    throw new AccessException("the directory given " + path + " access is denied", "SetAttributes");
                 }
             }
 
-            throw new PathNotFoundException("the given file does not exist", "SetAttributes");
+            throw new PathNotFoundException("the given path " + path + " does not exist", "SetAttributes");
         }
 
         /// <summary>
-        /// - Action : Set an attribute given in parameter <br></br>
-        /// - Implementation : Check
+        /// - Type : High Level <br></br>
+        /// -> <see cref="SetAttributes(string,bool,System.IO.FileAttributes)"/>
         /// </summary>
         /// <param name="ft">a fileType associated to a file</param>
         /// <param name="set">whether it has to be set or not</param>
         /// <param name="fa">the attribute that has to be set or not</param>
-        /// <returns>if it has been a success</returns>
+        /// <exception cref="AccessException">the given path cannot be accessed</exception>
+        /// <exception cref="DiskNotReadyException">the disk is refreshing</exception>
+        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
         public static void SetAttributes(FileType ft, bool set, FileAttributes fa)
         {
             SetAttributes(ft.Path, set, fa);
@@ -138,183 +207,182 @@ namespace Manager
         // RENAME FUNCTIONS
 
         /// <summary>
-        /// Overload 1 : Rename with no path dest <br></br>
-        /// - Action : Rename a file without specified name and does not overwrite the file if there is one which has the same path <br></br>
-        /// - Specification : This function is not really useful, consider using <see cref="Rename(string, string)"/><br></br>
-        /// - Implementation : NOT Check
-        /// </summary>
-        /// <param name="source">the destination file PATH or dir NAME</param>
-        /// <returns>The success of the rename function</returns>
-        public static bool Rename(string source) // TODO : Exceptions, whole function
-        {
-            if (File.Exists(source))
-            {
-                FileInfo env = new FileInfo(source);
-                if (env.DirectoryName != null)
-                {
-                    string dest = env.DirectoryName.Replace('\\','/') + "/" + ManagerReader.GenerateNameForModification(source);
-                    if (ManagerReader.IsPathCorrect(dest))
-                    {
-                        try { File.Move(source, dest); }
-                        catch (IOException) { return false; }
-                        catch (UnauthorizedAccessException) { return false;}
-                        return true;
-                    }
-                }
-            }
-            if (Directory.Exists(source))
-            {
-                FileInfo env = new FileInfo(source);
-                if (env.DirectoryName != null)
-                {
-                    string path = env.DirectoryName + "/" + ManagerReader.GenerateNameForModification(Path.GetFileName(source));
-                    if (ManagerReader.IsPathCorrect(path))
-                    {
-                        try { Directory.Move(source, ManagerReader.GenerateNameForModification(source)); }
-                        catch (UnauthorizedAccessException) { return false; }
-                        catch (IOException) { return false;}
-                        return true;
-                    }
-                    return false;
-                }
-
-                return false;
-
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Overload 2 : Rename a file / dir using a path dest : no extension conversion <br></br>
+        /// - Type : Low Level <br></br>
         /// - Action : Rename a file or dir with a dest. Generate a copy by default => <see cref="ManagerReader.GenerateNameForModification(string)"/><br></br>
-        /// - Possible Errors : All avoided, UnauthorizedAccess controlled, IOException controlled
+        /// - Specification : dest should not exist to avoid merging directories
         /// - Implementation : Check
         /// </summary>
         /// <param name="source">the source path</param>
         /// <param name="dest">the destination path</param>
         /// <returns>The success of the rename function</returns>
-        public static bool Rename(string source, string dest) // TODO Implement exception of Rename
+        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
+        /// <exception cref="InUseException">the source is being used by an external program</exception>
+        /// <exception cref="AccessException">the source cannot be accessed</exception>
+        /// <exception cref="PathFormatException">the source format is incorrect</exception>
+        /// <exception cref="ReplaceException">dest already exist, cannot overwrite</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        public static void Rename(string source, string dest) // TODO Create async function
         {
+            // Source does not exist
             if (!File.Exists(source) && !Directory.Exists(source))
+                throw new PathNotFoundException("Impossible to rename data", "Rename");
+            // Source and dest are the same
+            if (source == dest)
+                return;
+            // Source or dest have an incorrect format
+            if (!ManagerReader.IsPathCorrect(source) || !ManagerReader.IsPathCorrect(dest))
+                throw new PathFormatException(source + " : format of path is incorrect", "Rename");
+            
+            if (Directory.Exists(source))
             {
-                return false; 
-            }
-            if (Directory.Exists(source) && ManagerReader.IsPathCorrect(source))
-            {
-                try { Directory.Move(source, ManagerReader.GenerateNameForModification(dest)); }
-                catch (IOException) { return false; }
-                catch (UnauthorizedAccessException) { return false; }
-                return true;
+                // dest already exists
+                if (Directory.Exists(dest))
+                    throw new ReplaceException(dest + " already exist, cannot merge directories", "Rename");
+                try
+                {
+                    string ndest = ManagerReader.GenerateNameForModification(dest);
+                    Directory.Move(source, ndest);
+                    return;
+                }
+                catch (IOException) // Already used in a program or in another volume
+                {
+                    throw new InUseException(source + " is already used by an external program or is contained in another volume", "Rename");
+                }
+                catch (UnauthorizedAccessException) // Access denied
+                {
+                    throw new AccessException(source + " could not be renamed", "Rename");
+                }
             }
 
-            if (ManagerReader.IsFile(source) && ManagerReader.IsPathCorrect(source))
+            if (File.Exists(source))
             {
-                try { File.Move(source, ManagerReader.GenerateNameForModification(dest)); }
-                catch (IOException) { return false; } // To be sure
-                catch (UnauthorizedAccessException) { return false; } // Access Exception
-                return true;
+                // file dest already exists
+                if (File.Exists(dest))
+                    throw new ReplaceException(dest + " already exist, cannot merge overwrite files", "Rename");
+                try
+                {
+                    string ndest = ManagerReader.GenerateNameForModification(dest);
+                    File.Move(source, ndest);
+                }
+                catch (UnauthorizedAccessException) // Access denied
+                {
+                    throw new AccessException(source + " could not be renamed", "Rename");
+                }
+            }
+        }
+
+        /// <summary>
+        /// - Type : Low Level <br></br>
+        /// - Action : Rename a file or dir with a dest. Generate a copy by default => <see cref="ManagerReader.GenerateNameForModification(string)"/><br></br>
+        /// - Specification : dest should not exist to avoid merging directories
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="source">the source path</param>
+        /// <param name="dest">the destination path</param>
+        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
+        /// <exception cref="InUseException">the source is being used by an external program</exception>
+        /// <exception cref="AccessException">the source cannot be accessed</exception>
+        /// <exception cref="PathFormatException">the source format is incorrect</exception>
+        /// <exception cref="ReplaceException">dest already exist, cannot overwrite</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        public static void RenameMerge(string source, string dest) // TODO Recursive method
+        {
+            // Source does not exist
+            if (!File.Exists(source) && !Directory.Exists(source))
+                throw new PathNotFoundException("Impossible to rename data", "Rename");
+            // Source and dest are the same
+            if (source == dest)
+                return;
+            // Source or dest have an incorrect format
+            if (!ManagerReader.IsPathCorrect(source) || !ManagerReader.IsPathCorrect(dest))
+                throw new PathFormatException(source + " : format of path is incorrect", "Rename");
+            // dest does not exist, simply
+            if (!Directory.Exists(dest) && !File.Exists(dest))
+            {
+                Rename(source, dest);
+                return;
             }
 
-            return false;
+            if (File.Exists(source)) // source is a file and dest already exist
+            {
+                Rename(source, ManagerReader.GenerateNameForModification(source)); // Rename with a modified name if it exists
+            }
+            else // source is a directory and dest already exist
+            {
+                try
+                {
+                    DirectoryInfo di = new DirectoryInfo(source); // SecurityException
+                    foreach (var subFi in di.EnumerateFiles("*",SearchOption.AllDirectories).ToArray())
+                    {
+                        string parent = di.FullName;
+                        string subPath = parent + '/' + subFi.Name;
+                        Rename(subPath, ManagerReader.GenerateNameForModification(subPath));
+                    }
+                    foreach (var subDi in di.EnumerateDirectories("*",SearchOption.AllDirectories).ToArray())
+                    {
+                        string parent = di.FullName;
+                        string subPath = parent + '/' + subDi.Name; // TODO ERRRRROR
+                        RenameMerge(subDi.FullName, subPath);
+                    }
+                }
+                catch (SecurityException)
+                {
+                    throw new AccessException(source + " could not be read", "Rename");
+                }
+            }
+            
         }
 
         /// <summary>
         /// => UI Implementation <br></br>
-        /// Overload 3 : Try to rename a FileType using a newPath <br></br>
+        /// - Type : High Level : Try to rename a FileType using a newPath <br></br>
         /// - Action : Rename a FileType class path and its associated file using a string path <br></br>
         /// - Specification : Can be used for the UI implementation thanks to the list of <see cref="DirectoryType"/> class <br></br>
         /// - Implementation : NOT Check
         /// </summary>
         /// <param name="ft">the source file linked to FileType Class</param>
-        /// <param name="dest">the destination file name or dir name</param>
-        /// <param name="overwrite">overwrite the file / dir : USE WITH PRECUATION</param>
-        /// <returns>The success of the rename action</returns>
-        public static bool Rename(FileType ft, string dest, bool overwrite = false)
+        /// <param name="dest">the destination file name or dir path</param>
+        /// <param name="merge">if true, merge directories and generate copy for files</param>
+        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
+        /// <exception cref="InUseException">the source is being used by an external program</exception>
+        /// <exception cref="AccessException">the source cannot be accessed</exception>
+        /// <exception cref="PathFormatException">the source format is incorrect</exception>
+        /// <exception cref="ReplaceException">dest already exist, cannot overwrite</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        public static void Rename(FileType ft, string dest, bool merge = false)
         {
-            if (Rename(ft.Path, dest, overwrite))
-            {
-                ManagerReader.ReadFileType(ref ft);
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Overload 4 : Rename with path dest and overwrite option <br></br>
-        /// - Action : Rename a file using two path (source and dest). Overwrite functionnality is enabled using the last parameter<br></br>
-        /// - Specification : If you do not use the overwrite functionnality, consider using <see cref="Rename(string, string)"/><br></br>
-        /// - Errors : All avoided thanks to <see cref="Rename(string, string)"/> and catch statement with the delete action<br></br>
-        /// - Implementation : NOT Check
-        /// </summary>
-        /// <param name="source">the source file name or dir name</param>
-        /// <param name="dest">the destination file name or dir name</param>
-        /// <param name="overwrite">true : you want to overwrite | false : you want a single copy</param>
-        /// <returns>The success of the rename function</returns>
-        public static bool Rename(string source, string dest, bool overwrite = true) // TODO Implement exception of Rename
-        {
-            if (!File.Exists(source) && !Directory.Exists(source))
-                return false;
-            if (!overwrite)
-            {
-                return Rename(source, dest);
-            }
-                
-            if (File.Exists(dest))
-            {
-                // First Delete the last File
-                try { File.Delete(dest); }
-                catch (IOException) { return false; }
-                catch (UnauthorizedAccessException) { return false; }
-                // Then rename it
-                try { File.Move(source, ManagerReader.GenerateNameForModification(dest)); }
-                catch (IOException) { return false; }
-                catch (UnauthorizedAccessException) { return false; }
-
-                return true;
-
-            }
-            if (Directory.Exists(dest))
-            {
-                // First Delete the last File
-                try { Directory.Delete(dest); }
-                catch (IOException) { return false; }
-                catch (UnauthorizedAccessException) { return false; }
-                // Then rename it
-                try { Directory.Move(source, ManagerReader.GenerateNameForModification(dest)); }
-                catch (IOException) { return false; }
-                catch (UnauthorizedAccessException) { return false; }
-
-                return true;
-            }
-
-            return false;
+            if (merge)
+                RenameMerge(ft.Path, dest);
+            else
+                Rename(ft.Path,dest);
         }
 
         // COPY FUNCTIONS
 
         /// <summary>
-        /// Overload 1 : Copy the file with no dest name <br></br>
+        /// - Low Level : Copy the file with no dest name <br></br>
         /// - Action : Copy a file using format <see cref="ManagerReader.GenerateNameForModification(string)"/><br></br>
         /// - Specification : If you want to specify the name of the copy, consider using <see cref="Copy(string, string, bool)"/><br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="source">the source file name or dir full path</param>
-        /// <returns>The new path created</returns>
-        public static string Copy(string source) //TODO Implement Exception for Overload 2 of Copy function
+        /// <returns>The new path created</returns>=
+        public static void Copy(string source) //TODO Implement Exception for Overload 2 of Copy function
         {
             if (File.Exists(source))
             {
                 string res = ManagerReader.GenerateNameForModification(source);
                 try
-                { File.Copy(source, res); }
-                catch (IOException) 
-                { return ""; }
-                catch (UnauthorizedAccessException)
-                { return "";}
-                return res;
+                {
+                    File.Copy(source, res);
+                }
+                catch (Exception e)
+                {
+                    if (e is UnauthorizedAccessException)
+                        throw new AccessException(source + " could not be accessed", "Copy");
+                }
             }
-            return "";
+            throw new PathNotFoundException(source + " does not exist", "Copy");
         }
 
         /// <summary>

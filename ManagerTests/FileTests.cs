@@ -46,7 +46,7 @@ namespace ManagerTests
         {
             filename = env.Path + filename;
             FileType ft = new FileType(filename);
-            FileType.Init(ref ft);
+            ManagerReader.ReadFileType(ref ft);
             if (!exist)
             {
                 Assert.AreEqual(true, ft == FileType.NullPointer);

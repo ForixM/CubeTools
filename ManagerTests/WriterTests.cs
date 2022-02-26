@@ -47,20 +47,7 @@ namespace ManagerTests
             Assert.AreEqual(true, set == ManagerReader.HasAttribute(fa, name));
             ManagerWriter.SetAttributes(name, !set, fa);
         }
-
-        [Test]
-        [TestCase("rename.txt")]
-        [TestCase("rename1.txt")]
-        [TestCase("rename(1).txt")]
-        [TestCase("testLolDoesNotExists")]
-        [TestCase("rename")]
-        public void Rename1(string name)
-        {
-            name = env.Path + '/' + name;
-            string res = ManagerReader.GenerateNameForModification(name);
-            // Will rename the source with the GenerateFileName algorithm
-            Assert.AreEqual(ManagerWriter.Rename(name),File.Exists(res));
-        }
+        
 
         [Test]
         [TestCase("rename.txt", "test.txt")]

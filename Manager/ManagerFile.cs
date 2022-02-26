@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using Manager.ManagerExceptions;
 
 namespace Manager
 {
@@ -78,7 +79,10 @@ namespace Manager
         #region Init
 
         // Constructors
-        // Implementation : Check
+        /// <summary>
+        /// - Action : Generate a null pointer
+        /// - Implementation : Check
+        /// </summary>
         public FileType()
         {
             Path = "";
@@ -95,27 +99,24 @@ namespace Manager
             IsDir = false;
         }
 
-        // Implementation : Check
+        /// <summary>
+        /// - Action : Generate a pointer with it path only <br></br>
+        /// - Implementation : Check
+        /// </summary>
+        /// <param name="path">the path to load</param>
+        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         public FileType(string path) : this()
         {
-            this.Path = path;
-            if (File.Exists(path) || Directory.Exists(path))
+            if (!File.Exists(path) && !Directory.Exists(path))
             {
-                Name = ManagerReader.GetPathToName(path);
+                Dispose();
+                throw new PathNotFoundException(path + " does not exist", "Constructor FileType");
             }
-            else
-            {
-                this.Dispose();
-            }
+            Path = path;
 
         }
 
         // Initializers
-        // Implemented Check
-        public static void Init(ref FileType ft)
-        {
-            ManagerReader.ReadFileType(ref ft);
-        }
 
         #endregion
 
@@ -182,7 +183,7 @@ namespace Manager
 
         #endregion
 
-        #region Debug
+        #region CLI
 
         public void PrintInformation()
         {
@@ -196,6 +197,32 @@ namespace Manager
             Console.WriteLine("ReadOnly : " + this.ReadOnly);
             Console.WriteLine("Hidden : " + this.Hidden);
             Console.WriteLine("Directory : " + this.IsDir);
+        }
+
+        public void PrettyPrint()
+        {
+            foreach (var c in Path)
+                Console.Write('_');
+            Console.WriteLine("______________________");
+            Console.WriteLine($"### Pointer to : {Path} ###");
+            foreach (var c in Path)
+                Console.Write('_');
+            Console.WriteLine("______________________");
+            
+            Console.WriteLine($"## Name : {Name} ##  ## Type : {Type} ##");
+            Console.WriteLine($"## Size : {Size} ##  ## Creation date : {Date} ##");
+            Console.WriteLine($"## Last modification : {LastDate} ##");
+            Console.WriteLine($"## Last access : {AccessDate} ##");
+            foreach (var c in Path)
+                Console.Write('_');
+            Console.WriteLine("______________________");
+            
+            Console.WriteLine($"$$ Hidden : {Hidden} $$  $$ Is a directory : {IsDir}  $$");
+            Console.WriteLine($"$$ ReadOnly : {ReadOnly} $$  $$ Archived : {Archived} $$");
+            Console.WriteLine($"$$ Compressed : {Compressed} $$");
+            foreach (var c in Path)
+                Console.Write('_');
+            Console.WriteLine("______________________");
         }
 
         #endregion

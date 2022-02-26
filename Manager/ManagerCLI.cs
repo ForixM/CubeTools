@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Manager.ManagerExceptions;
@@ -294,7 +295,11 @@ namespace Manager
         private static void Mv(string name, string dest, bool rep = false)
         {
             name = ManagerReader.GetNameToPath(name);
-            ManagerWriter.Rename(name, dest, rep);
+            dest = ManagerReader.GetNameToPath(dest);
+            if (!rep)
+                ManagerWriter.Rename(name, dest);
+            else 
+                ManagerWriter.RenameMerge(name, dest);
         }
 
         private static void Rm(string name)
