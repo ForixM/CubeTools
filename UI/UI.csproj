@@ -12,6 +12,7 @@
     </ItemGroup>
     <ItemGroup>
         <AvaloniaResource Include="Fonts\Karla.ttf" />
+        <AvaloniaResource Include="Fonts\Poppins-Regular.ttf" />
     </ItemGroup>
     <ItemGroup>
         <AvaloniaXaml Include="Assets\left-arrow.ico">
@@ -26,16 +27,13 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
     </ItemGroup>
     <ItemGroup>
-        <AvaloniaResource Update="Assets\add.ico">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </AvaloniaResource>
         <AvaloniaResource Update="Assets\cubetools.ico">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </AvaloniaResource>
-        <AvaloniaResource Update="Assets\right-arrow.ico">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <AvaloniaResource Update="Assets\home.ico">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </AvaloniaResource>
-        <AvaloniaResource Update="Assets\settings.ico">
+        <AvaloniaResource Update="Assets\right-arrow.ico">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </AvaloniaResource>
         <AvaloniaResource Update="Assets\sync.ico">
@@ -46,6 +44,9 @@
         </AvaloniaResource>
     </ItemGroup>
     <ItemGroup>
+      <None Update="Fonts\Lato-Bold.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Fonts\NoticiaText-Bold.ttf">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
