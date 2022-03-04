@@ -29,19 +29,19 @@
 
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="45" />
-			<RowDefinition Height="55" />
+			<RowDefinition Height="35" />
+			<RowDefinition Height="65" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
 		<!-- Première ligne-->
 
-		<Grid Grid.Row="0" Margin="0 5 0 0">
+		<Grid Grid.Row="0">
 			<Image Source="/Assets/cubetools.ico"
                    HorizontalAlignment="Left"
-                   Height="35" Margin="6 0 0 0" />
+                   Height="27" Margin="6 0 0 0" />
 			<TextBlock VerticalAlignment="Center"
                        Margin="50 0 0 0"
-                       FontSize="17"
+                       FontSize="15"
 					   FontFamily="/Fonts/Poppins-regular.ttf">
 				Cube Tools
 			</TextBlock>
@@ -53,16 +53,58 @@
 
 			<Border CornerRadius="8" BorderThickness="3" HorizontalAlignment="Center"
 					Background="#076CAD" Width="760" Height="47">
-				<StackPanel>
+				<StackPanel VerticalAlignment="Center">
 					<Grid>
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="50"/>
+							<ColumnDefinition Width="50"/>
+							<ColumnDefinition Width="50"/>
+							<ColumnDefinition Width="60"/>
+							<ColumnDefinition Width="495"/>
+							<ColumnDefinition Width="50"/>
 						</Grid.ColumnDefinitions>
+
+						<Grid Grid.Column="0">
+							<Button Content="LeftBtn" Command="{Binding LeftBtnClick}"
+									CornerRadius="4" Height="40" Background="Transparent">
+								<Image Source="/Assets/arrow-left.ico"
+									   Height="30"/>
+							</Button>
+						</Grid>
+						<Grid Grid.Column="1">
+							<Button Content="RightBtn" Command="{Binding RightBtnClick}"
+									CornerRadius="4" Height="40" Background="Transparent">
+								<Image Source="/Assets/arrow-right.ico"
+									   Height="30"/>
+							</Button>
+						</Grid>
+						<Grid Grid.Column="2">
+							<Button Content="UpBtn" Command="{Binding UpBtnClick}"
+									CornerRadius="4" Height="40" Background="Transparent">
+								<Image Source="/Assets/chevron.ico"
+									   Height="30"/>
+							</Button>
+						</Grid>
+						<Grid Grid.Column="3">
+							<Button Content="SyncBtn" Command="{Binding SyncBtnClick}"
+									CornerRadius="4" Height="40" Background="Transparent">
+								<Image Source="/Assets/sync.ico"
+									   Height="20"/>
+							</Button>
+						</Grid>
+						<Grid Grid.Column="4">
+							
+							<Border CornerRadius="4" Background="White" Margin="0 1" Width="490">
+								<TextBlock Text="{Binding Path}" />
+							</Border>
+						</Grid>
+						<Grid Grid.Column="5">
+							<Button Content="SettingBtn" Command="{Binding SettingBtnClick}"
+									CornerRadius="4" Height="40" Background="Transparent">
+								<Image Source="/Assets/setting.ico"
+									   Height="25"/>
+							</Button>
+						</Grid>
 					</Grid>
 				</StackPanel>
 			</Border>
@@ -178,195 +220,10 @@
 
 			<!-- Partie Droite de la troisième ligne-->
 
-			<Grid Grid.Column="1">
-
-				<Grid.RowDefinitions>
-					<RowDefinition Height="41" />
-					<RowDefinition />
-				</Grid.RowDefinitions>
-
-				<Grid Grid.Row="0">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="45" />
-						<ColumnDefinition Width="45" />
-						<ColumnDefinition Width="45" />
-						<ColumnDefinition Width="45" />
-						<ColumnDefinition Width="45" />
-						<ColumnDefinition Width="45" />
-						<ColumnDefinition />
-						<ColumnDefinition Width="45" />
-						<ColumnDefinition Width="45" />
-					</Grid.ColumnDefinitions>
-
-					<Grid Grid.Column="0">
-						<!-- Create -->
-						<Button Content="CreateBtn"
-						        Command="{Binding CreateBtnClick}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Width="45" Height="40"
-                                CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\add.ico"
-                                       Width="50"
-                                       Height="28"
-                                       HorizontalAlignment="Left" />
-
-							</StackPanel>
-						</Button>
-					</Grid>
-
-					<Grid Grid.Column="1">
-						<!-- Copy -->
-						<Button Content="CopyBtn"
-						        Command="{Binding CopyBtnClick}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Width="45" Height="40"
-                                CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\copy.ico"
-                                       Width="50"
-                                       Height="28"
-                                       HorizontalAlignment="Left" />
-
-							</StackPanel>
-						</Button>
-					</Grid>
-
-					<Grid Grid.Column="2">
-						<!-- Cut -->
-						<Button Content="CutBtn"
-						        Command="{Binding CutBtnClick}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Width="45" Height="40"
-                                CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\cut.ico"
-                                       Width="50"
-                                       Height="28"
-                                       HorizontalAlignment="Left" />
-
-							</StackPanel>
-						</Button>
-					</Grid>
-
-					<Grid Grid.Column="3">
-						<!-- Paste -->
-						<Button Content="PasteBtn"
-						        Command="{Binding PasteBtnClick}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Width="45" Height="40"
-                                CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\paste.ico"
-                                       Width="50"
-                                       Height="28"
-                                       HorizontalAlignment="Left" />
-
-							</StackPanel>
-						</Button>
-					</Grid>
-
-					<Grid Grid.Column="4">
-						<!-- Rename -->
-						<Button Content="RenameBtn"
-						        Command="{Binding RenameBtnClick}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Width="45" Height="40"
-                                CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\rename.ico"
-                                       Width="50"
-                                       Height="30" />
-							</StackPanel>
-						</Button>
-					</Grid>
-
-					<Grid Grid.Column="5">
-						<!-- Delete -->
-						<Button Content="DeleteBtn"
-						        Command="{Binding DeleteBtnClick}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Width="45" Height="40"
-                                CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\delete.ico"
-                                       Width="50"
-                                       Height="28" />
-							</StackPanel>
-						</Button>
-					</Grid>
-
-					<Grid Grid.Column="6" Background="#EEEDED" />
-					<!-- Blank Space Responsive -->
-
-					<Grid Grid.Column="7">
-						<!-- Nearby Send -->
-						<Button Content="NearbySendBtn"
-						        Command="{Binding NearbySendBtnClick}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"
-                                Width="45" Height="40"
-                                CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\nearbysend.ico"
-                                       Width="50"
-                                       Height="28" />
-							</StackPanel>
-						</Button>
-					</Grid>
-
-					<Grid Grid.Column="8">
-						<!-- Search-->
-						<Button Content="SearchBtn"
-						        Command="{Binding SearchBtnClick}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Width="45" Height="40"
-                                CornerRadius="8">
-							<StackPanel>
-								<Image Source="/Assets\search.ico"
-                                       Width="50"
-                                       Height="28"
-                                       HorizontalAlignment="Left" />
-							</StackPanel>
-						</Button>
-					</Grid>
-				</Grid>
-				<Grid Grid.Row="1">
-					<ScrollViewer HorizontalScrollBarVisibility="Disabled"
-								  VerticalScrollBarVisibility="Auto">
-						<ListBox Name="subFilePrinted">
-							<ListBox.ItemTemplate>
-								<DataTemplate>
-									<WrapPanel>
-										<Button Content="{Binding ElementName}"
-												Command="{Binding GoToSubFile}"
-												Margin="0, 7, 7, 7"
-												Width="80"
-												Height="100">
-											<StackPanel>
-												<Image Source="{Binding IconFileOrFolder}"
-													   VerticalAlignment="Center"
-													   HorizontalAlignment="Center"
-													   Height="70"
-													   Width="70"/>
-												<TextBlock Text="{Binding Name}"
-														   HorizontalAlignment="Center"
-														   VerticalAlignment="Bottom"/>
-											</StackPanel>
-										</Button>
-									</WrapPanel>
-								</DataTemplate>
-							</ListBox.ItemTemplate>
-						</ListBox>
-					</ScrollViewer>
-				</Grid>
+			<Grid Grid.Column="1" Background="#FF1B3861">
+				<Border Margin="5 5 10 10" Background="#D3D3D5" CornerRadius="4">
+					
+				</Border>
 			</Grid>
 		</Grid>
 	</Grid>
