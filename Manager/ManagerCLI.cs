@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using Manager.ManagerExceptions;
 
 namespace Manager
@@ -60,6 +56,7 @@ namespace Manager
                 Console.Write(_promptLine + " ");
                 ReadCommand();
             }
+            
         }
 
         // This function ends the process of the app
@@ -142,6 +139,14 @@ namespace Manager
                         {
                             Cd(parameters[0]);
                         }
+                        break;
+                    case "cp":
+                        if (parameters.Count == 2)
+                        {
+                            Cp(parameters[0],parameters[1]);
+                        }
+                        else if (parameters.Count == 1)
+                            Cp(parameters[0]);
                         break;
                     default:
                         UnknownCommand();
@@ -254,6 +259,8 @@ namespace Manager
             Console.WriteLine(" => \"mv file.txt file2.txt\" will rename file.txt to file2.txt");
             Console.WriteLine("find : find a file or folder in the current loaded directory");
             Console.WriteLine(" => \"find te\" will returns the path of test.txt (the more relevant file/folder)");
+            Console.WriteLine("cp : create a copy and rename this copy");
+            Console.WriteLine(" => \"cp test.txt test2.txt\" will create a file test2.txt with the content");
             Console.WriteLine("------------------------DEBUG-----------------------------");
             Console.WriteLine("refresh : refresh manually the current directory");
             Console.WriteLine("printInf : execute printInformation function on the whole directory");
@@ -261,63 +268,123 @@ namespace Manager
             Console.WriteLine("__________________________________________________________");
         }
 
+        /// <summary>
+        /// Display all children of the current loaded directory
+        /// </summary>
         private static void Ls()
         {
             _directoryType.DisplayChildren();
         }
 
+        /// <summary>
+        /// Clear the console
+        /// </summary>
         private static void Clear()
         {
             Console.Clear();
         }
 
+        /// <summary>
+        /// Display the content
+        /// </summary>
+        /// <param name="name">The given relative name</param>
         private static void Cat(string name)
         {
-            Console.WriteLine();
-            Console.WriteLine("Content of " + name);
-            Console.WriteLine("_________");
-            name = ManagerReader.GetNameToPath(name);
-            ManagerReader.ReadContent(name);
+            string res = "";
+            try
+            {
+                name = ManagerReader.GetNameToPath(name); 
+                res = ManagerReader.GetContent(name);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("# Cat aborted");
+            }
+            finally
+            {
+                Console.WriteLine();
+                Console.WriteLine("Content of " + name);
+                Console.WriteLine("_________");
+                Console.WriteLine(res);
+                Console.WriteLine("_________");
+            }
         }
 
+        
         private static void Mkdir(string name)
         {
-            name = ManagerReader.GetNameToPath(name);
-            _directoryType.ChildrenFiles.Add(ManagerWriter.CreateDir(name));
+            try
+            {
+                name = ManagerReader.GetNameToPath(name);
+                ManagerWriter.CreateDir(name);
+                _directoryType.ChildrenFiles.Add(ManagerReader.ReadFileType(name));
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("# Mkdir aborted");
+            }
         }
 
         private static void Rmdir(string name, bool rec = false)
         {
-            name = ManagerReader.GetNameToPath(name);
-            ManagerWriter.DeleteDir(name, rec);
+            try
+            {
+                name = ManagerReader.GetNameToPath(name);
+                ManagerWriter.DeleteDir(name, rec);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("# Rmdir aborted");
+            }
         }
 
         private static void Mv(string name, string dest, bool rep = false)
         {
-            name = ManagerReader.GetNameToPath(name);
-            dest = ManagerReader.GetNameToPath(dest);
-            if (!rep)
-                ManagerWriter.Rename(name, dest);
-            else 
-                ManagerWriter.RenameMerge(name, dest);
+            try
+            {
+                name = ManagerReader.GetNameToPath(name);
+                dest = ManagerReader.GetNameToPath(dest);
+                if (!rep)
+                    ManagerWriter.Rename(name, dest);
+                else
+                    ManagerWriter.RenameMerge(name, dest);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("# Mv aborted");
+            }
         }
 
         private static void Rm(string name)
         {
-            name = ManagerReader.GetNameToPath(name);
-            ManagerWriter.Delete(name);
+            try
+            {
+                name = ManagerReader.GetNameToPath(name);
+                ManagerWriter.Delete(name);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("# Rm aborted");
+            }
         }
 
         private static void Touch(string name)
         {
-            FileType ft = ManagerWriter.Create(name, ManagerReader.GetFileExtension(name));
-            ManagerReader.ReadFileType(ref ft);
-            _directoryType.ChildrenFiles.Add(ft);
+            try
+            {
+                string path = ManagerReader.GetNameToPath(name);
+                ManagerWriter.Create(name, ManagerReader.GetFileExtension(name));
+                _directoryType.ChildrenFiles.Add(ManagerReader.ReadFileType(path));
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("# touch aborted");
+            }
         }
 
         private static void Cd(string dest)
         {
-            _directoryType.ChangeDirectory(Path.GetFullPath(dest));
+            _directoryType.ChangeDirectory(Path.GetFullPath(dest).Replace('\\','/'));
         }
         private static void Pwd()
         {
@@ -328,6 +395,47 @@ namespace Manager
             Console.WriteLine();
         }
 
+        private static void Cp(string source)
+        {
+            try
+            {
+                source = ManagerReader.GetNameToPath(source);
+            }
+            catch (AccessException)
+            {
+                Console.Error.WriteLine("# Access not possible, copy aborted");
+            }
+
+            try
+            {
+                ManagerWriter.Copy(source);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("# Copy aborted");
+            }
+        }
+        private static void Cp(string source, string dest)
+        {
+            try
+            {
+                dest = ManagerReader.GetNameToPath(dest);
+                source = ManagerReader.GetNameToPath(source);
+            }
+            catch (AccessException)
+            {
+                Console.Error.WriteLine("# Access not possible, copy aborted");
+            }
+
+            try
+            {
+                ManagerWriter.Copy(source, dest);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("# Copy aborted");
+            }
+        }
         private static void Find(string fileToFind)
         {
             Console.WriteLine("Result of find in the current directory : ");
