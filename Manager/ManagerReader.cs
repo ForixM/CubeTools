@@ -600,12 +600,13 @@ namespace Manager
         }
 
         /// <summary>
-        /// - Type : Low Level
+        /// - Type : Low Level <br></br>
         /// - Action : Reformat a name to the absolute path if the given name and current directory are correct <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <returns>The full path of a file or directory</returns>
         /// <exception cref="AccessException">The given path cannot be read</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
         public static string GetNameToPath(string name)
         {
             try
@@ -647,6 +648,38 @@ namespace Manager
                 throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed", "GetPathToNameNoExtension");
             return GetFileExtension(ft.Path);
         }
+        
+        /// <summary>
+        /// - Type : Low Level <br></br>
+        /// - Action : Read a file and returns its content <br></br>
+        /// - Implementation : NOT Check
+        /// </summary>
+        /// <param name="path">the path of the file</param>
+        /// <returns>the content</returns>
+        /// <exception cref="PathNotFoundException">the path does not exist</exception>
+        /// <exception cref="PathFormatException">the format of the path is incorrect</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        public static string GetContent(string path)
+        {
+            if (!File.Exists(path))
+                throw new PathNotFoundException(path + " does not exist", "GetContent");
+            try
+            {
+                StreamReader sr = new StreamReader(path);
+                return sr.ReadToEnd();
+            }
+            catch (Exception e)
+            {
+                if (e is IOException)
+                    throw new PathFormatException(path + " format is incorrect", "GetContent");
+                if (e is OutOfMemoryException)
+                {
+                    Console.Error.WriteLine(path + " is too large to be read");
+                    return "";
+                }
+                throw new ManagerException("Reader Error", "Medium", "Content not readable", "Content could not be read", "GetContent");
+            }
+        }
 
         #endregion
 
@@ -663,7 +696,7 @@ namespace Manager
         /// <param name="path">the path to save into a fileType</param>
         /// <returns>the file type associated</returns>
         /// <exception cref="AccessException">the data cannot be read</exception>
-        /// <exception cref="Exception">an unknown exception occured</exception>
+        /// <exception cref="ManagerException">an unknown exception occured</exception>
         /// <exception cref="InUseException">the data in being used by another program</exception>
         public static FileType ReadFileType(string path)
         {
@@ -1284,19 +1317,6 @@ namespace Manager
         }
 
         #endregion
-
-        #endregion
-
-        #region CommandLine
-
-        // Implementation : Check
-        public static void ReadContent(string path)
-        {
-            if (File.Exists(path))
-            {
-                Console.WriteLine(new StreamReader(path).ReadToEnd());
-            }
-        }
 
         #endregion
     }

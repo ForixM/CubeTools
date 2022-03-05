@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Security;
 using Manager.ManagerExceptions;
@@ -41,7 +42,10 @@ namespace Manager
             set { _name = value; }
         }
 
-        public List<FileType> ChildrenFiles => _childrenFiles;
+        public List<FileType> ChildrenFiles {
+            get { return _childrenFiles; }
+            set { _childrenFiles = value; }
+        }
         public long Size => _size;
         public string Date => _date;
         public string LastDate => _lastDate;
@@ -77,13 +81,31 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the path of the directory</param>
+        /// <exception cref="AccessException">the given directory cannot be accessed</exception>
+        /// <exception cref="SystemErrorException"></exception>
+        /// <exception cref="ManagerException"></exception>
         public DirectoryType(string path)
         {
-            if (Directory.Exists(path))
+            // Verify if the directory already exists and its path is correct
+            path = path.Replace('\\', '/');
+            if (Directory.Exists(path) && !String.IsNullOrEmpty(path))
             {
                 try
                 {
-                    Directory.SetCurrentDirectory(path); 
+                    Directory.SetCurrentDirectory(path); // IOException, SecurityException, 
+                }
+                catch (Exception e)
+                {
+                    if (e is IOException)
+                        throw new SystemErrorException(path + " has been blocked by system", "Directory Constructor");
+                    if (e is SecurityException)
+                        throw new AccessException(path + " could be not accessed", "Directory Constructor");
+                    throw new ManagerException("ManagerException", "High", "GenerateDirectory",
+                        "Generate directory was impossible", "Directory Constructor");
+                }
+
+                try
+                {
                     _path = path;
                     _name = ManagerReader.GetPathToName(path);
                     _date = ManagerReader.GetFileCreationDate(path);
@@ -97,14 +119,11 @@ namespace Manager
                 }
                 catch (Exception e)
                 {
-                    if (e is SecurityException or UnauthorizedAccessException)
-                        throw new AccessException("The path cannot be accessed", "Constructor DirectoryType");
-                    if (e is IOException)
-                        throw new SystemErrorException("IOException occcured", "Constructor DirectoryType");
-                    throw new ManagerException("","","","Unknown error while constructing the directory", "Constructor DirectoryType");
+                    Console.Error.WriteLine("Directory could not be created");
                 }
             }
-            // TODO add exception
+            else 
+                throw new PathNotFoundException(path + " could not be identified","Directory Constructor");
         }
 
         #endregion
@@ -178,14 +197,17 @@ namespace Manager
         public void AddFile(string name, string extension)
         {
             string path = $"{_path}/{name}.{extension}";
-            FileType ft = ManagerWriter.Create(path, extension);
+            ManagerWriter.Create(path, extension);
+            FileType ft = ManagerReader.ReadFileType(path);
             ManagerReader.ReadFileType(ref ft);
             _childrenFiles.Add(ft);
         }
 
         public void AddDir(string name)
         {
-            FileType ft = ManagerWriter.CreateDir(_path + "/" + name);
+            string path = _path + '/' + name;
+            ManagerWriter.CreateDir(path);
+            FileType ft = ManagerReader.ReadFileType(path);
             ManagerReader.ReadFileType(ref ft);
             _childrenFiles.Add(ft);
         }
@@ -204,31 +226,41 @@ namespace Manager
         #region Delete
 
         /// <summary>
-        /// -Action : Change the current directory and remove children files
-        /// Implementation : NOT Check
+        /// -Action : Change the current directory and remove children files <br></br>
+        /// Implementation : NOT Check <br></br>
         /// NOT PERFECT
         /// </summary>
-        public bool ChangeDirectory(string dest)
+        public void ChangeDirectory(string dest)
         {
+            dest = dest.Replace('\\', '/');
             if (Directory.Exists(dest))
             {
                 string newPath = ManagerReader.GetNameToPath(dest);
                 // Erase last directory
                 foreach (var ft in ChildrenFiles)
-                { ft.Dispose(); }
+                {
+                    ft.Dispose();
+                }
+
                 ChildrenFiles.Clear();
                 // Replace
                 try
-                { Directory.SetCurrentDirectory(newPath); }
-                catch (IOException) { }
-                catch (SecurityException) {  }
-                finally {
+                {
+                    Directory.SetCurrentDirectory(newPath);
                     _path = newPath;
                     SetChildrenFiles();
                 }
+                catch (IOException)
+                {
+                    throw new SystemErrorException("system blocked " + newPath, "ChangeDirectory");
+                }
+                catch (SecurityException)
+                {
+                    throw new AccessException(newPath + " could not be accessed", "ChangeDirectory");
+                }
             }
 
-            return false;
+            throw new PathNotFoundException(dest + " does not exist", "ChangeDirectory");
         }
 
         /// <summary>
@@ -294,6 +326,9 @@ namespace Manager
 
         // NO NEED TO BE IMPLEMENTED, DEBUG FUNCTIONS
 
+        /// <summary>
+        /// Display all children of the current directory pointer
+        /// </summary>
         public void DisplayChildren()
         {
             Console.WriteLine();

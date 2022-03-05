@@ -38,7 +38,7 @@ namespace Manager
                 if (e is IOException)
                     throw new DiskNotReadyException("Disk is refreshing", "RemoveFileAttribute");
                 if (e is FileNotFoundException or DirectoryNotFoundException)
-                    throw new PathNotFoundException("The given file does not exist", "RemoveFileAttrbiute");
+                    throw new PathNotFoundException("The given file does not exist", "RemoveFileAttribute");
                 throw new ManagerException("Reader error", "Medium", "Impossible to read file",
                     "The file cannot be read", "RemoveFileAttribute");
             }
@@ -240,8 +240,8 @@ namespace Manager
                     throw new ReplaceException(dest + " already exist, cannot merge directories", "Rename");
                 try
                 {
-                    string ndest = ManagerReader.GenerateNameForModification(dest);
-                    Directory.Move(source, ndest);
+                    dest = ManagerReader.GenerateNameForModification(dest);
+                    Directory.Move(source, dest);
                     return;
                 }
                 catch (IOException) // Already used in a program or in another volume
@@ -295,8 +295,8 @@ namespace Manager
                 return;
             // Source or dest have an incorrect format
             if (!ManagerReader.IsPathCorrect(source) || !ManagerReader.IsPathCorrect(dest))
-                throw new PathFormatException(source + " : format of path is incorrect", "Rename");
-            // dest does not exist, simply
+                throw new PathFormatException("format of path is incorrect", "Rename");
+            // dest does not exist, simply rename
             if (!Directory.Exists(dest) && !File.Exists(dest))
             {
                 Rename(source, dest);
@@ -366,9 +366,20 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <param name="source">the source file name or dir full path</param>
-        /// <returns>The new path created</returns>=
-        public static void Copy(string source) //TODO Implement Exception for Overload 2 of Copy function
+        /// <returns>The new path created</returns>
+        /// <exception cref="PathFormatException">the format of the given path is not correct</exception>
+        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
+        /// <exception cref="AccessException">the given file could not be copied</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        public static void Copy(string source)
         {
+            // Source or dest have an incorrect format
+            if (!ManagerReader.IsPathCorrect(source))
+                throw new PathFormatException(source + " : format of path is incorrect", "Copy");
+            // Source does not exist
+            if (!File.Exists(source) && !Directory.Exists(source))
+                throw new PathNotFoundException("Impossible to rename data", "Copy");
+            // Source exists
             if (File.Exists(source))
             {
                 string res = ManagerReader.GenerateNameForModification(source);
@@ -380,226 +391,268 @@ namespace Manager
                 {
                     if (e is UnauthorizedAccessException)
                         throw new AccessException(source + " could not be accessed", "Copy");
+                    if (e is IOException)
+                        throw new ReplaceException(res + " already exist, cannot replace it", "Copy");
+                    throw new ManagerException("ManagerException", "High", "Copy impossible",
+                        "Cannot copy file " + source, "Copy");
                 }
             }
-            throw new PathNotFoundException(source + " does not exist", "Copy");
+            else
+            {
+                CopyDirectory(source, ManagerReader.GenerateNameForModification(source), true);
+            }
         }
 
         /// <summary>
-        /// Overload 2 : Copy the content in the source file into the dest file <br></br>
-        /// - Action : Copy file source and create one (or replace it) to dest <br></br>
+        /// - Low Level : Copy the content in the source file or folder into the dest file or folder <br></br>
+        /// - Action : Copy file or folder source and create one (or replace it) to dest <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="source">the source file or folder</param>
         /// <param name="dest">the dest file or folder</param>
         /// <param name="replace">Replace a file or not : USE WITH PRECAUTION</param>
         /// <returns>Returns the new file created, empty for errors</returns>
-        public static string Copy(string source, string dest, bool replace = false) //TODO Implement Exception for Copy Function
+        /// <exception cref="PathFormatException">The format of the path is incorrect</exception>
+        /// <exception cref="PathNotFoundException">The given path could not be found</exception>
+        /// <exception cref="AccessException">The given path could not be accessed</exception>
+        /// <exception cref="InUseException">The given path is already used in another process</exception>
+        /// <exception cref="ManagerException">An error occured while copying</exception>
+        public static void Copy(string source, string dest, bool replace = false)
         {
-            if (File.Exists(source))
+            // Source or dest have an incorrect format
+            if (!ManagerReader.IsPathCorrect(source))
+                throw new PathFormatException(source + " : format of path is incorrect", "Copy");
+            // Source does not exist
+            if (!File.Exists(source))
+                throw new PathNotFoundException("Impossible to rename data", "Copy");
+            // Dest already exists : destroy it
+            if (replace)
             {
-                if (replace)
-                {
-                    if (File.Exists(dest))
-                        File.Delete(dest);
-                    else if (Directory.Exists(dest))
-                        Directory.Delete(dest, true);
-                }
-
                 if (File.Exists(dest))
                 {
-                    string res = ManagerReader.GenerateNameForModification(dest);
-                    File.Copy(source, res);
-                    return res;
+                    try
+                    {
+                        File.Delete(dest);
+                    }
+                    catch (Exception e)
+                    {
+                        if (e is UnauthorizedAccessException)
+                            throw new AccessException(dest + " could not be replaced", "Copy");
+                        if (e is IOException)
+                            throw new InUseException(dest + " could not be replaced", "Copy");
+                        throw new ManagerException("An error occured", "High", "Impossible to replace", "Copy was impossible, replace could not be done", "Copy");
+                    }
                 }
-                File.Copy(source, dest);
-                return dest;
+                else if (Directory.Exists(dest))
+                    try
+                    {
+                        Directory.Delete(dest, true);
+                    }
+                    catch (Exception e)
+                    {
+                        if (e is UnauthorizedAccessException)
+                            throw new AccessException(dest + " could not be replaced", "Copy");
+                        throw new ManagerException("An error occured", "Medium", "Impossible to replace",
+                            "Copy was impossible, replace could not be done", "Copy");
+                    }
             }
-
-            return "";
+            // Then finally Copy
+            try
+            {
+                if (File.Exists(source))
+                    File.Copy(source, dest);
+                else
+                    CopyDirectory(source, dest, true);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                throw new AccessException(source + " could not be accessed", "Copy");
+            }
+            catch (IOException e) 
+            {
+                throw new SystemErrorException("system blocked copy of " + source + " to " + dest, "Copy");
+            }
         }
 
         /// <summary>
-        /// => UI Implementation
-        /// Overload 3 : Copy recursively the content of the source file/dir into the dest file/dir for each dir <br></br>
+        /// => UI Implementation <br></br>
+        /// - High Level : Copy recursively the content of the source file/dir into the dest file/dir for each dir <br></br>
         /// - Action :  <br></br>
         /// ->   if it is a file, basic call to Copy function  <br></br>
         /// ->   if it is a directory each files of each sub-directories and their files will be copied. Directory will be created <br></br>
-        /// - Implementation : Check (dependance on Copy using DirectoryInfo method)
+        /// - Implementation : Check <br></br>
         /// </summary>
-        /// <param name="ft">the filetype variable</param>
+        /// <param name="ft">the pointer variable</param>
         /// <param name="dest">the dest path</param>
         /// <param name="replace">files and dirs have to be replaced</param>
-        /// <returns>the success of the action</returns>
-        public static bool Copy(FileType ft, string dest, bool replace) // TODO Double check UI Implementation, Exceptions
+        /// <exception cref="PathFormatException">The format of the path is incorrect</exception>
+        /// <exception cref="PathNotFoundException">The given path could not be found</exception>
+        /// <exception cref="AccessException">The given path could not be accessed</exception>
+        /// <exception cref="InUseException">The given path is already used in another process</exception>
+        /// <exception cref="ManagerException">An error occured while copying</exception>
+        /// <exception cref="CorruptedPointerException">The given pointer is corrupted</exception>
+        public static void Copy(FileType ft, string dest, bool replace)
         {
-            // 1) Pointer is a directory
-            if (ft.IsDir && Directory.Exists(ft.Path))
-            {
-                // a) Destination exists
-                if (Directory.Exists(dest))
-                {
-                    // replace
-                    if (replace)
-                    {
-                        // TODO Verify code structure, maybe better using string or not
-                        try
-                        {
-                            Directory.Delete(dest, true);
-                        }
-                        catch (IOException)
-                        {
-                            // 
-                        }
-                        catch (UnauthorizedAccessException)
-                        {
-                            throw new AccessException("");
-                        }
-                        return Copy(new DirectoryInfo(ft.Path), new DirectoryInfo(dest), replace);
-                    }
-                    else
-                        return Copy(new DirectoryInfo(ft.Path),
-                            new DirectoryInfo(ManagerReader.GenerateNameForModification(dest)), replace);
-                }
-                // b) Destination does not exist, no replace needed
-                else
-                {
-                    Directory.CreateDirectory(dest);
-                    return Copy(new DirectoryInfo(ft.Path), new DirectoryInfo(dest), replace);
-                }
-            }
-            // 2) Pointer is a file
-            return (Copy(ft.Path, dest, replace) != "");
+            if (!File.Exists(ft.Path))
+                throw new CorruptedPointerException("pointer given : " + ft.Path + " is corrupted", "Copy");
+            Copy(ft.Path, dest, replace);
         }
 
         /// <summary>
-        /// Overload 4 : Copy contents recursively of directories using two DirectoryInfos <br></br>
-        /// -Action : Copy files and directories and call the function again and again until there are not directory <br></br>
-        /// - Implementation : Check (Protype : issued encountered)
+        /// => UI Implementation <br></br>
+        /// - High Level : <see cref="Copy(string,string,bool)"/> <br></br>
+        /// - Implementation : Check <br></br>
         /// </summary>
-        /// <param name="source">the DirectoryInfo of the source</param>
-        /// <param name="target">the DirectoryInfo of the destination</param>
-        /// <param name="replace">if the directory have to be replaced if it exists</param>
-        /// <returns>the success of the action</returns>
-        public static bool Copy(DirectoryInfo source, DirectoryInfo target, bool replace) // TODO Verification of this function
-        {
-            if (!Directory.Exists(target.FullName))
-                return false;
-
-            // Copy Files of the current directory
-            foreach (FileInfo fi in source.GetFiles())
-                fi.CopyTo(Path.Combine(target.FullName, fi.Name), replace);
-
-            // Copy each subdirectory using recursion
-            foreach (DirectoryInfo diSourceSubDir in source.GetDirectories())
-            {
-                DirectoryInfo nextTargetSubDir = target.CreateSubdirectory(diSourceSubDir.Name);
-                Copy(diSourceSubDir, nextTargetSubDir, replace);
-            }
-
-            return true;
-        }
-
-        public static bool Copy(ref DirectoryType dt, FileType copied, string dest, bool replace = false)
+        /// <param name="dt">the current directory passed by reference</param>
+        /// <param name="copied">the copied pointer of file / folder</param>
+        /// <param name="dest">the path of the destination file / folder</param>
+        /// <param name="replace">whether the file / folder has to replace if needed</param>
+        /// <exception cref="PathFormatException">The format of the path is incorrect</exception>
+        /// <exception cref="PathNotFoundException">The given path could not be found</exception>
+        /// <exception cref="AccessException">The given path could not be accessed</exception>
+        /// <exception cref="InUseException">The given path is already used in another process</exception>
+        /// <exception cref="ManagerException">An error occured while copying</exception>
+        /// <exception cref="CorruptedPointerException">The given pointer is corrupted</exception>
+        /// <exception cref="CorruptedDirectoryException">The given directory is corrupted</exception>
+        public static void Copy(ref DirectoryType dt, FileType copied, string dest, bool replace = false)
         {
             if (Directory.Exists(dt.Path) && (File.Exists(copied.Path) || Directory.Exists(copied.Path)))
-            {
                 Copy(copied, dest, replace);
-            }
             // Corrupted Directory
             else if (!Directory.Exists(dt.Path))
-            {
                 throw new CorruptedDirectoryException(dt.Name + " has not been well loaded, Copy function aborted");
-            }
             // Corrupted Pointer
             else
-            {
                 throw new CorruptedPointerException(copied.Name + " pointer is corrupted, Copy action aborted");
-            }
+        }
+        
+        // COPY FOR DIRECTORIES
+        
+        /// <summary>
+        /// - Low Level : Copy Sub-directories recursively and their sub-files <br></br>
+        /// - Action : Create a directory with the given dest, copy then sub-files and then sub-directories <br></br>
+        /// if recursive is enabled, this function also copy all sub-files of sub-directories <br></br>
+        /// - Implementation : NOT CHECK
+        /// </summary>
+        /// <param name="source">the source folder</param>
+        /// <param name="dest">the dest folder</param>
+        /// <param name="recursive">whether it should copied all subdirectories</param>
+        /// <exception cref="PathNotFoundException">One file or folder does not exists</exception>
+        /// <exception cref="AccessException">One file or folder could not be accessed</exception>
+        /// <exception cref="PathFormatException">The format is invalid for one of the files or folder copied</exception>
+        /// <exception cref="SystemErrorException">System raise an error</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        static void CopyDirectory(string source, string dest, bool recursive) // TODO Make async for performance
+        {
+            // Get information about the source directory
+            var dir = new DirectoryInfo(source);
 
-            return false;
+            // Check if the source directory exists
+            if (!dir.Exists)
+                throw new PathNotFoundException($"Source directory not found: {dir.FullName}", "CopyDirectory");
+
+            // Cache directories before we start copying
+            try
+            {
+                // Get Subdirectories
+                DirectoryInfo[] dirs = dir.GetDirectories();
+                // Create the destination directory
+                Directory.CreateDirectory(dest);
+                // Get the files in the source directory and copy to the destination directory
+                foreach (FileInfo file in dir.GetFiles())
+                {
+                    string targetFilePath = Path.Combine(dest, file.Name);
+                    file.CopyTo(targetFilePath);
+                }
+
+                // If recursive and copying subdirectories, recursively call this method
+                if (recursive)
+                {
+                    foreach (DirectoryInfo subDir in dirs)
+                    {
+                        string newDestinationDir = Path.Combine(dest, subDir.Name);
+                        CopyDirectory(subDir.FullName, newDestinationDir, true);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                if (e is SecurityException or UnauthorizedAccessException)
+                    throw new AccessException(dir.FullName + " could not be accessed", "CopyDirectory");
+                if (e is IOException)
+                    throw new SystemErrorException("Copy could not be done", "CopyDirectory");
+                if (e is PathTooLongException or NotSupportedException)
+                    throw new PathFormatException("A file / folder contained a path too large", "CopyDirectory");
+                throw new ManagerException("An error occured","Medium","Copy directories","Copy sub-dirs and sub-files could not be done","CopyDirectory");
+            }
         }
 
         // CREATE FUNCTIONS
 
         /// <summary>
-        /// => UI Implementation <br></br>
-        /// Overload 1 : Create a FILE with no name given <br></br>
-        /// - Action : Create a file without any information unless the extension <br></br>
-        /// - Specification : this function will be useful for creating file using Create Button <br></br>
-        /// - Implementation : Check
-        /// </summary>
-        /// <param name="extension">the extension given to the file. Default value is "" for directories</param>
-        /// <returns>a new fileType linked to the file</returns>
-        public static FileType Create(string extension = "") // TODO Verify Exceptions
-        {
-            string filename =
-                ManagerReader.GenerateNameForModification($"New {extension.ToUpper()} File.{extension}");
-            if (extension == "")
-                filename = ManagerReader.GenerateNameForModification("New File");
-            File.Create(filename).Close();
-            return new FileType(filename);
-        }
-
-        /// <summary>
-        /// => UI Implementation <br></br>
-        /// Overload 2 : Create a FILE using a dest name and an extension if given <br></br>
+        /// - Type : Low Level : Create a FILE using a dest name and an extension if given <br></br>
         /// - Action : Create a file with the extension. If file already exists, nothing is done <br></br>
-        /// - Specification : If you do not need specific file name, consider using <see cref="Create(string)"/> <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="dest">the given file name</param>
         /// <param name="extension">the extension given to the file. Default value is "" for directories</param>
-        /// <returns>the associated FileType for UI</returns>
-        public static FileType Create(string dest, string extension)
+        /// <exception cref="AccessException">The given path could not be accessed</exception>
+        /// <exception cref="PathFormatException">The given path has an incorrect format</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        public static void Create(string dest="", string extension = "")
         {
-            if (extension != "")
-                dest = Path.GetFileNameWithoutExtension(dest) + "." + extension;
-            if (!File.Exists(dest))
+            // Source or dest have an incorrect format
+            if (!ManagerReader.IsPathCorrect(dest))
+                throw new PathFormatException(dest + " : format of path is incorrect", "Create");
+            string path = "";
+            if (extension == "")
             {
-                File.Create(dest).Close();
-                return ManagerReader.ReadFileType(dest);
+                path = dest == "" ? ManagerReader.GenerateNameForModification("New File") : dest;
             }
-
-            return new FileType(dest);
-        }
-
-        /// <summary>
-        /// => UI Implementation <br></br>
-        /// Overload 1 : Create a DIR with no name <br></br>
-        /// - Action : Create a directory using no name : "New Folder" basic path value <br></br>
-        /// - Specification : this function can be used to create empty directory with no given name <br></br>
-        /// - Implementation : Check
-        /// </summary>
-        /// <returns>the associated fileType for the directory</returns>
-        public static FileType CreateDir()
-        {
-            string dest = ManagerReader.GenerateNameForModification("New Folder");
-            Directory.CreateDirectory(dest);
-            return ManagerReader.ReadFileType(dest);
+            if (!File.Exists(path))
+            {
+                try
+                {
+                    File.Create(dest).Close();
+                }
+                catch (Exception e)
+                {
+                    if (e is UnauthorizedAccessException)
+                        throw new AccessException(path + " could not be read", "Create");
+                    if (e is NotSupportedException)
+                        throw new PathFormatException(path + " : format is incorrect", "Create");
+                    throw new ManagerException("Writer Error", "Medium", "Creation impossible", "Access has been denied", "Create");
+                }
+            }
         }
 
         /// <summary>
         /// => UI Implementation <br></br>
         /// Overload 2 : Create a DIR a name <br></br>
-        /// - Action : Create a directory using a name, "New Folder" basic path value <br></br>
-        /// - Specification : consider using <see cref="CreateDir()"></see> if you juste want to create a directory/><br></br>
+        /// - Action : Create a directory using a name, "Folder" basic path value <br></br>
         /// - Implementation : Check
         /// </summary>
-        /// <param name="path">the dir path</param>
+        /// <param name="dest">the dir path</param>
         /// <returns>the associated filetype linked to the directory</returns>
-        public static FileType CreateDir(string path = "New Folder")
+        public static void CreateDir(string dest = "Folder")
         {
-            if (Directory.Exists(path))
+            // Source or dest have an incorrect format
+            if (!ManagerReader.IsPathCorrect(dest))
+                throw new PathFormatException(dest + " : format of path is incorrect", "CreateDir");
+            if (!Directory.Exists(dest))
             {
-                string dest = ManagerReader.GenerateNameForModification(path);
-                Directory.CreateDirectory(dest);
-                return ManagerReader.ReadFileType(dest);
-            }
-            else
-            {
-                Directory.CreateDirectory(path);
-                return ManagerReader.ReadFileType(path);
+                try
+                {
+                    Directory.CreateDirectory(dest);
+                }
+                catch (Exception e)
+                {
+                    if (e is IOException)
+                        throw new SystemErrorException("System blocked","CreateDir");
+                    if (e is UnauthorizedAccessException)
+                        throw new AccessException(dest + " could not be created", "CreateDir");
+                    throw new ManagerException("An Error occured", "Medium", "Impossible to create directory", "Creation of the directory could not be done", "CreateDir");
+                }
             }
         }
 
@@ -607,7 +660,7 @@ namespace Manager
 
         /// <summary>
         /// Overload 1 : Delete a file using its path if it exists <br></br>
-        /// - Action : Delelte a file <br></br>
+        /// - Action : Delete a file <br></br>
         /// - Specification : consider using <see cref="Delete(ref DirectoryType, FileType)"></see> for UI/> <br></br>
         /// - Implementation : NOT Check
         /// </summary>
@@ -672,8 +725,8 @@ namespace Manager
         /// <summary>
         /// => UI Implementation <br></br>
         /// Overload 4 : <br></br>
-        /// - Action : Delete FileType of a dierctoryType and their associated files if they exist <br></br>
-        /// - Specification : Prefere using this function to remove a single file to simplify the usage of the delete function <br></br>
+        /// - Action : Delete FileType of a directoryType and their associated files if they exist <br></br>
+        /// - Specification : consider using this function to remove a single file to simplify the usage of the delete function <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="dt">the current directory type</param>
@@ -757,7 +810,7 @@ namespace Manager
         /// - Implementation : Check
         /// </summary>
         /// <param name="ftList">the fileType list</param>
-        /// <param name="recursive">if it has to suppress all sub-dierctories</param>
+        /// <param name="recursive">if it has to suppress all sub-directories</param>
         /// <returns>the success</returns>
         public static bool DeleteDir(List<FileType> ftList, bool recursive = true)
         {

@@ -38,15 +38,16 @@ namespace Manager
             try
             {
                 path = Directory.GetCurrentDirectory();
-            }
-            catch (UnauthorizedAccessException)//TODO Find a solution for cross platform - Add exception
-            {
-            } 
-            finally
-            {
                 _directory = new DirectoryType(path);
                 _selected = new List<FileType>();
                 _copied = new List<FileType>();
+            }
+            catch (UnauthorizedAccessException)//TODO Find a solution for cross platform - Add exception
+            {
+            }
+            finally
+            {
+                
                 // TODO Add all variables missing
             }
         }
