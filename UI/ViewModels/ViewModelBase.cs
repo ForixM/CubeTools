@@ -4,6 +4,7 @@ using System.IO;
 using DynamicData;
 using Manager;
 using Manager.ManagerExceptions;
+using Microsoft.VisualBasic;
 using ReactiveUI;
 
 namespace UI.ViewModels
@@ -104,33 +105,35 @@ namespace UI.ViewModels
             try
             {
                 res = ManagerReader.GetParent(_directory.Path);
+                ChangeDirectory(res);
             }
             catch (Exception e)
             {
                 return;
             }
-            ChangeDirectory(res);
             _queue.Add(res);
             _indexQueue++;
         }
 
+        // SyncButton Clicked
         public void SyncBtnClick()
         {
             // TODO Add OneDrive implementation
         }
 
+        // Settings is opened
         public void SettingBtnClick()
         {
             // TODO display parameter
         }
 
-        // Create button
+        // Create button : 
         public void CreateBtnClick()
         {
-            
+            Create("New File"); // TODO 
         }
 
-        // Copy button
+        // Copy button and add them to the list of copied
         public void CopyBtnClick()
         {
             _copied.Clear();
@@ -148,21 +151,23 @@ namespace UI.ViewModels
         public void PasteBtnClick()
         {
             Copy(_copied);
+            Refresh();
         }
 
         public void RenameBtnClick()
         {
-
+            
         }
 
         public void DeleteBtnClick()
         {
             DeleteSelected(_selected);
+            Refresh();
         }
 
         public void NearbySendBtnClick()
         {
-            
+            // TODO Add method for NearBySend
         }
 
         public void SearchBtnClick()
@@ -172,42 +177,52 @@ namespace UI.ViewModels
 
         public void GoToHomeBtnClick()
         {
-            ChangeDirectory();
+            ChangeDirectory(home);
+            Refresh();
         }
 
         public void GoToDesktopBtnClick()
         {
-
+            ChangeDirectory(desktop);
+            Refresh();
         }
 
         public void GoToDocumentsBtnClick()
         {
-
+            ChangeDirectory(document);
+            Refresh();
         }
 
         public void GoToDownloadBtnClick()
         {
-
+            ChangeDirectory(download);
+            Refresh();
         }
 
         public void GoToPictureBtnClick()
         {
-
-        }
-
-        public void GoToMusicBtnClick()
-        {
-
+            ChangeDirectory(picture);
+            Refresh();
         }
 
         public void GoToTrashBtnClick()
         {
-
+            ChangeDirectory(trash);
+            Refresh();
         }
 
+        // When a file is clicked
         public void GoToSubFile()
         {
-            
+            if (_selected[0].IsDir)
+            {
+                ChangeDirectory(_selected[0]);
+            }
+            else
+            {
+                Open()
+            }
+            Refresh();
         }
         #endregion
         
@@ -220,32 +235,37 @@ namespace UI.ViewModels
         /// <returns></returns>
         private static void Create(string name)
         {
-            ManagerWriter.Create(name);
-            
+            try
+            {
+                name = ManagerReader.GetNameToPath(name);
+                ManagerWriter.Create(name);
+                _directory.ChildrenFiles.Add(ManagerReader.ReadFileType(name));
+            }
+            catch (ManagerException e)
+            {
+                return;
+            }
         }
         
-        private static bool Copy(FileType ft, bool clear = false)
+        private static bool Copy(FileType ft)
         {
             if (File.Exists(ft.Path) || Directory.Exists(ft.Path))
             {
-                if (clear)
-                    _copied.Clear();
                 _copied.Add(ft);
                 return true;
             }
             return false;
         }
 
-        private static void Copy(List<FileType> fts, bool clear = true)
+        private static void Copy(List<FileType> fts)
         {
-            if (clear)
-                _copied.Clear();
+            _copied.Clear();
             foreach (var ft in fts)
             {
-                if (!Copy(ft, false))
+                if (!Copy(ft))
                 {
                     _selected.Clear();
-                    throw new PathNotFoundException("The selected file :" + ft.Name + " does not exist anymore");
+                    throw new PathNotFoundException("The selected file :" + ft.Name + " does not exist anymore", "Copy");
                 }
             }
         }
@@ -263,55 +283,24 @@ namespace UI.ViewModels
             }
         }
 
-        private static void Paste(FileType ft)
+        private static void PasteOne(FileType ft)
         {
             try
             {
-                try
-                {
-                    ManagerWriter.Copy(ref _directory, ft, ft.Path, false);
-                }
-                catch (ReplaceException)
-                {
-                    try
-                    {
-                        ManagerWriter.Copy(ref _directory, ft, ft.Path, true);
-                    }
-                    catch (AccessException)
-                    {
-                        // TODO Implement access exception for copy
-                    }
-                    catch (SystemException)
-                    {
-                        // TODO Implement system exception for copy
-                    }
-                    catch (Exception)
-                    {
-                        // TODO Implement Unknown exception for copy
-                    }
-                }
-            }
-            catch (AccessException)
-            {
-            }
-            catch (CorruptedDirectoryException)
-            {
-
-            }
-            catch (CorruptedPointerException)
-            {
+                ManagerWriter.Copy(ref _directory, ft, ft.Path, false);
                 
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                return;
             }
         }
 
-        private static void Paste()
+        private static void PasteCopied()
         {
             foreach (var ft in _copied)
             {
-                Paste(ft);
+                PasteOne(ft);
                 _copied.Remove(ft);
             }
         }
@@ -336,6 +325,7 @@ namespace UI.ViewModels
                 try
                 {
                     ManagerWriter.Delete(ref _directory, ft);
+                    _directory.ChildrenFiles.Remove(ft);
                 }
                 catch (Exception e)
                 {
@@ -347,6 +337,7 @@ namespace UI.ViewModels
                 try
                 {
                     ManagerWriter.DeleteDir(ft, true);
+                    _directory.ChildrenFiles.Remove(ft);
                 }
                 catch (Exception e)
                 {
@@ -362,14 +353,7 @@ namespace UI.ViewModels
 
         private static void ChangeDirectory(FileType ft)
         {
-            try
-            {
-                _directory.ChangeDirectory(ft.Path);
-            }
-            catch (Exception e)
-            {
-                return;
-            }
+            ChangeDirectory(ft.Path);
         }
         
         private static void ChangeDirectory(string path)
@@ -377,6 +361,8 @@ namespace UI.ViewModels
             try
             {
                 _directory.ChangeDirectory(path);
+                _queue.Add(path);
+                _selected = new List<FileType>();
             }
             catch (Exception e)
             {
@@ -399,6 +385,11 @@ namespace UI.ViewModels
             {
                 return;
             }
+        }
+
+        public static void Open(string path, string extension)
+        {
+            // TODO Add open function
         }
         
         #endregion
