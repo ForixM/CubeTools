@@ -351,9 +351,34 @@
 					
 				</Grid>
 				<Grid Grid.Row="1">
-					<Border Margin="5 5 10 10" Background="#D3D3D5" CornerRadius="0 30 0 30">
-
-					</Border>
+						<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+								  VerticalScrollBarVisibility="Auto">
+						<ListBox Name="subFilePrinted" CornerRadius="0 30 0 30" 
+								 Background="#D3D3D5" Margin="5">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<WrapPanel>
+										<Button Content="{Binding ElementName}"
+												Command="{Binding GoToSubFile}"
+												Margin="0, 7, 7, 7"
+												Width="80"
+												Height="100">
+											<StackPanel>
+												<Image Source="{Binding IconFileOrFolder}"
+													   VerticalAlignment="Center"
+													   HorizontalAlignment="Center"
+													   Height="70"
+													   Width="70"/>
+												<TextBlock Text="{Binding Name}"
+														   HorizontalAlignment="Center"
+														   VerticalAlignment="Bottom"/>
+											</StackPanel>
+										</Button>
+									</WrapPanel>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+						</ScrollViewer>
 				</Grid>
 			</Grid>
 		</Grid>
