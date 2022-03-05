@@ -358,18 +358,18 @@
 							<ListBox.ItemTemplate>
 								<DataTemplate>
 									<WrapPanel>
-										<Button Content="{Binding ElementName}"
-												Command="{Binding GoToSubFile}"
+										<Button Content="{Binding btnName}"
+												Command="{Binding goToSubFile}"
 												Margin="0, 7, 7, 7"
 												Width="80"
 												Height="100">
 											<StackPanel>
-												<Image Source="{Binding IconFileOrFolder}"
+												<Image Source="{Binding iconFileOrFolderSource}"
 													   VerticalAlignment="Center"
 													   HorizontalAlignment="Center"
 													   Height="70"
 													   Width="70"/>
-												<TextBlock Text="{Binding Name}"
+												<TextBlock Text="{Binding fileName}"
 														   HorizontalAlignment="Center"
 														   VerticalAlignment="Bottom"/>
 											</StackPanel>
