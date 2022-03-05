@@ -1311,9 +1311,9 @@ namespace Manager
             return bestFitft;
         }
 
-        public static FileType SearchByIndeterminedName(DirectoryType directoryType, string fullName)
+        public static FileType SearchByIndeterminedName(DirectoryType directoryType, string indeterminated)
         {
-            return SearchByIndeterminedName(directoryType.ChildrenFiles, fullName);
+            return SearchByIndeterminedName(directoryType.ChildrenFiles, indeterminated);
         }
 
         #endregion

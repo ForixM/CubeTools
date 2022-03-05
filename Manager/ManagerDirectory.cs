@@ -82,8 +82,8 @@ namespace Manager
         /// </summary>
         /// <param name="path">the path of the directory</param>
         /// <exception cref="AccessException">the given directory cannot be accessed</exception>
-        /// <exception cref="SystemErrorException"></exception>
-        /// <exception cref="ManagerException"></exception>
+        /// <exception cref="SystemErrorException">The system blocked the constructor</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
         public DirectoryType(string path)
         {
             // Verify if the directory already exists and its path is correct
@@ -227,12 +227,14 @@ namespace Manager
 
         /// <summary>
         /// -Action : Change the current directory and remove children files <br></br>
-        /// Implementation : NOT Check <br></br>
-        /// NOT PERFECT
+        /// - Implementation : NOT Check <br></br>
         /// </summary>
+        /// <param name="dest">the destination file</param>
+        /// <exception cref="SystemErrorException">System blocked system</exception>
+        /// <exception cref="AccessException">The given dest folder could not be accessed</exception>
+        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
         public void ChangeDirectory(string dest)
         {
-            dest = dest.Replace('\\', '/');
             if (Directory.Exists(dest))
             {
                 string newPath = ManagerReader.GetNameToPath(dest);
@@ -258,6 +260,8 @@ namespace Manager
                 {
                     throw new AccessException(newPath + " could not be accessed", "ChangeDirectory");
                 }
+
+                return;
             }
 
             throw new PathNotFoundException(dest + " does not exist", "ChangeDirectory");
