@@ -221,9 +221,140 @@
 			<!-- Partie Droite de la troisième ligne-->
 
 			<Grid Grid.Column="1" Background="#FF1B3861">
-				<Border Margin="5 5 10 10" Background="#D3D3D5" CornerRadius="4">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="45" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Grid Grid.Row="0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition/>
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="45" />
+						<ColumnDefinition Width="20" />
+					</Grid.ColumnDefinitions>
+
+					<Grid Grid.Column="0">
+						<!-- Create -->
+						<Button Content="CopyBtn" Command="{Binding CopyBtnClick}"
+                                VerticalAlignment="Center" HorizontalAlignment="Left"
+                                Width="45" Height="40" CornerRadius="8" Background="Transparent">
+							<StackPanel>
+								<Image Source="/Assets\add.ico"
+                                       Width="50" Height="28" HorizontalAlignment="Left" />
+							</StackPanel>
+						</Button>
+					</Grid>
+					<Grid Grid.Column="1">
+						<!-- Copy -->
+						<Button Content="CopyBtn" Command="{Binding CopyBtnClick}"
+                                VerticalAlignment="Center" HorizontalAlignment="Left"
+                                Width="45" Height="40" CornerRadius="8" Background="Transparent">
+							<StackPanel>
+								<Image Source="/Assets\copy.ico"
+                                       Width="50"
+                                       Height="28"
+                                       HorizontalAlignment="Left" />
+
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="2">
+						<!-- Cut -->
+						<Button Content="CopyBtn" Command="{Binding CopyBtnClick}"
+                                VerticalAlignment="Center" HorizontalAlignment="Left"
+                                Width="45" Height="40" CornerRadius="8" Background="Transparent">
+							<StackPanel>
+								<Image Source="/Assets\cut.ico"
+                                       Width="50"
+                                       Height="28"
+                                       HorizontalAlignment="Left" />
+
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="3">
+						<!-- Paste -->
+						<Button Content="CopyBtn" Command="{Binding CopyBtnClick}"
+                                VerticalAlignment="Center" HorizontalAlignment="Left"
+                                Width="45" Height="40" CornerRadius="8" Background="Transparent">
+							<StackPanel>
+								<Image Source="/Assets\paste.ico"
+                                       Width="50"
+                                       Height="28"
+                                       HorizontalAlignment="Left" />
+
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="4">
+						<!-- Rename -->
+						<Button Content="CopyBtn" Command="{Binding CopyBtnClick}"
+                                VerticalAlignment="Center" HorizontalAlignment="Left"
+                                Width="45" Height="40" CornerRadius="8" Background="Transparent">
+							<StackPanel>
+								<Image Source="/Assets\rename.ico"
+                                       Width="50"
+                                       Height="30" />
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="5">
+						<!-- Delete -->
+						<Button Content="CopyBtn" Command="{Binding CopyBtnClick}"
+                                VerticalAlignment="Center" HorizontalAlignment="Left"
+                                Width="45" Height="40" CornerRadius="8" Background="Transparent">
+							<StackPanel>
+								<Image Source="/Assets\delete.ico"
+                                       Width="50"
+                                       Height="28" />
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					<Grid Grid.Column="7">
+						<!-- Search-->
+						<Button Content="CopyBtn" Command="{Binding CopyBtnClick}"
+                                VerticalAlignment="Center" HorizontalAlignment="Left"
+                                Width="45" Height="40" CornerRadius="8" Background="Transparent">
+							<StackPanel>
+								<Image Source="/Assets\search.ico"
+                                       Width="50"
+                                       Height="28"
+                                       HorizontalAlignment="Left" />
+							</StackPanel>
+						</Button>
+					</Grid>
 					
-				</Border>
+					<Grid Grid.Column="8">
+						<!-- Nearby Send -->
+						<Button Content="CopyBtn" Command="{Binding CopyBtnClick}"
+                                VerticalAlignment="Center" HorizontalAlignment="Left"
+                                Width="45" Height="40" CornerRadius="8" Background="Transparent">
+							<StackPanel>
+								<Image Source="/Assets\nearbysend.ico"
+                                       Width="50"
+                                       Height="28" />
+							</StackPanel>
+						</Button>
+					</Grid>
+
+					
+				</Grid>
+				<Grid Grid.Row="1">
+					<Border Margin="5 5 10 10" Background="#D3D3D5" CornerRadius="0 30 0 30">
+
+					</Border>
+				</Grid>
 			</Grid>
 		</Grid>
 	</Grid>
