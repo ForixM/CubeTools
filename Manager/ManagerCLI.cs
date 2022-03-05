@@ -109,6 +109,10 @@ namespace Manager
                             Rm(name);
                         }
                         break;
+                    case "find" :
+                        if (parameters.Count == 1)
+                            Find(parameters[0]);
+                        break;
                     case "mkdir":
                         foreach (var name in parameters)
                         {
@@ -384,7 +388,18 @@ namespace Manager
 
         private static void Cd(string dest)
         {
-            _directoryType.ChangeDirectory(Path.GetFullPath(dest).Replace('\\','/'));
+            try
+            {
+                string path = ManagerReader.GetNameToPath(dest);
+                _directoryType.ChangeDirectory(path);
+            }
+            catch (Exception e)
+            {
+                if (e is AccessException)
+                    Console.Error.WriteLine("# Access impossible, Cd aborted");
+                else
+                    Console.Error.WriteLine("# Cd aborted");
+            }
         }
         private static void Pwd()
         {
@@ -401,14 +416,19 @@ namespace Manager
             {
                 source = ManagerReader.GetNameToPath(source);
             }
-            catch (AccessException)
+            catch (Exception e)
             {
-                Console.Error.WriteLine("# Access not possible, copy aborted");
+                if (e is AccessException)
+                    Console.Error.WriteLine("# Access not possible, copy aborted");
+                else
+                    Console.Error.WriteLine("# Copy aborted");
+                return;
             }
 
             try
             {
                 ManagerWriter.Copy(source);
+                _directoryType.ChildrenFiles.Add(ManagerReader.ReadFileType(source));
             }
             catch (Exception e)
             {
@@ -430,6 +450,7 @@ namespace Manager
             try
             {
                 ManagerWriter.Copy(source, dest);
+                _directoryType.ChildrenFiles.Add(ManagerReader.ReadFileType(dest));
             }
             catch (Exception e)
             {
@@ -438,14 +459,33 @@ namespace Manager
         }
         private static void Find(string fileToFind)
         {
+            string res = "";
+            try
+            {
+                res = ManagerReader.SearchByIndeterminedName(_directoryType, fileToFind).Path;
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("# Find aborted");
+                return;
+            }
             Console.WriteLine("Result of find in the current directory : ");
-            Console.WriteLine(ManagerReader.SearchByIndeterminedName(_directoryType, fileToFind).Path);
+            Console.WriteLine(res);
         }
 
         private static void Refresh()
         {
+            try
+            {
+                _directoryType.SetChildrenFiles();
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("# Cannot refresh");
+                return;
+            }
             Console.WriteLine("refreshing directory : " + _directoryType.Path);
-            _directoryType.SetChildrenFiles();
+            
         }
         
         #endregion
