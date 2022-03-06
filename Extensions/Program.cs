@@ -14,13 +14,41 @@ namespace Extensions
 
         private static void Progress(object sender, ProgressEventArgs progress)
         {
-            Console.Clear();
-            Console.WriteLine(progress.PercentDone+"%");
+            PrintProgress(progress.PercentDone);
         }
 
         private static void CompressionDone(object sender, EventArgs args)
         {
             Console.WriteLine("Compression done");
+        }
+
+        private static void FtpProgress(object sender, FtpProgress progress)
+        {
+            // PrintProgress(progress.Progress);
+        }
+
+        private static double _progress = 0;
+
+        private static void PrintProgress(double percent)
+        {
+            if (percent - _progress >= 5)
+            {
+                _progress = percent;
+                Console.Clear();
+                Console.Write("|");
+                int i = 0;
+                for (; i < percent * 20 / 100; i++)
+                {
+                    Console.Write("#");
+                }
+
+                for (; i < 20; i++)
+                {
+                    Console.Write(".");
+                }
+
+                Console.WriteLine("| "+percent+"%");
+            }
         }
         
         static void Main(string[] args)
@@ -46,6 +74,10 @@ namespace Extensions
                     case "ftp upload":
                         Task<FtpStatus> status = ftp.UploadFile("/file.txt", new FileType("C:/Compression Test/a/file.txt"));
                         status.Wait();
+                        break;
+                    case "ftp download":
+                        Task<FtpStatus> status2 = ftp.DownloadFile("/file.txt", "C:/Compression Test/file.txt");
+                        status2.Wait();
                         break;
                     case "quit":
                         Console.WriteLine("Goodbye !");

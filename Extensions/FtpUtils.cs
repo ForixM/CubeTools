@@ -174,7 +174,7 @@ namespace Extensions
         /// <param name="destination">The local destination where the file is downloaded</param>
         /// <param name="progressionEvent">Optional function parameter to track download progression</param>
         /// <returns>The async task of the download</returns>
-        public Task<FtpStatus> DownloadFile(string remotePath, FileType destination, Action<object, FtpProgress> progressionEvent = null)
+        public Task<FtpStatus> DownloadFile(string remotePath, string destination, Action<object, FtpProgress> progressionEvent = null)
         {
             Progress<FtpProgress> progress = null;
             if (progressionEvent != null)
@@ -182,7 +182,7 @@ namespace Extensions
                 progress = new Progress<FtpProgress>();
                 progress.ProgressChanged += new EventHandler<FtpProgress>(progressionEvent);
             }
-            return client.DownloadFileAsync(destination.Path, remotePath, FtpLocalExists.Resume, FtpVerify.None,
+            return client.DownloadFileAsync(destination, remotePath, FtpLocalExists.Resume, FtpVerify.None,
                 progress);
         }
 
