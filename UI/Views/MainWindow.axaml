@@ -95,7 +95,7 @@
 						<Grid Grid.Column="4">
 							
 							<Border CornerRadius="4" Background="White" Margin="0 1" Width="490">
-								<TextBlock Text="{Binding Path}" />
+								<TextBox  Watermark="Enter a path" Text="{Binding Path}"/>
 							</Border>
 						</Grid>
 						<Grid Grid.Column="5">
@@ -163,7 +163,7 @@
 									   Width="50" Height="28"
 									   HorizontalAlignment="Left" />
 								<TextBlock HorizontalAlignment="Center"
-										   Text="Documents"
+										   Text="{Binding Path}"
 										   Margin="-22"
 										   Foreground="#076CAD"/>
 							</StackPanel>

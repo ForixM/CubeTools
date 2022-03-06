@@ -65,11 +65,11 @@ namespace UI.ViewModels
             
             try
             {
-                _directory = new DirectoryType();
+                _directory = new DirectoryType(Directory.GetCurrentDirectory());
             }
-            catch (Exception e) //TODO Find a solution for cross platform - Add exception
+            catch (ManagerException e)
             {
-                return;
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
             finally
             {
@@ -85,17 +85,36 @@ namespace UI.ViewModels
         // Left Arrow button is clicked
         public void LeftBtnClick()
         {
-            if (_indexQueue > 0)
+            if (_indexQueue <= 0)
+                return;
+            try
+            {
                 _indexQueue--;
-            ChangeDirectory(_queue[_indexQueue]);
+                ChangeDirectory(_queue[_indexQueue]);
+                ErrorMessageBox("Path", _directory.Path, "ha", "ha");
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         // Right Arrow button is clicked
         public void RightBtnClick()
         {
-            if (_indexQueue < _queue.Count-1)
+            if (_indexQueue >= _queue.Count - 1)
+                return;
+
+            try
+            {
                 _indexQueue++;
-            ChangeDirectory(_queue[_indexQueue]);
+                ChangeDirectory(_queue[_indexQueue]);
+                ErrorMessageBox("Path", _directory.Path, "ha", "ha");
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         // Up Arrow clicked : GetParent
@@ -105,14 +124,19 @@ namespace UI.ViewModels
             try
             {
                 res = ManagerReader.GetParent(_directory.Path);
+                _indexQueue++;
                 ChangeDirectory(res);
             }
-            catch (Exception e)
+            catch (ManagerException e)
             {
-                return;
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
-            _queue.Add(res);
-            _indexQueue++;
+            string temp = "";
+            foreach (var str in _queue)
+            {
+                temp += str + "   ";
+            }
+            ErrorMessageBox("Path", _directory.Path,"ha",temp);
         }
 
         // SyncButton Clicked
@@ -130,7 +154,14 @@ namespace UI.ViewModels
         // Create button : 
         public void CreateBtnClick()
         {
-            Create("New File"); // TODO 
+            try
+            {
+                Create("New File");
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         // Copy button and add them to the list of copied
@@ -150,8 +181,15 @@ namespace UI.ViewModels
 
         public void PasteBtnClick()
         {
-            Copy(_copied);
-            Refresh();
+            try
+            {
+                Copy(_copied);
+                Refresh();
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         public void RenameBtnClick()
@@ -161,8 +199,15 @@ namespace UI.ViewModels
 
         public void DeleteBtnClick()
         {
-            DeleteSelected(_selected);
-            Refresh();
+            try
+            {
+                DeleteSelected(_selected);
+                Refresh();
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         public void NearbySendBtnClick()
@@ -177,57 +222,120 @@ namespace UI.ViewModels
 
         public void GoToHomeBtnClick()
         {
-            ChangeDirectory(home);
-            Refresh();
+            try
+            {
+                ChangeDirectory(home);
+                Refresh();
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         public void GoToDesktopBtnClick()
         {
-            ChangeDirectory(desktop);
-            Refresh();
+            try
+            {
+                ChangeDirectory(desktop);
+                Refresh();
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         public void GoToDocumentsBtnClick()
         {
-            ChangeDirectory(document);
-            Refresh();
+            try
+            {
+                ChangeDirectory(document);
+                Refresh();
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         public void GoToDownloadBtnClick()
         {
-            ChangeDirectory(download);
-            Refresh();
+            try
+            {
+                ChangeDirectory(download);
+                Refresh();
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         public void GoToPictureBtnClick()
         {
-            ChangeDirectory(picture);
-            Refresh();
+            try
+            {
+                ChangeDirectory(picture);
+                Refresh();
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         public void GoToTrashBtnClick()
         {
-            ChangeDirectory(trash);
-            Refresh();
+            try
+            {
+                ChangeDirectory(trash);
+                Refresh();
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
         }
 
         // When a file is clicked
         public void GoToSubFile()
         {
-            if (_selected[0].IsDir)
+            try
             {
-                ChangeDirectory(_selected[0]);
+                if (_selected[0].IsDir)
+                {
+                    ChangeDirectory(_selected[0]);
+                }
+                else
+                {
+                    Open(_selected[0].Path);
+                }
+
+                Refresh();
             }
-            else
+            catch (ManagerException e)
             {
-                Open(_selected[0].Path);
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
-            Refresh();
         }
         #endregion
         
-        #region Methods
+        #region ViewMethod
+        public void ErrorMessageBox (string title, string level, string type, string message)
+        {
+            string content = 
+                $"Level                |    {level}\n" +
+                $"Type                |    {type}\n" +
+                $"Message          |    {message}\n";
+            var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(title, content);
+            messageBoxStandardWindow.Show();
+        }
         
+        #endregion
+        
+        #region Methods
+
         /// <summary>
         /// 
         /// </summary>
@@ -235,18 +343,11 @@ namespace UI.ViewModels
         /// <returns></returns>
         private static void Create(string name)
         {
-            try
-            {
-                name = ManagerReader.GetNameToPath(name);
-                ManagerWriter.Create(name);
-                _directory.ChildrenFiles.Add(ManagerReader.ReadFileType(name));
-            }
-            catch (ManagerException e)
-            {
-                return;
-            }
+            name = ManagerReader.GetNameToPath(name);
+            ManagerWriter.Create(name);
+            _directory.ChildrenFiles.Add(ManagerReader.ReadFileType(name));
         }
-        
+
         private static bool Copy(FileType ft)
         {
             if (File.Exists(ft.Path) || Directory.Exists(ft.Path))
@@ -285,15 +386,7 @@ namespace UI.ViewModels
 
         private static void PasteOne(FileType ft)
         {
-            try
-            {
-                ManagerWriter.Copy(ref _directory, ft, ft.Path, false);
-                
-            }
-            catch (Exception e)
-            {
-                return;
-            }
+            ManagerWriter.Copy(ref _directory, ft, ft.Path, false);
         }
 
         private static void PasteCopied()
@@ -322,26 +415,13 @@ namespace UI.ViewModels
         {
             if (ft.IsDir)
             {
-                try
-                {
-                    _directory.ChildrenFiles.Remove(ft);
-                }
-                catch (Exception e)
-                {
-                    return;
-                }
+                ManagerWriter.DeleteDir(ft);
+                _directory.Remove(ft.Path);
             }
             else
             {
-                try
-                {
-                    ManagerWriter.DeleteDir(ft, true);
-                    _directory.ChildrenFiles.Remove(ft);
-                }
-                catch (Exception e)
-                {
-                    return;
-                }
+                ManagerWriter.Delete(ft);
+                _directory.Remove(ft.Path);
             }
         }
 
@@ -357,16 +437,14 @@ namespace UI.ViewModels
         
         private static void ChangeDirectory(string path)
         {
-            try
+            _directory.ChangeDirectory(path);
+            _queue.Add(path);
+            if (_queue.Count >= 9)
             {
-                _directory.ChangeDirectory(path);
-                _queue.Add(path);
-                _selected = new List<FileType>();
+                _queue.RemoveAt(0);
+                _indexQueue--;
             }
-            catch (Exception e)
-            {
-                return;
-            }
+            _selected = new List<FileType>();
         }
 
         private static void Sort()
@@ -376,14 +454,7 @@ namespace UI.ViewModels
 
         private static void Refresh()
         {
-            try
-            {
-                _directory.SetChildrenFiles();
-            }
-            catch (Exception e)
-            {
-                return;
-            }
+            _directory.SetChildrenFiles();
         }
 
         public static void Open(string path)

@@ -280,6 +280,7 @@ namespace Manager
                 {
                     _childrenFiles[i].Dispose();
                     _childrenFiles.RemoveAt(i);
+                    return;
                 }
             }
         }
