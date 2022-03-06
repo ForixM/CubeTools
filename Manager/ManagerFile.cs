@@ -73,6 +73,9 @@ namespace Manager
         public bool Compressed { get; set; }
         public bool Archived { get; set; }
         public bool IsDir { get; set; }
+        
+        // Icon
+        public string Icon { get; set; }
 
         #endregion
 

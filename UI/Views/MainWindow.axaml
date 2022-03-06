@@ -95,7 +95,7 @@
 						<Grid Grid.Column="4">
 							
 							<Border CornerRadius="4" Background="White" Margin="0 1" Width="490">
-								<TextBox  Watermark="Enter a path" Text="{Binding Path}"/>
+								<TextBox  Watermark="Enter a path" Text="{Binding CurrentPath}"/>
 							</Border>
 						</Grid>
 						<Grid Grid.Column="5">
@@ -163,7 +163,7 @@
 									   Width="50" Height="28"
 									   HorizontalAlignment="Left" />
 								<TextBlock HorizontalAlignment="Center"
-										   Text="{Binding Path}"
+										   Text="Picture"
 										   Margin="-22"
 										   Foreground="#076CAD"/>
 							</StackPanel>
@@ -351,29 +351,16 @@
 					
 				</Grid>
 				<Grid Grid.Row="1">
-						<ScrollViewer HorizontalScrollBarVisibility="Disabled"
-								  VerticalScrollBarVisibility="Auto">
-						<ListBox Name="subFilePrinted" CornerRadius="0 30 0 30" 
+					<ScrollViewer HorizontalScrollBarVisibility="Disabled"
+					              VerticalScrollBarVisibility="Auto">
+						<ListBox Items="{Binding Items}" SelectedItems="{Binding Selection}"  CornerRadius="0 30 0 30" 
 								 Background="#D3D3D5" Margin="5">
 							<ListBox.ItemTemplate>
 								<DataTemplate>
 									<WrapPanel>
-										<Button Content="{Binding btnName}"
-												Command="{Binding goToSubFile}"
-												Margin="0, 7, 7, 7"
-												Width="80"
-												Height="100">
-											<StackPanel>
-												<Image Source="{Binding iconFileOrFolderSource}"
-													   VerticalAlignment="Center"
-													   HorizontalAlignment="Center"
-													   Height="70"
-													   Width="70"/>
-												<TextBlock Text="{Binding fileName}"
-														   HorizontalAlignment="Center"
-														   VerticalAlignment="Bottom"/>
-											</StackPanel>
-										</Button>
+										<Image Source="/Assets/folder.ico" Height="20"/>
+										<TextBlock Text="{Binding Name}" Margin="5"/>
+										<TextBlock Text="{Binding Size}" Margin="5"/>
 									</WrapPanel>
 								</DataTemplate>
 							</ListBox.ItemTemplate>
