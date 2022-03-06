@@ -14,26 +14,61 @@ namespace Extensions
 
         private static void Progress(object sender, ProgressEventArgs progress)
         {
-            Console.WriteLine(progress.PercentDone);
+            Console.Clear();
+            Console.WriteLine(progress.PercentDone+"%");
+        }
+
+        private static void CompressionDone(object sender, EventArgs args)
+        {
+            Console.WriteLine("Compression done");
         }
         
         static void Main(string[] args)
         {
-            Compression.Init();
-            FileType[] files = new FileType[2];
-            files[0] = new FileType("C:/Test/MinecraftInstaller.exe");
-            files[1] = new FileType("C:/Test/7z.dll");
-            // Task task = Compression.CompressFiles(files, "C:/Test/compressed.7z", OutArchiveFormat.SevenZip, Progress);
-            Task task = Compression.CompressFiles(files, OutArchiveFormat.SevenZip, Progress);
-            long milliseconds = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            while (!task.IsCompleted)
+            string ans;
+            FtpUtils ftp = null;
+            do
             {
-                
-            }
-            long milliseconds2 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            Console.WriteLine("time: "+(milliseconds2-milliseconds)+"ms");
-            
-            
+                Console.WriteLine("Please type a command:");
+                ans = Console.ReadLine();
+                switch (ans)
+                {
+                    case "compress init":
+                        Compression.Init();
+                        break;
+                    case "compress folder":
+                        Task task = Compression.CompressDirectory(new DirectoryType("C:/Compression Test/a"), OutArchiveFormat.SevenZip, Progress, CompressionDone);
+                        task.Wait();
+                        break;
+                    case "ftp init":
+                        ftp = new FtpUtils("127.0.0.1", "forix", "lolmdr", false);
+                        break;
+                    case "ftp upload":
+                        Task<FtpStatus> status = ftp.UploadFile("/file.txt", new FileType("C:/Compression Test/a/file.txt"));
+                        status.Wait();
+                        break;
+                    case "quit":
+                        Console.WriteLine("Goodbye !");
+                        break;
+                    default:
+                        Console.WriteLine("Unknown command. Please retry");
+                        break;
+                }
+            } while (ans != "quit");
+            // FileType[] files = new FileType[2];
+            // files[0] = new FileType("C:/Test/MinecraftInstaller.exe");
+            // files[1] = new FileType("C:/Test/7z.dll");
+            // Task task = Compression.CompressFiles(files, "C:/Test/compressed.7z", OutArchiveFormat.SevenZip, Progress);
+            // Task task = Compression.CompressDirectory(new DirectoryType("C:/Compression Test/a"), OutArchiveFormat.SevenZip, Progress);
+            // long milliseconds = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            // while (!task.IsCompleted)
+            // {
+            //     
+            // }
+            // long milliseconds2 = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            // Console.WriteLine("time: "+(milliseconds2-milliseconds)+"ms");
+
+
             // FtpUtils ftp = new FtpUtils("192.168.0.15", "forix", "abcd0000", false);
             // Console.WriteLine(ftp.Client.IsEncrypted);
             // ftp.Rename("/coucou.txt", "alors.txt");

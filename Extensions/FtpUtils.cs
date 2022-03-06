@@ -172,10 +172,18 @@ namespace Extensions
         /// </summary>
         /// <param name="remotePath">The path of the remote file</param>
         /// <param name="destination">The local destination where the file is downloaded</param>
+        /// <param name="progressionEvent">Optional function parameter to track download progression</param>
         /// <returns>The async task of the download</returns>
-        public Task<FtpStatus> DownloadFile(string remotePath, FileType destination)
+        public Task<FtpStatus> DownloadFile(string remotePath, FileType destination, Action<object, FtpProgress> progressionEvent = null)
         {
-            return client.DownloadFileAsync(destination.Path, remotePath);
+            Progress<FtpProgress> progress = null;
+            if (progressionEvent != null)
+            {
+                progress = new Progress<FtpProgress>();
+                progress.ProgressChanged += new EventHandler<FtpProgress>(progressionEvent);
+            }
+            return client.DownloadFileAsync(destination.Path, remotePath, FtpLocalExists.Resume, FtpVerify.None,
+                progress);
         }
 
         /// <summary>
@@ -183,10 +191,18 @@ namespace Extensions
         /// </summary>
         /// <param name="remoteDestination">The path of the remote destination</param>
         /// <param name="destination">The local file that will be uploaded</param>
+        /// <param name="progressionEvent">Optional function parameter to track upload progression</param>
         /// <returns>The async task of the upload</returns>
-        public Task<FtpStatus> UploadFile(string remoteDestination, FileType source)
+        public Task<FtpStatus> UploadFile(string remoteDestination, FileType source, Action<object, FtpProgress> progressionEvent = null)
         {
-            return client.UploadFileAsync(source.Path, remoteDestination);
+            Progress<FtpProgress> progress = null;
+            if (progressionEvent != null)
+            {
+                progress = new Progress<FtpProgress>();
+                progress.ProgressChanged += new EventHandler<FtpProgress>(progressionEvent);
+            }
+            return client.UploadFileAsync(source.Path, remoteDestination, FtpRemoteExists.Overwrite, false,
+                FtpVerify.None, progress);
         }
         
         /// <summary>

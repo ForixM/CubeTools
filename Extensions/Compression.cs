@@ -20,7 +20,27 @@ namespace CubeTools
             _initialized = true;
         }
 
-        public static Task CompressDirectory(DirectoryType directory, FileType dest, OutArchiveFormat archiveFormat,
+        public static Task CompressDirectory(DirectoryType directory, OutArchiveFormat archiveFormat,
+            Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
+        {
+            string dest = directory.Path[directory.Path.Length-1] == '/' ? directory.Path.Remove(directory.Path.Length-1, 1) : directory.Path;
+            switch (archiveFormat)
+            {
+                case OutArchiveFormat.SevenZip:
+                    dest += ".7z";
+                    break;
+                case OutArchiveFormat.Zip:
+                    dest += ".zip";
+                    break;
+                default:
+                    throw new ArgumentException("Archive format not supported: " + archiveFormat);
+            }
+
+            Console.WriteLine(dest);
+            return CompressDirectory(directory, dest, archiveFormat, compressingEvent, finishedEvent);
+        }
+
+        public static Task CompressDirectory(DirectoryType directory, string dest, OutArchiveFormat archiveFormat,
             Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
         {
             if (!_initialized)
@@ -33,7 +53,7 @@ namespace CubeTools
             compressor.ArchiveFormat = archiveFormat;
             compressor.CustomParameters.Add("mt", "on");
             compressor.ScanOnlyWritable = true;
-            return compressor.CompressDirectoryAsync(directory.Path, dest.Path);
+            return compressor.CompressDirectoryAsync(directory.Path, dest);
         }
 
         public static Task CompressFiles(FileType[] files, OutArchiveFormat archiveFormat,
