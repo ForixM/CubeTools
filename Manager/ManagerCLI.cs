@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using Manager.ManagerExceptions;
 
 namespace Manager
@@ -49,7 +50,6 @@ namespace Manager
             Console.WriteLine("CubeTools command line project");
             Console.WriteLine("Type help to get any information about the available commands");
             Console.Write("\n");
-            
             while (true)
             {
                 Console.Write(_directoryType.Path);
@@ -121,7 +121,7 @@ namespace Manager
                         break;
                     case "rmdir":
                         bool rec = options.Contains("r");
-                        foreach (var name in options)
+                        foreach (var name in parameters)
                         {
                             Rmdir(name, options.Contains("r"));
                         }
@@ -156,12 +156,10 @@ namespace Manager
                         UnknownCommand();
                         break;
                 }
-
-                Refresh();
             }
             catch (Exception e)
             {
-                // ignored
+                Console.Error.WriteLine("# ERROR OCCURED #");
             }
         }
 
@@ -439,14 +437,15 @@ namespace Manager
         {
             try
             {
-                dest = ManagerReader.GetNameToPath(dest);
                 source = ManagerReader.GetNameToPath(source);
+                Console.WriteLine(source);
+                dest = ManagerReader.GetParent(source).Replace('\\','/') +'/'+dest;
+                Console.WriteLine(dest);
             }
             catch (AccessException)
             {
                 Console.Error.WriteLine("# Access not possible, copy aborted");
             }
-
             try
             {
                 ManagerWriter.Copy(source, dest);
@@ -484,7 +483,7 @@ namespace Manager
                 Console.Error.WriteLine("# Cannot refresh");
                 return;
             }
-            Console.WriteLine("refreshing directory : " + _directoryType.Path);
+            //Console.WriteLine("refreshing directory : " + _directoryType.Path);
             
         }
         

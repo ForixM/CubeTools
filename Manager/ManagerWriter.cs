@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Security;
@@ -167,13 +168,12 @@ namespace Manager
             {
                 try
                 {
-                    DirectoryInfo di = new DirectoryInfo(path); // Security Exception
+                    DirectoryInfo di = new DirectoryInfo(path);
                     if (set)
-                        AddDirAttribute(di,
-                            fa); // AccessException, DiskNotReadyException, PathNotFoundException, ManagerException
+                        AddDirAttribute(di, fa);
                     else
-                        RemoveDirAttribute(di,
-                            fa); // AccessException, DiskNotReadyException, PathNotFoundException, ManagerException
+                        RemoveDirAttribute(di, fa);
+                    return;
                 }
                 catch (SecurityException)
                 {
@@ -240,7 +240,6 @@ namespace Manager
                     throw new ReplaceException(dest + " already exist, cannot merge directories", "Rename");
                 try
                 {
-                    dest = ManagerReader.GenerateNameForModification(dest);
                     Directory.Move(source, dest);
                     return;
                 }
@@ -261,8 +260,9 @@ namespace Manager
                     throw new ReplaceException(dest + " already exist, cannot merge overwrite files", "Rename");
                 try
                 {
-                    string ndest = ManagerReader.GenerateNameForModification(dest);
-                    File.Move(source, ndest);
+                    if (File.Exists(dest))
+                        dest = ManagerReader.GenerateNameForModification(dest);
+                    File.Move(source, dest);
                 }
                 catch (UnauthorizedAccessException) // Access denied
                 {
@@ -420,11 +420,11 @@ namespace Manager
         public static void Copy(string source, string dest, bool replace = false)
         {
             // Source or dest have an incorrect format
-            if (!ManagerReader.IsPathCorrect(source))
+            if (!ManagerReader.IsPathCorrect(source) ||!ManagerReader.IsPathCorrect(dest))
                 throw new PathFormatException(source + " : format of path is incorrect", "Copy");
             // Source does not exist
-            if (!File.Exists(source))
-                throw new PathNotFoundException("Impossible to rename data", "Copy");
+            if (!File.Exists(source) && !Directory.Exists(source))
+                throw new PathNotFoundException(source + " not found", "Copy");
             // Dest already exists : destroy it
             if (replace)
             {
@@ -432,7 +432,7 @@ namespace Manager
                 {
                     try
                     {
-                        File.Delete(dest);
+                        Delete(dest);
                     }
                     catch (Exception e)
                     {
@@ -446,7 +446,7 @@ namespace Manager
                 else if (Directory.Exists(dest))
                     try
                     {
-                        Directory.Delete(dest, true);
+                        DeleteDir(dest);
                     }
                     catch (Exception e)
                     {
@@ -460,9 +460,15 @@ namespace Manager
             try
             {
                 if (File.Exists(source))
+                {
+                    Create(dest);
                     File.Copy(source, dest);
+                }
                 else
+                {
+                    CreateDir(dest);
                     CopyDirectory(source, dest, true);
+                }
             }
             catch (UnauthorizedAccessException e)
             {
@@ -659,168 +665,116 @@ namespace Manager
         // DELETED FUNCTIONS
 
         /// <summary>
-        /// Overload 1 : Delete a file using its path if it exists <br></br>
+        /// - Low Level => Delete a file using its path if it exists <br></br>
         /// - Action : Delete a file <br></br>
         /// - Specification : consider using <see cref="Delete(ref DirectoryType, FileType)"></see> for UI/> <br></br>
         /// - Implementation : NOT Check
         /// </summary>
         /// <param name="path">the path of the file</param>
-        /// <returns>the success of the delete action</returns>
-        public static bool Delete(string path)
+        /// <exception cref="InUseException">The given path is already used</exception>
+        /// <exception cref="AccessException">The given path could not be accessed</exception>
+        /// <exception cref="ManagerException">An Error occurred</exception>
+        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
+        public static void Delete(string path)
         {
-            if (File.Exists(path))
+            if (!File.Exists(path))
+                throw new PathNotFoundException(path + " does not exist","Delete");
+            try
             {
-                try
-                { File.Delete(path); }
-                catch (IOException)
-                { return false; }
-                catch (SecurityException)
-                { return false;}
-                return true;
+                File.Delete(path);
             }
-
-            return false;
+            catch (Exception e)
+            {
+                if (e is IOException)
+                    throw new InUseException(path + " is used by another process", "Delete");
+                if (e is UnauthorizedAccessException)
+                    throw new AccessException(path + " access is denied","Delete");
+                throw new ManagerException("Delete is impossible", "Medium", "Writer Error", path + " could not be deleted", "Delete");
+            }
+            
         }
 
         /// <summary>
-        /// Overload 2 : Delete a file using its associated FileType <br></br>
+        /// - High Level => Delete a file using its associated FileType <br></br>
         /// - Action : Delete a file <br></br>
-        /// - Specification : consider using <see cref="Delete(ref DirectoryType, FileType)"></see> for UI/> <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="ft">a fileType that is associated to a file</param>
-        /// <returns>the success of the delete action</returns>
-        public static bool Delete(FileType ft)
+        /// <exception cref="InUseException">The given path is already used</exception>
+        /// <exception cref="AccessException">The given path could not be accessed</exception>
+        /// <exception cref="ManagerException">An Error occurred</exception>
+        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
+        public static void Delete(FileType ft)
         {
-            if (Delete(ft.Path))
-            {
-                ft.Dispose();
-                return true;
-            }
-
-            return false;
+            if (!File.Exists(ft.Path))
+                throw new CorruptedPointerException(ft.Path + " does not exist anymore", "Delete");
+            Delete(ft.Path);
+            ft.Dispose();
         }
 
         /// <summary>
-        /// => UI Implementation (better using <see cref="Delete(ref DirectoryType, List{FileType})"/>) <br></br>
-        /// Overload 3 : Delete a FileType contained in a DirectoryType <br></br>
-        /// - Action : delete a FileType and its associated file, remove the child <br></br>
-        /// - WARNING : THIS FUNCTION IS NOT CORRECT, CONSIDER USING <see cref="Delete(ref DirectoryType, List{FileType})"/> <br></br>
-        /// - Implementation : NOT Check
-        /// </summary>
-        /// <param name="dt">a DirectoryType associated to the current directory</param>
-        /// <param name="ft">a FileType children of dt</param>
-        /// <returns></returns>
-        public static bool Delete(ref DirectoryType dt, FileType ft)
-        {
-            if (Directory.Exists(dt.Path) && File.Exists(ft.Path) && dt.HasChild(ft.Path) && Delete(ft))
-            {
-                dt.ChildrenFiles.Remove(ft);
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// => UI Implementation <br></br>
-        /// Overload 4 : <br></br>
-        /// - Action : Delete FileType of a directoryType and their associated files if they exist <br></br>
-        /// - Specification : consider using this function to remove a single file to simplify the usage of the delete function <br></br>
-        /// - Implementation : Check
-        /// </summary>
-        /// <param name="dt">the current directory type</param>
-        /// <param name="ftList">a list of FileType that has to be deleted</param>
-        /// <returns>the success of the action</returns>
-        public static bool Delete(ref DirectoryType dt, List<FileType> ftList)
-        {
-            bool result = true;
-            foreach (FileType ft in ftList)
-            {
-                result &= Delete(ref dt, ft);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Overload 1 : Delete a directory using its path <br></br>
+        /// - Low Level : Delete a directory using its path <br></br>
         /// - Action : Delete a directory using its path, recursive variable indicate if all subdirectories has to be deleted <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="path">the directory path</param>
-        /// <param name="recursive"></param>
-        /// <returns></returns>
-        public static bool DeleteDir(string path, bool recursive = true)
+        /// <param name="recursive">whether all content inside the directory should be deleted</param>
+        /// <exception cref="SystemErrorException">the system blocked app</exception>
+        /// <exception cref="AccessException">Access has been denied</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
+        public static void DeleteDir(string path, bool recursive = true)
         {
-            if (Directory.Exists(path))
+            if (!Directory.Exists(path))
+                throw new PathNotFoundException(path + " does not exist", "DeleteDir");
+            try
             {
-                if (!recursive)
-                {
-                    try
-                    {
-                        Directory.Delete(path, false);
-                        return true;
-                    }
-                    catch (IOException)
-                    {
-                        return false;
-                    }
-                }
-
-                try
-                {
-                    Directory.Delete(path, true);
-                }
-                catch (IOException)
-                {
-                    return false;
-                }
+                Directory.Delete(path, recursive);
             }
-
-            return false;
+            catch (Exception e)
+            {
+                if (e is IOException)
+                    throw new SystemErrorException("system blocked " + path, "DeleteDir");
+                if (e is UnauthorizedAccessException)
+                    throw new AccessException(path + " access denied", "DeleteDir");
+                throw new ManagerException("Impossible to Delete", "Medium", "Writer Error", path + " could not be deleted", "DeleteDir");
+            }
         }
 
         /// <summary>
-        /// Overload 2 : Delete a directory using its associated class <br></br>
+        /// - High Level : Delete a directory using its associated class <br></br>
         /// - Action : Delete a directory using its class, recursive variable indicate if all subdirectories has to be deleted <br></br>
         /// - Implementation : Check
         /// </summary>
-        /// <param name="ft"></param>
-        /// <param name="recursive"></param>
-        /// <returns>the success</returns>
-        public static bool DeleteDir(FileType ft, bool recursive = true)
+        /// <param name="ft">the directory pointer</param>
+        /// <param name="recursive">whether all content inside the directory should be deleted</param>
+        /// <exception cref="SystemErrorException">the system blocked app</exception>
+        /// <exception cref="AccessException">Access has been denied</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
+        public static void DeleteDir(FileType ft, bool recursive = true)
         {
-            if (ft.IsDir)
-            {
-                if (DeleteDir(ft.Path, recursive))
-                {
-                    ft.Dispose();
-                    return true;
-                }
-            }
-
-            return false;
+            DeleteDir(ft.Path, recursive);
+            ft.Dispose();
         }
 
         /// <summary>
-        /// => UI Implementation <br></br>
-        /// Overload 3 : Delete directories <br></br>
+        /// - High Level : Delete directories <br></br>
         /// - Action : Delete a directories using their classes, recursive variable indicate if all subdirectories / files have to be deleted <br></br>
         /// - Implementation : Check
         /// </summary>
         /// <param name="ftList">the fileType list</param>
         /// <param name="recursive">if it has to suppress all sub-directories</param>
-        /// <returns>the success</returns>
-        public static bool DeleteDir(List<FileType> ftList, bool recursive = true)
+        /// <exception cref="SystemErrorException">the system blocked app</exception>
+        /// <exception cref="AccessException">Access has been denied</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        /// <exception cref="PathNotFoundException">One of the given pointers does not exist</exception>
+        public static void DeleteDir(List<FileType> ftList, bool recursive = true)
         {
-            bool result = true;
             foreach (FileType ft in ftList)
             {
-                result &= DeleteDir(ft, recursive);
+                DeleteDir(ft, recursive);
             }
-
-            return result;
         }
 
         #endregion

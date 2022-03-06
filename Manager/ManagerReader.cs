@@ -216,8 +216,7 @@ namespace Manager
                 catch (Exception e)
                 {
                     if (e is IOException)
-                        throw new InUseException("the file " + path + " is used by an external program",
-                            "HasAttribute");
+                        throw new InUseException("the file " + path + " is used by an external program", "HasAttribute");
                     if (e is UnauthorizedAccessException)
                         throw new AccessException("the file " + path + " access is denied", "HasAttribute");
                     throw new ManagerException("Reader error", "High","Impossible to read","the given path " + path + " could not be read", "HasAttribute");
@@ -666,7 +665,9 @@ namespace Manager
             try
             {
                 StreamReader sr = new StreamReader(path);
-                return sr.ReadToEnd();
+                string res = sr.ReadToEnd();
+                sr.Close();
+                return res;
             }
             catch (Exception e)
             {

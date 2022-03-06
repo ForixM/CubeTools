@@ -220,7 +220,7 @@ namespace UI.ViewModels
             }
             else
             {
-                Open()
+                Open(_selected[0].Path);
             }
             Refresh();
         }
@@ -324,7 +324,6 @@ namespace UI.ViewModels
             {
                 try
                 {
-                    ManagerWriter.Delete(ref _directory, ft);
                     _directory.ChildrenFiles.Remove(ft);
                 }
                 catch (Exception e)
@@ -387,8 +386,9 @@ namespace UI.ViewModels
             }
         }
 
-        public static void Open(string path, string extension)
+        public static void Open(string path)
         {
+            ManagerReader.GetFileExtension(path); // Get the extension and read it
             // TODO Add open function
         }
         

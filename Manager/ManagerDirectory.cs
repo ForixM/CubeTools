@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Security;
 using Manager.ManagerExceptions;
 
@@ -28,6 +29,8 @@ namespace Manager
         private string _accessDate;
         private bool _hidden;
         private bool _readOnly;
+        // Watcher
+        private FileSystemWatcher _watcher;
 
         // Getter and Setter
         public string Path
@@ -52,6 +55,7 @@ namespace Manager
         public string AccessDate => _accessDate;
         public bool Hidden => _hidden;
         public bool ReadOnly => _readOnly;
+        public FileSystemWatcher Watcher => _watcher;
 
         #endregion
 
@@ -74,6 +78,7 @@ namespace Manager
             _accessDate = "";
             _hidden = false;
             _readOnly = false;
+            _watcher = null;
         }
 
         /// <summary>
@@ -103,9 +108,10 @@ namespace Manager
                     throw new ManagerException("ManagerException", "High", "GenerateDirectory",
                         "Generate directory was impossible", "Directory Constructor");
                 }
-
+                
                 try
                 {
+                    // Set attributes
                     _path = path;
                     _name = ManagerReader.GetPathToName(path);
                     _date = ManagerReader.GetFileCreationDate(path);
@@ -115,15 +121,58 @@ namespace Manager
                     _hidden = ManagerReader.IsFileHidden(path);
                     _readOnly = ManagerReader.IsReadOnly(path);
                     _childrenFiles = new List<FileType>();
+                    // Watcher
+                    _watcher = new FileSystemWatcher(path);
+                    _watcher.Changed += OnChanged;
+                    _watcher.Created += OnCreated;
+                    _watcher.Deleted += OnDeleted;
+                    _watcher.Renamed += OnRenamed;
+                    _watcher.NotifyFilter = NotifyFilters.Attributes
+                                           | NotifyFilters.CreationTime
+                                           | NotifyFilters.DirectoryName
+                                           | NotifyFilters.FileName
+                                           | NotifyFilters.LastAccess
+                                           | NotifyFilters.LastWrite
+                                           | NotifyFilters.Security
+                                           | NotifyFilters.Size;
+                    _watcher.IncludeSubdirectories = true;
+                    _watcher.EnableRaisingEvents = true;
+                    // Set Sub-Files/Folder
                     SetChildrenFiles();
                 }
                 catch (Exception e)
                 {
-                    Console.Error.WriteLine("Directory could not be created");
+                    Console.Error.WriteLine("Error while created "); // TODO Add 
                 }
             }
             else 
                 throw new PathNotFoundException(path + " could not be identified","Directory Constructor");
+        }
+
+        #endregion
+        
+        #region Watcher
+        
+        private void OnChanged(object sender, FileSystemEventArgs e)
+        {
+            ReloadPointer(e.FullPath);
+        }
+        private void OnCreated(object sender, FileSystemEventArgs e)
+        {
+            _childrenFiles.Add(ManagerReader.ReadFileType(e.FullPath));
+        }
+
+        private void OnDeleted(object sender, FileSystemEventArgs e)
+        {
+            Remove(e.FullPath);
+        }
+        private void OnRenamed(object sender, RenamedEventArgs e)
+        {
+            FileType save = GetChild(e.OldFullPath);
+            Remove(e.OldFullPath);
+            save.Path = e.FullPath;
+            _childrenFiles.Add(save);
+            ReloadPointer(e.FullPath);
         }
 
         #endregion
@@ -174,9 +223,10 @@ namespace Manager
         }
 
         /// <summary>
-        /// 
+        /// - Action : Verify if the file or folder given with its path is a child of the directory
+        /// - Implementation : NOT Check
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The given path to verify</param>
         /// <returns>if the directoryType has the given child</returns>
         public bool HasChild(string path)
         {
@@ -203,6 +253,11 @@ namespace Manager
             _childrenFiles.Add(ft);
         }
 
+        /// <summary>
+        /// - Action : Create a directory and add it to the current loaded directory <br></br>
+        /// - Implementation : NOT Check <br></br>
+        /// </summary>
+        /// <param name="name"></param>
         public void AddDir(string name)
         {
             string path = _path + '/' + name;
@@ -213,12 +268,39 @@ namespace Manager
         }
 
         /// <summary>
-        /// NOT IMPLEMENTED
+        /// - Action : Remove a file given with a path in the list of _childrenFiles
+        /// - Implementation : NOT Check
         /// </summary>
-        /// <returns></returns>
-        private FileSystemEventHandler ActualizeFiles()
+        /// <param name="path">the given path</param>
+        public void Remove(string path)
         {
-            return null;
+            for (int i = 0; i < _childrenFiles.Count; i++)
+            {
+                if (_childrenFiles[i].Path == path)
+                {
+                    _childrenFiles[i].Dispose();
+                    _childrenFiles.RemoveAt(i);
+                }
+            }
+        }
+        
+        /// <summary>
+        /// - Action : Reload One single pointer given in path. <br></br>
+        /// -> if path is not contained, nothing is done <br></br>
+        /// -> Otherwise, the pointer is modified to fit with the data.<br></br>
+        /// - Implementation : NOT Check
+        /// </summary>
+        /// <param name="path">the given file or folder to reload</param>
+        private void ReloadPointer(string path)
+        {
+            for (int i = 0; i<_childrenFiles.Count; i++)
+            {
+                if (_childrenFiles[i].Path == path)
+                {
+                    _childrenFiles[i] = ManagerReader.ReadFileType(path);
+                    return;
+                }
+            }
         }
 
         #endregion
@@ -238,6 +320,7 @@ namespace Manager
             if (Directory.Exists(dest))
             {
                 string newPath = ManagerReader.GetNameToPath(dest);
+                _watcher = new FileSystemWatcher(dest);
                 // Erase last directory
                 foreach (var ft in ChildrenFiles)
                 {
