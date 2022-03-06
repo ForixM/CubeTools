@@ -1,0 +1,64 @@
+.conBar {
+  position: relative;
+  margin: 0;
+  padding: 50px 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.conInfo {
+  padding: 100px;
+  background: #fff;
+}
+
+.conInfo h2 {
+  font-size: 30px;
+}
+
+.conInfo .inputBox {
+  position: relative;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.conInfo .inputBox input,
+.conInfo .inputBox textarea {
+  width: 100%;
+  padding: 5px 0;
+  font-size: 20px;
+  margin: 10px 0;
+  border: none;
+  border-bottom: 2px #f0921f solid;
+  outline: none;
+  resize: none;
+}
+
+.conInfo .inputBox span {
+  position: absolute;
+  left: 0;
+  padding: 5px 0;
+  font-size: 20px;
+  margin: 10px 0;
+  pointer-events: none;
+  transition: 0.5s;
+  color: #666;
+}
+
+.conInfo .inputBox input:focus ~ span,
+.conInfo .inputBox textarea:focus ~ span {
+  color: #f0921f;
+  font-size: 16px;
+  transform: translateY(-23px);
+}
+
+.conInfo .inputBox input[type="submit"] {
+  transform: translateX(150%);
+  width: 100px;
+  background: #f0921f;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 22px;
+}

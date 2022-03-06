@@ -1,0 +1,27 @@
+.home {
+  opacity: 0;
+}
+
+.First-Page .Title {
+  margin: 5% 0 20% 0;
+}
+
+.First-Page .Title h1 {
+  text-align: center;
+  font-size: 15em;
+  width: 100%;
+  font-weight: bold;
+  isolation: isolate;
+  letter-spacing: -5px;
+}
+
+.First-Page .Title h1 span {
+  display: block;
+  color: #f0921f;
+}
+
+.First-Page .Title h1 span:last-child {
+  margin-top: -170px;
+  color: #ffb957;
+  mix-blend-mode: difference;
+}

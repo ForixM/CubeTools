@@ -1,0 +1,97 @@
+.main .TextAboutUs {
+  color: #fff;
+  margin: 30px;
+  font-size: 20px;
+}
+
+.main .TextAboutUs p {
+  margin-top: 40px;
+  line-height: 35px;
+}
+
+.main .TextAboutUs strong {
+  color: #f0921f;
+}
+
+.main .card .box .imgbox img {
+  width: 130%;
+  height: 130%;
+}
+
+.card {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.card .box {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 55px;
+  transition: 0.5s;
+}
+
+.box:hover {
+  height: 400px;
+}
+
+.box .imgbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.box .imgbox img {
+  max-width: 130%;
+  opacity: 0.1;
+  transition: 0.5s;
+}
+
+.box:hover .imgbox img {
+  opacity: 1;
+}
+
+.box::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -55px;
+  bottom: -2px;
+
+  z-index: -1;
+}
+
+.box::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -55px;
+  bottom: -2px;
+  z-index: -2;
+  filter: blur(40px);
+}
+
+.box::before,
+.box::after {
+  background: linear-gradient(
+    90deg,
+    rgba(201, 199, 4, 1) 0%,
+    rgba(187, 86, 8, 1) 100%
+  );
+}
+
+.invisible {
+  visibility: hidden;
+}
