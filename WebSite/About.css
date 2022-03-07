@@ -2,6 +2,7 @@
   color: #fff;
   margin: 30px;
   font-size: 20px;
+  justify-content: center;
 }
 
 .main .TextAboutUs p {
@@ -11,6 +12,63 @@
 
 .main .TextAboutUs strong {
   color: #f0921f;
+}
+
+.Chrono {
+  display: grid;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-left: 20px;
+}
+
+.Chrono .ChronoBox {
+  color: #fff;
+  position: relative;
+  margin: 10px 20px;
+}
+
+.Chrono .Soutenance {
+  padding: 10px;
+  position: relative;
+  font-size: 35px;
+  color: #252525;
+  background-color: #f0921f;
+  cursor: pointer;
+  width: 600px;
+  border-radius: 8px;
+}
+
+.Chrono .ChronoBox .Soutenance::before {
+  content: "+";
+  position: absolute;
+  right: 20px;
+}
+
+.Chrono .ChronoBox.active .Soutenance::before {
+  content: "-";
+  position: absolute;
+  right: 25px;
+}
+
+.Chrono .ChronoBox .Content {
+  margin-left: 10px;
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.Chrono .ChronoBox.active .Content {
+  height: auto;
+}
+
+.Chrono .ChronoBox .Content li {
+  margin: 10px;
+}
+
+.Chrono .ChronoBox .Content li ul li {
+  list-style-type: square;
+  margin: 5px 5px 5px 15px;
 }
 
 .main .card .box .imgbox img {
