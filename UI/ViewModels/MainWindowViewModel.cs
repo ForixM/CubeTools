@@ -7,8 +7,7 @@ using Manager;
 using Manager.ManagerExceptions;
 using ReactiveUI;
 using System.Collections.ObjectModel;
-using System.Reactive.Linq;
-using Avalonia.Markup.Xaml;
+
 
 namespace UI.ViewModels
 {
@@ -17,69 +16,80 @@ namespace UI.ViewModels
 
         #region Variables
         // This region contains all needed variables for UI purpose
-        // A pointer to the current directory of 
+        
+        #region BasicVariables
+        // This region contains all variable needed for treatment of pointers and so forth
+        // PRIVATE
+        // A pointer to the current loaded Directory
+        // Consider using it most of the time because used in CLI version
         private static DirectoryType _directory;
+        
         // Pointers to specific variables
         // Give all the current selected FT
         private static List<FileType> _selected;
         // Give all the copied FT
         private static List<FileType> _copied;
-        // Queue
+        // Queue of path that has been loaded (no more than 8 path, better for memory)
         private static List<string> _queue;
-        // Index Queue
+        // Index Queue : the current index of the queue
         private static int _indexQueue;
-        // Getter
+        
+        // PUBLIC : USING GETTERS
         public static DirectoryType directory => _directory;
         public static List<FileType> selected => _selected;
         public static List<FileType> copied => _copied;
         public static List<string> queue => _queue;
         public static int indexQueue => _indexQueue;
-
-        public ObservableCollection<FileType> Items {
-            get
-            {
-                ObservableCollection<FileType> res = new ObservableCollection<FileType>();
-                foreach (var ft in _directory.ChildrenFiles)
-                {
-                    ft.Icon = "./Assets/folder.ico";
-                    res.Add(ft);
-                }
-                return res;
-            }
+        
+        #endregion
+        
+        #region StaticPathVariable
+        
+        // Static Path
+        private string home;
+        private string desktop;
+        private string document;
+        private string download;
+        private string picture;
+        private string trash;
+        
+        #endregion
+        
+        #region BindingVariables
+        // This region contains all BindingVariables : XAML Code purpose
+        
+        // The files and folders loaded
+        private ObservableCollection<FileType> items;
+        public ObservableCollection<FileType> Items
+        {
+            get => ListToObservable(_directory.ChildrenFiles);
             set
             {
-                _directory.ChildrenFiles.Clear();
                 foreach (var ft in value)
                 {
-                    _directory.ChildrenFiles.Add(ft);
+                    items.Add(ft);
                 }
+                this.RaiseAndSetIfChanged(ref items, value);
             }
         }
-
-        #endregion
-
-        #region Path
-
+        
+        // The currentPath associated to directory.Path.
         public string CurrentPath
         {
-            get { return _directory.Path; }
+            get => _directory.Path;
             set
             {
                 if (Directory.Exists(value))
                 {
                     string val = _directory.Path;
                     this.RaiseAndSetIfChanged(ref val, value);
-                    ChangeDirectory(ref value);   
+                    if (_directory.Path != val)
+                        ChangeDirectory(ref val);
                 }
             }
         }
-        // Path
-        public string home;
-        public string desktop;
-        public string document;
-        public string download;
-        public string picture;
-        public string trash;
+        
+        #endregion
         
         #endregion
 
@@ -91,13 +101,13 @@ namespace UI.ViewModels
             _copied = new List<FileType>();
             _queue = new List<string>();
             _indexQueue = 0;
-            // Static Path
-            home = "C:/";
-            desktop = "C:/";
-            document = "C:/";
-            download = "C:/";
-            picture = "C:/";
-            trash = "C:/";
+            // TODO Implement algorithm to detect static path
+            home = "C:/Users/mateo";
+            desktop = "C:/Users/mateo/Desktop";
+            document = "C:/Users/mateo/OneDrive";
+            download = "C:/Users/mateo/Downloads";
+            picture = "C:/Users/mateo/Pictures";
+            trash = "C:/$Recycle.Bin";
 
             try
             {
@@ -112,10 +122,11 @@ namespace UI.ViewModels
                 _queue.Add(_directory.Path);
                 CurrentPath = _directory.Path;
             }
-            
+
+            items = new ObservableCollection<FileType>();
             foreach (var i in directory.ChildrenFiles)
             {
-                Items.Add(i);
+                items.Add(i);
             }
             
             
@@ -123,10 +134,14 @@ namespace UI.ViewModels
         
         #endregion
         
-        #region View
+        #region BindingMethods
         // All functions are called in XAML code
         
-        // Left Arrow button is clicked
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void LeftBtnClick()
         {
             if (_indexQueue <= 0)
@@ -137,7 +152,6 @@ namespace UI.ViewModels
                 string val = _queue[_indexQueue];
                 ChangeDirectory(ref val);
                 _queue[_indexQueue] = val;
-                ErrorMessageBox("Path", _directory.Path, "ha", "ha");
             }
             catch (ManagerException e)
             {
@@ -145,7 +159,11 @@ namespace UI.ViewModels
             }
         }
 
-        // Right Arrow button is clicked
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void RightBtnClick()
         {
             if (_indexQueue >= _queue.Count - 1)
@@ -157,7 +175,6 @@ namespace UI.ViewModels
                 string val = _queue[_indexQueue];
                 ChangeDirectory(ref val);
                 _queue[_indexQueue] = val;
-                ErrorMessageBox("Path", _directory.Path, "ha", "ha");
             }
             catch (ManagerException e)
             {
@@ -165,13 +182,16 @@ namespace UI.ViewModels
             }
         }
 
-        // Up Arrow clicked : GetParent
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void UpBtnClick()
         {
-            string res = "";
             try
             {
-                res = ManagerReader.GetParent(_directory.Path);
+                string res = ManagerReader.GetParent(_directory.Path);
                 _indexQueue++;
                 ChangeDirectory(ref res);
             }
@@ -179,26 +199,32 @@ namespace UI.ViewModels
             {
                 ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
-            string temp = "";
-            foreach (var str in _queue)
-            {
-                temp += str + "   ";
-            }
-            ErrorMessageBox("Path", _directory.Path,"ha",temp);
         }
 
-        // SyncButton Clicked
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void SyncBtnClick()
         {
             // TODO Add OneDrive implementation
         }
 
-        // Settings is opened
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void SettingBtnClick()
         {
         }
 
-        // Create button : 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void CreateBtnClick()
         {
             try
@@ -211,7 +237,11 @@ namespace UI.ViewModels
             }
         }
 
-        // Copy button and add them to the list of copied
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void CopyBtnClick()
         {
             _copied.Clear();
@@ -221,17 +251,26 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void CutBtnClick()
         {
             // TODO Implement cut function
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void PasteBtnClick()
         {
             try
             {
                 Copy(_copied);
-                Refresh();
             }
             catch (ManagerException e)
             {
@@ -239,17 +278,26 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void RenameBtnClick()
         {
             
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void DeleteBtnClick()
         {
             try
             {
                 DeleteSelected(_selected);
-                Refresh();
             }
             catch (ManagerException e)
             {
@@ -257,22 +305,36 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void NearbySendBtnClick()
         {
             // TODO Add method for NearBySend
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void SearchBtnClick()
         {
             // TODO Display the Pointer
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void GoToHomeBtnClick()
         {
             try
             {
                 ChangeDirectory(ref home);
-                Refresh();
             }
             catch (ManagerException e)
             {
@@ -280,12 +342,16 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void GoToDesktopBtnClick()
         {
             try
             {
                 ChangeDirectory(ref desktop);
-                Refresh();
             }
             catch (ManagerException e)
             {
@@ -293,12 +359,16 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void GoToDocumentsBtnClick()
         {
             try
             {
                 ChangeDirectory(ref document);
-                Refresh();
             }
             catch (ManagerException e)
             {
@@ -306,12 +376,16 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void GoToDownloadBtnClick()
         {
             try
             {
                 ChangeDirectory(ref download);
-                Refresh();
             }
             catch (ManagerException e)
             {
@@ -319,12 +393,16 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void GoToPictureBtnClick()
         {
             try
             {
                 ChangeDirectory(ref picture);
-                Refresh();
             }
             catch (ManagerException e)
             {
@@ -332,12 +410,16 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void GoToTrashBtnClick()
         {
             try
             {
                 ChangeDirectory(ref trash);
-                Refresh();
             }
             catch (ManagerException e)
             {
@@ -345,7 +427,11 @@ namespace UI.ViewModels
             }
         }
 
-        // When a file is clicked
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void GoToSubFile()
         {
             try
@@ -358,33 +444,41 @@ namespace UI.ViewModels
                 {
                     Open(_selected[0].Path);
                 }
-
-                Refresh();
             }
             catch (ManagerException e)
             {
                 ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
         }
+
+       
+        
         #endregion
         
-        #region ViewMethod
+        #region ViewMethods
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         public void ErrorMessageBox (string title, string level, string type, string message)
         {
             string content = 
-                $"Level                |    {level}\n" +
-                $"Type                |    {type}\n" +
-                $"Message          |    {message}\n";
+                $"Level : {level}\n" +
+                $"Type : {type}\n\n" +
+                $"Message : {message}\n";
             var messageBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager.GetMessageBoxStandardWindow(title, content);
             messageBoxStandardWindow.Show();
         }
         
         #endregion
         
-        #region Methods
+        #region ProcessMethods
 
         /// <summary>
-        /// 
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -395,6 +489,13 @@ namespace UI.ViewModels
             _directory.ChildrenFiles.Add(ManagerReader.ReadFileType(name));
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="ft"></param>
+        /// <returns></returns>
         protected static bool Copy(FileType ft)
         {
             if (File.Exists(ft.Path) || Directory.Exists(ft.Path))
@@ -405,6 +506,13 @@ namespace UI.ViewModels
             return false;
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="fts"></param>
+        /// <exception cref="PathNotFoundException"></exception>
         protected static void Copy(List<FileType> fts)
         {
             _copied.Clear();
@@ -418,11 +526,22 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="ft"></param>
         protected static void Cut(FileType ft)
         {
-            
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="fts"></param>
         protected static void Cut(List<FileType> fts)
         {
             foreach (var ft in fts)
@@ -431,11 +550,22 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="ft"></param>
         protected static void PasteOne(FileType ft)
         {
             ManagerWriter.Copy(ref _directory, ft, ft.Path, false);
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         protected static void PasteCopied()
         {
             foreach (var ft in _copied)
@@ -445,11 +575,23 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <returns></returns>
         protected static FileType Rename()
         {
             return FileType.NullPointer;
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="ftList"></param>
         protected static void DeleteSelected(List<FileType> ftList)
         {
             foreach (var ft in ftList)
@@ -458,6 +600,12 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="ft"></param>
         protected static void DeleteSingle(FileType ft)
         {
             if (ft.IsDir)
@@ -472,20 +620,45 @@ namespace UI.ViewModels
             }
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         protected static FileType Search(string name)
         {
             return ManagerReader.SearchByIndeterminedName(directory, name);
         }
 
-        protected static void ChangeDirectory(FileType ft)
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="ft"></param>
+        protected void ChangeDirectory(FileType ft)
         {
             string val = ft.Path;
             ChangeDirectory(ref val);
         }
         
-        protected static void ChangeDirectory(ref string path)
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="path"></param>
+        protected void ChangeDirectory(ref string path)
         {
+            // Modify the directory
             _directory.ChangeDirectory(path);
+            // Setting up the Path for UI
+            CurrentPath = path;
+            // Modified ListBox associated
+            Items = ListToObservable(_directory.ChildrenFiles);
+            // Adding path to queue
             _queue.Add(path);
             if (_queue.Count >= 9)
             {
@@ -495,22 +668,51 @@ namespace UI.ViewModels
             _selected = new List<FileType>();
         }
 
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
         protected static void Sort()
         {
             ManagerReader.SortByName(_directory.ChildrenFiles);
         }
 
-        protected static void Refresh()
-        {
-            _directory.SetChildrenFiles();
-        }
-
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="path"></param>
         protected static void Open(string path)
         {
             ManagerReader.GetFileExtension(path); // Get the extension and read it
             // TODO Add open function
         }
         
+        #endregion
+        
+        #region OtherMethods
+
+        /// <summary>
+        /// - Action : <br></br>
+        /// - XAML : <br></br>
+        /// - Implementation :
+        /// </summary>
+        /// <param name="list"></param>
+        /// <typeparam name="T">The given type</typeparam>
+        /// <returns></returns>
+        private static ObservableCollection<T> ListToObservable<T>(List<T> list)
+        {
+            ObservableCollection<T> res = new ObservableCollection<T>();
+            foreach (var e in list)
+            {
+                res.Add(e);
+            }
+
+            return res;
+        }
+
         #endregion
     }
 }

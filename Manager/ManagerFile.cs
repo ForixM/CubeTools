@@ -72,6 +72,7 @@ namespace Manager
         public bool Hidden { get; set; }
         public bool Compressed { get; set; }
         public bool Archived { get; set; }
+
         public bool IsDir { get; set; }
         
         // Icon
@@ -229,5 +230,6 @@ namespace Manager
         }
 
         #endregion
+        
     }
 }
