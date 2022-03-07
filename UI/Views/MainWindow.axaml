@@ -3,6 +3,8 @@
         xmlns:vm="using:UI.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI.Converter"
+
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="UI.Views.MainWindow"
         Icon="/Assets/cubetools.ico"
@@ -19,6 +21,10 @@
 			<Setter Property="FontWeight" Value="Bold"/>
 		</Style>
 	</Window.Styles>
+	
+	<Window.Resources>
+		<local:ImagePathToBitmapConverter x:Key="ImagePathToBitmapConverter" />
+	</Window.Resources>
 
 	
 	<Design.DataContext>
@@ -95,7 +101,7 @@
 						<Grid Grid.Column="4">
 							
 							<Border CornerRadius="4" Background="White" Margin="0 1" Width="490">
-								<TextBox  Watermark="Enter a path" Text="{Binding CurrentPath}"/>
+								<TextBox  Watermark="Enter a path" Text="{Binding CurrentPath, Mode=TwoWay}"/>
 							</Border>
 						</Grid>
 						<Grid Grid.Column="5">
@@ -353,12 +359,13 @@
 				<Grid Grid.Row="1">
 					<ScrollViewer HorizontalScrollBarVisibility="Disabled"
 					              VerticalScrollBarVisibility="Auto">
-						<ListBox Items="{Binding Items}" SelectedItems="{Binding Selection}"  CornerRadius="0 30 0 30" 
+						<ListBox Items="{Binding Items, Mode=OneWay}" SelectedItems="{Binding Selection}"  CornerRadius="0 30 0 30" 
 								 Background="#D3D3D5" Margin="5">
 							<ListBox.ItemTemplate>
 								<DataTemplate>
 									<WrapPanel>
-										<Image Source="/Assets/folder.ico" Height="20"/>
+										<!-- "{Binding Icon, Converter={StaticResource ImagePathToBitmapConverter}}" -->
+										<Image Source="/Assets/file.ico" Height="20"/>
 										<TextBlock Text="{Binding Name}" Margin="5"/>
 										<TextBlock Text="{Binding Size}" Margin="5"/>
 									</WrapPanel>
