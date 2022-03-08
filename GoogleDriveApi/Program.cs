@@ -22,9 +22,7 @@ namespace GoogleDriveApi
 
         static void Main(string[] args)
         {
-            UserCredential credential = OAuth.GetUserCredential();
-
-            var service = OAuth.GetDriveService(credential);
+            var service = OAuth.GetDriveService();
             
 
             // Define parameters of request.

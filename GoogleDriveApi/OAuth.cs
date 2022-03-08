@@ -41,8 +41,10 @@ namespace GoogleDriveApi
         }
 
         // Create Drive API service.
-        public static DriveService GetDriveService(UserCredential credential)
+        public static DriveService GetDriveService()
         {
+            UserCredential credential = GetUserCredential();
+
             return new DriveService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
