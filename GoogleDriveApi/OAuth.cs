@@ -18,7 +18,7 @@ namespace GoogleDriveApi
         // If modifying these scopes, delete your previously saved credentials
         // at ~/.credentials/drive-dotnet-quickstart.json
 
-        static string[] Scopes = { DriveService.Scope.DriveAppdata };
+        static string[] Scopes = { DriveService.Scope.Drive };
         static string ApplicationName = "Drive API .NET Quickstart";
 
         // Create Crendential 

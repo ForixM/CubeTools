@@ -74,5 +74,14 @@ namespace GoogleDriveApi
             var command = Service.Files.Delete(fileId);
             command.Execute();
         }
+
+        public string CopyFile(Stream file, string fileID)
+        {
+            var Service = OAuth.GetDriveService();
+            var CopyFile = new Google.Apis.Drive.v3.Data.File();
+            var command = Service.Files.Copy(CopyFile, fileID);
+            command.Execute();
+            return CopyFile.Id;
+        }
     }
 }
