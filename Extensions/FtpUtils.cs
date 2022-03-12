@@ -22,7 +22,7 @@ namespace Extensions
         /// Connects to the remote server. FTPs isn't fully implemented, so please set ssl bool to false
         /// </summary>
         /// <param name="host">IP of the remote server</param>
-        /// <param name="userID">username registered at the remote server</param>
+        /// <param name="userId">username registered at the remote server</param>
         /// <param name="password">Password associated to the previous given userID</param>
         /// <param name="ssl">Create a secure connection to the remote server (not fully functional)</param>
         public FtpUtils(string host, string userId, string password, bool ssl)
@@ -97,7 +97,7 @@ namespace Extensions
         /// <summary>
         /// Deletes the given directory and all his content from the remote server
         /// </summary>
-        /// <param name="dir">The path of the directory that will be deleted</param>
+        /// <param name="path">The path of the directory that will be deleted</param>
         /// <returns>The async Task of the directory deletion</returns>
         public Task DeleteDirectory(string path)
         {
@@ -190,7 +190,7 @@ namespace Extensions
         /// Upload a file to the remote server
         /// </summary>
         /// <param name="remoteDestination">The path of the remote destination</param>
-        /// <param name="destination">The local file that will be uploaded</param>
+        /// <param name="source">The local file that will be uploaded</param>
         /// <param name="progressionEvent">Optional function parameter to track upload progression</param>
         /// <returns>The async task of the upload</returns>
         public Task<FtpStatus> UploadFile(string remoteDestination, FileType source, Action<object, FtpProgress> progressionEvent = null)

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using CubeTools;
 using FluentFTP;
 using Manager;
+using Microsoft.OneDrive.Sdk;
+using Microsoft.OneDrive.Sdk.Authentication;
 using SevenZip;
 
 namespace Extensions
@@ -50,9 +52,27 @@ namespace Extensions
                 Console.WriteLine("| "+percent+"%");
             }
         }
+
+        static async Task Auth()
+        {
+            string clientId = "c96e1ebe-5ca8-4a2c-aa16-077346054d41";
+            var msaAuthenticationProvider = new MsaAuthenticationProvider(clientId,
+                "https://login.live.com/oauth20_desktop.srf",
+                new[] {"onedrive.readonly", "wl.signin"});
+            await msaAuthenticationProvider.AuthenticateUserAsync();
+            
+            // task11.Wait();
+            var oneDriveClient = new OneDriveClient("https://api.onedrive.com/v1.0", msaAuthenticationProvider);
+            var rootItem = oneDriveClient.Drive.Root.Request().GetAsync();
+            // rootItem.Wait();
+            Console.WriteLine("Connection done");
+            Console.WriteLine(rootItem.Result);
+        }
         
         static void Main(string[] args)
         {
+
+            return;
             string ans;
             FtpUtils ftp = null;
             do
