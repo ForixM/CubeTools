@@ -27,16 +27,16 @@ namespace Onedrive
             set;
         }
 
-        public override string ToString()
-        {
-            string disp = "context=" + context + "\ncount=" + count + "\nvalues=\n";
-            foreach (OneItem oneItem in value)
-            {
-                disp += "{\n";
-                disp += oneItem.ToString();
-                disp += "}\n";
-            }
-            return disp;
-        }
+        // public override string ToString()
+        // {
+        //     string disp = "context=" + context + "\ncount=" + count + "\nvalues=\n";
+        //     foreach (OneItem oneItem in value)
+        //     {
+        //         disp += "{\n";
+        //         disp += oneItem.ToString();
+        //         disp += "}\n";
+        //     }
+        //     return disp;
+        // }
     }
 }

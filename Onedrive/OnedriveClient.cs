@@ -25,7 +25,8 @@ namespace Onedrive
         private static string _redirectUri = "http://localhost:4040";
 
         private Token token;
-        private string path = "/";
+        private string path = "/drive/root:";
+        private HttpClient _client;
 
         private static string _authorityUri =
             string.Format(
@@ -34,12 +35,17 @@ namespace Onedrive
                 Uri.EscapeDataString(_redirectUri));
 
         private static string _tokenUri = "https://login.live.com/oauth20_token.srf";
-        private static string _api = "https://api.onedrive.com/v1.0/drive/root:";
+        private static string _api = "https://api.onedrive.com/v1.0";
 
-        public delegate void SampleEventHandler(object sender);
+        public delegate void SampleEventHandler(object sender, bool success);
+
+        public delegate void UploadUpdateHandler(object sender, int percent);
 
         public event SampleEventHandler authenticated;
-        
+        public event SampleEventHandler uploadFinished;
+        public event SampleEventHandler downloadFinished;
+        // public event UploadUpdateHandler uploadUpdate;
+
         public OnedriveClient()
         {
             _listener = new HttpListener();
@@ -47,6 +53,11 @@ namespace Onedrive
             _listener.Start();
             Thread thread = new Thread(Authenticator);
             thread.Start();
+            authenticated += (sender, success) =>
+            {
+                _listener.Stop();
+                _client = new HttpClient();
+            };
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 Process.Start(new ProcessStartInfo(_authorityUri) { UseShellExecute = true });
@@ -65,12 +76,19 @@ namespace Onedrive
         {
             HttpClient client = new HttpClient();
             Task<string> responseString =
-                client.GetStringAsync(_api +path+ ":/children?access_token=" + token.access_token + "&select=name,size,folder,file,parentReference");
+                client.GetStringAsync(_api +path+ ":/children?access_token=" + token.access_token + "&select=name,size,folder,file,parentReference,id");
             responseString.Wait();
-            return JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
+            try
+            {
+                return JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
-        public string CreateFolder(string name)
+        public bool CreateFolder(string name)
         {
             HttpClient client = new HttpClient();
             string data = "{'name':'"+name+"','folder':{ },'@microsoft.graph.conflictBehavior':'rename'}";
@@ -80,24 +98,46 @@ namespace Onedrive
             response.Wait();
             Task<string> resStr = response.Result.Content.ReadAsStringAsync();
             resStr.Wait();
-            return resStr.Result;
+            return (int) response.Result.StatusCode == 201;
         }
-
-        public string UploadFile(FileType file)
+        
+        public bool CreateFolder(string name, OneItem folder)
         {
-            HttpClient client = new HttpClient();
+            if (folder.Type != OneItemType.FOLDER)
+                return false;
+            string data = "{'name':'"+name+"','folder':{ },'@microsoft.graph.conflictBehavior':'rename'}";
             Task<HttpResponseMessage> response =
-                client.PutAsync(_api + path +Path.GetFileName(file.Path)+ ":/content?access_token=" + token.access_token,
-                    new StringContent(System.IO.File.ReadAllText(file.Path), Encoding.UTF8, MimeTypeMap.GetMimeType(file.Path)));
+                _client.PostAsync(
+                    _api + folder.parentReference.path + "/" + folder.name + ":/children?access_token=" +
+                    token.access_token,
+                    new StringContent(data, Encoding.UTF8, "application/json"));
             response.Wait();
-            Task<string> resStr = response.Result.Content.ReadAsStringAsync();
-            resStr.Wait();
-            return resStr.Result;
+            return (int) response.Result.StatusCode == 201;
         }
 
+
+        public async Task<bool> UploadFile(FileType file)
+        {
+            HttpResponseMessage response = await _client.PutAsync(_api + path + "/" +Path.GetFileName(file.Path)+ ":/content?access_token=" + token.access_token,
+                new StringContent(System.IO.File.ReadAllText(file.Path), Encoding.UTF8, MimeTypeMap.GetMimeType(file.Path)));
+            uploadFinished?.Invoke(this, (int)response.StatusCode == 201);
+            return (int) response.StatusCode == 201;
+        }
+
+        public FileType DownloadFile(string dest, OneItem item)
+        {
+            Task<HttpResponseMessage> response =
+                _client.GetAsync(_api + item.parentReference.path+"/"+item.name + ":/content?access_token=" + token.access_token);
+            response.Wait();
+            Task<byte[]> resStr = response.Result.Content.ReadAsByteArrayAsync();
+            resStr.Wait();
+            File.WriteAllBytes(dest, resStr.Result);
+            downloadFinished?.Invoke(this, true); //TODO handle success bool value
+            return new FileType(dest);
+        }
+        
         public FileType DownloadFile(string dest, string path)
         {
-            HttpClient client = new HttpClient();
             if (path.StartsWith("./"))
             {
                 path = path.Remove(0, 2);
@@ -113,50 +153,54 @@ namespace Onedrive
                 return null;
             }
             Task<HttpResponseMessage> response =
-                client.GetAsync(_api + path + ":/content?access_token=" + token.access_token);
+                _client.GetAsync(_api + path + ":/content?access_token=" + token.access_token);
             response.Wait();
             Task<byte[]> resStr = response.Result.Content.ReadAsByteArrayAsync();
             resStr.Wait();
             File.WriteAllBytes(dest, resStr.Result);
+            uploadFinished?.Invoke(this, true); //TODO handle success bool value
             return new FileType(dest);
         }
 
-        public void DeleteFile(string path)
+        public bool DeleteItem(OneItem item)
         {
-            HttpClient client = new HttpClient();
-            if (path.StartsWith("./"))
-            {
-                path = path.Remove(0, 2);
-                path = this.path + path;
-            }
-            else if (path.StartsWith("/"))
-            {
-                
-            }
-            else
-            {
-                Console.WriteLine("Invalid path syntax");
-                return;
-            }
             Task<HttpResponseMessage> response =
-                client.DeleteAsync(_api + path + "?access_token=" + token.access_token);
+                _client.DeleteAsync(_api + item.parentReference.path+"/"+item.name + "?access_token=" + token.access_token);
             response.Wait();
-            Task<byte[]> resStr = response.Result.Content.ReadAsByteArrayAsync();
-            resStr.Wait();
-            Console.WriteLine(resStr.Result);
+            return (int) response.Result.StatusCode == 204;
+        }
+        
+        public bool DeleteItem(string path)
+        {
+            Task<HttpResponseMessage> response =
+                _client.DeleteAsync(_api + this.path + path + "?access_token=" + token.access_token);
+            response.Wait();
+            return (int) response.Result.StatusCode == 204;
+        }
+
+        public bool MoveItem(OneItem item, OneItem destination)
+        {
+            if (destination.Type != OneItemType.FOLDER) return false;
+            JObject body = new JObject();
+            body.Add(new JProperty("parentReference", new JObject(new JProperty("id", destination.id))));
+            body.Add(new JProperty("name", item.name));
+            Task<HttpResponseMessage> response =
+                _client.PatchAsync(_api + item.parentReference.path+"/"+item.name + "?access_token=" + token.access_token,
+                    new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
+            response.Wait();
+            return (int) response.Result.StatusCode == 200;
         }
 
         private async void Authenticator()
         {
-            HttpListenerContext context = _listener.GetContext(); // get a context
+            HttpListenerContext context = _listener.GetContext();
             Uri uri = context.Request.Url;
             NameValueCollection param = HttpUtility.ParseQueryString(uri.Query);
-            // Now, you'll find the request URL in context.Request.Url
             byte[] _responseArray = Encoding.UTF8.GetBytes("<html><head><title>CubeTools - Authenticated</title></head>" + 
-                                                           "<body>You have been authenticated. Please go back to Cube Tools.</body></html>"); // get the bytes to response
-            context.Response.OutputStream.Write(_responseArray, 0, _responseArray.Length); // write bytes to the output stream
-            context.Response.KeepAlive = false; // set the KeepAlive bool to false
-            context.Response.Close(); // close the connection
+                                                           "<body>You have been authenticated. Please go back to Cube Tools.</body></html>");
+            context.Response.OutputStream.Write(_responseArray, 0, _responseArray.Length);
+            context.Response.KeepAlive = false;
+            context.Response.Close();
             Console.WriteLine("Respone given to a request.");
             if (param.Get("code") != null)
             {
@@ -175,18 +219,13 @@ namespace Onedrive
                 Task<string> resStr = response.Result.Content.ReadAsStringAsync();
                 resStr.Wait();
                 token = JsonConvert.DeserializeObject<Token>(resStr.Result);
-                // string onedrive = string.Format("https://api.onedrive.com/v1.0/drive/root:/test.txt?access_token={0}",
-                //     Uri.EscapeDataString(token.access_token));
-                // Task<string> responseString = client.GetStringAsync(onedrive);
-                // responseString.Wait();
-                // Console.WriteLine(responseString.Result);
-                // var arbo = JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
             }
             else
             {
-                Console.WriteLine("Error");
+                Console.WriteLine("Error in authentication");
+                authenticated?.Invoke(this, false);
             }
-            authenticated?.Invoke(this);
+            authenticated?.Invoke(this, true);
         }
     }
 }
