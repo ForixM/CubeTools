@@ -121,6 +121,31 @@ namespace Onedrive
             return new FileType(dest);
         }
 
+        public void DeleteFile(string path)
+        {
+            HttpClient client = new HttpClient();
+            if (path.StartsWith("./"))
+            {
+                path = path.Remove(0, 2);
+                path = this.path + path;
+            }
+            else if (path.StartsWith("/"))
+            {
+                
+            }
+            else
+            {
+                Console.WriteLine("Invalid path syntax");
+                return;
+            }
+            Task<HttpResponseMessage> response =
+                client.DeleteAsync(_api + path + "?access_token=" + token.access_token);
+            response.Wait();
+            Task<byte[]> resStr = response.Result.Content.ReadAsByteArrayAsync();
+            resStr.Wait();
+            Console.WriteLine(resStr.Result);
+        }
+
         private async void Authenticator()
         {
             HttpListenerContext context = _listener.GetContext(); // get a context
