@@ -6,7 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MimeTypeMapOfficial" Version="1.0.17" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
+  
+  <ItemGroup>
+        <ProjectReference Include="..\Manager\Manager.csproj" />
+        <ProjectReference Include="..\UI\UI.csproj" />
+    </ItemGroup>
 
 </Project>

@@ -26,6 +26,12 @@ namespace Onedrive
             set;
         }
 
+        public ParentReference parentReference
+        {
+            get;
+            set;
+        }
+
         public override string ToString()
         {
             string disp = "name="+name+"\nsize="+size+"\n";
@@ -38,6 +44,33 @@ namespace Onedrive
                 disp += file.ToString();
             }
             return disp;
+        }
+
+        public class ParentReference
+        {
+            public string driveId
+            {
+                get;
+                set;
+            }
+
+            public string driveType
+            {
+                get;
+                set;
+            }
+
+            public string id
+            {
+                get;
+                set;
+            }
+
+            public string path
+            {
+                get;
+                set;
+            }
         }
     }
 }

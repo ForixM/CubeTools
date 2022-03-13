@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
@@ -9,6 +10,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Manager;
+using MimeTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -31,7 +34,11 @@ namespace Onedrive
                 Uri.EscapeDataString(_redirectUri));
 
         private static string _tokenUri = "https://login.live.com/oauth20_token.srf";
-        private static string _api = "https://api.onedrive.com/v1.0/drive/root:/";
+        private static string _api = "https://api.onedrive.com/v1.0/drive/root:";
+
+        public delegate void SampleEventHandler(object sender);
+
+        public event SampleEventHandler authenticated;
         
         public OnedriveClient()
         {
@@ -52,6 +59,40 @@ namespace Onedrive
             {
                 Process.Start("open", _authorityUri);
             }
+        }
+
+        public OneArboresence GetArboresence()
+        {
+            HttpClient client = new HttpClient();
+            Task<string> responseString =
+                client.GetStringAsync(_api +path+ ":/children?access_token=" + token.access_token + "&select=name,size,folder,file,parentReference");
+            responseString.Wait();
+            return JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
+        }
+
+        public string CreateFolder(string name)
+        {
+            HttpClient client = new HttpClient();
+            string data = "{'name':'"+name+"','folder':{ },'@microsoft.graph.conflictBehavior':'rename'}";
+            Task<HttpResponseMessage> response =
+                client.PostAsync(_api + path + ":/children?access_token=" + token.access_token,
+                    new StringContent(data, Encoding.UTF8, "application/json"));
+            response.Wait();
+            Task<string> resStr = response.Result.Content.ReadAsStringAsync();
+            resStr.Wait();
+            return resStr.Result;
+        }
+
+        public string UploadFile(FileType file)
+        {
+            HttpClient client = new HttpClient();
+            Task<HttpResponseMessage> response =
+                client.PutAsync(_api + path +Path.GetFileName(file.Path)+ ":/content?access_token=" + token.access_token,
+                    new StringContent(System.IO.File.ReadAllText(file.Path), Encoding.UTF8, MimeTypeMap.GetMimeType(file.Path)));
+            response.Wait();
+            Task<string> resStr = response.Result.Content.ReadAsStringAsync();
+            resStr.Wait();
+            return resStr.Result;
         }
 
         private async void Authenticator()
@@ -83,17 +124,18 @@ namespace Onedrive
                 Task<string> resStr = response.Result.Content.ReadAsStringAsync();
                 resStr.Wait();
                 token = JsonConvert.DeserializeObject<Token>(resStr.Result);
-                string onedrive = string.Format("https://api.onedrive.com/v1.0/drive/root:/test.txt?access_token={0}&select=name,size,createdDateTime",
-                    Uri.EscapeDataString(token.access_token));
-                Task<string> responseString = client.GetStringAsync(_api+":/children?access_token="+token.access_token+"&select=name,size,folder,file");
-                responseString.Wait();
-                var arbo = JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
-                Console.WriteLine(arbo.ToString());
+                // string onedrive = string.Format("https://api.onedrive.com/v1.0/drive/root:/test.txt?access_token={0}",
+                //     Uri.EscapeDataString(token.access_token));
+                // Task<string> responseString = client.GetStringAsync(onedrive);
+                // responseString.Wait();
+                // Console.WriteLine(responseString.Result);
+                // var arbo = JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
             }
             else
             {
                 Console.WriteLine("Error");
             }
+            authenticated?.Invoke(this);
         }
     }
 }
