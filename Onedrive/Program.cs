@@ -11,7 +11,7 @@ namespace Onedrive
         {
             client = new OnedriveClient();
             FileType file = new FileType("C:/Users/forix/Desktop/test.txt");
-            client.authenticated += sender => Console.WriteLine(client.UploadFile(file));
+            client.authenticated += sender => client.DownloadFile("C:/Users/forix/Documents/wow.pdf", "./Prise en main de OneDrive.pdf");
             // FileType file = new FileType("C:/Users/forix/Documents/révision.xlsx");
             // Console.WriteLine(MimeTypeMap.GetMimeType(file.Path));
         }

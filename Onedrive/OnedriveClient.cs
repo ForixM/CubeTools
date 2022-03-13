@@ -95,6 +95,32 @@ namespace Onedrive
             return resStr.Result;
         }
 
+        public FileType DownloadFile(string dest, string path)
+        {
+            HttpClient client = new HttpClient();
+            if (path.StartsWith("./"))
+            {
+                path = path.Remove(0, 2);
+                path = this.path + path;
+            }
+            else if (path.StartsWith("/"))
+            {
+                
+            }
+            else
+            {
+                Console.WriteLine("Invalid path syntax");
+                return null;
+            }
+            Task<HttpResponseMessage> response =
+                client.GetAsync(_api + path + ":/content?access_token=" + token.access_token);
+            response.Wait();
+            Task<byte[]> resStr = response.Result.Content.ReadAsByteArrayAsync();
+            resStr.Wait();
+            File.WriteAllBytes(dest, resStr.Result);
+            return new FileType(dest);
+        }
+
         private async void Authenticator()
         {
             HttpListenerContext context = _listener.GetContext(); // get a context
