@@ -32,6 +32,8 @@ namespace Onedrive
             set;
         }
 
+        public string path => parentReference.path + "/" + name;
+
         [DataMember(Name="folder")]
         public OneFolder folder
         {

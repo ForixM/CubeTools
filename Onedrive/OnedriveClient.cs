@@ -17,6 +17,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Onedrive
 {
+    public enum SharePermission
+    {
+        READONLY,
+        READWRITE
+    }
     public class OnedriveClient
     {
         private HttpListener _listener;
@@ -76,7 +81,26 @@ namespace Onedrive
         {
             HttpClient client = new HttpClient();
             Task<string> responseString =
-                client.GetStringAsync(_api +path+ ":/children?access_token=" + token.access_token + "&select=name,size,folder,file,parentReference,id");
+                client.GetStringAsync(_api + path + ":/children?access_token=" + token.access_token +
+                                      "&select=name,size,folder,file,parentReference,id");
+            responseString.Wait();
+            try
+            {
+                return JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+        
+        public OneArboresence GetArboresence(OneItem folder)
+        {
+            if (folder.Type != OneItemType.FOLDER) return null;
+            HttpClient client = new HttpClient();
+            Task<string> responseString =
+                client.GetStringAsync(_api + folder.path + ":/children?access_token=" + token.access_token +
+                                      "&select=name,size,folder,file,parentReference,id");
             responseString.Wait();
             try
             {
@@ -118,8 +142,10 @@ namespace Onedrive
 
         public async Task<bool> UploadFile(FileType file)
         {
-            HttpResponseMessage response = await _client.PutAsync(_api + path + "/" +Path.GetFileName(file.Path)+ ":/content?access_token=" + token.access_token,
-                new StringContent(System.IO.File.ReadAllText(file.Path), Encoding.UTF8, MimeTypeMap.GetMimeType(file.Path)));
+            HttpResponseMessage response = await _client.PutAsync(
+                _api + path + "/" + Path.GetFileName(file.Path) + ":/content?access_token=" + token.access_token,
+                new StringContent(System.IO.File.ReadAllText(file.Path), Encoding.UTF8,
+                    MimeTypeMap.GetMimeType(file.Path)));
             uploadFinished?.Invoke(this, (int)response.StatusCode == 201);
             return (int) response.StatusCode == 201;
         }
@@ -127,7 +153,8 @@ namespace Onedrive
         public FileType DownloadFile(string dest, OneItem item)
         {
             Task<HttpResponseMessage> response =
-                _client.GetAsync(_api + item.parentReference.path+"/"+item.name + ":/content?access_token=" + token.access_token);
+                _client.GetAsync(_api + item.parentReference.path + "/" + item.name + ":/content?access_token=" +
+                                 token.access_token);
             response.Wait();
             Task<byte[]> resStr = response.Result.Content.ReadAsByteArrayAsync();
             resStr.Wait();
@@ -165,7 +192,8 @@ namespace Onedrive
         public bool DeleteItem(OneItem item)
         {
             Task<HttpResponseMessage> response =
-                _client.DeleteAsync(_api + item.parentReference.path+"/"+item.name + "?access_token=" + token.access_token);
+                _client.DeleteAsync(_api + item.parentReference.path + "/" + item.name + "?access_token=" +
+                                    token.access_token);
             response.Wait();
             return (int) response.Result.StatusCode == 204;
         }
@@ -185,23 +213,53 @@ namespace Onedrive
             body.Add(new JProperty("parentReference", new JObject(new JProperty("id", destination.id))));
             body.Add(new JProperty("name", item.name));
             Task<HttpResponseMessage> response =
-                _client.PatchAsync(_api + item.parentReference.path+"/"+item.name + "?access_token=" + token.access_token,
+                _client.PatchAsync(
+                    _api + item.parentReference.path + "/" + item.name + "?access_token=" + token.access_token,
                     new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
             response.Wait();
             return (int) response.Result.StatusCode == 200;
         }
 
-        private async void Authenticator()
+        public JObject GetItemFullMetadata(OneItem item)
+        {
+            Task<HttpResponseMessage> response =
+                _client.GetAsync(_api + item.path + "?access_token=" + token.access_token);
+            response.Wait();
+            Task<string> strResponse = response.Result.Content.ReadAsStringAsync();
+            strResponse.Wait();
+            return (int)response.Result.StatusCode==200 ? JObject.Parse(strResponse.Result) : null;
+        }
+
+        public string CreateShareLink(OneItem item, SharePermission permission) //TODO Not working
+        {
+            JObject body = new JObject();
+            body.Add(new JProperty("type", permission == SharePermission.READONLY ? "view" : "edit"));
+            // Console.WriteLine(item.path);
+            // Console.WriteLine(_api + item.path + ":/createLink?access_token=oui");
+            // Console.WriteLine(body.ToString());
+            Task<HttpResponseMessage> response =
+                _client.PostAsync(_api + item.path + ":/createLink?access_token=" + token.access_token,
+                    new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
+            response.Wait();
+            Task<string> strResponse = response.Result.Content.ReadAsStringAsync();
+            strResponse.Wait();
+            // Console.WriteLine((int)response.Result.StatusCode);
+            // Console.WriteLine(strResponse.Result);
+            return (int)response.Result.StatusCode is 200 or 201 ? strResponse.Result : null;
+        }
+
+        private void Authenticator()
         {
             HttpListenerContext context = _listener.GetContext();
             Uri uri = context.Request.Url;
             NameValueCollection param = HttpUtility.ParseQueryString(uri.Query);
-            byte[] _responseArray = Encoding.UTF8.GetBytes("<html><head><title>CubeTools - Authenticated</title></head>" + 
-                                                           "<body>You have been authenticated. Please go back to Cube Tools.</body></html>");
+            byte[] _responseArray = Encoding.UTF8.GetBytes(
+                "<html><head><title>CubeTools - Authenticated</title></head>" +
+                "<body>You have been authenticated. Please go back to Cube Tools.</body></html>");
             context.Response.OutputStream.Write(_responseArray, 0, _responseArray.Length);
             context.Response.KeepAlive = false;
             context.Response.Close();
-            Console.WriteLine("Respone given to a request.");
+            // Console.WriteLine("Respone given to a request.");
             if (param.Get("code") != null)
             {
                 HttpClient client = new HttpClient();

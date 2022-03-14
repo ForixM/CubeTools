@@ -22,7 +22,15 @@ namespace Onedrive
                 OneArboresence arboresence = client.GetArboresence();
                 Console.WriteLine(arboresence.count);
                 IList<OneItem> items = arboresence.value;
-                client.UploadFile(new FileType("C:/Users/forix/Documents/wow.txt"));
+                foreach (OneItem oneItem in items)
+                {
+                    if (oneItem.name == "Document.docx" && oneItem.Type == OneItemType.FILE)
+                    {
+                        Console.WriteLine("oui???");
+                        Console.WriteLine(client.GetItemFullMetadata(oneItem));
+                        break;
+                    }
+                }
             };
         }
     }
