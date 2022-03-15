@@ -46,6 +46,21 @@ namespace GoogleDriveApi
             return file.Id;
         }
 
+        public static string CreateFile (string folderName, string fileName)
+        {
+            var Service = OAuth.GetDriveService();
+            var DriveFile = new Google.Apis.Drive.v3.Data.File();
+            string fileId = FileReader.GetFolderId(folderName);
+
+            DriveFile.Name = fileName;
+            DriveFile.MimeType ="application/octet-stream";
+            DriveFile.Parents = new string[] { fileId };
+
+            var command = Service.Files.Create(DriveFile);
+            var file = command.Execute();
+            return file.Id;
+        }
+
         public static string UploadFile (Stream file, string fileName, string fileMime, string folder, string fileDescription)
         {
             var Service = OAuth.GetDriveService();
@@ -66,6 +81,40 @@ namespace GoogleDriveApi
             }
 
             return request.ResponseBody.Id;
+        }
+
+        public void DownloadFile(string fileName)
+        {
+            var Service = OAuth.GetDriveService();
+            string fileId = FileReader.GetFileId(fileName);
+
+            var request = Service.Files.Get(fileId);
+            var stream = new MemoryStream();
+
+            request.MediaDownloader.ProgressChanged += (Google.Apis.Download.IDownloadProgress progress) =>
+            {
+                switch (progress.Status)
+                {
+                    case Google.Apis.Download.DownloadStatus.Downloading:
+                        {
+                            Console.WriteLine(progress.BytesDownloaded);
+                            break;
+                        }
+                    case Google.Apis.Download.DownloadStatus.Completed:
+                        {
+                            Console.WriteLine("Download complete.");
+                            //SaveStream(stream, saveTo);
+                            break;
+                        }
+                    case Google.Apis.Download.DownloadStatus.Failed:
+                        {
+                            Console.WriteLine("Download failed.");
+                            break;
+                        }
+                }
+            };
+
+            request.Download(stream);
         }
 
         public void DeleteFile(string fileId)
