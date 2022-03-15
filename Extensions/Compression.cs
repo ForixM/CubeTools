@@ -20,6 +20,7 @@ namespace CubeTools
         {
             var path = @"C:\Users\forix\Documents\CubeTools\Extensions\bin\Debug\net5.0\Assets\7z.dll";
             SevenZipBase.SetLibraryPath(path);
+            
             Console.WriteLine(SevenZipBase.CurrentLibraryFeatures);
             _initialized = true;
         }
