@@ -359,7 +359,7 @@
 				<Grid Grid.Row="1">
 					<ScrollViewer HorizontalScrollBarVisibility="Disabled"
 					              VerticalScrollBarVisibility="Auto">
-						<ListBox Items="{Binding Items, Mode=OneWay}" SelectedItems="{Binding Selection}"  CornerRadius="0 30 0 30" 
+						<ListBox Items="{Binding Items, Mode=OneWay}" SelectedItem="{}"  CornerRadius="0 30 0 30" 
 								 Background="#D3D3D5" Margin="5">
 							<ListBox.ItemTemplate>
 								<DataTemplate>

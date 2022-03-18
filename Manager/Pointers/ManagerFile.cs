@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net.Mail;
-using System.Runtime.CompilerServices;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using Manager.ManagerExceptions;
 
-namespace Manager
+namespace Manager.Pointers
 {
     public class FileType
     {
@@ -52,31 +43,28 @@ namespace Manager
 
         public static FileType NullPointer = new FileType();
 
-        public static List<string> type = new List<string>()
-            {"png", "pdf", "exe", "cs", "csv", ""};
-
         // Basics
-        public string Path { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public long Size { get; set; }
+        public string Path;
+        public string Name;
+        public string Type;
+        public long Size;
 
         // Date
-        public string Date { get; set; }
-        public string LastDate { get; set; }
-        public string AccessDate { get; set; }
+        public string Date;
+        public string LastDate;
+        public string AccessDate;
 
         // Attributes
-        public bool ReadOnly { get; set; }
+        public bool ReadOnly;
 
-        public bool Hidden { get; set; }
-        public bool Compressed { get; set; }
-        public bool Archived { get; set; }
+        public bool Hidden;
+        public bool Compressed;
+        public bool Archived;
 
-        public bool IsDir { get; set; }
+        public bool IsDir;
         
         // Icon
-        public string Icon { get; set; }
+        public string Icon;
 
         #endregion
 

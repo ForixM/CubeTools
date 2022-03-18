@@ -1,7 +1,11 @@
+// System's imports
+using System;
+using System.Diagnostics;
+// UI's imports
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
-using System;
+
 
 namespace UI
 {

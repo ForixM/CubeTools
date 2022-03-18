@@ -1,5 +1,5 @@
-﻿using Reader = Manager.ManagerReader;
-using Writer = Manager.ManagerWriter;
+﻿using Reader = Manager.ManagerReader.ManagerReader;
+using Writer = Manager.ManagerWriter.ManagerWriter;
 using System;
 using System.Security.Principal;
 using System.Linq;
@@ -14,8 +14,15 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            ManagerCLI cl = new ManagerCLI(Directory.GetCurrentDirectory());
-            cl.Process();
+            if (args.Contains("cli"))
+            {
+                ManagerCLI cl = new ManagerCLI(Directory.GetCurrentDirectory());
+                cl.Process();
+            }
+            else
+            {
+                // Add Code Here
+            }
         }
     }
 }

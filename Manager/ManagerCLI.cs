@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using Manager.ManagerExceptions;
+using Manager.Pointers;
 
 namespace Manager
 {
@@ -295,8 +296,8 @@ namespace Manager
             string res = "";
             try
             {
-                name = ManagerReader.GetNameToPath(name); 
-                res = ManagerReader.GetContent(name);
+                name = ManagerReader.ManagerReader.GetNameToPath(name); 
+                res = ManagerReader.ManagerReader.GetContent(name);
             }
             catch (Exception e)
             {
@@ -317,9 +318,9 @@ namespace Manager
         {
             try
             {
-                name = ManagerReader.GetNameToPath(name);
-                ManagerWriter.CreateDir(name);
-                _directoryType.ChildrenFiles.Add(ManagerReader.ReadFileType(name));
+                name = ManagerReader.ManagerReader.GetNameToPath(name);
+                ManagerWriter.ManagerWriter.CreateDir(name);
+                _directoryType.ChildrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(name));
             }
             catch (Exception e)
             {
@@ -331,8 +332,8 @@ namespace Manager
         {
             try
             {
-                name = ManagerReader.GetNameToPath(name);
-                ManagerWriter.DeleteDir(name, rec);
+                name = ManagerReader.ManagerReader.GetNameToPath(name);
+                ManagerWriter.ManagerWriter.DeleteDir(name, rec);
             }
             catch (Exception e)
             {
@@ -344,12 +345,12 @@ namespace Manager
         {
             try
             {
-                name = ManagerReader.GetNameToPath(name);
-                dest = ManagerReader.GetNameToPath(dest);
+                name = ManagerReader.ManagerReader.GetNameToPath(name);
+                dest = ManagerReader.ManagerReader.GetNameToPath(dest);
                 if (!rep)
-                    ManagerWriter.Rename(name, dest);
+                    ManagerWriter.ManagerWriter.Rename(name, dest);
                 else
-                    ManagerWriter.RenameMerge(name, dest);
+                    ManagerWriter.ManagerWriter.RenameMerge(name, dest);
             }
             catch (Exception e)
             {
@@ -361,8 +362,8 @@ namespace Manager
         {
             try
             {
-                name = ManagerReader.GetNameToPath(name);
-                ManagerWriter.Delete(name);
+                name = ManagerReader.ManagerReader.GetNameToPath(name);
+                ManagerWriter.ManagerWriter.Delete(name);
             }
             catch (Exception e)
             {
@@ -374,9 +375,9 @@ namespace Manager
         {
             try
             {
-                string path = ManagerReader.GetNameToPath(name);
-                ManagerWriter.Create(name, ManagerReader.GetFileExtension(name));
-                _directoryType.ChildrenFiles.Add(ManagerReader.ReadFileType(path));
+                string path = ManagerReader.ManagerReader.GetNameToPath(name);
+                ManagerWriter.ManagerWriter.Create(name, ManagerReader.ManagerReader.GetFileExtension(name));
+                _directoryType.ChildrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(path));
             }
             catch (Exception e)
             {
@@ -388,7 +389,7 @@ namespace Manager
         {
             try
             {
-                string path = ManagerReader.GetNameToPath(dest);
+                string path = ManagerReader.ManagerReader.GetNameToPath(dest);
                 _directoryType.ChangeDirectory(path);
             }
             catch (Exception e)
@@ -412,7 +413,7 @@ namespace Manager
         {
             try
             {
-                source = ManagerReader.GetNameToPath(source);
+                source = ManagerReader.ManagerReader.GetNameToPath(source);
             }
             catch (Exception e)
             {
@@ -425,8 +426,8 @@ namespace Manager
 
             try
             {
-                ManagerWriter.Copy(source);
-                _directoryType.ChildrenFiles.Add(ManagerReader.ReadFileType(source));
+                ManagerWriter.ManagerWriter.Copy(source);
+                _directoryType.ChildrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(source));
             }
             catch (Exception e)
             {
@@ -437,9 +438,9 @@ namespace Manager
         {
             try
             {
-                source = ManagerReader.GetNameToPath(source);
+                source = ManagerReader.ManagerReader.GetNameToPath(source);
                 Console.WriteLine(source);
-                dest = ManagerReader.GetParent(source).Replace('\\','/') +'/'+dest;
+                dest = ManagerReader.ManagerReader.GetParent(source).Replace('\\','/') +'/'+dest;
                 Console.WriteLine(dest);
             }
             catch (AccessException)
@@ -448,8 +449,8 @@ namespace Manager
             }
             try
             {
-                ManagerWriter.Copy(source, dest);
-                _directoryType.ChildrenFiles.Add(ManagerReader.ReadFileType(dest));
+                ManagerWriter.ManagerWriter.Copy(source, dest);
+                _directoryType.ChildrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(dest));
             }
             catch (Exception e)
             {
@@ -461,7 +462,7 @@ namespace Manager
             string res = "";
             try
             {
-                res = ManagerReader.SearchByIndeterminedName(_directoryType, fileToFind).Path;
+                res = ManagerReader.ManagerReader.SearchByIndeterminedName(_directoryType, fileToFind).Path;
             }
             catch (Exception e)
             {

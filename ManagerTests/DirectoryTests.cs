@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Manager;
+using Manager.ManagerReader;
+using Manager.ManagerWriter;
+using Manager.Pointers;
 using NUnit.Framework;
 
 namespace ManagerTests
