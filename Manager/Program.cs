@@ -1,12 +1,7 @@
-﻿using Reader = Manager.ManagerReader.ManagerReader;
-using Writer = Manager.ManagerWriter.ManagerWriter;
-using System;
-using System.Security.Principal;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Collections.Generic;
-using System.IO;
-using Manager.ManagerExceptions;
+﻿using System;
+using System.Configuration;
+using System.Collections.Specialized;
+using System.Threading;
 
 namespace Manager
 {
@@ -14,15 +9,15 @@ namespace Manager
     {
         static void Main(string[] args)
         {
-            if (args.Contains("cli"))
+            if (args.Length != 0 && args[0] == "cli")
+                RunCLI.Launch();
+
+            foreach (var e in ManagerReader.ManagerReader.RecommendedProgramsWindows("h"))
             {
-                ManagerCLI cl = new ManagerCLI(Directory.GetCurrentDirectory());
-                cl.Process();
+                Console.WriteLine(e);
             }
-            else
-            {
-                // Add Code Here
-            }
+            Console.WriteLine("Type enter to stop : ");
+            Console.ReadLine();
         }
     }
 }

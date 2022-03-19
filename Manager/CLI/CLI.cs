@@ -9,7 +9,7 @@ using Manager.Pointers;
 
 namespace Manager
 {
-    internal class ManagerCLI
+    internal class CLI
     {
         #region Variables
 
@@ -23,14 +23,14 @@ namespace Manager
         #region Init
 
         // Constructor : OK
-        public ManagerCLI()
+        public CLI()
         {
             _directoryType = new DirectoryType();
             _promptLine = ">> ";
         }
 
         // Constructor : OK
-        public ManagerCLI(string path)
+        public CLI(string path)
         {
             _directoryType = new DirectoryType(path);
             _promptLine = ">> ";

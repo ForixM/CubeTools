@@ -1,11 +1,19 @@
+// System's imports
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security;
+// Windows
+using System.Security.Permissions;
+using Microsoft.Win32;
+// Imports of Manager Project
 using Manager.ManagerExceptions;
 using Manager.Pointers;
+// Imports of Class Library ConfigLoader
+using ConfigLoader;
 
 namespace Manager.ManagerReader
 {
@@ -771,17 +779,95 @@ namespace Manager.ManagerReader
 
         #endregion
         
-        #region Open
+        #region RunApp
         // This region implements all algorithm to run an app using conf file
-        public static string GenerateConfFile()
+        public static List<string> RecommendedProgramsWindows(string ext)
         {
-            //if (!File.Exists("App.config"))
-            return "";
+            List<string> names = new List<string>();
+            string baseKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\." + ext;
+            string s;
+
+            using (RegistryKey rk = Registry.CurrentUser.OpenSubKey(baseKey + @"\OpenWithList"))
+            {
+                if (rk != null)
+                {
+                    string mruList = (string)rk.GetValue("MRUList");
+                    if (mruList != null)
+                    {
+                        foreach (char c in mruList)
+                        {
+                            s = rk.GetValue(c.ToString()).ToString();
+                            if (s.ToLower().Contains(".exe"))
+                                names.Add(s);
+                        }
+                    }
+                }
+            }
+
+            if (names.Count == 0)
+                return new List<string>();
+            
+            
+            //Search paths:
+            List<string> paths = new List<string>();
+            baseKey = @"Software\Classes\Applications\{0}\shell\open\command";
+
+            foreach (string name in names)
+                using (RegistryKey rk = Registry.LocalMachine.OpenSubKey(String.Format(baseKey,name)))
+                {
+                    if (rk != null)
+                    {
+                        //Console.WriteLine(name);
+                        s = rk.GetValue("").ToString();
+                        if (s.Contains("\""))
+                            s = s.Trim('\"'); //remove quotes
+                        paths.Add(s);
+                    }
+                }
+            return paths;
         }
 
-        public static void AddAppConfFile()
+        public static List<string> RecommendedProgramsUnix(string ext)
         {
-            
+            return new List<string>(); // TODO Add recommendedPrograms for UNIX
+        }
+
+        public static List<string> RecommendedProgramsMac(string ext)
+        {
+            return new List<string>();
+        }
+        public static List<string> RecommendedPrograms(PlatformID os, string ext)
+        {
+            switch (os)
+            {
+                case PlatformID.Unix:
+                    return RecommendedProgramsUnix(ext);
+                case PlatformID.Win32NT:
+                    return RecommendedProgramsWindows(ext);
+                case PlatformID.MacOSX:
+                    return RecommendedProgramsMac(ext);
+            }
+
+            return new List<string>();
+        }
+        
+        public static void SelectAppProcess(string path)
+        {
+            string extension = GetFileExtension(path);
+            List<string> recommended = RecommendedPrograms(GetOS(), extension);
+            if (recommended.Count != 0)
+                LaunchAppProcess(recommended[0],extension);
+            else
+                LaunchAppProcess(ConfigLoader.ConfigLoader.GetOneSetting(extension), path);
+        }
+
+        public static void LaunchAppProcess(string app, string obj)
+        {
+            var process = new Process();
+            var startInfo = process.StartInfo;
+            startInfo.FileName = app;
+            startInfo.Arguments = obj;
+            process.Start();
         }
         
         #endregion

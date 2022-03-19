@@ -422,7 +422,7 @@ namespace Manager.ManagerReader
         /// <returns>Extension of a file</returns>
         public static string GetFileExtension(string path)
         {
-            return Path.GetExtension(path);
+            return Path.GetExtension(path).Remove(0,1);
         }
 
         /// <summary>
@@ -471,6 +471,11 @@ namespace Manager.ManagerReader
                 }
                 throw new ManagerException("Reader Error", "Medium", "Content not readable", "Content could not be read", "GetContent");
             }
+        }
+
+        public static PlatformID GetOS()
+        {
+            return Environment.OSVersion.Platform;
         }
         
     }
