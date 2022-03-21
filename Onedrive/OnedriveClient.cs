@@ -45,12 +45,13 @@ namespace Onedrive
 
         public delegate void SampleEventHandler(object sender, bool success);
 
-        public delegate void UploadUpdateHandler(object sender, int percent);
+        public delegate void TransfertUpdateHandler(object sender, int percent);
 
         public event SampleEventHandler authenticated;
         public event SampleEventHandler uploadFinished;
         public event SampleEventHandler downloadFinished;
-        // public event UploadUpdateHandler uploadUpdate;
+        public event TransfertUpdateHandler uploadUpdate;
+        public event TransfertUpdateHandler downloadUpdate;
 
         public OnedriveClient()
         {
@@ -151,16 +152,68 @@ namespace Onedrive
             return (int) response.StatusCode == 201;
         }
 
+        public async Task<bool> UploadFile(FileType file, OneItem destination)
+        {
+            if (destination.Type != OneItemType.FOLDER) return false;
+            HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_api + destination.path + "/" +
+                                                                            Path.GetFileName(file.Path) +
+                                                                            ":/content?access_token=" +
+                                                                            token.access_token);
+            request.Method = "PUT";
+            request.ContentType = MimeTypeMap.GetMimeType(file.Path);
+            request.AllowWriteStreamBuffering = false;
+            Stream fileStream = new FileStream(file.Path, FileMode.Open);
+            request.ContentLength = fileStream.Length;
+            Stream serverStream = request.GetRequestStream();
+
+            byte[] buffer = new byte[4096];
+            int uploaded = 0;
+            int bytesRead;
+            while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
+            {
+                serverStream.Write(buffer, 0, bytesRead);
+                uploaded += bytesRead;
+                uploadUpdate?.Invoke(this, (int) ((100*uploaded) / request.ContentLength));
+            }
+            serverStream.Close();
+            fileStream.Close();
+            HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+            uploadFinished?.Invoke(this,  (int)response.StatusCode == 201);
+            return (int) response.StatusCode == 201;
+        }
+
         public FileType DownloadFile(string dest, OneItem item)
         {
-            Task<HttpResponseMessage> response =
-                _client.GetAsync(_api + item.parentReference.path + "/" + item.name + ":/content?access_token=" +
-                                 token.access_token);
-            response.Wait();
-            Task<byte[]> resStr = response.Result.Content.ReadAsByteArrayAsync();
-            resStr.Wait();
-            File.WriteAllBytes(dest, resStr.Result);
+            HttpWebRequest request =
+                (HttpWebRequest) HttpWebRequest.Create(
+                    _api + item.path + ":/content?access_token=" + token.access_token);
+            request.Method = "GET";
+            request.AllowWriteStreamBuffering = false;
+            Stream filestream = new FileStream(dest, FileMode.Create);
+            WebResponse response = request.GetResponse();
+            Stream serverStream = response.GetResponseStream();
+            byte[] buffer = new byte[4096];
+            long downloaded = 0;
+            int bytesRead;
+            while ((bytesRead = serverStream.Read(buffer, 0, buffer.Length)) != 0)
+            {
+                filestream.Write(buffer, 0, bytesRead);
+                downloaded += bytesRead;
+                downloadUpdate?.Invoke(this, (int) ((100*downloaded) / response.ContentLength));
+            }
+            
+            serverStream.Close();
+            filestream.Close();
             downloadFinished?.Invoke(this, true); //TODO handle success bool value
+            
+            // Task<HttpResponseMessage> response =
+            //     _client.GetAsync(_api + item.parentReference.path + "/" + item.name + ":/content?access_token=" +
+            //                      token.access_token);
+            // response.Wait();
+            // Task<byte[]> resStr = response.Result.Content.ReadAsByteArrayAsync();
+            // resStr.Wait();
+            // File.WriteAllBytes(dest, resStr.Result);
+            // downloadFinished?.Invoke(this, true); //TODO handle success bool value
             return new FileType(dest);
         }
         
@@ -233,28 +286,19 @@ namespace Onedrive
 
         public JObject CreateShareLink(OneItem item, SharePermission permission) //TODO Not working
         {
-            throw new NotImplementedException();
-            // JObject body = new JObject();
-            // body.Add(new JProperty("type", "view"));
-            // body.Add(new JProperty("scope", "anonymous"));
-            // Console.WriteLine(item.path);
-            // Console.WriteLine(_api + item.path + ":/createLink?access_token=oui");
-            // Console.WriteLine(body.ToString());
-            // Task<HttpResponseMessage> response =
-            //     _client.PostAsync(_api + item.path + ":/createLink?access_token=" + token.access_token,
-            //         new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
-            // // Task<HttpResponseMessage> response =
-            // //     _client.PostAsync(_api + item.path + ":/createLink?access_token=" + token.access_token,
-            // //         new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
-            // response.Wait();
-            // Task<string> strResponse = response.Result.Content.ReadAsStringAsync();
-            // strResponse.Wait();
-            // // Console.WriteLine((int)response.Result.StatusCode);
-            // Console.WriteLine("oui: "+strResponse.Result);
-            // JObject data = GetItemFullMetadata(item);
-            // string link = data.GetValue("webUrl").ToString();
-            // return JObject.Parse("{'url':'"+link+"'}");
-            // return (int)response.Result.StatusCode is 200 or 201 ? JObject.Parse(strResponse.Result) : null;
+            JObject body = new JObject();
+            body.Add(new JProperty("type", permission == SharePermission.READONLY ? "view" : "edit"));
+            body.Add(new JProperty("scope", "anonymous"));
+            Task<HttpResponseMessage> response =
+            _client.PostAsync(_api + item.path + ":/oneDrive.createLink?access_token=" + token.access_token,
+            new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
+            response.Wait();
+            Task<string> strResponse = response.Result.Content.ReadAsStringAsync();
+            strResponse.Wait();
+            JObject data = GetItemFullMetadata(item);
+            string link = data.GetValue("webUrl").ToString();
+            Console.WriteLine(strResponse.Result);
+            return (int)response.Result.StatusCode is 200 or 201 ? JObject.Parse(strResponse.Result) : null;
         }
 
         public JObject GetSharedItems()
@@ -288,7 +332,7 @@ namespace Onedrive
             body.Add("name", "test.docx");
             Console.WriteLine(body);
             Task<HttpResponseMessage> response =
-                _client.PostAsync(_api + item.path + ":/copy?access_token="+token.access_token,
+                _client.PostAsync(_api + item.path + ":/oneDrive.copy?access_token="+token.access_token,
                     new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
             response.Wait();
             Task<string> str = response.Result.Content.ReadAsStringAsync();

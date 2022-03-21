@@ -23,24 +23,35 @@ namespace Onedrive
                 OneArboresence arboresence = client.GetArboresence();
                 Console.WriteLine(arboresence.count);
                 IList<OneItem> items = arboresence.items;
+                
+                
                 OneItem f1 = null;
                 OneItem file = null;
                 foreach (OneItem oneItem in items)
                 {
-                    if (oneItem.name == "Document.docx" && oneItem.Type == OneItemType.FILE)
-                    {
-                        file = oneItem;
-                    }
+                    // if (oneItem.name == "wow.txt" && oneItem.Type == OneItemType.FILE)
+                    // {
+                    //     file = oneItem;
+                    // }
 
                     if (oneItem.name == "F1" && oneItem.Type == OneItemType.FOLDER)
                     {
                         f1 = oneItem;
+                        break;
                     }
 
-                    if (f1 != null && file != null) break;
+                    // if (f1 != null && file != null) break;
                 }
 
-                Console.WriteLine(client.Copy(file, f1));
+                client.uploadUpdate += delegate(object o, int percent)
+                {
+                    Console.WriteLine($"Progression={percent}%");
+                };
+                client.uploadFinished += (o, b) => Console.WriteLine(b ? "Upload finished." : "Error in upload");
+                Console.WriteLine(client.UploadFile(new FileType("C:/Users/forix/Desktop/wow.txt"), f1));
+                // Console.WriteLine(client.CreateShareLink(file, SharePermission.READONLY));
+                // client.DownloadFile("C:/Users/forix/Desktop/wow.txt", file);
+                // Console.WriteLine(client.Copy(file, f1));
             };
         }
     }
