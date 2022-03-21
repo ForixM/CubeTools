@@ -5,19 +5,8 @@ namespace ConfigLoader.Sections.appLauncherSection;
 public class applicationConfig : ConfigurationElement
 {
     [ConfigurationProperty("extension", IsRequired = true)]
-    public string Name
-    {
-        get
-        {
-            return this["extension"] as string;
-        }
-    }
+    public string Name => this["extension"] as string;
+
     [ConfigurationProperty("app", IsRequired = true)]
-    public string Value
-    {
-        get
-        {
-            return this["app"] as string;
-        }
-    }
+    public string Value => this["app"] as string;
 }

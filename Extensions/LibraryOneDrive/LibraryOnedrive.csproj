@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MimeTypeMapOfficial" Version="1.0.17" />
+        <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0-preview.2.22152.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Manager\Library\Library.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -6,40 +6,31 @@ public class applicationsConfig : ConfigurationElementCollection
 {
     public applicationConfig this[int index]
     {
-        get
-        {
-            return base.BaseGet(index) as applicationConfig;
-        }
+        get => BaseGet(index) as applicationConfig;
         set
         {
-            if (base.BaseGet(index) != null)
-            {
-                base.BaseRemoveAt(index);
-            }
-            this.BaseAdd(index, value);
+            if (BaseGet(index) != null) BaseRemoveAt(index);
+            BaseAdd(index, value);
         }
     }
 
     public new applicationConfig this[string responseString]
     {
-        get { return (applicationConfig) BaseGet(responseString); }
+        get => (applicationConfig) BaseGet(responseString);
         set
         {
-            if(BaseGet(responseString) != null)
-            {
-                BaseRemoveAt(BaseIndexOf(BaseGet(responseString)));
-            }
+            if (BaseGet(responseString) != null) BaseRemoveAt(BaseIndexOf(BaseGet(responseString)));
             BaseAdd(value);
         }
     }
 
-    protected override System.Configuration.ConfigurationElement CreateNewElement()
+    protected override ConfigurationElement CreateNewElement()
     {
         return new applicationConfig();
     }
 
-    protected override object GetElementKey(System.Configuration.ConfigurationElement element)
+    protected override object GetElementKey(ConfigurationElement element)
     {
-        return ((applicationConfig)element).Name;
+        return ((applicationConfig) element).Name;
     }
 }

@@ -9,7 +9,6 @@ public static partial class ConfigLoader
 
     public static void ModifyParameters()
     {
-        
     }
 
     public static void ModifyParameters(ConfigurationSection cs)
@@ -17,25 +16,20 @@ public static partial class ConfigLoader
         switch (cs.ToString())
         {
             case "AppLauncher":
-                
-                break;
-            default :
+
                 break;
         }
     }
 
     public static void AddParameters()
     {
-        
     }
 
     public static void AddParameters(string section)
     {
-        
     }
 
     public static void AddSection(string section)
     {
-        
     }
 }

@@ -1,0 +1,13 @@
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\bin\Debug\net5.0\ConfigLoader.dll.config
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\bin\Debug\net5.0\ConfigLoader.deps.json
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\bin\Debug\net5.0\ConfigLoader.dll
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\bin\Debug\net5.0\ref\ConfigLoader.dll
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\bin\Debug\net5.0\ConfigLoader.pdb
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\obj\Debug\net5.0\ConfigLoader.csproj.AssemblyReference.cache
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\obj\Debug\net5.0\ConfigLoader.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\obj\Debug\net5.0\ConfigLoader.AssemblyInfoInputs.cache
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\obj\Debug\net5.0\ConfigLoader.AssemblyInfo.cs
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\obj\Debug\net5.0\ConfigLoader.csproj.CoreCompileInputs.cache
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\obj\Debug\net5.0\ConfigLoader.dll
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\obj\Debug\net5.0\ref\ConfigLoader.dll
+C:\Users\mateo\OneDrive\Documents\GitHub\CubeTools\ConfigLoader\obj\Debug\net5.0\ConfigLoader.pdb
