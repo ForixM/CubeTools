@@ -21,7 +21,7 @@ namespace Onedrive
         }
 
         [DataMember(Name = "value")]
-        public IList<OneItem> value
+        public IList<OneItem> items
         {
             get;
             set;

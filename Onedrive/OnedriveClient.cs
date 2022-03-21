@@ -230,22 +230,70 @@ namespace Onedrive
             return (int)response.Result.StatusCode==200 ? JObject.Parse(strResponse.Result) : null;
         }
 
-        public string CreateShareLink(OneItem item, SharePermission permission) //TODO Not working
+        public JObject CreateShareLink(OneItem item, SharePermission permission) //TODO Not working
         {
-            JObject body = new JObject();
-            body.Add(new JProperty("type", permission == SharePermission.READONLY ? "view" : "edit"));
+            throw new NotImplementedException();
+            // JObject body = new JObject();
+            // body.Add(new JProperty("type", "view"));
+            // body.Add(new JProperty("scope", "anonymous"));
             // Console.WriteLine(item.path);
             // Console.WriteLine(_api + item.path + ":/createLink?access_token=oui");
             // Console.WriteLine(body.ToString());
+            // Task<HttpResponseMessage> response =
+            //     _client.PostAsync(_api + item.path + ":/createLink?access_token=" + token.access_token,
+            //         new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
+            // // Task<HttpResponseMessage> response =
+            // //     _client.PostAsync(_api + item.path + ":/createLink?access_token=" + token.access_token,
+            // //         new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
+            // response.Wait();
+            // Task<string> strResponse = response.Result.Content.ReadAsStringAsync();
+            // strResponse.Wait();
+            // // Console.WriteLine((int)response.Result.StatusCode);
+            // Console.WriteLine("oui: "+strResponse.Result);
+            // JObject data = GetItemFullMetadata(item);
+            // string link = data.GetValue("webUrl").ToString();
+            // return JObject.Parse("{'url':'"+link+"'}");
+            // return (int)response.Result.StatusCode is 200 or 201 ? JObject.Parse(strResponse.Result) : null;
+        }
+
+        public JObject GetSharedItems()
+        {
             Task<HttpResponseMessage> response =
-                _client.PostAsync(_api + item.path + ":/createLink?access_token=" + token.access_token,
+                _client.GetAsync(_api + "/drive/sharedWithMe?access_token=" + token.access_token);
+            response.Wait();
+            Task<string> str = response.Result.Content.ReadAsStringAsync();
+            str.Wait();
+            return JObject.Parse(str.Result);
+        }
+
+        public JObject GetPermissions(OneItem item)
+        {
+            Task<HttpResponseMessage> response =
+                _client.GetAsync(_api + item.path + ":/permissions?access_token=" + token.access_token);
+            response.Wait();
+            Task<string> str = response.Result.Content.ReadAsStringAsync();
+            str.Wait();
+            return JObject.Parse(str.Result);
+        }
+
+        public bool Copy(OneItem item, OneItem newPath)
+        {
+            if (newPath.Type != OneItemType.FOLDER) return false;
+            JObject body = new JObject();
+            JObject parentReference = new JObject();
+            parentReference.Add("driveId", item.parentReference.driveId);
+            parentReference.Add("id", newPath.id);
+            body.Add("parentReference", parentReference);
+            body.Add("name", "test.docx");
+            Console.WriteLine(body);
+            Task<HttpResponseMessage> response =
+                _client.PostAsync(_api + item.path + ":/copy?access_token="+token.access_token,
                     new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
             response.Wait();
-            Task<string> strResponse = response.Result.Content.ReadAsStringAsync();
-            strResponse.Wait();
-            // Console.WriteLine((int)response.Result.StatusCode);
-            // Console.WriteLine(strResponse.Result);
-            return (int)response.Result.StatusCode is 200 or 201 ? strResponse.Result : null;
+            Task<string> str = response.Result.Content.ReadAsStringAsync();
+            str.Wait();
+            Console.WriteLine(str.Result);
+            return (int)response.Result.StatusCode == 202;
         }
 
         private void Authenticator()
@@ -254,8 +302,11 @@ namespace Onedrive
             Uri uri = context.Request.Url;
             NameValueCollection param = HttpUtility.ParseQueryString(uri.Query);
             byte[] _responseArray = Encoding.UTF8.GetBytes(
-                "<html><head><title>CubeTools - Authenticated</title></head>" +
-                "<body>You have been authenticated. Please go back to Cube Tools.</body></html>");
+            "<html><head><title>CubeTools - Authenticated</title></head>" +
+            "<body>You have been authenticated. Please go back to Cube Tools.</body></html><script type=\"text/javascript\">window.close() ;</script>");
+            // byte[] _responseArray = Encoding.UTF8.GetBytes(
+            //     "<html><head><title>CubeTools - Authenticated</title></head>" +
+            //     "<body>You have been authenticated. Please go back to Cube Tools.</body></html><script>window.onbeforeunload = function (e) {e = e || window.event;if (e) {e.returnValue = 'Sure?';}return 'Sure?';};</script>");
             context.Response.OutputStream.Write(_responseArray, 0, _responseArray.Length);
             context.Response.KeepAlive = false;
             context.Response.Close();

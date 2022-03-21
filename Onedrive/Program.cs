@@ -21,16 +21,25 @@ namespace Onedrive
                 if (!success) return;
                 OneArboresence arboresence = client.GetArboresence();
                 Console.WriteLine(arboresence.count);
-                IList<OneItem> items = arboresence.value;
+                IList<OneItem> items = arboresence.items;
+                OneItem f1 = null;
+                OneItem file = null;
                 foreach (OneItem oneItem in items)
                 {
                     if (oneItem.name == "Document.docx" && oneItem.Type == OneItemType.FILE)
                     {
-                        Console.WriteLine("oui???");
-                        Console.WriteLine(client.GetItemFullMetadata(oneItem));
-                        break;
+                        file = oneItem;
                     }
+
+                    if (oneItem.name == "F1" && oneItem.Type == OneItemType.FOLDER)
+                    {
+                        f1 = oneItem;
+                    }
+
+                    if (f1 != null && file != null) break;
                 }
+
+                Console.WriteLine(client.Copy(file, f1));
             };
         }
     }
