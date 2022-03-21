@@ -13,6 +13,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManagerTests", "ManagerTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Onedrive", "Onedrive\Onedrive.csproj", "{55C20386-E556-47B6-A089-98EF44200B66}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{24C93EE0-BF7C-4F7B-9E77-D9D26E022F49}"
+	ProjectSection(SolutionItems) = preProject
+		Config\App.config = Config\App.config
+		Config\App.default.config = Config\App.default.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigLoader", "ConfigLoader\ConfigLoader.csproj", "{FFB9DCC9-F0B9-49DD-AF34-6E0FD18BF88E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,11 +47,18 @@ Global
 		{55C20386-E556-47B6-A089-98EF44200B66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55C20386-E556-47B6-A089-98EF44200B66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55C20386-E556-47B6-A089-98EF44200B66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB9DCC9-F0B9-49DD-AF34-6E0FD18BF88E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB9DCC9-F0B9-49DD-AF34-6E0FD18BF88E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB9DCC9-F0B9-49DD-AF34-6E0FD18BF88E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB9DCC9-F0B9-49DD-AF34-6E0FD18BF88E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {27EEF7F7-BE85-4044-8BC2-A3AC0C84AFC3}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FFB9DCC9-F0B9-49DD-AF34-6E0FD18BF88E} = {24C93EE0-BF7C-4F7B-9E77-D9D26E022F49}
 	EndGlobalSection
 EndGlobal

@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using FluentFTP;
 using Manager;
+using Manager.Pointers;
 
 namespace Extensions
 {

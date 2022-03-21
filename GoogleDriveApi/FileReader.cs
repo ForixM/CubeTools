@@ -30,6 +30,21 @@ namespace GoogleDriveApi
             return files[0].Id;
         }
 
+        public static string GetFileId (string FileName)
+        {
+            var service = OAuth.GetDriveService();
+
+            FilesResource.ListRequest listRequest = service.Files.List();
+            listRequest.PageSize = 10;
+            listRequest.Q = $"mimeType = 'application/vnd.google-apps.file' and name = '{ FileName }'";
+            listRequest.Fields = "nextPageToken, files(id, name)";
+
+            IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
+                .Files;
+
+            return files[0].Id;
+        }
+
         public static void ListFileAndFolder (string folderID)
         {
             var service = OAuth.GetDriveService();

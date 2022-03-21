@@ -1,12 +1,19 @@
+// System's imports
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Text;
+using System.Diagnostics;
+// Manager's imports
 using Manager;
 using Manager.ManagerExceptions;
+// UI's imports
 using ReactiveUI;
 using System.Collections.ObjectModel;
+using Manager.ManagerReader;
+using Manager.ManagerWriter;
+using Manager.Pointers;
 
 
 namespace UI.ViewModels
@@ -58,13 +65,17 @@ namespace UI.ViewModels
         #region BindingVariables
         // This region contains all BindingVariables : XAML Code purpose
         
-        // The files and folders loaded
+        // The files and folders loaded in XAML code
+        // items stores the values
         private ObservableCollection<FileType> items;
+        // Items help to coordinate every thing
+        // 
         public ObservableCollection<FileType> Items
         {
             get => ListToObservable(_directory.ChildrenFiles);
             set
             {
+                items.Clear();
                 foreach (var ft in value)
                 {
                     items.Add(ft);
@@ -73,18 +84,22 @@ namespace UI.ViewModels
             }
         }
         
-        // The currentPath associated to directory.Path.
+        // The currentPath associated to the loaded directory's path
+        // Can either set the directory's path if the user enters a path or returns the directory path's value.
         public string CurrentPath
         {
             get => _directory.Path;
             set
             {
+                // If the given value exists, deal with it
                 if (Directory.Exists(value))
                 {
-                    string val = _directory.Path;
-                    this.RaiseAndSetIfChanged(ref val, value);
-                    if (_directory.Path != val)
-                        ChangeDirectory(ref val);
+                    // If CurrentPath has been set by user, we have to change the directory
+                    if (_directory.Path != value)
+                        ChangeDirectory(value);
+                    // Modify the value in XAML
+                    string res = value;
+                    this.RaiseAndSetIfChanged(ref res, value);
                 }
             }
         }
@@ -128,8 +143,6 @@ namespace UI.ViewModels
             {
                 items.Add(i);
             }
-            
-            
         }
         
         #endregion
@@ -138,20 +151,22 @@ namespace UI.ViewModels
         // All functions are called in XAML code
         
         /// <summary>
-        /// - Action : <br></br>
-        /// - XAML : <br></br>
-        /// - Implementation :
+        /// - Action : Get last value stored before the current one in the queue and set the directory<br></br>
+        /// - XAML : Change the directory and reload page<br></br>
+        /// - Implementation : NOT CHECK <br></br>
         /// </summary>
         public void LeftBtnClick()
         {
+            // End of the queue
             if (_indexQueue <= 0)
                 return;
+            
+            // Get the index before
+            _indexQueue--;
             try
             {
-                _indexQueue--;
-                string val = _queue[_indexQueue];
-                ChangeDirectory(ref val);
-                _queue[_indexQueue] = val;
+                // Change the directory
+                ChangeDirectory(_queue[_indexQueue]);
             }
             catch (ManagerException e)
             {
@@ -160,21 +175,20 @@ namespace UI.ViewModels
         }
 
         /// <summary>
-        /// - Action : <br></br>
-        /// - XAML : <br></br>
-        /// - Implementation :
+        /// - Action : Get the next value stored after the current one in the queue.<br></br>
+        /// - XAML : Change the directory and reload page<br></br>
+        /// - Implementation : NOT CHECK
         /// </summary>
         public void RightBtnClick()
         {
             if (_indexQueue >= _queue.Count - 1)
                 return;
-
+            // Modifying selected items
+            _indexQueue++;
             try
             {
-                _indexQueue++;
-                string val = _queue[_indexQueue];
-                ChangeDirectory(ref val);
-                _queue[_indexQueue] = val;
+                // Getting value in the queue
+                ChangeDirectory(_queue[_indexQueue]);
             }
             catch (ManagerException e)
             {
@@ -183,17 +197,16 @@ namespace UI.ViewModels
         }
 
         /// <summary>
-        /// - Action : <br></br>
-        /// - XAML : <br></br>
-        /// - Implementation :
+        /// - Action : Get the parent directory and set it in the env<br></br>
+        /// - XAML : Change the current directory to its parent<br></br>
+        /// - Implementation : NOT CHECK - //TODO Resolve Bugs
         /// </summary>
         public void UpBtnClick()
         {
+            _indexQueue++;
             try
             {
-                string res = ManagerReader.GetParent(_directory.Path);
-                _indexQueue++;
-                ChangeDirectory(ref res);
+                ChangeDirectory(ManagerReader.GetParent(_directory.Path));
             }
             catch (ManagerException e)
             {
@@ -334,7 +347,7 @@ namespace UI.ViewModels
         {
             try
             {
-                ChangeDirectory(ref home);
+                ChangeDirectory(home);
             }
             catch (ManagerException e)
             {
@@ -351,7 +364,7 @@ namespace UI.ViewModels
         {
             try
             {
-                ChangeDirectory(ref desktop);
+                ChangeDirectory(desktop);
             }
             catch (ManagerException e)
             {
@@ -368,7 +381,7 @@ namespace UI.ViewModels
         {
             try
             {
-                ChangeDirectory(ref document);
+                ChangeDirectory(document);
             }
             catch (ManagerException e)
             {
@@ -385,7 +398,7 @@ namespace UI.ViewModels
         {
             try
             {
-                ChangeDirectory(ref download);
+                ChangeDirectory(download);
             }
             catch (ManagerException e)
             {
@@ -402,7 +415,7 @@ namespace UI.ViewModels
         {
             try
             {
-                ChangeDirectory(ref picture);
+                ChangeDirectory(picture);
             }
             catch (ManagerException e)
             {
@@ -419,7 +432,7 @@ namespace UI.ViewModels
         {
             try
             {
-                ChangeDirectory(ref trash);
+                ChangeDirectory(trash);
             }
             catch (ManagerException e)
             {
@@ -451,8 +464,6 @@ namespace UI.ViewModels
             }
         }
 
-       
-        
         #endregion
         
         #region ViewMethods
@@ -641,19 +652,29 @@ namespace UI.ViewModels
         protected void ChangeDirectory(FileType ft)
         {
             string val = ft.Path;
-            ChangeDirectory(ref val);
+            ChangeDirectory(val);
         }
         
         /// <summary>
-        /// - Action : <br></br>
-        /// - XAML : <br></br>
+        /// - Action : Change the directory, load items, load currentPath<br></br>
+        /// - XAML : Modify the Path in the <br></br>
         /// - Implementation :
         /// </summary>
         /// <param name="path"></param>
-        protected void ChangeDirectory(ref string path)
+        private void ChangeDirectory(string path)
         {
-            // Modify the directory
-            _directory.ChangeDirectory(path);
+            // Changing directory
+            try
+            {
+                // Modify the directory
+                _directory.ChangeDirectory(path);
+                _directory.Path = path;
+            }
+            catch (ManagerException e)
+            {
+                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
+            
             // Setting up the Path for UI
             CurrentPath = path;
             // Modified ListBox associated

@@ -1,50 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net.Mail;
-using System.Runtime.CompilerServices;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using Manager.ManagerExceptions;
 
-namespace Manager
+namespace Manager.Pointers
 {
     public class FileType
     {
-        protected bool Equals(FileType other)
-        {
-            return Path == other.Path && Name == other.Name && Type == other.Type && Size == other.Size && Date == other.Date && LastDate == other.LastDate && AccessDate == other.AccessDate && ReadOnly == other.ReadOnly && Hidden == other.Hidden && Compressed == other.Compressed && Archived == other.Archived && IsDir == other.IsDir;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((FileType) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            var hashCode = new HashCode();
-            hashCode.Add(Path);
-            hashCode.Add(Name);
-            hashCode.Add(Type);
-            hashCode.Add(Size);
-            hashCode.Add(Date);
-            hashCode.Add(LastDate);
-            hashCode.Add(AccessDate);
-            hashCode.Add(ReadOnly);
-            hashCode.Add(Hidden);
-            hashCode.Add(Compressed);
-            hashCode.Add(Archived);
-            hashCode.Add(IsDir);
-            return hashCode.ToHashCode();
-        }
+        
 
         #region Variables
 
@@ -52,31 +14,28 @@ namespace Manager
 
         public static FileType NullPointer = new FileType();
 
-        public static List<string> type = new List<string>()
-            {"png", "pdf", "exe", "cs", "csv", ""};
-
         // Basics
-        public string Path { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public long Size { get; set; }
+        public string Path;
+        public string Name;
+        public string Type;
+        public long Size;
 
         // Date
-        public string Date { get; set; }
-        public string LastDate { get; set; }
-        public string AccessDate { get; set; }
+        public string Date;
+        public string LastDate;
+        public string AccessDate;
 
         // Attributes
-        public bool ReadOnly { get; set; }
+        public bool ReadOnly;
 
-        public bool Hidden { get; set; }
-        public bool Compressed { get; set; }
-        public bool Archived { get; set; }
+        public bool Hidden;
+        public bool Compressed;
+        public bool Archived;
 
-        public bool IsDir { get; set; }
+        public bool IsDir;
         
         // Icon
-        public string Icon { get; set; }
+        public string Icon;
 
         #endregion
 
@@ -183,6 +142,37 @@ namespace Manager
         public static bool operator !=(FileType ft, FileType ft2)
         {
             return !(ft == ft2);
+        }
+        
+        protected bool Equals(FileType other)
+        {
+            return Path == other.Path && Name == other.Name && Type == other.Type && Size == other.Size && Date == other.Date && LastDate == other.LastDate && AccessDate == other.AccessDate && ReadOnly == other.ReadOnly && Hidden == other.Hidden && Compressed == other.Compressed && Archived == other.Archived && IsDir == other.IsDir;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((FileType) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = new HashCode();
+            hashCode.Add(Path);
+            hashCode.Add(Name);
+            hashCode.Add(Type);
+            hashCode.Add(Size);
+            hashCode.Add(Date);
+            hashCode.Add(LastDate);
+            hashCode.Add(AccessDate);
+            hashCode.Add(ReadOnly);
+            hashCode.Add(Hidden);
+            hashCode.Add(Compressed);
+            hashCode.Add(Archived);
+            hashCode.Add(IsDir);
+            return hashCode.ToHashCode();
         }
 
         #endregion

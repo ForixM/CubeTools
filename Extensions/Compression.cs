@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.IO.Compression;
 using System.Threading.Tasks;
-using Manager;
+using Manager.ManagerReader;
+using Manager.Pointers;
 using SevenZip;
 
-namespace CubeTools
+namespace Extensions
 {
     public class Compression
     {

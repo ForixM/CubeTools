@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Security;
 using Manager.ManagerExceptions;
 
-namespace Manager
+namespace Manager.Pointers
 {
     /// <summary>
     /// This class represents a pointer to a loaded directory
@@ -113,13 +111,13 @@ namespace Manager
                 {
                     // Set attributes
                     _path = path;
-                    _name = ManagerReader.GetPathToName(path);
-                    _date = ManagerReader.GetFileCreationDate(path);
-                    _lastDate = ManagerReader.GetFileLastEdition(path);
-                    _accessDate = ManagerReader.GetFileAccessDate(path);
-                    _size = ManagerReader.GetFileSize(path);
-                    _hidden = ManagerReader.IsFileHidden(path);
-                    _readOnly = ManagerReader.IsReadOnly(path);
+                    _name = ManagerReader.ManagerReader.GetPathToName(path);
+                    _date = ManagerReader.ManagerReader.GetFileCreationDate(path);
+                    _lastDate = ManagerReader.ManagerReader.GetFileLastEdition(path);
+                    _accessDate = ManagerReader.ManagerReader.GetFileAccessDate(path);
+                    _size = ManagerReader.ManagerReader.GetFileSize(path);
+                    _hidden = ManagerReader.ManagerReader.IsFileHidden(path);
+                    _readOnly = ManagerReader.ManagerReader.IsReadOnly(path);
                     _childrenFiles = new List<FileType>();
                     // Watcher
                     _watcher = new FileSystemWatcher(path);
@@ -159,7 +157,7 @@ namespace Manager
         }
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            _childrenFiles.Add(ManagerReader.ReadFileType(e.FullPath));
+            _childrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(e.FullPath));
         }
 
         private void OnDeleted(object sender, FileSystemEventArgs e)
@@ -193,7 +191,7 @@ namespace Manager
             if (path != null && (File.Exists(path) || Directory.Exists(path)))
             {
                 FileType ft = new FileType(path);
-                ManagerReader.ReadFileType(ref ft);
+                ManagerReader.ManagerReader.ReadFileType(ref ft);
                 return ft;
             }
 
@@ -247,9 +245,9 @@ namespace Manager
         public void AddFile(string name, string extension)
         {
             string path = $"{_path}/{name}.{extension}";
-            ManagerWriter.Create(path, extension);
-            FileType ft = ManagerReader.ReadFileType(path);
-            ManagerReader.ReadFileType(ref ft);
+            ManagerWriter.ManagerWriter.Create(path, extension);
+            FileType ft = ManagerReader.ManagerReader.ReadFileType(path);
+            ManagerReader.ManagerReader.ReadFileType(ref ft);
             _childrenFiles.Add(ft);
         }
 
@@ -261,9 +259,9 @@ namespace Manager
         public void AddDir(string name)
         {
             string path = _path + '/' + name;
-            ManagerWriter.CreateDir(path);
-            FileType ft = ManagerReader.ReadFileType(path);
-            ManagerReader.ReadFileType(ref ft);
+            ManagerWriter.ManagerWriter.CreateDir(path);
+            FileType ft = ManagerReader.ManagerReader.ReadFileType(path);
+            ManagerReader.ManagerReader.ReadFileType(ref ft);
             _childrenFiles.Add(ft);
         }
 
@@ -298,7 +296,7 @@ namespace Manager
             {
                 if (_childrenFiles[i].Path == path)
                 {
-                    _childrenFiles[i] = ManagerReader.ReadFileType(path);
+                    _childrenFiles[i] = ManagerReader.ManagerReader.ReadFileType(path);
                     return;
                 }
             }
@@ -320,8 +318,8 @@ namespace Manager
         {
             if (Directory.Exists(dest))
             {
-                string newPath = ManagerReader.GetNameToPath(dest);
-                _watcher = new FileSystemWatcher(dest);
+                string newPath = ManagerReader.ManagerReader.GetNameToPath(dest);
+                _watcher = new FileSystemWatcher(newPath);
                 // Erase last directory
                 foreach (var ft in ChildrenFiles)
                 {
@@ -360,11 +358,11 @@ namespace Manager
             // Delete all files
             foreach (var ft in _childrenFiles)
             {
-                ManagerWriter.Delete(ft);
+                ManagerWriter.ManagerWriter.Delete(ft);
             }
             _childrenFiles = new List<FileType>();
             // Delete directory
-            ManagerWriter.DeleteDir(_path, false);
+            ManagerWriter.ManagerWriter.DeleteDir(_path, false);
             _path = "";
             _size = 0;
             Dispose();
