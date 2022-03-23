@@ -13,6 +13,15 @@ namespace LibraryFTP
             ClientFtp ftp = new ClientFtp("forix", "lolmdr");
             FtpArboresence arbo = ftp.ListDirectory();
             Console.WriteLine(arbo.ToString());
+            foreach (IFtpItem arboItem in arbo.Items)
+            {
+                if (arboItem is FtpFolder item)
+                {
+                    Console.WriteLine();
+                    FtpArboresence arbo2 = ftp.ListDirectory(item);
+                    Console.WriteLine(arbo2.ToString());
+                }
+            }
         }
         private static void Progress(object sender, ProgressEventArgs progress)
         {

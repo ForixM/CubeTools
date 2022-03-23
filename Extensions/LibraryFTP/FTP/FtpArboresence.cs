@@ -4,19 +4,19 @@ namespace LibraryFTP;
 
 public class FtpArboresence
 {
-    private List<FtpFile> _files;
+    private List<IFtpItem> _items;
 
-    public List<FtpFile> Files => _files;
+    public List<IFtpItem> Items => _items;
 
     public FtpArboresence()
     {
-        _files = new List<FtpFile>();
+        _items = new List<IFtpItem>();
     }
 
     public override string ToString()
     {
         string str = "";
-        foreach (FtpFile ftpFile in _files)
+        foreach (IFtpItem ftpFile in _items)
         {
             str += ftpFile.ToString() + "\n";
         }
