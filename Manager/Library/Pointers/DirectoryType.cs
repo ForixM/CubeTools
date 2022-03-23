@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿// System's Library
 using System.Security;
+// Project's Library
 using Library.ManagerExceptions;
+using Timer = System.Threading.Timer;
 
 namespace Library.Pointers
 {
@@ -132,10 +132,13 @@ namespace Library.Pointers
                                            | NotifyFilters.LastWrite
                                            | NotifyFilters.Security
                                            | NotifyFilters.Size;
+                    Watcher.Filter = "*";
                     Watcher.IncludeSubdirectories = true;
                     Watcher.EnableRaisingEvents = true;
                     // Set Sub-Files/Folder
                     SetChildrenFiles();
+                    // Launch watcher
+                    StartRecurringWatcher();
                 }
                 catch (Exception e)
                 {
@@ -150,7 +153,7 @@ namespace Library.Pointers
 
         #endregion
 
-        #region Watcher
+        #region LocalWatcher
 
         private void OnChanged(object sender, FileSystemEventArgs e)
         {
@@ -159,21 +162,53 @@ namespace Library.Pointers
 
         private void OnCreated(object sender, FileSystemEventArgs e)
         {
-            ChildrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(e.FullPath));
+            ChildrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(e.FullPath.Replace('\\','/')));
         }
 
         private void OnDeleted(object sender, FileSystemEventArgs e)
         {
-            Remove(e.FullPath);
+            Console.WriteLine("Hello");
+            Remove(e.FullPath.Replace('\\','/'));
         }
 
         private void OnRenamed(object sender, RenamedEventArgs e)
         {
             var save = GetChild(e.OldFullPath);
             Remove(e.OldFullPath);
-            save.Path = e.FullPath;
+            save.Path = e.FullPath.Replace('\\','/');
             ChildrenFiles.Add(save);
-            ReloadPointer(e.FullPath);
+            ReloadPointer(save.Path);
+        }
+
+        #endregion 
+        
+        #region GlobalWatcher
+
+        private Timer _timer;
+        private int _interval = 4000;
+        
+        private void StartRecurringWatcher()
+        {
+            _timer = new Timer(TickWatcher, null, _interval, Timeout.Infinite);
+        }
+
+        public void StopRecurringWatcher()
+        {
+            _timer.DisposeAsync();
+            _timer = null;
+        }
+
+        private void TickWatcher(object state)
+        {
+            try
+            {
+                if (ManagerReader.ManagerReader.GetAmountOfLocalData(this.Path) != this.ChildrenFiles.Count)
+                    SetChildrenFiles();
+            }
+            finally
+            {
+                _timer?.Change(_interval, Timeout.Infinite);
+            }
         }
 
         #endregion
@@ -330,7 +365,9 @@ namespace Library.Pointers
                 {
                     throw new AccessException(newPath + " could not be accessed", "ChangeDirectory");
                 }
-
+                // Restart Recurring Watcher
+                StopRecurringWatcher();
+                StartRecurringWatcher();
                 return;
             }
 

@@ -23,14 +23,6 @@ public class applicationsConfig : ConfigurationElementCollection
             BaseAdd(value);
         }
     }
-
-    protected override ConfigurationElement CreateNewElement()
-    {
-        return new applicationConfig();
-    }
-
-    protected override object GetElementKey(ConfigurationElement element)
-    {
-        return ((applicationConfig) element).Name;
-    }
+    protected override ConfigurationElement CreateNewElement() => new applicationConfig();
+    protected override object GetElementKey(ConfigurationElement element) => ((applicationConfig) element).Name;
 }

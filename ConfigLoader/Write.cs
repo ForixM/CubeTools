@@ -7,7 +7,7 @@ public static partial class ConfigLoader
     // This region implements all methods used to write inside the .config files
     //
 
-    public static void ModifyParameters()
+    public static void ModifyParameters(selectedSection section)
     {
     }
 
@@ -25,8 +25,9 @@ public static partial class ConfigLoader
     {
     }
 
-    public static void AddParameters(string section)
+    public static void AddParameters(ConfigurationSection section)
     {
+        
     }
 
     public static void AddSection(string section)

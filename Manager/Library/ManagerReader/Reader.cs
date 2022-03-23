@@ -486,5 +486,31 @@ namespace Library.ManagerReader
         {
             return Environment.OSVersion.Platform;
         }
+
+        /// <summary>
+        /// - Action : Returns the amount of sub-files and sub-dirs (NOT RECURSIVE)
+        /// - Implementation : NOT CHECK 
+        /// </summary>
+        /// <param name="path">The given DIRECTORY's path that has to be analyzed</param>
+        /// <returns></returns>
+        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
+        /// <exception cref="AccessException">the given path cannot be accessed</exception>
+        /// <exception cref="ManagerException">An unknown error occured</exception>
+        public static int GetAmountOfLocalData(string path)
+        {
+            if (!Directory.Exists(path))
+                throw new PathNotFoundException("", ""); // TODO Add exception
+            try
+            {
+                DirectoryInfo di = new(path); 
+                return di.EnumerateDirectories().Count() + di.EnumerateFiles().Count();
+            }
+            catch (Exception e)
+            {
+                if (e is SecurityException or UnauthorizedAccessException)
+                    throw new AccessException("", ""); // TODO Add expcetion
+                throw new ManagerException("", "", "", "", "");
+            }
+        }
     }
 }
