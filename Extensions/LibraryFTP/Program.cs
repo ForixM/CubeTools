@@ -8,6 +8,12 @@ namespace LibraryFTP
     {
         private static double _progress;
 
+        private static void Main(string[] args)
+        {
+            ClientFtp ftp = new ClientFtp("forix", "lolmdr");
+            FtpArboresence arbo = ftp.ListDirectory();
+            Console.WriteLine(arbo.ToString());
+        }
         private static void Progress(object sender, ProgressEventArgs progress)
         {
             PrintProgress(progress.PercentDone);
@@ -37,10 +43,6 @@ namespace LibraryFTP
 
                 Console.WriteLine("| " + percent + "%");
             }
-        }
-
-        private static void Main(string[] args)
-        {
         }
     }
 }

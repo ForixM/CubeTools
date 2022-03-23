@@ -33,7 +33,8 @@ namespace LibraryOneDrive
                     if (f1 != null && file != null) break;
                 }
 
-                Console.WriteLine(client.Copy(file, f1));
+                Console.WriteLine(client.UploadFile(new FileType("C:/Users/forix/Desktop/wow.txt"), f1));
+                // Console.WriteLine(client.Copy(file, f1));
             };
         }
     }

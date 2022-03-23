@@ -134,7 +134,7 @@ namespace Onedrive
             string data = "{'name':'"+name+"','folder':{ },'@microsoft.graph.conflictBehavior':'rename'}";
             Task<HttpResponseMessage> response =
                 _client.PostAsync(
-                    _api + folder.parentReference.path + "/" + folder.name + ":/children?access_token=" +
+                    _api + folder.path + ":/children?access_token=" +
                     token.access_token,
                     new StringContent(data, Encoding.UTF8, "application/json"));
             response.Wait();
@@ -175,9 +175,11 @@ namespace Onedrive
                 uploaded += bytesRead;
                 uploadUpdate?.Invoke(this, (int) ((100*uploaded) / request.ContentLength));
             }
+
             serverStream.Close();
             fileStream.Close();
             HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+            Console.WriteLine("Finished");
             uploadFinished?.Invoke(this,  (int)response.StatusCode == 201);
             return (int) response.StatusCode == 201;
         }
@@ -204,7 +206,8 @@ namespace Onedrive
             
             serverStream.Close();
             filestream.Close();
-            downloadFinished?.Invoke(this, true); //TODO handle success bool value
+            HttpWebResponse webResponse = (HttpWebResponse) response;
+            downloadFinished?.Invoke(this, (int)webResponse.StatusCode == 302); //TODO handle success bool value
             
             // Task<HttpResponseMessage> response =
             //     _client.GetAsync(_api + item.parentReference.path + "/" + item.name + ":/content?access_token=" +
@@ -246,7 +249,7 @@ namespace Onedrive
         public bool DeleteItem(OneItem item)
         {
             Task<HttpResponseMessage> response =
-                _client.DeleteAsync(_api + item.parentReference.path + "/" + item.name + "?access_token=" +
+                _client.DeleteAsync(_api + item.path + "?access_token=" +
                                     token.access_token);
             response.Wait();
             return (int) response.Result.StatusCode == 204;
@@ -268,7 +271,7 @@ namespace Onedrive
             body.Add(new JProperty("name", item.name));
             Task<HttpResponseMessage> response =
                 _client.PatchAsync(
-                    _api + item.parentReference.path + "/" + item.name + "?access_token=" + token.access_token,
+                    _api + item.path + "?access_token=" + token.access_token,
                     new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
             response.Wait();
             return (int) response.Result.StatusCode == 200;
@@ -349,15 +352,14 @@ namespace Onedrive
             byte[] _responseArray = Encoding.UTF8.GetBytes(
             "<html><head><title>CubeTools - Authenticated</title></head>" +
             "<body>You have been authenticated. Please go back to Cube Tools.</body></html><script type=\"text/javascript\">window.close() ;</script>");
-            // byte[] _responseArray = Encoding.UTF8.GetBytes(
-            //     "<html><head><title>CubeTools - Authenticated</title></head>" +
-            //     "<body>You have been authenticated. Please go back to Cube Tools.</body></html><script>window.onbeforeunload = function (e) {e = e || window.event;if (e) {e.returnValue = 'Sure?';}return 'Sure?';};</script>");
-            context.Response.OutputStream.Write(_responseArray, 0, _responseArray.Length);
-            context.Response.KeepAlive = false;
-            context.Response.Close();
-            // Console.WriteLine("Respone given to a request.");
+            byte[] _errorArray = Encoding.UTF8.GetBytes(
+                "<html><head><title>CubeTools - Error</title></head>"+
+                "<body>An error occured in authentication. Please try again later.</body></html>");
             if (param.Get("code") != null)
             {
+                context.Response.OutputStream.Write(_responseArray, 0, _responseArray.Length);
+                context.Response.KeepAlive = false;
+                context.Response.Close();
                 HttpClient client = new HttpClient();
                 var values = new Dictionary<string, string>
                 {
@@ -373,13 +375,16 @@ namespace Onedrive
                 Task<string> resStr = response.Result.Content.ReadAsStringAsync();
                 resStr.Wait();
                 token = JsonConvert.DeserializeObject<Token>(resStr.Result);
+                authenticated?.Invoke(this, true);
             }
             else
             {
+                context.Response.OutputStream.Write(_errorArray, 0, _errorArray.Length);
+                context.Response.KeepAlive = false;
+                context.Response.Close();
                 Console.WriteLine("Error in authentication");
                 authenticated?.Invoke(this, false);
             }
-            authenticated?.Invoke(this, true);
         }
     }
 }
