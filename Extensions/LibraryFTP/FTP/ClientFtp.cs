@@ -164,6 +164,7 @@ public class ClientFtp
         FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + parent.Path + name);
         request.Method = WebRequestMethods.Ftp.MakeDirectory;
         request.Credentials = new NetworkCredential(_username, _password);
+        FtpWebResponse response = (FtpWebResponse) request.GetResponse();
     }
 
     public void DeleteItem(IFtpItem item)
@@ -186,18 +187,21 @@ public class ClientFtp
         FtpWebResponse response = (FtpWebResponse) request.GetResponse();
     }
 
-    public void MoveFile(FtpFile file, FtpFolder destination) //TODO Implement
+    public void MoveItem(IFtpItem file, FtpFolder destination)
     {
-        throw new NotImplementedException();
-    }
-
-    public void MoveDirectory(FtpFolder folder, FtpFolder destination) //TODO Implement
-    {
-        throw new NotImplementedException();
+        FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + file.Path);
+        request.Method = WebRequestMethods.Ftp.Rename;
+        request.Credentials = new NetworkCredential(_username, _password);
+        request.RenameTo = Uri.UnescapeDataString(destination.Path + "/" + file.Name);
+        FtpWebResponse response = (FtpWebResponse) request.GetResponse();
     }
 
     public void Rename(IFtpItem item, string newName) //TODO Implement
     {
-        throw new NotImplementedException();
+        FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + item.Path);
+        request.Method = WebRequestMethods.Ftp.Rename;
+        request.Credentials = new NetworkCredential(_username, _password);
+        request.RenameTo = Uri.UnescapeDataString((item.ParentPath == "/" ? "": item.ParentPath)+"/"+newName);
+        FtpWebResponse response = (FtpWebResponse) request.GetResponse();
     }
 }

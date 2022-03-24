@@ -15,34 +15,6 @@ namespace LibraryFTP
             ClientFtp ftp = new ClientFtp("127.0.0.1","forix", "lolmdr");
             FtpArboresence arbo = ftp.ListRoot();
             Console.WriteLine(arbo.ToString());
-            // ftp.MakeDirectory(FtpFolder.ROOT, "test");
-            // ftp.progress += (sender, transfered, bytes) =>
-            //     Console.WriteLine($"Progress={transfered * 100 / bytes}%");
-            // ftp.finish += (sender, success) =>
-            //     Console.WriteLine(success ? "Download finished" : "Error in download");
-            // ftp.UploadFile(new FileType("C:/Users/forix/Desktop/machintosh.jpg"), FtpFolder.ROOT);
-            foreach (IFtpItem arboItem in arbo.Items)
-            {
-                if (arboItem.Name == "machintosh.jpg")
-                {
-                    // ftp.DeleteItem(arboItem);
-                    // ftp.progress += (sender, transfered, bytes) =>
-                    //     Console.WriteLine($"Progress={transfered * 100 / bytes}%");
-                    // ftp.finish += (sender, success) =>
-                    //     Console.WriteLine(success ? "Download finished" : "Error in download");
-                    // ftp.DownloadFile((FtpFile) arboItem, "C:/Users/forix/Desktop/machintosh.jpg");
-                }
-                if (arboItem is FtpFolder item)
-                {
-                    Console.WriteLine();
-                    FtpArboresence arbo2 = ftp.ListDirectory(item);
-                    Console.WriteLine(arbo2.ToString());
-                    if (item.Name == "test")
-                    {
-                        ftp.DeleteItem(item);
-                    }
-                }
-            }
 
         }
         private static void Progress(object sender, ProgressEventArgs progress)
