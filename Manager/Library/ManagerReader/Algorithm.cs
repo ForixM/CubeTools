@@ -222,6 +222,7 @@ namespace Library.ManagerReader
 
         public static int FastReaderFiles(string path)
         {
+            
             try
             {
                 return new DirectoryInfo($"{path}")

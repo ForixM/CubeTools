@@ -38,6 +38,7 @@ namespace Library.ManagerWriter
                 var res = ManagerReader.ManagerReader.GenerateNameForModification(source);
                 try
                 {
+                    
                     File.Copy(source, res);
                 }
                 catch (Exception e)

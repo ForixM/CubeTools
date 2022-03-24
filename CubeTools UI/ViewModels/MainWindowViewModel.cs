@@ -15,8 +15,12 @@ using ReactiveUI;
 
 namespace CubeTools_UI.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ReactiveObject
     {
+        #region Test
+        
+        #endregion
+        
         #region Init
 
         public MainWindowViewModel()
@@ -156,6 +160,7 @@ namespace CubeTools_UI.ViewModels
                 items.Clear();
                 foreach (var ft in value) items.Add(ft);
                 this.RaiseAndSetIfChanged(ref items, value);
+                
             }
         }
 

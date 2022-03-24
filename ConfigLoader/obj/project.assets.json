@@ -462,23 +462,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\forix\\.nuget\\packages\\": {},
+    "C:\\Users\\mateo\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\forix\\Documents\\CubeTools\\ConfigLoader\\ConfigLoader.csproj",
+      "projectUniqueName": "C:\\Users\\mateo\\OneDrive\\Documents\\GitHub\\CubeTools\\ConfigLoader\\ConfigLoader.csproj",
       "projectName": "ConfigLoader",
-      "projectPath": "C:\\Users\\forix\\Documents\\CubeTools\\ConfigLoader\\ConfigLoader.csproj",
-      "packagesPath": "C:\\Users\\forix\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\forix\\Documents\\CubeTools\\ConfigLoader\\obj\\",
+      "projectPath": "C:\\Users\\mateo\\OneDrive\\Documents\\GitHub\\CubeTools\\ConfigLoader\\ConfigLoader.csproj",
+      "packagesPath": "C:\\Users\\mateo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\mateo\\OneDrive\\Documents\\GitHub\\CubeTools\\ConfigLoader\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\forix\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\mateo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -487,7 +487,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -526,7 +525,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200-preview.22055.15\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

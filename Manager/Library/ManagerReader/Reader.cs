@@ -343,7 +343,7 @@ namespace Library.ManagerReader
                     "GetFileSize");
             return GetFileSize(ft.Path);
         }
-
+        
         /// <summary>
         ///     - Type : Low Level <br></br>
         ///     - Action : Reformat an absolute path to the name of the file or dir <br></br>

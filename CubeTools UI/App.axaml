@@ -1,12 +1,15 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:CubeTools_UI"
+             xmlns:views="clr-namespace:CubeTools_UI.Views"
+             xmlns:viewmodels="clr-namespace:CubeTools_UI.ViewModels"
              x:Class="CubeTools_UI.App">
+    
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>
 
     <Application.Styles>
-        <FluentTheme Mode="Dark" />
+        <FluentTheme Mode="Light" />
     </Application.Styles>
 </Application>

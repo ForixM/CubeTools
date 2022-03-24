@@ -31,10 +31,7 @@ namespace Library.Pointers
         public bool Archived;
 
         public bool IsDir;
-
-        // Icon
-        public string Icon;
-
+        
         #endregion
 
         #region Init
@@ -73,8 +70,21 @@ namespace Library.Pointers
                 Dispose();
                 throw new PathNotFoundException(path + " does not exist", "Constructor FileType");
             }
-
+            // Path
             Path = path;
+            // Primary
+            Name = ManagerReader.ManagerReader.GetPathToName(Path);
+            Size = ManagerReader.ManagerReader.FastReaderFiles(Path);
+            IsDir = Directory.Exists(Path);
+            Type = ManagerReader.ManagerReader.GetFileExtension(Path);
+            // Properties
+            ReadOnly = ManagerReader.ManagerReader.HasAttribute(FileAttributes.ReadOnly, Path);
+            Hidden = ManagerReader.ManagerReader.HasAttribute(FileAttributes.Hidden, Path);
+            Archived = ManagerReader.ManagerReader.HasAttribute(FileAttributes.Archive, Path);
+            // Time
+            Date = ManagerReader.ManagerReader.GetFileCreationDate(Path);
+            LastDate = ManagerReader.ManagerReader.GetFileLastEdition(Path);
+            AccessDate = ManagerReader.ManagerReader.GetFileAccessDate(Path);
         }
 
         // Initializers
