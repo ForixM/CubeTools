@@ -2,12 +2,12 @@ namespace LibraryFTP;
 
 public class FtpFolder : IFtpItem
 {
-    private string _name;
-    private string _parentPath;
+    // private string _parentPath;
+    // public string Name => _name;
+    // public string ParentPath => _parentPath;
+    // public string Path => _parentPath + _name;
 
-    public string Name => _name;
-    public string ParentPath => _parentPath;
-    public string Path => _parentPath + _name;
+    public static FtpFolder ROOT = new FtpFolder("", "/");
     
     public FtpFolder(string name, string parentPath)
     {
