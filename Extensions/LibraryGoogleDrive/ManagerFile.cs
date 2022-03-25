@@ -35,15 +35,14 @@ public class GoogleDriveFile
         return file.Id;
     }
 
-    public static string CreateFile(string folderName, string fileName)
+    public static string CreateFile(string folderId, string fileName)
     {
         var Service = OAuth.GetDriveService();
         var DriveFile = new Google.Apis.Drive.v3.Data.File();
-        var fileId = FileReader.GetFolderId(folderName);
 
         DriveFile.Name = fileName;
         DriveFile.MimeType = "application/octet-stream";
-        DriveFile.Parents = new[] {fileId};
+        DriveFile.Parents = new[] {folderId};
 
         var command = Service.Files.Create(DriveFile);
         var file = command.Execute();
@@ -104,14 +103,14 @@ public class GoogleDriveFile
         request.Download(stream);
     }
 
-    public void DeleteFile(string fileId)
+    public static void DeleteFile(string fileId)
     {
         var Service = OAuth.GetDriveService();
         var command = Service.Files.Delete(fileId);
         command.Execute();
     }
 
-    public string CopyFile(Stream file, string fileID)
+    public static string CopyFile(Stream file, string fileID)
     {
         var Service = OAuth.GetDriveService();
         var CopyFile = new Google.Apis.Drive.v3.Data.File();

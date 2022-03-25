@@ -7,7 +7,8 @@ namespace TestGoogleDrive
         private static void Main(string[] args)
         {
             Console.WriteLine("hello");
-            LibraryGoogleDrive.FileReader.ListFileAndFolder("test");
+            var fileID = LibraryGoogleDrive.FileReader.GetFileId("fileTest");
+            LibraryGoogleDrive.GoogleDriveFile.DeleteFile(fileID);
         }
     }
 }

@@ -27,11 +27,16 @@ public static class FileReader
 
         FilesResource.ListRequest listRequest = service.Files.List();
         listRequest.PageSize = 10;
-        listRequest.Q = $"mimeType = 'application/vnd.google-apps.file' and name = '{FileName}'";
+        listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}'";
         listRequest.Fields = "nextPageToken, files(id, name)";
 
         IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
             .Files;
+
+        if (files.Count == 0)
+        {
+            throw new Exception();
+        }
 
         return files[0].Id;
     }
