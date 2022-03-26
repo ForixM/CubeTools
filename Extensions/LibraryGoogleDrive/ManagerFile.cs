@@ -110,12 +110,26 @@ public class GoogleDriveFile
         command.Execute();
     }
 
-    public static string CopyFile(Stream file, string fileID)
+    public static string CopyFile(string fileID, string newFileName, string newFolderName = "")
     {
         var Service = OAuth.GetDriveService();
         var CopyFile = new Google.Apis.Drive.v3.Data.File();
         var command = Service.Files.Copy(CopyFile, fileID);
         command.Execute();
+        CopyFile.Name = newFileName;
         return CopyFile.Id;
+    }
+
+    public static void ChangeParentsFile(string file_ID, string newfolderID)
+    {
+        var Service = OAuth.GetDriveService();
+        var DriveFile = Service.Files.Get(file_ID).Execute();
+        
+        DriveFile.Parents.Clear();
+        DriveFile.Parents = new[] {newfolderID};
+
+        DriveFile = Service.Files.Update(DriveFile, file_ID).Execute();
+
+        return;
     }
 }
