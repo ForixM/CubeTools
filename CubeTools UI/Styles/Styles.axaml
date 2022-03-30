@@ -1,0 +1,57 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!-- Add Controls for Previewer Here -->
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- Add Styles Here -->
+	<Style Selector="TextBlock /template/ Button">
+		<Setter Property="FontFamily" Value="/Fonts/#Poppins" />
+		<Setter Property="FontWeight" Value="Bold" />
+	</Style>
+
+	<Style Selector="Button.TopBar">
+		<Setter Property="Height" Value="40"/>
+		<Setter Property="CornerRadius" Value="4"/>
+		<Setter Property="Width" Value="50"/>
+		<Setter Property="Background" Value="Transparent"/>
+	</Style>
+
+	<Style Selector="Button.DirectoryList">
+		<Setter Property="VerticalAlignment" Value="Center"/>
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+		<Setter Property="Width" Value="200"/>
+		<Setter Property="Height" Value="60"/>
+		<Setter Property="Background" Value="#FF1B3861"/>
+	</Style>
+
+	<Style Selector="TextBlock.DirectoryList">
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+		<Setter Property="Margin" Value="-22"/>
+		<Setter Property="Foreground" Value="#076CAD"/>
+	</Style>
+
+	<Style Selector="Image.DirectoryList">
+		<Setter Property="HorizontalAlignment" Value="Left"/>
+		<Setter Property="Width" Value="50"/>
+		<Setter Property="Height" Value="28"/>
+		
+	</Style>
+
+	<Style Selector="Button.Manager">
+		<Setter Property="VerticalAlignment" Value="Center"/>
+		<Setter Property="HorizontalAlignment" Value="Left"/>
+		<Setter Property="Width" Value="45"/>
+		<Setter Property="Height" Value="40"/>
+		<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="CornerRadius" Value="8"/>
+	</Style>
+
+	<Style Selector="Image.Manager">
+		<Setter Property="HorizontalAlignment" Value="Left"/>
+		<Setter Property="Width" Value="50"/>
+		<Setter Property="Height" Value="28"/>
+	</Style>
+</Styles>

@@ -1,0 +1,62 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="CubeTools_UI.Views.DirectoryList">
+
+	<UserControl.Styles>
+		<StyleInclude Source="/Styles/Styles.axaml"/>
+	</UserControl.Styles>
+	
+	<ListBox Background="#FF1B3861">
+		<ListBoxItem Height="57">
+			<Button Classes="DirectoryList" Name="HomeButton" Command="{Binding GoToHomeBtnClick}">
+				<StackPanel VerticalAlignment="Center">
+					<Image Classes="DirectoryList" Source="/Assets/home.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Home"/>
+				</StackPanel>
+			</Button>
+		</ListBoxItem>
+		<ListBoxItem Height="57">
+			<Button Classes="DirectoryList" Name="DesktopButton" Command="{Binding GoToDesktopBtnClick}">
+				<StackPanel VerticalAlignment="Center">
+					<Image Classes="DirectoryList" Source="/Assets/desktop.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Desktop"/>
+				</StackPanel>
+			</Button>
+		</ListBoxItem>
+		<ListBoxItem Height="57">
+			<Button Classes="DirectoryList" Name="DocumentsButton" Command="{Binding GoToDocumentsBtnClick}">
+				<StackPanel VerticalAlignment="Center">
+					<Image Classes="DirectoryList" Source="/Assets/document.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Picture"/>
+				</StackPanel>
+			</Button>
+		</ListBoxItem>
+		<ListBoxItem Height="57">
+			<Button Classes="DirectoryList" Name="DownloadButton" Command="{Binding GoToDownloadBtnClick}">
+				<StackPanel VerticalAlignment="Center">
+					<Image Classes="DirectoryList" Source="/Assets/downloads.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Download"/>
+				</StackPanel>
+			</Button>
+		</ListBoxItem>
+		<ListBoxItem Height="57">
+			<Button Classes="DirectoryList" Name="PictureButton" Command="{Binding GoToPictureBtnClick}">
+				<StackPanel VerticalAlignment="Center">
+					<Image Classes="DirectoryList" Source="/Assets/picture.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Picture"/>
+				</StackPanel>
+			</Button>
+		</ListBoxItem>
+		<ListBoxItem Height="57">
+			<Button Classes="DirectoryList" Name="TrashButton" Command="{Binding GoToTrashBtnClick}">
+				<StackPanel VerticalAlignment="Center">
+					<Image Classes="DirectoryList" Source="/Assets/trash.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Trash"/>
+				</StackPanel>
+			</Button>
+		</ListBoxItem>
+	</ListBox>
+</UserControl>

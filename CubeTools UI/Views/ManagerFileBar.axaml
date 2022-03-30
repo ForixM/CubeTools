@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="CubeTools_UI.Views.ManagerFileBar">
+
+	<UserControl.Styles>
+		<StyleInclude Source="/Styles/Styles.axaml"/>
+	</UserControl.Styles>
+	
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition />
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="20" />
+		</Grid.ColumnDefinitions>
+
+		<!-- First column : Creation-->
+		<Grid Grid.Column="0">
+			<Button Classes="Manager" Name="AddButton" Command="{Binding CreateBtnClick}">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets\add.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Second column : Copy function-->
+		<Grid Grid.Column="1">
+			<Button Classes="Manager" Name="CopyButton" Command="{Binding CopyBtnClick}">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets\copy.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Third column : Cut Button -->
+		<Grid Grid.Column="2">
+			<Button Classes="Manager" Name="CutButton" Command="{Binding CutBtnClick}">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets/cut.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Fourth column : Paste button -->
+		<Grid Grid.Column="3">
+			<Button Classes="Manager" Name="PasteButton" Command="{Binding PasteBtnClick}">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets/paste.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Fifth column : Rename button -->
+		<Grid Grid.Column="4">
+			<Button Classes="Manager" Name="RenameButton" Command="{Binding RenameBtnClick}">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets/rename.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Sixth column : Delete button -->
+		<Grid Grid.Column="5">
+			<Button Classes="Manager" Name="DeleteButton" Command="{Binding DeleteBtnClick}">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets/delete.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Seventh column : Search button -->
+		<Grid Grid.Column="7">
+			<Button Classes="Manager" Name="SearchButton" Command="{Binding }">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets/search.ico"/>
+				</StackPanel>
+			</Button>
+
+		</Grid>
+		<!-- Eighth column : Nearby Send button -->
+		<Grid Grid.Column="8">
+			<Button Classes="Manager" Name="NearBySendButton" Command="{Binding CopyBtnClick}">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets\nearbysend.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+	</Grid>
+
+</UserControl>
