@@ -650,7 +650,8 @@ namespace CubeTools_UI.ViewModels
         /// <returns></returns>
         protected static FileType Search(string name)
         {
-            return ManagerReader.SearchByIndeterminedName(directory, name);
+            return FileType.NullPointer;
+            //return ManagerReader.SearchByUndeterminedName(directory, name);
         }
 
         /// <summary>
