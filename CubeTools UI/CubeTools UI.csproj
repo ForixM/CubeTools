@@ -44,4 +44,10 @@
     <ItemGroup>
         <ProjectReference Include="..\Manager\Library\Library.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Views\ActionBar.axaml.cs">
+        <DependentUpon>ActionBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>

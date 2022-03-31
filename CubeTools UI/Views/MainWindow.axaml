@@ -29,7 +29,8 @@
 
     <!-- Link between DataContext and ViewModel -->
     <Design.DataContext>
-        <vm:MainWindowViewModel />
+        <vm:MainWindowViewModel>
+        </vm:MainWindowViewModel>
     </Design.DataContext>
 
     <!-- Line structure of the grid-->
@@ -83,8 +84,8 @@
                 <!-- First Row : Actions buttons-->
 				
                 <Grid Grid.Row="0">
-					
-					<views:ManagerFileBar/>
+					<views:ActionBar>
+                    </views:ActionBar>
 					
                 </Grid>
                 <!-- Second row : files and directories list -->

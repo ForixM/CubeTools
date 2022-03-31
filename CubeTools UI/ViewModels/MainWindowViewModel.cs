@@ -8,6 +8,8 @@ using Library.ManagerReader;
 using Library.ManagerWriter;
 using Library.Pointers;
 using MessageBox.Avalonia;
+using MessageBox.Avalonia.BaseWindows.Base;
+using MessageBox.Avalonia.Enums;
 using ReactiveUI;
 // Library's imports
 // CubeTools UI's imports
@@ -17,134 +19,26 @@ namespace CubeTools_UI.ViewModels
 {
     public class MainWindowViewModel : ReactiveObject
     {
-        #region Test
-        
-        #endregion
-        
-        #region Init
-
-        public MainWindowViewModel()
-        {
-            // Variables
-            selected = new List<FileType>();
-            copied = new List<FileType>();
-            queue = new List<string>();
-            indexQueue = 0;
-            // TODO Implement algorithm to detect static path
-            home = "C:/Users/mateo";
-            desktop = "C:/Users/mateo/Desktop";
-            document = "C:/Users/mateo/OneDrive";
-            download = "C:/Users/mateo/Downloads";
-            picture = "C:/Users/mateo/Pictures";
-            trash = "C:/$Recycle.Bin";
-
-            try
-            {
-                _directory = new DirectoryType(Directory.GetCurrentDirectory());
-            }
-            catch (ManagerException e)
-            {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
-            }
-            finally
-            {
-                queue.Add(_directory.Path);
-                CurrentPath = _directory.Path;
-            }
-
-            items = new ObservableCollection<FileType>();
-            foreach (var i in directory.ChildrenFiles) items.Add(i);
-        }
-
-        #endregion
-
-        #region ViewMethods
-
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        public void ErrorMessageBox(string title, string level, string type, string message)
-        {
-            var content =
-                $"Level : {level}\n" +
-                $"Type : {type}\n\n" +
-                $"Message : {message}\n";
-            var messageBoxStandardWindow = MessageBoxManager.GetMessageBoxStandardWindow(title, content);
-            messageBoxStandardWindow.Show();
-        }
-
-        #endregion
-
-        #region OtherMethods
-
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        /// <param name="list"></param>
-        /// <typeparam name="T">The given type</typeparam>
-        /// <returns></returns>
-        private static ObservableCollection<T> ListToObservable<T>(List<T> list)
-        {
-            var res = new ObservableCollection<T>();
-            foreach (var e in list) res.Add(e);
-
-            return res;
-        }
-
-        #endregion
-
-        #region Variables
-
-        // This region contains all needed variables for CubeTools UI purpose
-
-        #region BasicVariables
-
-        // This region contains all variable needed for treatment of pointers and so forth
-        // PRIVATE
+        // Reference to self useful to generate sub-views and get the DataContext
+        public MainWindowViewModel ReferenceToSelf => this;
         // A pointer to the current loaded Directory
         // Consider using it most of the time because used in CLI version
-        private static DirectoryType _directory;
-
-        // Pointers to specific variables
+        public DirectoryType DirectoryPointer;
         // Give all the current selected FT
-
+        public List<FileType> Selected;
         // Give all the copied FT
-
+        public List<FileType> Copied;
         // Queue of path that has been loaded (no more than 8 path, better for memory)
-
+        public List<string> QueuePointers;
         // Index Queue : the current index of the queue
-
-        // PUBLIC : USING GETTERS
-        public static DirectoryType directory => _directory;
-        public static List<FileType> selected { get; private set; }
-
-        public static List<FileType> copied { get; private set; }
-
-        public static List<string> queue { get; private set; }
-
-        public static int indexQueue { get; private set; }
-
-        #endregion
-
-        #region StaticPathVariable
-
-        // Static Path
-        private readonly string home;
-        private readonly string desktop;
-        private readonly string document;
-        private readonly string download;
-        private readonly string picture;
-        private readonly string trash;
-
-        #endregion
-
-        #region BindingVariables
-
-        // This region contains all BindingVariables : XAML Code purpose
+        public int QueueIndex;
+        // Static Paths
+        public readonly string HomePath;
+        public readonly string DesktopPath;
+        public readonly string DocumentPath;
+        public readonly string DownloadPath;
+        public readonly string PicturePath;
+        public readonly string TrashPath;
 
         // The files and folders loaded in XAML code
         // items stores the values
@@ -154,7 +48,7 @@ namespace CubeTools_UI.ViewModels
         // 
         public ObservableCollection<FileType> Items
         {
-            get => ListToObservable(_directory.ChildrenFiles);
+            get => ManagerReader.ListToObservable(DirectoryPointer.ChildrenFiles);
             set
             {
                 items.Clear();
@@ -168,14 +62,14 @@ namespace CubeTools_UI.ViewModels
         // Can either set the directory's path if the user enters a path or returns the directory path's value.
         public string CurrentPath
         {
-            get => _directory.Path;
+            get => DirectoryPointer.Path;
             set
             {
                 // If the given value exists, deal with it
                 if (Directory.Exists(value))
                 {
                     // If CurrentPath has been set by user, we have to change the directory
-                    if (_directory.Path != value)
+                    if (DirectoryPointer.Path != value)
                         ChangeDirectory(value);
                     // Modify the value in XAML
                     var res = value;
@@ -183,10 +77,76 @@ namespace CubeTools_UI.ViewModels
                 }
             }
         }
+        
+        public MainWindowViewModel()
+        {
+            // Variables
+            Selected = new List<FileType>();
+            Copied = new List<FileType>();
+            QueuePointers = new List<string>();
+            QueueIndex = 0;
+            // TODO Implement algorithm to detect static path
+            HomePath = "C:/Users/mateo";
+            DesktopPath = "C:/Users/mateo/Desktop";
+            DocumentPath = "C:/Users/mateo/OneDrive";
+            DownloadPath = "C:/Users/mateo/Downloads";
+            PicturePath = "C:/Users/mateo/Pictures";
+            TrashPath = "C:/$Recycle.Bin";
+            try
+            {
+                DirectoryPointer = new DirectoryType(Directory.GetCurrentDirectory());
+            }
+            catch (ManagerException e)
+            {
+                //ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+            }
+            finally
+            {
+                QueuePointers.Add(DirectoryPointer.Path);
+                CurrentPath = DirectoryPointer.Path;
+            }
 
-        #endregion
+            items = new ObservableCollection<FileType>();
+            foreach (var i in DirectoryPointer.ChildrenFiles) items.Add(i);
+        }
+        
 
-        #endregion
+        /// <summary>
+        ///     - Action : <br></br>
+        ///     - XAML : <br></br>
+        ///     - Implementation :
+        /// </summary>
+        public IMsBoxWindow<ButtonResult> ErrorMessageBox(ManagerException e, string custom = "", ButtonEnum buttonEnum = ButtonEnum.Ok, Icon icon = Icon.None)
+        {
+            var content = $"{e.Errorstd}"+ "\n" + $"{custom}";
+            switch (e)
+            {
+                case AccessException :
+                    icon = Icon.Forbidden;
+                    buttonEnum = ButtonEnum.Ok;
+                    custom = "The given path could not be accessed by CubeTools"; 
+                    break;
+                case CorruptedDirectoryException :
+                case CorruptedPointerException :
+                    icon = Icon.Error;
+                    buttonEnum = ButtonEnum.Ok;
+                    custom = "An error occured while accessing your files"; 
+                    break;
+                case InUseException :
+                    icon = Icon.Forbidden;
+                    buttonEnum = ButtonEnum.YesNo;
+                    custom = "One of the given files you've selected are being used by another process" + "\n" + "Would you like to try again ?"; 
+                    break;
+                case PathFormatException :
+                    icon = Icon.Forbidden;
+                    buttonEnum = ButtonEnum.Ok;
+                    custom = "The given path is incorrect, make sure it does not contain one of the invalid characters"; 
+                    break;
+            }
+            var messageBox =  MessageBoxManager.GetMessageBoxStandardWindow(e.ErrorType, content, buttonEnum, icon);
+            messageBox.Show();
+            return messageBox;
+        }
 
         #region BindingMethods
 
@@ -200,19 +160,19 @@ namespace CubeTools_UI.ViewModels
         public void LeftBtnClick()
         {
             // End of the queue
-            if (indexQueue <= 0)
+            if (QueueIndex <= 0)
                 return;
 
             // Get the index before
-            indexQueue--;
+            QueueIndex--;
             try
             {
                 // Change the directory
-                ChangeDirectory(queue[indexQueue]);
+                ChangeDirectory(QueuePointers[QueueIndex]);
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                ErrorMessageBox(e, "Impossible to get the last directory : maybe it does not exist anymore");
             }
         }
 
@@ -223,18 +183,18 @@ namespace CubeTools_UI.ViewModels
         /// </summary>
         public void RightBtnClick()
         {
-            if (indexQueue >= queue.Count - 1)
+            if (QueueIndex >= QueuePointers.Count - 1)
                 return;
             // Modifying selected items
-            indexQueue++;
+            QueueIndex++;
             try
             {
                 // Getting value in the queue
-                ChangeDirectory(queue[indexQueue]);
+                ChangeDirectory(QueuePointers[QueueIndex]);
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                //ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
         }
 
@@ -245,14 +205,14 @@ namespace CubeTools_UI.ViewModels
         /// </summary>
         public void UpBtnClick()
         {
-            indexQueue++;
+            QueueIndex++;
             try
             {
-                ChangeDirectory(ManagerReader.GetParent(_directory.Path));
+                ChangeDirectory(ManagerReader.GetParent(DirectoryPointer.Path));
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                //ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
         }
 
@@ -275,106 +235,7 @@ namespace CubeTools_UI.ViewModels
         {
         }
 
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        public void CreateBtnClick()
-        {
-            try
-            {
-                Create("New File");
-            }
-            catch (ManagerException e)
-            {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
-            }
-        }
-
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        public void CopyBtnClick()
-        {
-            copied.Clear();
-            foreach (var ft in selected) copied.Add(ft);
-        }
-
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        public void CutBtnClick()
-        {
-            // TODO Implement cut function
-        }
-
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        public void PasteBtnClick()
-        {
-            try
-            {
-                Copy(copied);
-            }
-            catch (ManagerException e)
-            {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
-            }
-        }
-
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        public void RenameBtnClick()
-        {
-        }
-
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        public void DeleteBtnClick()
-        {
-            try
-            {
-                DeleteSelected(selected);
-            }
-            catch (ManagerException e)
-            {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
-            }
-        }
-
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        public void NearbySendBtnClick()
-        {
-            // TODO Add method for NearBySend
-        }
-
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        public void SearchBtnClick()
-        {
-            // TODO Display the Pointer
-        }
+        
 
         /// <summary>
         ///     - Action : <br></br>
@@ -385,11 +246,11 @@ namespace CubeTools_UI.ViewModels
         {
             try
             {
-                ChangeDirectory(home);
+                ChangeDirectory(HomePath);
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                //ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
         }
 
@@ -402,11 +263,11 @@ namespace CubeTools_UI.ViewModels
         {
             try
             {
-                ChangeDirectory(desktop);
+                ChangeDirectory(DesktopPath);
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                //ErrorMessageBox(e, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
         }
 
@@ -419,11 +280,11 @@ namespace CubeTools_UI.ViewModels
         {
             try
             {
-                ChangeDirectory(document);
+                ChangeDirectory(DocumentPath);
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                //ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
         }
 
@@ -436,11 +297,11 @@ namespace CubeTools_UI.ViewModels
         {
             try
             {
-                ChangeDirectory(download);
+                ChangeDirectory(DownloadPath);
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                //ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
         }
 
@@ -453,11 +314,11 @@ namespace CubeTools_UI.ViewModels
         {
             try
             {
-                ChangeDirectory(picture);
+                ChangeDirectory(PicturePath);
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                //ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
         }
 
@@ -470,11 +331,11 @@ namespace CubeTools_UI.ViewModels
         {
             try
             {
-                ChangeDirectory(trash);
+                ChangeDirectory(TrashPath);
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                //ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
         }
 
@@ -487,14 +348,14 @@ namespace CubeTools_UI.ViewModels
         {
             try
             {
-                if (selected[0].IsDir)
-                    ChangeDirectory(selected[0]);
+                if (Selected[0].IsDir)
+                    ChangeDirectory(Selected[0]);
                 else
-                    Open(selected[0].Path);
+                    Open(Selected[0].Path);
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                //ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
         }
 
@@ -502,19 +363,7 @@ namespace CubeTools_UI.ViewModels
 
         #region ProcessMethods
 
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        protected static void Create(string name)
-        {
-            name = ManagerReader.GetNameToPath(name);
-            ManagerWriter.Create(name);
-            _directory.ChildrenFiles.Add(ManagerReader.ReadFileType(name));
-        }
+        
 
         /// <summary>
         ///     - Action : <br></br>
@@ -523,11 +372,11 @@ namespace CubeTools_UI.ViewModels
         /// </summary>
         /// <param name="ft"></param>
         /// <returns></returns>
-        protected static bool Copy(FileType ft)
+        private bool Copy(FileType ft)
         {
             if (File.Exists(ft.Path) || Directory.Exists(ft.Path))
             {
-                copied.Add(ft);
+                Copied.Add(ft);
                 return true;
             }
 
@@ -541,13 +390,13 @@ namespace CubeTools_UI.ViewModels
         /// </summary>
         /// <param name="fts"></param>
         /// <exception cref="PathNotFoundException"></exception>
-        protected static void Copy(List<FileType> fts)
+        public void Copy(List<FileType> fts)
         {
-            copied.Clear();
+            Copied.Clear();
             foreach (var ft in fts)
                 if (!Copy(ft))
                 {
-                    selected.Clear();
+                    Selected.Clear();
                     throw new PathNotFoundException("The selected file :" + ft.Name + " does not exist anymore",
                         "Copy");
                 }
@@ -559,7 +408,7 @@ namespace CubeTools_UI.ViewModels
         ///     - Implementation :
         /// </summary>
         /// <param name="ft"></param>
-        protected static void Cut(FileType ft)
+        private static void Cut(FileType ft)
         {
         }
 
@@ -569,7 +418,7 @@ namespace CubeTools_UI.ViewModels
         ///     - Implementation :
         /// </summary>
         /// <param name="fts"></param>
-        protected static void Cut(List<FileType> fts)
+        public static void Cut(List<FileType> fts)
         {
             foreach (var ft in fts) Cut(ft);
         }
@@ -580,9 +429,9 @@ namespace CubeTools_UI.ViewModels
         ///     - Implementation :
         /// </summary>
         /// <param name="ft"></param>
-        protected static void PasteOne(FileType ft)
+        private void PasteOne(FileType ft)
         {
-            ManagerWriter.Copy(ref _directory, ft, ft.Path);
+            ManagerWriter.Copy(ref DirectoryPointer, ft, ft.Path);
         }
 
         /// <summary>
@@ -590,12 +439,12 @@ namespace CubeTools_UI.ViewModels
         ///     - XAML : <br></br>
         ///     - Implementation :
         /// </summary>
-        protected static void PasteCopied()
+        public void PasteCopied()
         {
-            foreach (var ft in copied)
+            foreach (var ft in Copied)
             {
                 PasteOne(ft);
-                copied.Remove(ft);
+                Copied.Remove(ft);
             }
         }
 
@@ -605,7 +454,7 @@ namespace CubeTools_UI.ViewModels
         ///     - Implementation :
         /// </summary>
         /// <returns></returns>
-        protected static FileType Rename()
+        public static FileType Rename()
         {
             return FileType.NullPointer;
         }
@@ -615,8 +464,28 @@ namespace CubeTools_UI.ViewModels
         ///     - XAML : <br></br>
         ///     - Implementation :
         /// </summary>
+        /// <param name="ft"></param>
+        private void DeleteSingle(FileType ft)
+        {
+            if (ft.IsDir)
+            {
+                ManagerWriter.DeleteDir(ft);
+                DirectoryPointer.Remove(ft.Path);
+            }
+            else
+            {
+                ManagerWriter.Delete(ft);
+                DirectoryPointer.Remove(ft.Path);
+            }
+        }
+        
+        /// <summary>
+        ///     - Action : <br></br>
+        ///     - XAML : <br></br>
+        ///     - Implementation :
+        /// </summary>
         /// <param name="ftList"></param>
-        protected static void DeleteSelected(List<FileType> ftList)
+        public void DeleteSelected(List<FileType> ftList)
         {
             foreach (var ft in ftList) DeleteSingle(ft);
         }
@@ -626,29 +495,9 @@ namespace CubeTools_UI.ViewModels
         ///     - XAML : <br></br>
         ///     - Implementation :
         /// </summary>
-        /// <param name="ft"></param>
-        protected static void DeleteSingle(FileType ft)
-        {
-            if (ft.IsDir)
-            {
-                ManagerWriter.DeleteDir(ft);
-                _directory.Remove(ft.Path);
-            }
-            else
-            {
-                ManagerWriter.Delete(ft);
-                _directory.Remove(ft.Path);
-            }
-        }
-
-        /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
-        /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        protected static FileType Search(string name)
+        protected FileType Search(string name)
         {
             return FileType.NullPointer;
             //return ManagerReader.SearchByUndeterminedName(directory, name);
@@ -660,7 +509,7 @@ namespace CubeTools_UI.ViewModels
         ///     - Implementation :
         /// </summary>
         /// <param name="ft"></param>
-        protected void ChangeDirectory(FileType ft)
+        public void ChangeDirectory(FileType ft)
         {
             var val = ft.Path;
             ChangeDirectory(val);
@@ -672,33 +521,33 @@ namespace CubeTools_UI.ViewModels
         ///     - Implementation :
         /// </summary>
         /// <param name="path"></param>
-        private void ChangeDirectory(string path)
+        public void ChangeDirectory(string path)
         {
             // Changing directory
             try
             {
                 // Modify the directory
-                _directory.ChangeDirectory(path);
-                _directory.Path = path;
+                DirectoryPointer.ChangeDirectory(path);
+                DirectoryPointer.Path = path;
             }
             catch (ManagerException e)
             {
-                ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
+                //ErrorMessageBox(e.Errorstd, e.CriticalLevel, e.ErrorType, e.FinalMessage);
             }
 
             // Setting up the Path for CubeTools UI
             CurrentPath = path;
             // Modified ListBox associated
-            Items = ListToObservable(_directory.ChildrenFiles);
+            Items = ManagerReader.ListToObservable(DirectoryPointer.ChildrenFiles);
             // Adding path to queue
-            queue.Add(path);
-            if (queue.Count >= 9)
+            QueuePointers.Add(path);
+            if (QueuePointers.Count >= 9)
             {
-                queue.RemoveAt(0);
-                indexQueue--;
+                QueuePointers.RemoveAt(0);
+                QueueIndex--;
             }
 
-            selected = new List<FileType>();
+            Selected = new List<FileType>();
         }
 
         /// <summary>
@@ -706,9 +555,9 @@ namespace CubeTools_UI.ViewModels
         ///     - XAML : <br></br>
         ///     - Implementation :
         /// </summary>
-        protected static void Sort()
+        public void Sort()
         {
-            ManagerReader.SortByName(_directory.ChildrenFiles);
+            ManagerReader.SortByName(DirectoryPointer.ChildrenFiles);
         }
 
         /// <summary>
@@ -717,7 +566,7 @@ namespace CubeTools_UI.ViewModels
         ///     - Implementation :
         /// </summary>
         /// <param name="path"></param>
-        protected static void Open(string path)
+        public void Open(string path)
         {
             ManagerReader.GetFileExtension(path); // Get the extension and read it
             // TODO Add open function

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -180,6 +181,21 @@ namespace Library.ManagerReader
                 if (ft.Name.Count() >= minimumNameSize)
                     res.Add(ft);
 
+            return res;
+        }
+        
+        /// <summary>
+        ///     - Action : <br></br>
+        ///     - XAML : <br></br>
+        ///     - Implementation :
+        /// </summary>
+        /// <param name="list"></param>
+        /// <typeparam name="T">The given type</typeparam>
+        /// <returns></returns>
+        public static ObservableCollection<T> ListToObservable<T>(List<T> list)
+        {
+            var res = new ObservableCollection<T>();
+            foreach (var e in list) res.Add(e);
             return res;
         }
 
