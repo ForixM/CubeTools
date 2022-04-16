@@ -238,7 +238,6 @@ namespace Library.ManagerReader
 
         public static int FastReaderFiles(string path)
         {
-            
             try
             {
                 return new DirectoryInfo($"{path}")
@@ -247,9 +246,11 @@ namespace Library.ManagerReader
             }
             catch (Exception e)
             {
-                if (e is SecurityException)
+                if (e is SecurityException or DirectoryNotFoundException)
                     throw new AccessException($"{path} could not be accessed", "FastReaderSize");
-                throw new ManagerException("", "", "", "", ""); // TODO EDIT EXCEPTION : FAST READER FILES
+                if (e is ArgumentException or PathTooLongException or ArgumentNullException)
+                    throw new PathFormatException($"{path} is incorrect", "FastReaderFiles");
+                throw new ManagerException("Unable to get the amount of files of the given path", "High", "Access unable", $"unable to get size of {path}", "FastReaderFiles");
             }
         }
 
@@ -834,7 +835,7 @@ namespace Library.ManagerReader
         public static void SelectAppProcess(string path)
         {
             var extension = GetFileExtension(path);
-            var recommended = RecommendedPrograms(GetOS(), extension);
+            var recommended = RecommendedPrograms(GetOs(), extension);
             if (recommended.Count != 0)
                 LaunchAppProcess(recommended[0], extension);
             else

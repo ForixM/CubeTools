@@ -11,27 +11,45 @@ namespace Library.Pointers
         // This region contains every variables that stores the information of the file
 
         public static FileType NullPointer = new();
-
         // Basics
-        public string Path;
-        public string Name;
-        public string Type;
-        public long Size;
+        private string _path;
+        private string _name;
+        private string _type;
+        private long _size;
 
         // Date
-        public string Date;
-        public string LastDate;
-        public string AccessDate;
+        private string _date;
+        private string _lastDate;
+        private string _accessDate;
 
         // Attributes
-        public bool ReadOnly;
+        private bool _readOnly;
 
-        public bool Hidden;
-        public bool Compressed;
-        public bool Archived;
+        private bool _hidden;
+        private bool _compressed;
+        private bool _archived;
 
-        public bool IsDir;
-        
+        private bool _isDir;
+
+        // Basics
+        public string Path { get => _path; set => _path = value; }
+        public string Name{ get => _name; set => _name = value; }
+        public string Type { get => _type; set => _type = value; }
+        public long Size { get => _size; set => _size = value; }
+        // Date
+        public string Date { get => _date; set => _date = value; }
+        public string LastDate{ get => _lastDate; set => _lastDate = value; }
+        public string AccessDate{ get => _accessDate; set => _accessDate = value; }
+
+        // Attributes
+        public bool ReadOnly { get => _readOnly; set => _readOnly = value; }
+
+        public bool Hidden { get => _hidden; set => _hidden = value; }
+        public bool Compressed { get => _compressed; set => _compressed = value; }
+        public bool Archived { get => _archived; set => _archived = value; }
+
+        public bool IsDir { get => _isDir; set => _isDir = value; }
+
         #endregion
 
         #region Init
@@ -43,18 +61,18 @@ namespace Library.Pointers
         /// </summary>
         public FileType()
         {
-            Path = "";
-            Name = "";
-            Type = "";
-            Size = 0;
-            Date = "";
-            LastDate = "";
-            AccessDate = "";
-            Hidden = false;
-            Compressed = false;
-            Archived = false;
-            ReadOnly = false;
-            IsDir = false;
+            _path = "";
+            _name = "";
+            _type = "";
+            _size = 0;
+            _date = "";
+            _lastDate = "";
+            _accessDate = "";
+            _hidden = false;
+            _compressed = false;
+            _archived = false;
+            _readOnly = false;
+            _isDir = false;
         }
 
         /// <summary>
@@ -71,20 +89,26 @@ namespace Library.Pointers
                 throw new PathNotFoundException(path + " does not exist", "Constructor FileType");
             }
             // Path
-            Path = path;
+            _path = path;
             // Primary
-            Name = ManagerReader.ManagerReader.GetPathToName(Path);
-            Size = ManagerReader.ManagerReader.FastReaderFiles(Path);
-            IsDir = Directory.Exists(Path);
-            Type = ManagerReader.ManagerReader.GetFileExtension(Path);
-            // Properties
-            ReadOnly = ManagerReader.ManagerReader.HasAttribute(FileAttributes.ReadOnly, Path);
-            Hidden = ManagerReader.ManagerReader.HasAttribute(FileAttributes.Hidden, Path);
-            Archived = ManagerReader.ManagerReader.HasAttribute(FileAttributes.Archive, Path);
-            // Time
-            Date = ManagerReader.ManagerReader.GetFileCreationDate(Path);
-            LastDate = ManagerReader.ManagerReader.GetFileLastEdition(Path);
-            AccessDate = ManagerReader.ManagerReader.GetFileAccessDate(Path);
+            _name = ManagerReader.ManagerReader.GetPathToName(_path);
+            _size = ManagerReader.ManagerReader.GetFileSize(_path);
+            _isDir = Directory.Exists(_path);
+            _type = ManagerReader.ManagerReader.GetFileExtension(_path);
+            try
+            {
+                // Properties
+                _readOnly = ManagerReader.ManagerReader.HasAttribute(FileAttributes.ReadOnly, _path);
+                _hidden = ManagerReader.ManagerReader.HasAttribute(FileAttributes.Hidden, _path);
+                _archived = ManagerReader.ManagerReader.HasAttribute(FileAttributes.Archive, _path);
+                // Time
+                _date = ManagerReader.ManagerReader.GetFileCreationDate(_path);
+                _lastDate = ManagerReader.ManagerReader.GetFileLastEdition(_path);
+                _accessDate = ManagerReader.ManagerReader.GetFileAccessDate(_path);
+            }
+            catch (ManagerException)
+            {
+            }
         }
 
         // Initializers
@@ -92,13 +116,6 @@ namespace Library.Pointers
         #endregion
 
         #region Delete
-
-        // This region is not completed, memory will be fixed later
-
-        // Destructor and Garbage Collector
-        ~FileType()
-        {
-        }
 
         public void Dispose()
         {

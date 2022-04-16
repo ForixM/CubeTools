@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library", "Manager\Library\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Default SandBox", "Extensions\Default SandBox\Default SandBox.csproj", "{CFF0EB42-7902-4C92-BB3A-6E72E1CC8390}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogErrors", "LogErrors\LogErrors.csproj", "{8BCFF48E-0F04-4895-AA76-A15CC0CC8766}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{CFF0EB42-7902-4C92-BB3A-6E72E1CC8390}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFF0EB42-7902-4C92-BB3A-6E72E1CC8390}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFF0EB42-7902-4C92-BB3A-6E72E1CC8390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BCFF48E-0F04-4895-AA76-A15CC0CC8766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BCFF48E-0F04-4895-AA76-A15CC0CC8766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BCFF48E-0F04-4895-AA76-A15CC0CC8766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BCFF48E-0F04-4895-AA76-A15CC0CC8766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

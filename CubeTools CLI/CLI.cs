@@ -1,11 +1,12 @@
-﻿
+﻿using Library.ManagerExceptions;
+using Library.ManagerReader;
+using Library.ManagerWriter;
+using Library.Pointers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Library.ManagerExceptions;
-using Library.Pointers;
 
-namespace Library
+namespace CubeTools_CLI
 {
     internal class CLI
     {
@@ -29,6 +30,7 @@ namespace Library
         // Constructor : OK
         public CLI(string path)
         {
+            path = path.Replace('\\', '/');
             _directoryType = new DirectoryType(path);
             _promptLine = ">> ";
         }
@@ -269,8 +271,8 @@ namespace Library
             var res = "";
             try
             {
-                name = ManagerReader.ManagerReader.GetNameToPath(name);
-                res = ManagerReader.ManagerReader.GetContent(name);
+                name = ManagerReader.GetNameToPath(name);
+                res = ManagerReader.GetContent(name);
             }
             catch (Exception e)
             {
@@ -291,9 +293,9 @@ namespace Library
         {
             try
             {
-                name = ManagerReader.ManagerReader.GetNameToPath(name);
-                ManagerWriter.ManagerWriter.CreateDir(name);
-                _directoryType.ChildrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(name));
+                name = ManagerReader.GetNameToPath(name);
+                ManagerWriter.CreateDir(name);
+                _directoryType.ChildrenFiles.Add(ManagerReader.ReadFileType(name));
             }
             catch (Exception e)
             {
@@ -305,8 +307,8 @@ namespace Library
         {
             try
             {
-                name = ManagerReader.ManagerReader.GetNameToPath(name);
-                ManagerWriter.ManagerWriter.DeleteDir(name, rec);
+                name = ManagerReader.GetNameToPath(name);
+                ManagerWriter.DeleteDir(name, rec);
             }
             catch (Exception e)
             {
@@ -318,12 +320,12 @@ namespace Library
         {
             try
             {
-                name = ManagerReader.ManagerReader.GetNameToPath(name);
-                dest = ManagerReader.ManagerReader.GetNameToPath(dest);
+                name = ManagerReader.GetNameToPath(name);
+                dest = ManagerReader.GetNameToPath(dest);
                 if (!rep)
-                    ManagerWriter.ManagerWriter.Rename(name, dest);
+                    ManagerWriter.Rename(name, dest);
                 else
-                    ManagerWriter.ManagerWriter.RenameMerge(name, dest);
+                    ManagerWriter.RenameMerge(name, dest);
             }
             catch (Exception e)
             {
@@ -335,8 +337,8 @@ namespace Library
         {
             try
             {
-                name = ManagerReader.ManagerReader.GetNameToPath(name);
-                ManagerWriter.ManagerWriter.Delete(name);
+                name = ManagerReader.GetNameToPath(name);
+                ManagerWriter.Delete(name);
             }
             catch (Exception)
             {
@@ -348,9 +350,9 @@ namespace Library
         {
             try
             {
-                var path = ManagerReader.ManagerReader.GetNameToPath(name);
-                ManagerWriter.ManagerWriter.Create(name, ManagerReader.ManagerReader.GetFileExtension(name));
-                _directoryType.ChildrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(path));
+                var path = ManagerReader.GetNameToPath(name);
+                ManagerWriter.Create(name, ManagerReader.GetFileExtension(name));
+                _directoryType.ChildrenFiles.Add(new FileType(path));
             }
             catch (Exception e)
             {
@@ -362,15 +364,16 @@ namespace Library
         {
             try
             {
-                var path = ManagerReader.ManagerReader.GetNameToPath(dest);
+                var path = ManagerReader.GetNameToPath(dest);
                 _directoryType.ChangeDirectory(path);
             }
-            catch (Exception e)
+            catch (ManagerException e)
             {
                 if (e is AccessException)
                     Console.Error.WriteLine("# Access impossible, Cd aborted");
                 else
-                    Console.Error.WriteLine("# Cd aborted");
+                    Console.WriteLine(e.Errorstd);
+                    //Console.Error.WriteLine("# Cd aborted");
             }
         }
 
@@ -387,7 +390,7 @@ namespace Library
         {
             try
             {
-                source = ManagerReader.ManagerReader.GetNameToPath(source);
+                source = ManagerReader.GetNameToPath(source);
             }
             catch (Exception e)
             {
@@ -400,8 +403,8 @@ namespace Library
 
             try
             {
-                ManagerWriter.ManagerWriter.Copy(source);
-                _directoryType.ChildrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(source));
+                ManagerWriter.Copy(source);
+                _directoryType.ChildrenFiles.Add(ManagerReader.ReadFileType(source));
             }
             catch (Exception e)
             {
@@ -413,9 +416,9 @@ namespace Library
         {
             try
             {
-                source = ManagerReader.ManagerReader.GetNameToPath(source);
+                source = ManagerReader.GetNameToPath(source);
                 Console.WriteLine(source);
-                dest = ManagerReader.ManagerReader.GetParent(source).Replace('\\', '/') + '/' + dest;
+                dest = ManagerReader.GetParent(source).Replace('\\', '/') + '/' + dest;
                 Console.WriteLine(dest);
             }
             catch (AccessException)
@@ -425,8 +428,8 @@ namespace Library
 
             try
             {
-                ManagerWriter.ManagerWriter.Copy(source, dest);
-                _directoryType.ChildrenFiles.Add(ManagerReader.ManagerReader.ReadFileType(dest));
+                ManagerWriter.Copy(source, dest);
+                _directoryType.ChildrenFiles.Add(new FileType(dest));
             }
             catch (Exception e)
             {
@@ -439,7 +442,7 @@ namespace Library
             var res = "";
             try
             {
-                res = ManagerReader.ManagerReader.SearchByIndeterminedName(_directoryType, fileToFind).Path;
+                res = ManagerReader.SearchByIndeterminedName(_directoryType, fileToFind).Path;
             }
             catch (Exception e)
             {

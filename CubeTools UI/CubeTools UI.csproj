@@ -5,7 +5,6 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <Folder Include="Models\" />
         <AvaloniaResource Include="Assets\**" />
         <None Remove=".gitignore" />
     </ItemGroup>
@@ -48,6 +47,15 @@
       <Compile Update="Views\ActionBar.axaml.cs">
         <DependentUpon>ActionBar.axaml</DependentUpon>
         <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PathsBar.axaml.cs">
+        <DependentUpon>PathsBar.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\LinkBar.axaml.cs">
+        <DependentUpon>LinkBar.axaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\NavigationBar.axaml.cs">
+        <DependentUpon>NavigationBar.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
 </Project>

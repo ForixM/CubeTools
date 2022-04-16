@@ -7,7 +7,8 @@ namespace ConfigLoader;
 
 /// <summary>
 ///     - Purpose : Implements all needed functions to read properties for runtime and CubeTools UI implementation of the
-///     software <br></br> // TODO Edit description
+///     software
+///     - Using Configuration Manager class, it allows us to create and read xml files for configuration <br></br>
 /// </summary>
 public static partial class ConfigLoader
 {

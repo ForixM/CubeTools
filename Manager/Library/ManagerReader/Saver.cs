@@ -22,7 +22,6 @@ namespace Library.ManagerReader
         public static FileType ReadFileType(string path)
         {
             var ft = new FileType(path);
-            ReadFileType(ref ft);
             return ft;
         }
 

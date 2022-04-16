@@ -24,7 +24,7 @@ namespace Library.ManagerWriter
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="AccessException">the given file could not be copied</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static void Copy(string source)
+        public static FileType Copy(string source)
         {
             // Source or dest have an incorrect format
             if (!ManagerReader.ManagerReader.IsPathCorrect(source))
@@ -38,8 +38,8 @@ namespace Library.ManagerWriter
                 var res = ManagerReader.ManagerReader.GenerateNameForModification(source);
                 try
                 {
-                    
                     File.Copy(source, res);
+                    return new FileType(res);
                 }
                 catch (Exception e)
                 {
@@ -53,7 +53,9 @@ namespace Library.ManagerWriter
             }
             else
             {
-                CopyDirectory(source, ManagerReader.ManagerReader.GenerateNameForModification(source), true);
+                string newDest = ManagerReader.ManagerReader.GenerateNameForModification(source);
+                CopyDirectory(source, newDest, true);
+                return new FileType(newDest);
             }
         }
 

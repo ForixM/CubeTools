@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using CubeTools_UI.ViewModels;
 using MessageBox.Avalonia;
 
 namespace CubeTools_UI.Views
@@ -20,6 +21,7 @@ namespace CubeTools_UI.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+            DataContext = new MainWindowViewModel();
         }
     }
 }

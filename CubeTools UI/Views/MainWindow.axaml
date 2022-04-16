@@ -21,17 +21,6 @@
     <Window.Styles>
 		<StyleInclude Source="/Styles/Styles.axaml"/>
     </Window.Styles>
-    
-    <!-- Resources Imports -->
-    <Window.Resources>
-    </Window.Resources>
-    
-
-    <!-- Link between DataContext and ViewModel -->
-    <Design.DataContext>
-        <vm:MainWindowViewModel>
-        </vm:MainWindowViewModel>
-    </Design.DataContext>
 
     <!-- Line structure of the grid-->
 
@@ -45,15 +34,13 @@
         <!-- First row : Main Bar at the top -->
 
         <Grid Grid.Row="0" VerticalAlignment="Center">
-			<views:TopBorder/>
+			<views:TopBar/>
         </Grid>
 
         <!-- Second row : Top bar for path research-->
 
         <Grid Grid.Row="1" Background="#FF1B3861">
-			
-            <views:TopBarSearch/>
-			
+            <views:NavigationBar/>
         </Grid>
 
         <!-- Third row : Main Part of th UI -->
@@ -68,9 +55,7 @@
             <!-- First column : Left part for static links-->
 
             <Grid Grid.Column="0">
-				
-                <views:DirectoryList/>
-				
+				<views:LinkBar/>
             </Grid>
 
             <!-- Top buttons for creation, deletion ... -->
@@ -84,15 +69,12 @@
                 <!-- First Row : Actions buttons-->
 				
                 <Grid Grid.Row="0">
-					<views:ActionBar>
-                    </views:ActionBar>
-					
+                    <views:ActionBar/>
                 </Grid>
+                
                 <!-- Second row : files and directories list -->
                 <Grid Grid.Row="1">
-					
-                    <views:BasicFileList/>
-				
+                    <views:PathsBar/>
                 </Grid>
                 
             </Grid>

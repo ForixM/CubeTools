@@ -40,7 +40,7 @@ namespace Library.ManagerExceptions
             Errorstd = std;
             ErrorMessage = message;
             ReloadFinalMessage();
-            Console.Error.WriteLine(FinalMessage);
+            LogErrors.LogErrors.LogWrite(FinalMessage, this);
         }
 
         public ManagerException(string std, string level, string type, string message, string func) : this()
@@ -51,7 +51,7 @@ namespace Library.ManagerExceptions
             ErrorMessage = message;
             ErrorFunction = func;
             ReloadFinalMessage();
-            Console.Error.WriteLine(FinalMessage);
+            LogErrors.LogErrors.LogWrite(FinalMessage, this);
         }
 
         public void ReloadFinalMessage()

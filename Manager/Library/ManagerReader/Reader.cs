@@ -297,8 +297,7 @@ namespace Library.ManagerReader
             if (Directory.Exists(path))
                 try
                 {
-                    return new DirectoryInfo(path).EnumerateFiles("*.*", SearchOption.AllDirectories)
-                        .Sum(fi => fi.Length);
+                    return new DirectoryInfo(path).EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
                 }
                 catch (Exception e)
                 {
@@ -307,7 +306,6 @@ namespace Library.ManagerReader
                     throw new ManagerException("Reader error", "Medium", "Impossible to enumerate files",
                         path + " and their children could not be read", "GetFileSize");
                 }
-
             if (File.Exists(path))
                 try
                 {
@@ -322,7 +320,6 @@ namespace Library.ManagerReader
                     throw new ManagerException("Reader error", "Medium", "Impossible to enumerate files",
                         path + " and their children could not be read", "GetFileSize");
                 }
-
             throw new PathNotFoundException(path + " does not exist", "GetFileAccessDate");
         }
 
@@ -428,7 +425,10 @@ namespace Library.ManagerReader
         /// <returns>Extension of a file</returns>
         public static string GetFileExtension(string path)
         {
-            return Path.GetExtension(path).Remove(0, 1);
+            string extension = Path.GetExtension(path);
+            if (extension.Length == 0)
+                return extension;
+            return extension.Remove(0, 1);
         }
 
         /// <summary>
@@ -482,7 +482,11 @@ namespace Library.ManagerReader
             }
         }
 
-        public static PlatformID GetOS()
+        /// <summary>
+        /// Basic return of the current Platform
+        /// </summary>
+        /// <returns></returns>
+        public static PlatformID GetOs()
         {
             return Environment.OSVersion.Platform;
         }

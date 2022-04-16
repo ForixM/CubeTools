@@ -1,14 +1,18 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using CubeTools_UI.ViewModels;
 
 namespace CubeTools_UI.Views
 {
-    public partial class DirectoryList : UserControl
+    public partial class LinkBar : UserControl
     {
-        public DirectoryList()
+        public static LinkBarViewModel ViewModel;
+        public LinkBar()
         {
             InitializeComponent();
+            ViewModel = new LinkBarViewModel();
+            DataContext = ViewModel;
         }
 
         private void InitializeComponent()

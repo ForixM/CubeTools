@@ -59,7 +59,8 @@ namespace Library.Pointers
         #region Init
 
         // This region will generate correctly the DirectoryType with FileTypes
-        //
+        
+        
         /// <summary>
         ///     - Action : Default constructor of DirectoryType class
         ///     - Implementation : Check
@@ -68,7 +69,7 @@ namespace Library.Pointers
         {
             Name = "";
             Path = "";
-            ChildrenFiles = null;
+            ChildrenFiles = new List<FileType>();
             Size = 0;
             Date = "";
             LastDate = "";
@@ -94,7 +95,7 @@ namespace Library.Pointers
             {
                 try
                 {
-                    Directory.SetCurrentDirectory(path); // IOException, SecurityException, 
+                    Directory.SetCurrentDirectory(path);
                 }
                 catch (Exception e)
                 {
@@ -105,45 +106,41 @@ namespace Library.Pointers
                     throw new ManagerException("ManagerException", "High", "GenerateDirectory",
                         "Generate directory was impossible", "Directory Constructor");
                 }
-
+                Path = path;
+                Name = ManagerReader.ManagerReader.GetPathToName(path);
+                ChildrenFiles = new List<FileType>();
                 try
                 {
                     // Set attributes
-                    Path = path;
-                    Name = ManagerReader.ManagerReader.GetPathToName(path);
                     Date = ManagerReader.ManagerReader.GetFileCreationDate(path);
                     LastDate = ManagerReader.ManagerReader.GetFileLastEdition(path);
                     AccessDate = ManagerReader.ManagerReader.GetFileAccessDate(path);
                     Size = ManagerReader.ManagerReader.GetFileSize(path);
                     Hidden = ManagerReader.ManagerReader.IsFileHidden(path);
                     ReadOnly = ManagerReader.ManagerReader.IsReadOnly(path);
-                    ChildrenFiles = new List<FileType>();
-                    // Watcher
-                    Watcher = new FileSystemWatcher(path);
-                    Watcher.Changed += OnChanged;
-                    Watcher.Created += OnCreated;
-                    Watcher.Deleted += OnDeleted;
-                    Watcher.Renamed += OnRenamed;
-                    Watcher.NotifyFilter = NotifyFilters.Attributes
-                                           | NotifyFilters.CreationTime
-                                           | NotifyFilters.DirectoryName
-                                           | NotifyFilters.FileName
-                                           | NotifyFilters.LastAccess
-                                           | NotifyFilters.LastWrite
-                                           | NotifyFilters.Security
-                                           | NotifyFilters.Size;
-                    Watcher.Filter = "*";
-                    Watcher.IncludeSubdirectories = true;
-                    Watcher.EnableRaisingEvents = true;
                     // Set Sub-Files/Folder
                     SetChildrenFiles();
-                    // Launch watcher
-                    StartRecurringWatcher();
                 }
                 catch (Exception e)
                 {
-                    Console.Error.WriteLine("Error while created "); // TODO Add 
+                    if (e is ManagerException)
+                        Console.WriteLine("# ManagerException occured");
+                    else throw;
                 }
+                // Watcher
+                Watcher = new FileSystemWatcher(path);
+                Watcher.Changed += OnChanged;
+                Watcher.Created += OnCreated;
+                Watcher.Deleted += OnDeleted;
+                Watcher.Renamed += OnRenamed;
+                Watcher.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName | NotifyFilters.FileName
+                                       | NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.Security | NotifyFilters.Size;
+                Watcher.Filter = "*";
+                Watcher.IncludeSubdirectories = true;
+                Watcher.EnableRaisingEvents = true;
+                
+                // Launch watcher
+                StartRecurringWatcher();
             }
             else
             {
@@ -226,14 +223,8 @@ namespace Library.Pointers
         /// <exception cref="InUseException">the data in being used by another program</exception>
         public FileType GetChild(string path)
         {
-            if (path != null && (File.Exists(path) || Directory.Exists(path)))
-            {
-                var ft = new FileType(path);
-                ManagerReader.ManagerReader.ReadFileType(ref ft);
-                return ft;
-            }
-
-            return new FileType();
+            var res = ChildrenFiles.FindAll(ft => ft.Path == path);
+            return res.Count == 0 ? ManagerReader.ManagerReader.ReadFileType(path) : res[0];
         }
 
         /// <summary>
@@ -247,9 +238,10 @@ namespace Library.Pointers
         {
             foreach (var file in ChildrenFiles) file.Dispose();
             ChildrenFiles.Clear();
-            foreach (var file in Directory.GetFiles(Path)) ChildrenFiles.Add(GetChild(file.Replace('\\', '/')));
+            foreach (var file in Directory.GetFiles(Path)) 
+                ChildrenFiles.Add(new FileType(file.Replace('\\', '/')));
             foreach (var dir in Directory.GetDirectories(Path))
-                ChildrenFiles.Add(GetChild(dir.Replace('\\', '/')));
+                ChildrenFiles.Add(new FileType(dir.Replace('\\', '/')));
         }
 
         /// <summary>
@@ -265,6 +257,32 @@ namespace Library.Pointers
                     return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// Add single child to ChildrenFiles
+        /// </summary>
+        /// <param name="ft"></param>
+        public void AddChild(FileType ft)
+        {
+            if (HasChild(ft.Path))
+                return;
+            ChildrenFiles.Add(ft);
+        }
+        
+        /// <summary>
+        /// Overload of <see cref="AddChild(Library.Pointers.FileType)"/>
+        /// </summary>
+        /// <param name="path">Absolute Path</param>
+        /// <param name="isdir">Whether it is a directory or not</param>
+        public void AddChild(string path, bool isdir = false)
+        {
+            if (HasChild(path))
+                return;
+            if (isdir)
+                AddDir(ManagerReader.ManagerReader.GetPathToName(path));
+            else
+                AddFile(ManagerReader.ManagerReader.GetPathToName(path), ManagerReader.ManagerReader.GetFileExtension(path));
         }
 
         /// <summary>
@@ -304,6 +322,21 @@ namespace Library.Pointers
         {
             for (var i = 0; i < ChildrenFiles.Count; i++)
                 if (ChildrenFiles[i].Path == path)
+                {
+                    ChildrenFiles[i].Dispose();
+                    ChildrenFiles.RemoveAt(i);
+                    return;
+                }
+        }
+        /// <summary>
+        ///     - Action : Remove a file given with a path in the list of _childrenFiles
+        ///     - Implementation : NOT Check
+        /// </summary>
+        /// <param name="ft">the given pointer</param>
+        public void Remove(FileType ft)
+        {
+            for (var i = 0; i < ChildrenFiles.Count; i++)
+                if (ChildrenFiles[i].Path == ft.Path)
                 {
                     ChildrenFiles[i].Dispose();
                     ChildrenFiles.RemoveAt(i);

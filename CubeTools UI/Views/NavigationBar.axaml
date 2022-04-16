@@ -1,16 +1,26 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="CubeTools_UI.Views.TopBarSearch">
-
+<UserControl 
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:vm="using:CubeTools_UI.ViewModels"
+	xmlns:views="clr-namespace:CubeTools_UI.Views"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="50"
+    x:Class="CubeTools_UI.Views.NavigationBar"
+	>
+	<!--Import for style-->
 	<UserControl.Styles>
 		<StyleInclude Source="/Styles/Styles.axaml"/>
 	</UserControl.Styles>
 	
+	<!-- Link between DataContext and ViewModel -->
+	<Design.DataContext>
+		<vm:NavigationBarViewModel/>
+	</Design.DataContext>
+	
 	<Border CornerRadius="8" BorderThickness="3" HorizontalAlignment="Center"
-                    Background="#076CAD" Width="760" Height="47">
+	        Background="#076CAD" Width="760" Height="47">
 
 		<StackPanel VerticalAlignment="Center">
 			<!-- Adding columns definitions -->
@@ -26,7 +36,7 @@
 
 				<!-- First column : Left Button -->
 				<Grid Grid.Column="0">
-					<Button Classes="TopBar" Name="LeftButton" CommandParameter="Hello" Command="{Binding LeftBtnClick}">
+					<Button Classes="TopBar" Name="LeftButton" Command="{Binding LeftBtnClick}">
 						<Image Source="/Assets/arrow-left.ico" Height="30" />
 					</Button>
 				</Grid>
@@ -51,10 +61,11 @@
 				<!-- Fifth column : Path bar-->
 				<Grid Grid.Column="4">
 					<Border CornerRadius="4" Background="White" Margin="0 1" Width="490">
-						<TextBox Watermark="Enter a path" Text="{Binding CurrentPath, Mode=TwoWay}" />
+						<TextBox KeyDown="EditCurrentPath" Watermark="Enter a path" Text="{Binding CurrentPath, Mode=TwoWay}" />
 					</Border>
 				</Grid>
 				<Grid Grid.Column="5">
+					<Button Command="{Binding }"></Button>
 					<Button Classes="TopBar" Name="SettingButton" Command="{Binding SettingBtnClick}">
 						<Image Source="/Assets/setting.ico"
 							   Height="25" />
