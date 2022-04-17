@@ -21,6 +21,23 @@ public class PathsBarViewModel : ReactiveObject
         get => _modelPathsBar;
         set => _modelPathsBar = value;
     }
+    
+    private MainWindowViewModel _parentParentViewModel;
+    public MainWindowViewModel ParentViewModelXaml
+    {
+        get => _parentParentViewModel;
+        set => _parentParentViewModel = value;
+    }
+    
+    public ObservableCollection<FileType> Items
+    {
+        get => ManagerReader.ListToObservable(_parentParentViewModel.Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+        set
+        {
+            var val = ManagerReader.ListToObservable(_parentParentViewModel.Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            this.RaiseAndSetIfChanged(ref val, value);
+        }
+    }
 
     
     public PathsBarViewModel()

@@ -29,7 +29,7 @@ namespace CubeTools_UI.Models
         public int QueueIndex
         {
             get => _queueIndex;
-            set => value = _queueIndex;
+            set => _queueIndex = value;
         }
         
         // CTOR

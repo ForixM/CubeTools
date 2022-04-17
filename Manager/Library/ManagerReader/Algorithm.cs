@@ -7,7 +7,9 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 using Library.ManagerExceptions;
 using Library.Pointers;
 using Microsoft.Win32;
@@ -760,10 +762,15 @@ namespace Library.ManagerReader
         #endregion
 
         #region RunApp
+        
+        
+        [DllImport("shell32.dll")]
+        static extern int FindExecutable(string lpFile, string lpDirectory, [Out] StringBuilder lpResult);
 
         // This region implements all algorithm to run an app using conf file
         public static List<string> RecommendedProgramsWindows(string ext)
         {
+            
             var names = new List<string>();
             var baseKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\." + ext;
             string s;
@@ -817,14 +824,17 @@ namespace Library.ManagerReader
             return new List<string>();
         }
 
-        public static List<string> RecommendedPrograms(PlatformID os, string ext)
+        public static List<string> RecommendedPrograms(PlatformID os, string ext, string path)
         {
             switch (os)
             {
                 case PlatformID.Unix:
                     return RecommendedProgramsUnix(ext);
                 case PlatformID.Win32NT:
-                    return RecommendedProgramsWindows(ext);
+                    StringBuilder res = new StringBuilder();
+                    FindExecutable(path, ManagerReader.GetParent(path), res);
+                    return new List<string>(){(res.ToString())};
+                    //return RecommendedProgramsWindows(ext);
                 case PlatformID.MacOSX:
                     return RecommendedProgramsMac(ext);
             }
@@ -832,23 +842,43 @@ namespace Library.ManagerReader
             return new List<string>();
         }
 
-        public static void SelectAppProcess(string path)
+        /// <summary>
+        /// Launch an app process depending on the extension of the path
+        /// </summary>
+        /// <param name="path">The given file to open</param>
+        public static void AutoLaunchAppProcess(string path)
         {
             var extension = GetFileExtension(path);
-            var recommended = RecommendedPrograms(GetOs(), extension);
+            var recommended = RecommendedPrograms(GetOs(), extension, path);
             if (recommended.Count != 0)
-                LaunchAppProcess(recommended[0], extension);
+                LaunchAppProcess(recommended[0], path);
             else
-                LaunchAppProcess(ConfigLoader.ConfigLoader.GetOneSetting(extension), path);
+            {
+                string? app = ConfigLoader.ConfigLoader.AppSettings.Get(extension);
+                if (app is null) return;
+                LaunchAppProcess(app, path);
+            }
         }
-
+        
+        /// <summary>
+        /// Launch an app process with the application
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="obj"></param>
         public static void LaunchAppProcess(string app, string obj)
         {
             var process = new Process();
             var startInfo = process.StartInfo;
             startInfo.FileName = app;
-            startInfo.Arguments = obj;
-            process.Start();
+            startInfo.Arguments = "\'" + obj.Replace('/','\\') + "\'";
+            try
+            {
+                process.Start();
+            }
+            catch
+            {
+                throw new AccessException("Cannot open this type of file !", "LaunchAppProcess");
+            }
         }
 
         #endregion

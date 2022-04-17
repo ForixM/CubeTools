@@ -8,21 +8,18 @@
              x:Class="CubeTools_UI.Views.PathsBar">
 	<!-- Link between DataContext and ViewModel -->
 	<Design.DataContext>
-		<viewModels:PathsBarViewModel>
-		</viewModels:PathsBarViewModel>
+		<viewModels:PathsBarViewModel/>
 	</Design.DataContext>
 	
-	<ScrollViewer HorizontalScrollBarVisibility="Disabled"
-                                  VerticalScrollBarVisibility="Auto">
-		<ListBox Name="Items" Items="{Binding Items}" CornerRadius="0 30 0 30"
-				 Background="#D3D3D5" Margin="5">
+	<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+		<ListBox Items="{Binding Items}" CornerRadius="0 30 0 30" Background="#D3D3D5" Margin="5">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<Button Click="OnSelected">
+					<Button Button.Click="OnClicked">
 						<WrapPanel>
 							<Image Source="../Assets/folder.ico" Height="20"/>
 							<TextBlock Text="{Binding Name}" Margin="5"/>
-							<TextBlock Text="{Binding Size}" Margin="5"/>
+							<TextBlock Text="{Binding SizeXaml}" Margin="5"/>
 						</WrapPanel>
 					</Button>
 				</DataTemplate>

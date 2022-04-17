@@ -1,8 +1,13 @@
+using System;
+using System.IO;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
+using Library.ManagerExceptions;
 using Library.Pointers;
+using MouseButton = Avalonia.Remote.Protocol.Input.MouseButton;
 
 namespace CubeTools_UI.Views
 {
@@ -21,12 +26,27 @@ namespace CubeTools_UI.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void OnSelected(object? sender, RoutedEventArgs e)
+        private void OnClicked(object? sender, RoutedEventArgs e)
         {
             if (((Button) e.Source!)?.DataContext is FileType context)
             {
-                ViewModel.ModelXaml.ModelActionBar.SelectedXaml.Clear();
-                ViewModel.ModelXaml.ModelActionBar.SelectedXaml.Add(context);
+                if (ViewModel.ModelXaml.ModelActionBar.SelectedXaml.Count > 0 && ViewModel.ModelXaml.ModelActionBar.SelectedXaml[0].Path == context.Path)
+                {
+                    try
+                    {
+                        ViewModel.ParentViewModelXaml.AccessPath(context.Path, Directory.Exists(context.Path));
+                    }
+                    catch (Exception exception)
+                    {
+                        if (exception is ManagerException @managerException)
+                            ViewModel.ParentViewModelXaml.ErrorMessageBox(@managerException, $"Error while accessing {context.Path}");
+                    }
+                }
+                else
+                {
+                    ViewModel.ModelXaml.ModelActionBar.SelectedXaml.Clear();
+                    ViewModel.ModelXaml.ModelActionBar.SelectedXaml.Add(context);
+                }
             }
         }
     }

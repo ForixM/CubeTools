@@ -5,7 +5,7 @@ using CubeTools_UI.ViewModels;
 
 namespace CubeTools_UI.Views
 {
-    public partial class TopBar : UserControl
+    public class TopBar : UserControl
     {
         public static TopBarViewModel ViewModel;
         public TopBar()

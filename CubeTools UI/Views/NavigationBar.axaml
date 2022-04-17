@@ -61,14 +61,13 @@
 				<!-- Fifth column : Path bar-->
 				<Grid Grid.Column="4">
 					<Border CornerRadius="4" Background="White" Margin="0 1" Width="490">
-						<TextBox KeyDown="EditCurrentPath" Watermark="Enter a path" Text="{Binding CurrentPath, Mode=TwoWay}" />
+						<TextBox Name="CurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" Text="{Binding CurrentPath, Mode=OneWay}" />
 					</Border>
 				</Grid>
 				<Grid Grid.Column="5">
 					<Button Command="{Binding }"></Button>
 					<Button Classes="TopBar" Name="SettingButton" Command="{Binding SettingBtnClick}">
-						<Image Source="/Assets/setting.ico"
-							   Height="25" />
+						<Image Source="/Assets/setting.ico" Height="25" />
 					</Button>
 				</Grid>
 			</Grid>

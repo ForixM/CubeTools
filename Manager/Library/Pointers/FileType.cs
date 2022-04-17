@@ -36,6 +36,7 @@ namespace Library.Pointers
         public string Name{ get => _name; set => _name = value; }
         public string Type { get => _type; set => _type = value; }
         public long Size { get => _size; set => _size = value; }
+        public string SizeXaml => ManagerReader.ManagerReader.ByteToPowByte(Size);
         // Date
         public string Date { get => _date; set => _date = value; }
         public string LastDate{ get => _lastDate; set => _lastDate = value; }

@@ -36,52 +36,25 @@ namespace CubeTools_UI.ViewModels
         public PathsBarViewModel ViewModelPathsBar;
         public PathsBarViewModel ViewModelPathsBarXaml => ViewModelPathsBar;
 
-        
-        private ObservableCollection<FileType> items;
-        public ObservableCollection<FileType> Items
-        {
-            get => ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            set
-            {
-                foreach (var ft in value)
-                {
-                    items.Add(ft);
-                }
-                this.RaiseAndSetIfChanged(ref items, value);
-            }
-        }
-        
-        // Children
-        public string CurrentPath
-        {
-            get => Model.ModelNavigationBar.DirectoryPointer.Path;
-            set
-            {
-                if (Directory.Exists(value))
-                {
-                    string val = Model.ModelNavigationBar.DirectoryPointer.Path;
-                    this.RaiseAndSetIfChanged(ref val, value);
-                    if (Model.ModelNavigationBar.DirectoryPointer.Path != val)
-                        ChangeDirectory(ref val);
-                }
-            }
-        }
-
         // CTOR
         public MainWindowViewModel()
         {
             Model = new MainWindowModel(this);
             // ActionBar : Setting up ModelXaml
             ViewModelActionBar = ActionBar.ViewModel;
+            ActionBar.ViewModel.ModelXaml = Model;
             ViewModelActionBar.ModelXaml = Model;
             // LinkBar
             ViewModelLinkBar = LinkBar.ViewModel;
+            LinkBar.ViewModel.ModelXaml = Model;
             ViewModelLinkBar.ModelXaml = Model;
             // NavigationBar
             ViewModelNavigationBar = NavigationBar.ViewModel;
+            NavigationBar.ViewModel.ModelXaml = Model;
             ViewModelNavigationBar.ModelXaml = Model;
             // PathsBar
             ViewModelPathsBar = PathsBar.ViewModel;
+            PathsBar.ViewModel.ModelXaml = Model;
             ViewModelPathsBar.ModelXaml = Model;
             // Initialize References of Models
             Model.Initialize();
@@ -90,9 +63,11 @@ namespace CubeTools_UI.ViewModels
                 // Setting up loaded directory
                 Model.ModelNavigationBar.DirectoryPointer = new DirectoryType(Directory.GetCurrentDirectory());
             }
-            catch (ManagerException e)
+            catch (Exception e)
             {
-                ErrorMessageBox(e, e.Errorstd);
+                if (e is ManagerException @managerException)
+                    ErrorMessageBox(@managerException, "A critical error occured while loading the directory");
+                ErrorMessageBox(new SystemErrorException("Critical error occured"), "A critical error occured while loading the directory");
             }
             // Referencing Models
             ViewModelActionBar.ModelXaml = Model;
@@ -106,13 +81,14 @@ namespace CubeTools_UI.ViewModels
             ViewModelPathsBar.ModelPathsBar = Model.ModelPathsBar;
             // Referencing THIS
             ViewModelNavigationBar.ParentViewModelXaml = this;
+            ViewModelPathsBar.ParentViewModelXaml = this;
             // Setting up current path
-            CurrentPath = Model.ModelNavigationBar.DirectoryPointer.Path;
-            Model.ModelNavigationBar.QueuePointers = new List<string>(){CurrentPath};
+            ViewModelNavigationBar.CurrentPath = Model.ModelNavigationBar.DirectoryPointer.Path;
+            // Setting up Queue
+            Model.ModelNavigationBar.QueuePointers = new List<string>(){ViewModelNavigationBar.CurrentPath};
             Model.ModelNavigationBar.QueueIndex = 0;
-            // Setting up paths
-            items = new ObservableCollection<FileType>();
-            Items = ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);;
+            // Setting up Items
+            ViewModelPathsBar.Items = ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);;
         }
         
         /// <summary>
@@ -120,7 +96,6 @@ namespace CubeTools_UI.ViewModels
         /// </summary>
         public IMsBoxWindow<ButtonResult> ErrorMessageBox(ManagerException e, string custom = "", ButtonEnum buttonEnum = ButtonEnum.Ok, Icon icon = Icon.None)
         {
-            var content = $"{e.Errorstd}"+ "\n" + $"{custom}";
             switch (e)
             {
                 case PathNotFoundException :
@@ -150,28 +125,47 @@ namespace CubeTools_UI.ViewModels
                     custom = "The given path is incorrect, make sure it does not contain one of the invalid characters"; 
                     break;
             }
+            var content = $"{e.Errorstd}"+ "\n" + $"{custom}";
             var messageBox =  MessageBoxManager.GetMessageBoxStandardWindow(e.ErrorType, content, buttonEnum, icon);
             messageBox.Show();
             return messageBox;
         }
         
-        public void ChangeDirectory(ref string path)
+        public void AccessPath(string path, bool isdir=true)
         {
-            // Modify the directory
-            Model.ModelNavigationBar.DirectoryPointer.ChangeDirectory(path);
-            // Setting up the Path for UI
-            CurrentPath = path;
-            // Modified ListBox associated
-            Items = ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            // Adding path to queue
-            Model.ModelNavigationBar.QueuePointers.Add(path);
-            if (Model.ModelNavigationBar.QueuePointers.Count >= 9)
+            if (!isdir)
             {
-                Model.ModelNavigationBar.QueuePointers.RemoveAt(0);
-                Model.ModelNavigationBar.QueueIndex--;
+                ManagerReader.AutoLaunchAppProcess(path);
+            }
+            else
+            {
+                // Modify the directory
+                try
+                {
+                    Model.ModelNavigationBar.DirectoryPointer.ChangeDirectory(path);
+                }
+                catch (Exception e)
+                {
+                    if (e is ManagerException @managerException)
+                        ErrorMessageBox(@managerException, "A critical error occured while loading the directory");
+                    ErrorMessageBox(new SystemErrorException("Critical error occured"),
+                        "A critical error occured while loading the directory");
+                }
+
+                // Setting up the Path for UI
+                //ViewModelNavigationBar.CurrentPath = Model.ModelNavigationBar.DirectoryPointer.Path;
+                // Modified ListBox associated
+                ViewModelPathsBar.Items =
+                    ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+                // Adding path to queue
+                Model.ModelNavigationBar.QueuePointers.Add(path);
+                if (Model.ModelNavigationBar.QueuePointers.Count >= 9)
+                {
+                    Model.ModelNavigationBar.QueuePointers.RemoveAt(0);
+                    Model.ModelNavigationBar.QueueIndex--;
+                }
             }
             Model.ModelActionBar.SelectedXaml = new List<FileType>();
-        }
-
+            }
     }
 }

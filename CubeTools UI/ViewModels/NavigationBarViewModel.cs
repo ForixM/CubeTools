@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Avalonia.Controls;
+using Avalonia.Data;
 using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
@@ -38,6 +40,25 @@ namespace CubeTools_UI.ViewModels
             _modelNavigationBar = null;
             _parentParentViewModel = null;
         }
+        
+        public string CurrentPath
+        {
+            get => _parentParentViewModel is null ? Directory.GetCurrentDirectory() : _parentParentViewModel.Model.ModelNavigationBar.DirectoryPointer.Path;
+            set
+            {
+                if (Directory.Exists(value))
+                {
+                    if (value != _parentParentViewModel.Model.ModelNavigationBar.DirectoryPointer.Path)
+                    {
+                        _parentParentViewModel.AccessPath(value);
+                    }
+
+                    this.RaiseAndSetIfChanged(ref value, value);
+                }
+                else 
+                    _parentParentViewModel.ErrorMessageBox(new PathNotFoundException("Unable to access the directory"), $"Directory {value} not found");
+            }
+        }
 
         // All functions are called in XAML code
 
@@ -54,10 +75,14 @@ namespace CubeTools_UI.ViewModels
                 try
                 {
                     string path = _modelNavigationBar.QueuePointers[_modelNavigationBar.QueueIndex];
-                    _model.ViewModel.ChangeDirectory(ref path);
+                    _model.ViewModel.AccessPath(path);
                 }
-                catch (ManagerException e)
-                { ParentViewModelXaml.ErrorMessageBox(e, "Unable to get the last directory : it might not exist anymore"); }
+                catch (Exception e)
+                {
+                    if (e is ManagerException @managerException)
+                        ParentViewModelXaml.ErrorMessageBox(@managerException, $"Unable to get the last directory");
+                    _modelNavigationBar.QueueIndex--;
+                }
             }
         }
 
@@ -71,12 +96,13 @@ namespace CubeTools_UI.ViewModels
                 _modelNavigationBar.QueueIndex++;
                 try
                 {
-                    string path = _modelNavigationBar.QueuePointers[_modelNavigationBar.QueueIndex];
-                    _model.ViewModel.ChangeDirectory(ref path);
+                    _model.ViewModel.AccessPath(_modelNavigationBar.QueuePointers[_modelNavigationBar.QueueIndex]);
                 }
-                catch (ManagerException e)
+                catch (Exception e)
                 {
-                    ParentViewModelXaml.ErrorMessageBox(e, $"Unable to get the next directory {_modelNavigationBar.QueuePointers[_modelNavigationBar.QueueIndex]}");
+                    if (e is ManagerException @managerException)
+                        ParentViewModelXaml.ErrorMessageBox(@managerException, $"Unable to get the next directory");
+                    _modelNavigationBar.QueueIndex--;
                 }
             }
         }
@@ -107,12 +133,12 @@ namespace CubeTools_UI.ViewModels
             _modelNavigationBar.QueueIndex = _modelNavigationBar.QueuePointers.Count-1;
             try
             {
-                string path = _modelNavigationBar.QueuePointers[_modelNavigationBar.QueueIndex];
-                _model.ViewModel.ChangeDirectory(ref path);
+                _model.ViewModel.AccessPath(_modelNavigationBar.QueuePointers[_modelNavigationBar.QueueIndex]);
             }
-            catch (ManagerException e)
+            catch (Exception e)
             {
-                ParentViewModelXaml.ErrorMessageBox(e, "Unable to get parent");
+                if ( e is ManagerException @managerException)
+                    ParentViewModelXaml.ErrorMessageBox(@managerException, "Unable to get parent");
             }
         }
 
