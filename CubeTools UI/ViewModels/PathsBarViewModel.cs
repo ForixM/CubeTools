@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using CubeTools_UI.Models;
+using CubeTools_UI.Views;
 using Library.ManagerReader;
 using Library.Pointers;
 using ReactiveUI;
@@ -8,6 +9,9 @@ namespace CubeTools_UI.ViewModels;
 
 public class PathsBarViewModel : ReactiveObject
 {
+
+    public PathsBar AttachedView;
+    
     private MainWindowModel? _model;
     public MainWindowModel? ModelXaml
     {
@@ -40,10 +44,11 @@ public class PathsBarViewModel : ReactiveObject
     }
 
     
-    public PathsBarViewModel()
+    public PathsBarViewModel(PathsBar attachedView)
     {
         _model = null;
         _modelPathsBar = null;
+        AttachedView = attachedView;
     }
     
 }

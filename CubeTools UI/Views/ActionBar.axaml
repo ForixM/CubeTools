@@ -24,6 +24,7 @@
 			<ColumnDefinition Width="45" />
 			<ColumnDefinition Width="45" />
 			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45"/>
 			<ColumnDefinition />
 			<ColumnDefinition Width="45" />
 			<ColumnDefinition Width="45" />
@@ -38,15 +39,15 @@
 				</StackPanel>
 			</Button>
 		</Grid>
-		<Grid Grid.Column="0">
+		<Grid Grid.Column="1">
 			<Button Classes="Manager" Name="AddDirButton" Command="{Binding CreateDir}">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets\add.ico"/>
+					<Image Classes="Manager" Source="/Assets\add-folder.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
 		<!-- Second column : Copy function-->
-		<Grid Grid.Column="1">
+		<Grid Grid.Column="2">
 			<Button Classes="Manager" Name="CopyButton" Command="{Binding Copy}">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets\copy.ico"/>
@@ -54,7 +55,7 @@
 			</Button>
 		</Grid>
 		<!-- Third column : Cut Button -->
-		<Grid Grid.Column="2">
+		<Grid Grid.Column="3">
 			<Button Classes="Manager" Name="CutButton" Command="{Binding Cut}">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/cut.ico"/>
@@ -62,7 +63,7 @@
 			</Button>
 		</Grid>
 		<!-- Fourth column : Paste button -->
-		<Grid Grid.Column="3">
+		<Grid Grid.Column="4">
 			<Button Classes="Manager" Name="PasteButton" Command="{Binding Paste}">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/paste.ico"/>
@@ -70,7 +71,7 @@
 			</Button>
 		</Grid>
 		<!-- Fifth column : Rename button -->
-		<Grid Grid.Column="4">
+		<Grid Grid.Column="5">
 			<Button Classes="Manager" Name="RenameButton" Command="{Binding Rename}">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/rename.ico"/>
@@ -78,7 +79,7 @@
 			</Button>
 		</Grid>
 		<!-- Sixth column : Delete button -->
-		<Grid Grid.Column="5">
+		<Grid Grid.Column="6">
 			<Button Classes="Manager" Name="DeleteButton" Command="{Binding Delete}">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/delete.ico"/>

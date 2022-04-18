@@ -4,6 +4,7 @@ using System.Linq;
 using Avalonia;
 using CubeTools_UI.Models;
 using CubeTools_UI.Views;
+using DynamicData;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
@@ -43,7 +44,9 @@ public class ActionBarViewModel : ReactiveObject
     {
         try
         {
-            ModelXaml.ModelNavigationBar.DirectoryPointer.AddFile("New File","txt");
+            var ft = ManagerWriter.Create();
+            ModelXaml.ModelNavigationBar.DirectoryPointer.ChildrenFiles.Add(ft);
+            ModelXaml.ViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ModelXaml.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
         catch (Exception e)
         {
@@ -61,8 +64,9 @@ public class ActionBarViewModel : ReactiveObject
     {
         try
         {
-            ModelXaml.ModelNavigationBar.DirectoryPointer.AddDir( 
-                ManagerReader.GenerateNameForModification(ModelXaml.ModelNavigationBar.DirectoryPointer.Path + "/New Folder"));
+            var ft = ManagerWriter.CreateDir();
+            ModelXaml.ModelNavigationBar.DirectoryPointer.ChildrenFiles.Add(ft);
+            ModelXaml.ViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ModelXaml.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
         catch (Exception e)
         {
@@ -111,6 +115,7 @@ public class ActionBarViewModel : ReactiveObject
                 ManagerWriter.Delete(ft);
                 _model.ModelNavigationBar.DirectoryPointer.Remove(ft);
             }
+            ModelXaml.ViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ModelXaml.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
         catch (Exception e)
         {
@@ -152,15 +157,20 @@ public class ActionBarViewModel : ReactiveObject
             {
                 ManagerWriter.Delete(ft);
                 ModelXaml.ModelNavigationBar.DirectoryPointer.Remove(ft);
+                ModelXaml.ViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ModelXaml.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
             }
             catch (Exception e)
             {
-                if (e is ManagerException @managerException)
+                if (e is CorruptedPointerException or CorruptedDirectoryException)
+                {
+                    ModelXaml.ModelNavigationBar.DirectoryPointer.Remove(ft);
+                    ModelXaml.ViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ModelXaml.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+                }
+                else if (e is ManagerException @managerException)
                 {
                     undestroyed.Add(ft.Path);
                     lastError = managerException;
                 }
-                else throw;
             }
         }
 

@@ -295,7 +295,6 @@ namespace Library.Pointers
             var path = $"{Path}/{name}.{extension}";
             ManagerWriter.ManagerWriter.Create(path, extension);
             var ft = ManagerReader.ManagerReader.ReadFileType(path);
-            ManagerReader.ManagerReader.ReadFileType(ref ft);
             ChildrenFiles.Add(ft);
         }
 

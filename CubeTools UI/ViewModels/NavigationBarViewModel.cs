@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
-using Avalonia.Controls;
-using Avalonia.Data;
 using CubeTools_UI.Models;
+using CubeTools_UI.Views;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using ReactiveUI;
@@ -12,6 +10,9 @@ namespace CubeTools_UI.ViewModels
     public class NavigationBarViewModel : ReactiveObject
     {
         // Pointers
+
+        public NavigationBar AttachedView;
+        
         private MainWindowModel _model;
         public MainWindowModel ModelXaml
         {
@@ -34,30 +35,12 @@ namespace CubeTools_UI.ViewModels
         }
 
         // CTOR
-        public NavigationBarViewModel()
+        public NavigationBarViewModel(NavigationBar attachedView)
         {
             _model = null;
             _modelNavigationBar = null;
             _parentParentViewModel = null;
-        }
-        
-        public string CurrentPath
-        {
-            get => _parentParentViewModel is null ? Directory.GetCurrentDirectory() : _parentParentViewModel.Model.ModelNavigationBar.DirectoryPointer.Path;
-            set
-            {
-                if (Directory.Exists(value))
-                {
-                    if (value != _parentParentViewModel.Model.ModelNavigationBar.DirectoryPointer.Path)
-                    {
-                        _parentParentViewModel.AccessPath(value);
-                    }
-
-                    this.RaiseAndSetIfChanged(ref value, value);
-                }
-                else 
-                    _parentParentViewModel.ErrorMessageBox(new PathNotFoundException("Unable to access the directory"), $"Directory {value} not found");
-            }
+            AttachedView = attachedView;
         }
 
         // All functions are called in XAML code
@@ -143,13 +126,20 @@ namespace CubeTools_UI.ViewModels
         }
 
         /// <summary>
-        ///     - Action : <br></br>
-        ///     - XAML : <br></br>
-        ///     - Implementation :
+        /// Binding Method : Reload the given directory
         /// </summary>
         public void SyncBtnClick()
         {
-            // TODO Add OneDrive implementation
+            try
+            {
+                _parentParentViewModel.Model.ModelNavigationBar.DirectoryPointer.SetChildrenFiles();
+                _parentParentViewModel.ViewModelPathsBarXaml.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(_parentParentViewModel.Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            }
+            catch (Exception e)
+            {
+                if (e is ManagerException @managerException)
+                    _parentParentViewModel.ErrorMessageBox(@managerException, "Enable to reload the directory");
+            }
         }
 
         /// <summary>

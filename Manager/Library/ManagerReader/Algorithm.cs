@@ -39,8 +39,7 @@ namespace Library.ManagerReader
         {
             // If the given path does not exist
             if (!File.Exists(path) && !Directory.Exists(path))
-                throw new PathNotFoundException("the given path " + path + " does not exist",
-                    "GenerateNameForModification");
+                return path;
 
             var res = path;
             var dir = GetParent(path); // Access Exception, PathNotFoundException, ManagerException

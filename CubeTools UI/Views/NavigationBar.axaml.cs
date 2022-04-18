@@ -1,20 +1,21 @@
 using System;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
-using Library.ManagerExceptions;
 
 namespace CubeTools_UI.Views
 {
     public class NavigationBar : UserControl
     {
         public static NavigationBarViewModel ViewModel;
+        public TextBox CurrentPathXaml;
+        
         public NavigationBar()
         {
             InitializeComponent();
-            ViewModel = new NavigationBarViewModel();
+            CurrentPathXaml = this.FindControl<TextBox>("CurrentPath");
+            ViewModel = new NavigationBarViewModel(this);
             DataContext = ViewModel;
         }
 
@@ -28,7 +29,7 @@ namespace CubeTools_UI.Views
             if (e.Key != Key.Enter) return;
             if (((TextBox) sender!)?.DataContext is NavigationBarViewModel navigationBarViewModel)
             {
-                navigationBarViewModel.CurrentPath = ((TextBox) sender).Text;
+                navigationBarViewModel.ParentViewModelXaml.AccessPath(((TextBox) sender).Text);
             }
         }
     }

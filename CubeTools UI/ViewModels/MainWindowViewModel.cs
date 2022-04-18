@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using Avalonia.Controls;
+using Avalonia.Media.Imaging;
 // CubeTools UI's Imports
 using CubeTools_UI.Models;
 using CubeTools_UI.Views;
@@ -14,7 +16,9 @@ using Library.Pointers;
 // UI's Imports
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.BaseWindows.Base;
+using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
+using MessageBox.Avalonia.Models;
 using ReactiveUI;
 
 namespace CubeTools_UI.ViewModels
@@ -83,9 +87,9 @@ namespace CubeTools_UI.ViewModels
             ViewModelNavigationBar.ParentViewModelXaml = this;
             ViewModelPathsBar.ParentViewModelXaml = this;
             // Setting up current path
-            ViewModelNavigationBar.CurrentPath = Model.ModelNavigationBar.DirectoryPointer.Path;
+            ViewModelNavigationBar.AttachedView.CurrentPathXaml.Text = Model.ModelNavigationBar.DirectoryPointer.Path;
             // Setting up Queue
-            Model.ModelNavigationBar.QueuePointers = new List<string>(){ViewModelNavigationBar.CurrentPath};
+            Model.ModelNavigationBar.QueuePointers = new List<string>(){Model.ModelNavigationBar.DirectoryPointer.Path};
             Model.ModelNavigationBar.QueueIndex = 0;
             // Setting up Items
             ViewModelPathsBar.Items = ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);;
@@ -94,7 +98,7 @@ namespace CubeTools_UI.ViewModels
         /// <summary>
         ///  XAML Method : Display an Error Message Box for information purpose
         /// </summary>
-        public IMsBoxWindow<ButtonResult> ErrorMessageBox(ManagerException e, string custom = "", ButtonEnum buttonEnum = ButtonEnum.Ok, Icon icon = Icon.None)
+        public void ErrorMessageBox(ManagerException e, string custom = "", ButtonEnum buttonEnum = ButtonEnum.Ok, Icon icon = Icon.None)
         {
             switch (e)
             {
@@ -125,21 +129,73 @@ namespace CubeTools_UI.ViewModels
                     custom = "The given path is incorrect, make sure it does not contain one of the invalid characters"; 
                     break;
             }
-            var content = $"{e.Errorstd}"+ "\n" + $"{custom}";
-            var messageBox =  MessageBoxManager.GetMessageBoxStandardWindow(e.ErrorType, content, buttonEnum, icon);
+            var button = new ButtonDefinition();
+            button.Type = ButtonType.Default;
+            button.Name = "OK";
+
+            var parameters = new MessageBoxCustomParams();
+            parameters.Icon = icon;
+            parameters.Height = 200;
+            parameters.Width = 200;
+            parameters.CanResize = true;
+            parameters.ContentHeader = e.Errorstd;
+            parameters.ContentTitle = e.Errorstd;
+            parameters.ContentMessage = $"Message : {e.ErrorType}"+ "\n" + $"Level : {e.CriticalLevel}" + "\n\n" + $"{custom}";
+            parameters.ShowInCenter = true;
+            parameters.ButtonDefinitions = new[] {button};
+            var messageBox =  MessageBoxManager.GetMessageBoxCustomWindow(parameters);
             messageBox.Show();
-            return messageBox;
         }
-        
+
+        /// <summary>
+        /// XAML Method : Display a Properties Box for information purpose
+        /// </summary>
+        /// <param name="ft"></param>
+        /// <returns></returns>
+        public async void PropertiesBox(FileType ft)
+        {
+            var parameters = new MessageBoxCustomParams();
+            parameters.Icon = Icon.Info;
+            parameters.CanResize = false;
+            parameters.Height = 200;
+            parameters.Width = 200;
+            parameters.ContentTitle = $"{ft.Name} Properties\n";
+            parameters.ContentMessage = $"File : {ft.Name}\n" +
+                                        $"Type of file : {ft.Type}\n" +
+                                        $"Open with : ...\n" +
+                                        $"Size : {ft.SizeXaml}\n" +
+                                        $"Created : {ft.Date}\n" +
+                                        $"Modified : {ft.LastDate}\n" +
+                                        $"Accessed : {ft.AccessDate}\n" +
+                                        $"Attributes : Compressed[{ft.Compressed}] Archived[{ft.Archived}]\n" +
+                                        $"             Hidden[{ft.Hidden} Read-Only[{ft.ReadOnly}]\n";
+            parameters.ShowInCenter = true;
+            //parameters.WindowIcon = new WindowIcon(new Bitmap("../Assets"));
+            var messageBox = MessageBoxManager.GetMessageBoxCustomWindow(parameters);
+            await messageBox.Show();
+        }
+
+        /// <summary>
+        /// Access the given path by reloading the current directory or accessing a file
+        /// </summary>
+        /// <param name="path">The given path to access (Either a file or a directory)</param>
+        /// <param name="isdir">Whether it is a directory or not</param>
         public void AccessPath(string path, bool isdir=true)
         {
             if (!isdir)
             {
-                ManagerReader.AutoLaunchAppProcess(path);
+                try
+                {
+                    ManagerReader.AutoLaunchAppProcess(path);
+                }
+                catch (Exception e)
+                {
+                    if (e is ManagerException @managerException)
+                        ErrorMessageBox(@managerException);
+                }
             }
             else
             {
-                // Modify the directory
                 try
                 {
                     Model.ModelNavigationBar.DirectoryPointer.ChangeDirectory(path);
@@ -153,10 +209,9 @@ namespace CubeTools_UI.ViewModels
                 }
 
                 // Setting up the Path for UI
-                //ViewModelNavigationBar.CurrentPath = Model.ModelNavigationBar.DirectoryPointer.Path;
+                ViewModelNavigationBar.AttachedView.CurrentPathXaml.Text = Model.ModelNavigationBar.DirectoryPointer.Path;
                 // Modified ListBox associated
-                ViewModelPathsBar.Items =
-                    ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+                ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
                 // Adding path to queue
                 Model.ModelNavigationBar.QueuePointers.Add(path);
                 if (Model.ModelNavigationBar.QueuePointers.Count >= 9)
@@ -167,5 +222,22 @@ namespace CubeTools_UI.ViewModels
             }
             Model.ModelActionBar.SelectedXaml = new List<FileType>();
             }
+
+        /// <summary>
+        /// Reload the current directory
+        /// </summary>
+        public void ReloadPath()
+        {
+            try
+            {
+                Model.ModelNavigationBar.DirectoryPointer.SetChildrenFiles();
+            }
+            catch (Exception e)
+            {
+                if (e is ManagerException @managerException)
+                    ErrorMessageBox(@managerException);
+            }
+            ViewModelPathsBar.Items = ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+        }
     }
 }
