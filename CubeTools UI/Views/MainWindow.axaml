@@ -32,7 +32,7 @@
         
         <!-- Second row : Top bar for path research-->
 
-        <Grid Grid.Row="1" Background="#FFFFFF">
+        <Grid Grid.Row="1" Background="#FF0000">
             <views:NavigationBar/>
         </Grid>
 
