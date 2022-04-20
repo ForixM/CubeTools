@@ -1,43 +1,44 @@
 ﻿using CubeTools_UI.Models;
 using ReactiveUI;
 
-namespace CubeTools_UI.ViewModels;
-
-public class LinkBarViewModel : ReactiveObject
+namespace CubeTools_UI.ViewModels
 {
-    // INIT
-    private MainWindowModel model;
-    public MainWindowModel ModelXaml
+    public class LinkBarViewModel : ReactiveObject
     {
-        get => model;
-        set => model = value;
-    }
+        // INIT
+        private MainWindowModel model;
+        public MainWindowModel ModelXaml
+        {
+            get => model;
+            set => model = value;
+        }
 
-    private LinkBarModel modelLinkBar;
+        private LinkBarModel modelLinkBar;
 
-    public LinkBarModel ModelLinkBarXaml
-    {
-        get => modelLinkBar;
-        set => modelLinkBar = value;
-    }
-    public LinkBarViewModel(MainWindowModel model)
-    {
-        this.model = model;
-        this.modelLinkBar = model.ModelLinkBar;
-    }
+        public LinkBarModel ModelLinkBarXaml
+        {
+            get => modelLinkBar;
+            set => modelLinkBar = value;
+        }
+        public LinkBarViewModel(MainWindowModel model)
+        {
+            this.model = model;
+            this.modelLinkBar = model.ModelLinkBar;
+        }
 
-    public LinkBarViewModel()
-    {
-        model = null;
-        modelLinkBar = null;
-    }
+        public LinkBarViewModel()
+        {
+            model = null;
+            modelLinkBar = null;
+        }
 
-    #region Bindings
+        #region Bindings
     
 
-    #endregion
+        #endregion
     
-    #region Actions
+        #region Actions
     
-    #endregion
+        #endregion
+    }
 }

@@ -1,22 +1,24 @@
-namespace LibraryFTP;
-
-public class FtpFolder : IFtpItem
+namespace LibraryFTP
 {
-    // private string _parentPath;
-    // public string Name => _name;
-    // public string ParentPath => _parentPath;
-    // public string Path => _parentPath + _name;
-
-    public static FtpFolder ROOT = new FtpFolder("", "/");
     
-    public FtpFolder(string name, string parentPath)
+    public class FtpFolder : IFtpItem
     {
-        this._name = name;
-        this._parentPath = parentPath;
-    }
+        // private string _parentPath;
+        // public string Name => _name;
+        // public string ParentPath => _parentPath;
+        // public string Path => _parentPath + _name;
 
-    public override string ToString()
-    {
-        return $"{{name={_name}}}";
+        public static FtpFolder ROOT = new FtpFolder("", "/");
+    
+        public FtpFolder(string name, string parentPath)
+        {
+            this._name = name;
+            this._parentPath = parentPath;
+        }
+
+        public override string ToString()
+        {
+            return $"{{name={_name}}}";
+        }
     }
 }

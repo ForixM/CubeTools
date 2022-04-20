@@ -1,28 +1,30 @@
 using System.Configuration;
 
-namespace ConfigLoader.Sections.appLauncherSection;
-
-public class applicationsConfig : ConfigurationElementCollection
+namespace ConfigLoader.Sections.appLauncherSection
 {
-    public applicationConfig this[int index]
+    
+    public class applicationsConfig : ConfigurationElementCollection
     {
-        get => BaseGet(index) as applicationConfig;
-        set
+        public applicationConfig this[int index]
         {
-            if (BaseGet(index) != null) BaseRemoveAt(index);
-            BaseAdd(index, value);
+            get => BaseGet(index) as applicationConfig;
+            set
+            {
+                if (BaseGet(index) != null) BaseRemoveAt(index);
+                BaseAdd(index, value);
+            }
         }
-    }
 
-    public new applicationConfig this[string responseString]
-    {
-        get => (applicationConfig) BaseGet(responseString);
-        set
+        public new applicationConfig this[string responseString]
         {
-            if (BaseGet(responseString) != null) BaseRemoveAt(BaseIndexOf(BaseGet(responseString)));
-            BaseAdd(value);
+            get => (applicationConfig) BaseGet(responseString);
+            set
+            {
+                if (BaseGet(responseString) != null) BaseRemoveAt(BaseIndexOf(BaseGet(responseString)));
+                BaseAdd(value);
+            }
         }
+        protected override ConfigurationElement CreateNewElement() => new applicationConfig();
+        protected override object GetElementKey(ConfigurationElement element) => ((applicationConfig) element).Name;
     }
-    protected override ConfigurationElement CreateNewElement() => new applicationConfig();
-    protected override object GetElementKey(ConfigurationElement element) => ((applicationConfig) element).Name;
 }

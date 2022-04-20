@@ -27,19 +27,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
-            <RowDefinition Height="65" />
             <RowDefinition />
         </Grid.RowDefinitions>
         
-        <!-- First row : Main Bar at the top -->
-
-        <Grid Grid.Row="0" VerticalAlignment="Center">
-			<views:TopBar/>
-        </Grid>
-
         <!-- Second row : Top bar for path research-->
 
-        <Grid Grid.Row="1" Background="#FF1B3861">
+        <Grid Grid.Row="1" Background="#FFFFFF">
             <views:NavigationBar/>
         </Grid>
 

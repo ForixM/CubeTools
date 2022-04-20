@@ -1,10 +1,12 @@
 ﻿using ReactiveUI;
 
-namespace CubeTools_UI.ViewModels;
-public class TopBarViewModel : ReactiveObject
+namespace CubeTools_UI.ViewModels
 {
-    public TopBarViewModel()
+    public class TopBarViewModel : ReactiveObject
     {
+        public TopBarViewModel()
+        {
         
+        }
     }
 }

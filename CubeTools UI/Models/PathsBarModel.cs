@@ -2,14 +2,16 @@
 using Library.ManagerReader;
 using Library.Pointers;
 
-namespace CubeTools_UI.Models;
-
-public class PathsBarModel
+namespace CubeTools_UI.Models
 {
-    // Main Model
-    private readonly MainWindowModel _model;
-    public PathsBarModel(MainWindowModel model)
+    public class PathsBarModel
     {
-        _model = model;
+        // Main Model
+        private readonly MainWindowModel _model;
+        public PathsBarModel(MainWindowModel model)
+        {
+            _model = model;
+        }
     }
 }
+

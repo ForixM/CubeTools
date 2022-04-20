@@ -10,9 +10,9 @@ using Library.ManagerReader;
 using Library.ManagerWriter;
 using ReactiveUI;
 
-namespace CubeTools_UI.ViewModels;
-
-public class ActionBarViewModel : ReactiveObject
+namespace CubeTools_UI.ViewModels
+{
+    public class ActionBarViewModel : ReactiveObject
 {
     // REFERENCE TO M
     private MainWindowModel _model;
@@ -205,3 +205,5 @@ public class ActionBarViewModel : ReactiveObject
     #endregion
     
 }
+}
+

@@ -1,36 +1,38 @@
 ﻿using System.Configuration;
 
-namespace ConfigLoader.Sections.appInterfaceSection;
-
-public class stylesConfig : ConfigurationElementCollection
+namespace ConfigLoader.Sections.appInterfaceSection
 {
-    public styleConfig this[int index]
+    
+    public class stylesConfig : ConfigurationElementCollection
     {
-        get => BaseGet(index) as styleConfig;
-        set
+        public styleConfig this[int index]
         {
-            if (BaseGet(index) != null) BaseRemoveAt(index);
-            BaseAdd(index, value);
+            get => BaseGet(index) as styleConfig;
+            set
+            {
+                if (BaseGet(index) != null) BaseRemoveAt(index);
+                BaseAdd(index, value);
+            }
         }
-    }
 
-    public new stylesConfig this[string responseString]
-    {
-        get => (stylesConfig) BaseGet(responseString);
-        set
+        public new stylesConfig this[string responseString]
         {
-            if (BaseGet(responseString) != null) BaseRemoveAt(BaseIndexOf(BaseGet(responseString)));
-            BaseAdd(value);
+            get => (stylesConfig) BaseGet(responseString);
+            set
+            {
+                if (BaseGet(responseString) != null) BaseRemoveAt(BaseIndexOf(BaseGet(responseString)));
+                BaseAdd(value);
+            }
         }
-    }
 
-    protected override ConfigurationElement CreateNewElement()
-    {
-        return new styleConfig();
-    }
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new styleConfig();
+        }
 
-    protected override object GetElementKey(ConfigurationElement element)
-    {
-        return ((styleConfig) element).Name;
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((styleConfig) element).Name;
+        }
     }
 }

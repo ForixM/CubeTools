@@ -1,14 +1,16 @@
 ﻿using System;
 
-namespace Default_SandBox;
-
- // See https://aka.ms/new-console-template for more information
-
-internal class Program
+namespace Default_SandBox
 {
-    static void Main(string[] args)
+    
+    // See https://aka.ms/new-console-template for more information
+
+    internal class Program
     {
-        // Add as many code as you wish
-        throw new Exception("No code found");
+        static void Main(string[] args)
+        {
+            // Add as many code as you wish
+            throw new Exception("No code found");
+        }
     }
 }

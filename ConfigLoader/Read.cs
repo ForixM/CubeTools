@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using ConfigLoader.Sections.appLauncherSection;
 
-namespace ConfigLoader;
-
+namespace ConfigLoader
+{
+    
 public static partial class ConfigLoader
 {
     public static List<Tuple<string, string>> GetAllSettings()
@@ -77,4 +78,5 @@ public static partial class ConfigLoader
 
         return "";
     }
+}
 }

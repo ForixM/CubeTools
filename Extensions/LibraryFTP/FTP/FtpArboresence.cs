@@ -1,26 +1,28 @@
 using System.Collections.Generic;
 
-namespace LibraryFTP;
-
-public class FtpArboresence
+namespace LibraryFTP
 {
-    private List<IFtpItem> _items;
-
-    public List<IFtpItem> Items => _items;
-
-    public FtpArboresence()
+    
+    public class FtpArboresence
     {
-        _items = new List<IFtpItem>();
-    }
+        private List<IFtpItem> _items;
 
-    public override string ToString()
-    {
-        string str = "";
-        foreach (IFtpItem ftpFile in _items)
+        public List<IFtpItem> Items => _items;
+
+        public FtpArboresence()
         {
-            str += ftpFile.ToString() + "\n";
+            _items = new List<IFtpItem>();
         }
 
-        return str;
+        public override string ToString()
+        {
+            string str = "";
+            foreach (IFtpItem ftpFile in _items)
+            {
+                str += ftpFile.ToString() + "\n";
+            }
+
+            return str;
+        }
     }
 }

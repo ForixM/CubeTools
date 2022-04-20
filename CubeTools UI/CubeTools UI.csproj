@@ -41,7 +41,16 @@
         </None>
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\CubeTools CLI\CubeTools CLI.csproj" />
+        <ProjectReference Include="..\Extensions\Default SandBox\Default SandBox.csproj" />
+        <ProjectReference Include="..\Extensions\LibraryFTP\LibraryFTP.csproj" />
+        <ProjectReference Include="..\Extensions\LibraryGoogleDrive\LibraryGoogleDrive.csproj" />
+        <ProjectReference Include="..\Extensions\LibraryOneDrive\LibraryOnedrive.csproj" />
+        <ProjectReference Include="..\Extensions\TestFTP\TestFTP.csproj" />
+        <ProjectReference Include="..\Extensions\TestGoogleDrive\TestGoogleDrive.csproj" />
+        <ProjectReference Include="..\Extensions\TestOneDrive\TestOneDrive.csproj" />
         <ProjectReference Include="..\Manager\Library\Library.csproj" />
+        <ProjectReference Include="..\Manager\Tests\Tests.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Views\ActionBar.axaml.cs">

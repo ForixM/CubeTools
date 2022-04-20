@@ -1,13 +1,16 @@
 ﻿using System.Security;
+using System.Threading.Tasks;
 using Library.ManagerExceptions;
 
-namespace Library.ManagerWriter;
-
-public partial class ManagerWriter
+namespace Library.ManagerWriter
 {
-    public static async Task CopyAsync(string source, string dest)
+    public partial class ManagerWriter
     {
-        await Task.Run( () => Copy(source, dest, true));
-    }
+        public static async Task CopyAsync(string source, string dest)
+        {
+            await Task.Run( () => Copy(source, dest, true));
+        }
     
+    }
 }
+

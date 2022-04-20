@@ -1,22 +1,24 @@
 using System.Configuration;
 
-namespace ConfigLoader.Sections.appLauncherSection;
-
-public class appLauncherConfig : ConfigurationSection
+namespace ConfigLoader.Sections.appLauncherSection
 {
-    [ConfigurationProperty("Applications")]
-    [ConfigurationCollection(typeof(applicationsConfig), AddItemName = "Application")]
-    public applicationsConfig Applications
+    
+    public class appLauncherConfig : ConfigurationSection
     {
-        get
+        [ConfigurationProperty("Applications")]
+        [ConfigurationCollection(typeof(applicationsConfig), AddItemName = "Application")]
+        public applicationsConfig Applications
         {
-            var o = this["Applications"];
-            return o as applicationsConfig;
+            get
+            {
+                var o = this["Applications"];
+                return o as applicationsConfig;
+            }
         }
-    }
 
-    public static appLauncherConfig GetConfig()
-    {
-        return (appLauncherConfig) ConfigurationManager.GetSection("appLauncher") ?? new appLauncherConfig();
+        public static appLauncherConfig GetConfig()
+        {
+            return (appLauncherConfig) ConfigurationManager.GetSection("appLauncher") ?? new appLauncherConfig();
+        }
     }
 }

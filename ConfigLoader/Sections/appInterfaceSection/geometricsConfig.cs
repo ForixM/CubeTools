@@ -1,36 +1,38 @@
 ﻿using System.Configuration;
 
-namespace ConfigLoader.Sections.appInterfaceSection;
-
-public class geometricsConfig : ConfigurationElementCollection
+namespace ConfigLoader.Sections.appInterfaceSection
 {
-    public geometricConfig this[int index]
+    
+    public class geometricsConfig : ConfigurationElementCollection
     {
-        get => BaseGet(index) as geometricConfig;
-        set
+        public geometricConfig this[int index]
         {
-            if (BaseGet(index) != null) BaseRemoveAt(index);
-            BaseAdd(index, value);
+            get => BaseGet(index) as geometricConfig;
+            set
+            {
+                if (BaseGet(index) != null) BaseRemoveAt(index);
+                BaseAdd(index, value);
+            }
         }
-    }
 
-    public new geometricConfig this[string responseString]
-    {
-        get => (geometricConfig) BaseGet(responseString);
-        set
+        public new geometricConfig this[string responseString]
         {
-            if (BaseGet(responseString) != null) BaseRemoveAt(BaseIndexOf(BaseGet(responseString)));
-            BaseAdd(value);
+            get => (geometricConfig) BaseGet(responseString);
+            set
+            {
+                if (BaseGet(responseString) != null) BaseRemoveAt(BaseIndexOf(BaseGet(responseString)));
+                BaseAdd(value);
+            }
         }
-    }
 
-    protected override ConfigurationElement CreateNewElement()
-    {
-        return new geometricConfig();
-    }
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new geometricConfig();
+        }
 
-    protected override object GetElementKey(ConfigurationElement element)
-    {
-        return ((geometricConfig) element).Name;
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((geometricConfig) element).Name;
+        }
     }
 }

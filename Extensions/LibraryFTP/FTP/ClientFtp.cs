@@ -6,8 +6,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Library.Pointers;
 
-namespace LibraryFTP;
-
+namespace LibraryFTP
+{
+    
 public class ClientFtp
 {
     private string _host = "ftp://";
@@ -204,4 +205,5 @@ public class ClientFtp
         request.RenameTo = Uri.UnescapeDataString((item.ParentPath == "/" ? "": item.ParentPath)+"/"+newName);
         FtpWebResponse response = (FtpWebResponse) request.GetResponse();
     }
+}
 }
