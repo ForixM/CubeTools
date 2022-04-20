@@ -1,11 +1,11 @@
 # 🟨 CubeTools
 
 
-###▶ Cross-platform file explorer with unique features
+### ▶ Cross-platform file explorer with unique features
 by KM3 
 
 
-###▰▰▰▰▰▰▰/ Summary /▰▰▰▰▰▰▰
+### ▰▰▰▰▰▰▰/ Summary /▰▰▰▰▰▰▰
 
 
 - 🟨 ⌈ Our solution ⌋
@@ -15,7 +15,7 @@ by KM3
 ___
 
 
-###🟨 ⌈ Our solution ⌋
+### 🟨 ⌈ Our solution ⌋
 
 
 CubeTools is a file explorer made for you ! It allows you to make your workflow stronger than ever !
@@ -27,7 +27,7 @@ And this in a **100% open-source and 100% free package** ! Enjoy !
 ___
 
 
-###🗒️ ⌈ Features ⌋
+### 🗒️ ⌈ Features ⌋
 
 
 CubeTools includes many unique features:
@@ -38,17 +38,17 @@ CubeTools includes many unique features:
 ___
 
 
-###⬇️ ⌈ Download ⌋
+### ⬇️ ⌈ Download ⌋
 
 
-###⏰ ▶ Available very soon !
+### ⏰ ▶ Available very soon !
 
 
 **Download link :** _⌈ AVAILABLE SOON ⌋_
 ___
 
 
-###💖 ⌈ About us ⌋
+### 💖 ⌈ About us ⌋
 
 KM3 is a team of 4 French students at **EPITA - Ecole d'Ingénieur Informatique (PARIS)** aged of 18 and 19 years old.
 
@@ -59,7 +59,8 @@ And that's where CubeTools comes in ! With a beautiful, modern, powerful and ful
 ___
 
 
-###🖇️ ⌈ Links ⌋
+### 🖇️ ⌈ Links ⌋
+
 📣 **Discord :** [Open in Discord](https://discord.gg/KmGKaq29mC)
 
 🌐 **Website :**
