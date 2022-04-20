@@ -9,19 +9,40 @@
 		<StyleInclude Source="/Styles/Styles.axaml"/>
 	</UserControl.Styles>
 	
-	<ListBox Background="#FF1B3861">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="114"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		
+		<Grid Grid.Row="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="100"/>
+				<ColumnDefinition Width="150"/>
+			</Grid.ColumnDefinitions>
+			
+			<Grid Grid.Column="0">
+				<Image Source="/Assets/CubeToolsIcons/CubeTools.ico" Margin="25 0 0 0" Width="70"/>
+			</Grid>
+			<Grid Grid.Column="1">
+				<Image Source="/Assets/CubeToolsIcons/CubeToolsName.ico" Margin="0 0 25 0" Width="125"/>
+			</Grid>
+		</Grid>
+		
+		<Grid Grid.Row="1">
+			<ListBox>
 		<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="HomeButton" Command="{Binding GoToHomeBtnClick}">
+			<Button Classes="DirectoryList" Name="FavoritesButton" Command="{Binding GoToHomeBtnClick}">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/home.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Home"/>
+					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Favorites.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Favorites"/>
 				</StackPanel>
 			</Button>
 		</ListBoxItem>
 		<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="DesktopButton" Command="{Binding GoToDesktopBtnClick}">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/desktop.ico"/>
+					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Desktop.ico"/>
 					<TextBlock Classes="DirectoryList" Text="Desktop"/>
 				</StackPanel>
 			</Button>
@@ -29,34 +50,70 @@
 		<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="DocumentsButton" Command="{Binding GoToDocumentsBtnClick}">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/document.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Picture"/>
+					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Documents.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Documents"/>
 				</StackPanel>
 			</Button>
 		</ListBoxItem>
 		<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="DownloadButton" Command="{Binding GoToDownloadBtnClick}">
+			<Button Classes="DirectoryList" Name="ImagesButton" Command="{Binding GoToDownloadBtnClick}">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/downloads.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Download"/>
+					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Images.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Images"/>
 				</StackPanel>
 			</Button>
 		</ListBoxItem>
 		<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="PictureButton" Command="{Binding GoToPictureBtnClick}">
+			<Button Classes="DirectoryList" Name="DownloadsBtton" Command="{Binding GoToPictureBtnClick}">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/picture.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Picture"/>
+					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Downloads.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Downloads"/>
 				</StackPanel>
 			</Button>
 		</ListBoxItem>
 		<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="TrashButton" Command="{Binding GoToTrashBtnClick}">
+			<Button Classes="DirectoryList" Name="MusicButton" Command="{Binding GoToTrashBtnClick}">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/trash.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Trash"/>
+					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Music.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Music"/>
 				</StackPanel>
 			</Button>
 		</ListBoxItem>
+		<ListBoxItem Height="57">
+			<Button Classes="DirectoryList" Name="Videos" Command="{Binding GoToTrashBtnClick}">
+				<StackPanel VerticalAlignment="Center">
+					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Videos.ico"/>
+					<TextBlock Classes="DirectoryList" Text="Videos"/>
+				</StackPanel>
+			</Button>
+		</ListBoxItem>
+				<ListBoxItem Height="57">
+			<Button Classes="DirectoryList" Name="FTP" Command="{Binding GoToTrashBtnClick}">
+				<StackPanel VerticalAlignment="Center">
+					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Ftp.ico"/>
+					<TextBlock Classes="DirectoryList" Text="OneDrive"/>
+				</StackPanel>
+			</Button>
+		</ListBoxItem>
+				<ListBoxItem Height="57">
+					<Button Classes="DirectoryList" Name="OneDrive" Command="{Binding GoToTrashBtnClick}">
+						<StackPanel VerticalAlignment="Center">
+							<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/OneDrive.ico"/>
+							<TextBlock Classes="DirectoryList" Text="OneDrive"/>
+						</StackPanel>
+					</Button>
+				</ListBoxItem>
+				<ListBoxItem Height="57">
+					<Button Classes="DirectoryList" Name="GoogleDrive" Command="{Binding GoToTrashBtnClick}">
+						<StackPanel VerticalAlignment="Center">
+							<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/GoogleDrive.ico"/>
+							<TextBlock Classes="DirectoryList" Text="GoogleDrive"/>
+						</StackPanel>
+					</Button>
+				</ListBoxItem>
 	</ListBox>
+		</Grid>
+	</Grid>
+	
+	
 </UserControl>

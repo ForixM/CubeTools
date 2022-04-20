@@ -9,10 +9,9 @@
 
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CubeTools_UI.Views.MainWindow"
-        Icon="/Assets/cubetools.ico"
         Title="CubeTools"
-        Width="800" Height="450"
-        MinHeight="420" MinWidth="650"
+        Width="1000" Height="750"
+        MinWidth="750" MinHeight="450" 
         WindowStartupLocation="CenterScreen"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="-1">
@@ -32,45 +31,40 @@
         
         <!-- Second row : Top bar for path research-->
 
-        <Grid Grid.Row="1" Background="#FF0000">
-            <views:NavigationBar/>
-        </Grid>
-
-        <!-- Third row : Main Part of th UI -->
-
-        <Grid Grid.Row="2">
-            
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-
-            <!-- First column : Left part for static links-->
-
+            
             <Grid Grid.Column="0">
-				<views:LinkBar/>
+                <views:LinkBar/>
             </Grid>
-
-            <!-- Top buttons for creation, deletion ... -->
-
-            <Grid Grid.Column="1" Background="#FF1B3861">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="45" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+            
+            <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="65" />
+                        <RowDefinition Height="45" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
                 
-                <!-- First Row : Actions buttons-->
+                    <!-- First Row : Actions buttons-->
 				
-                <Grid Grid.Row="0">
-                    <views:ActionBar/>
-                </Grid>
+                    <Grid Grid.Row="0">
+                        <views:NavigationBar/>
+                    </Grid>
+                    
+                    <Grid Grid.Row="1">
+                        <views:ActionBar/>
+                    </Grid>
                 
-                <!-- Second row : files and directories list -->
-                <Grid Grid.Row="1">
-                    <views:PathsBar/>
-                </Grid>
+                    <!-- Second row : files and directories list -->
+                    
+                    <Grid Grid.Row="2">
+                        <views:PathsBar/>
+                    </Grid>
                 
-            </Grid>
+                </Grid>
             
         </Grid>
         

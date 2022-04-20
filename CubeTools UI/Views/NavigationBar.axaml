@@ -20,7 +20,7 @@
 	</Design.DataContext>
 	
 	<Border CornerRadius="8" BorderThickness="3" HorizontalAlignment="Center"
-	        Background="#076CAD" Width="760" Height="47">
+	        Height="47">
 
 		<StackPanel VerticalAlignment="Center">
 			<!-- Adding columns definitions -->
@@ -30,44 +30,44 @@
 					<ColumnDefinition Width="50" />
 					<ColumnDefinition Width="50" />
 					<ColumnDefinition Width="50" />
-					<ColumnDefinition Width="495" />
+					<ColumnDefinition />
 					<ColumnDefinition Width="50" />
 				</Grid.ColumnDefinitions>
 
 				<!-- First column : Left Button -->
 				<Grid Grid.Column="0">
 					<Button Classes="TopBar" Name="LeftButton" Command="{Binding LeftBtnClick}">
-						<Image Source="/Assets/arrow-left.ico" Height="30" />
+						<Image Source="/Assets/CubeToolsIcons/Undo.ico" Height="30" />
 					</Button>
 				</Grid>
 				<!--Second column : Right Button-->
 				<Grid Grid.Column="1">
 					<Button Classes="TopBar" Name="RightButton" Command="{Binding RightBtnClick}">
-						<Image Source="/Assets/arrow-right.ico" Height="30" />
+						<Image Source="/Assets/CubeToolsIcons/Redo.ico" Height="30" />
 					</Button>
 				</Grid>
 				<!--Third column : Up Button-->
 				<Grid Grid.Column="2">
 					<Button Classes="TopBar" Name="UpButton" Command="{Binding UpBtnClick}">
-						<Image Source="/Assets/chevron.ico" Height="30" />
+						<Image Source="/Assets/CubeToolsIcons/Up.ico" Height="30" />
 					</Button>
 				</Grid>
 				<!--Fourth column : Refresh button-->
 				<Grid Grid.Column="3">
 					<Button Classes="TopBar" Name="SyncButton" Command="{Binding SyncBtnClick}">
-						<Image Source="/Assets/sync.ico" Height="20" />
+						<Image Source="/Assets/CubeToolsIcons/Refresh.ico" Height="20" />
 					</Button>
 				</Grid>
 				<!-- Fifth column : Path bar-->
 				<Grid Grid.Column="4">
-					<Border CornerRadius="4" Background="White" Margin="0 1" Width="490">
+					<Border CornerRadius="4" Background="White" Margin="0 1" >
 						<TextBox Name="CurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" />
 					</Border>
 				</Grid>
 				<Grid Grid.Column="5">
 					<Button Command="{Binding }"></Button>
 					<Button Classes="TopBar" Name="SettingButton" Command="{Binding SettingBtnClick}">
-						<Image Source="/Assets/setting.ico" Height="25" />
+						<Image Source="/Assets/CubeToolsIcons/Settings.ico" Height="25" />
 					</Button>
 				</Grid>
 			</Grid>

@@ -26,23 +26,24 @@
 			<ColumnDefinition Width="45" />
 			<ColumnDefinition Width="45"/>
 			<ColumnDefinition />
+			<ColumnDefinition Width="45"/>
+			<ColumnDefinition Width="45"/>
+			<ColumnDefinition Width="45"/>
 			<ColumnDefinition Width="45" />
-			<ColumnDefinition Width="45" />
-			<ColumnDefinition Width="20" />
 		</Grid.ColumnDefinitions>
 
 		<!-- First column : Creation-->
 		<Grid Grid.Column="0">
 			<Button Classes="Manager" Name="AddFileButton" Command="{Binding CreateFile}">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets\add.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Create.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
 		<Grid Grid.Column="1">
 			<Button Classes="Manager" Name="AddDirButton" Command="{Binding CreateDir}">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets\add-folder.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/CreateFolder.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -50,7 +51,7 @@
 		<Grid Grid.Column="2">
 			<Button Classes="Manager" Name="CopyButton" Command="{Binding Copy}">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets\copy.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Copy.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -58,7 +59,7 @@
 		<Grid Grid.Column="3">
 			<Button Classes="Manager" Name="CutButton" Command="{Binding Cut}">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets/cut.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Cut.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -66,7 +67,7 @@
 		<Grid Grid.Column="4">
 			<Button Classes="Manager" Name="PasteButton" Command="{Binding Paste}">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets/paste.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Paste.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -74,7 +75,7 @@
 		<Grid Grid.Column="5">
 			<Button Classes="Manager" Name="RenameButton" Command="{Binding Rename}">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets/rename.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Rename.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -82,24 +83,39 @@
 		<Grid Grid.Column="6">
 			<Button Classes="Manager" Name="DeleteButton" Command="{Binding Delete}">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets/delete.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Delete.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
 		<!-- Seventh column : Search button -->
-		<Grid Grid.Column="7">
-			<Button Classes="Manager" Name="SearchButton" Command="{Binding }">
+		<Grid Grid.Column="8">
+			<Button Classes="Manager" Name="SearchButton" Command="{Binding Rename}">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets/search.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Search.ico"/>
 				</StackPanel>
 			</Button>
-
+		</Grid>
+		<!-- Eight column : Snapdrop button -->
+		<Grid Grid.Column="9">
+			<Button Classes="Manager" Name="SnapdropButton" Command="{Binding Rename}">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Snapdrop.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Eight column : Snapdrop button -->
+		<Grid Grid.Column="10">
+			<Button Classes="Manager" Name="SmashButton" Command="{Binding Rename}">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Smash.ico"/>
+				</StackPanel>
+			</Button>
 		</Grid>
 		<!-- Eighth column : Nearby Send button -->
-		<Grid Grid.Column="8">
-			<Button Classes="Manager" Name="NearBySendButton" Command="{Binding }">
+		<Grid Grid.Column="11">
+			<Button Classes="Manager" Name="NearBySendButton" Command="{Binding Rename}">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets\nearbysend.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/nearbysend.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
