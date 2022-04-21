@@ -12,6 +12,7 @@
 	 
 	 <Design.DataContext>
 		 <vm:ActionBarViewModel>
+			 <x:Type/>
 		 </vm:ActionBarViewModel>
 	 </Design.DataContext>
 	

@@ -4,7 +4,4 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="25"
              x:Class="CubeTools_UI.Views.TopBar">
-
-			
-	
 </UserControl>

@@ -11,7 +11,7 @@ namespace CubeTools_UI.Views
         public TopBar()
         {
             InitializeComponent();
-            ViewModel = new TopBarViewModel();
+            ViewModel = new TopBarViewModel(this);
             DataContext = ViewModel;
         }
 

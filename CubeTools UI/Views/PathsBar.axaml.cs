@@ -16,6 +16,7 @@ namespace CubeTools_UI.Views
     {
         public static PathsBarViewModel? ViewModel;
         public ListBox ItemsXaml;
+        
         public PathsBar()
         {
             InitializeComponent();
@@ -35,11 +36,11 @@ namespace CubeTools_UI.Views
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
             
-            if (((Button) sender!)?.DataContext is FileType context && ViewModel?.ModelXaml != null)
+            if (((Button) sender!)?.DataContext is FileType context && ViewModel?.ParentViewModel != null)
             {
-                ViewModel.ModelXaml.ModelActionBar.SelectedXaml.Clear();
-                ViewModel.ModelXaml.ModelActionBar.SelectedXaml.Add(context);
-                ViewModel.ParentViewModelXaml.AccessPath(context.Path, Directory.Exists(context.Path));
+                ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Clear();
+                ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Add(context);
+                ViewModel.ParentViewModel.AccessPath(context.Path, Directory.Exists(context.Path));
             }
         }
 
@@ -48,9 +49,9 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void OnTaped(object? sender, PointerPressedEventArgs e)
         {
-            ViewModel.ParentViewModelXaml.ErrorMessageBox(new AccessException());
+            ViewModel.ParentViewModel.ErrorMessageBox(new AccessException());
             Button button = ((Button) sender!);
-            if (button.DataContext is FileType context && ViewModel?.ModelXaml != null)
+            if (button.DataContext is FileType context && ViewModel?.ParentViewModel != null)
             {
                 if (File.Exists(context.Path) || Directory.Exists(context.Path))
                 {
@@ -58,18 +59,20 @@ namespace CubeTools_UI.Views
                     button.Background = new SolidColorBrush(new Color(255, 200, 200, 200));
                     if (e.MouseButton is MouseButton.Left)
                     {
-                        ViewModel.ModelXaml.ModelActionBar.SelectedXaml.Clear();
-                        ViewModel.ModelXaml.ModelActionBar.SelectedXaml.Add(context);
+                        ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Clear();
+                        ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Add(context);
                     }
                     else if (e.MouseButton is MouseButton.Right)
                     {
-                        ViewModel.ParentViewModelXaml.PropertiesBox(context);
+                        // TODO Implement view for properties
+                        ViewModel.ParentViewModel.PropertiesBox(context);
                     }
                 }
                 else
                 {
-                    ViewModel.ParentViewModelXaml.ErrorMessageBox(new PathNotFoundException($"{context.Path} does not exist anymore"));
-                    ViewModel.ParentViewModelXaml.ReloadPath();
+                    // TODO
+                    ViewModel.ParentViewModel.ErrorMessageBox(new PathNotFoundException($"{context.Path} does not exist anymore"));
+                    ViewModel.ParentViewModel.ReloadPath();
                 }
             }
         }

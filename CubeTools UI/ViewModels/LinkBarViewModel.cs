@@ -22,7 +22,7 @@ namespace CubeTools_UI.ViewModels
         
         public LinkBarViewModel(LinkBar attachedView)
         {
-            this.AttachedView = attachedView;
+            AttachedView = attachedView;
             StaticPaths = new Dictionary<string, string>
             {
                             {"Home", "C:/..."},

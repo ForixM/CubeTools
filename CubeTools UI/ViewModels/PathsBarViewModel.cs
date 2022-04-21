@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using CubeTools_UI.Models;
+﻿using System.Collections.ObjectModel;
 using CubeTools_UI.Views;
 using Library.ManagerReader;
 using Library.Pointers;
-using ReactiveUI;
 
 namespace CubeTools_UI.ViewModels
 {
@@ -12,30 +9,25 @@ namespace CubeTools_UI.ViewModels
     public class PathsBarViewModel : BaseViewModel
     {
 
-        public PathsBar AttachedView;
-
-        private MainWindowViewModel _parentParentViewModel;
-        public MainWindowViewModel ParentViewModelXaml
-        {
-            get => _parentParentViewModel;
-            set => _parentParentViewModel = value;
-        }
-    
+        #region Models Varaibles
+        
         public ObservableCollection<FileType> Items
         {
-            get => ManagerReader.ListToObservable(_parentParentViewModel.Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            set
-            {
-                var val = ManagerReader.ListToObservable(_parentParentViewModel.Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
-                this.RaiseAndSetIfChanged(ref val, value);
-            }
+            get => ParentViewModel == null ? new ObservableCollection<FileType>() : ManagerReader.ListToObservable(ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            set => AttachedView.ItemsXaml.Items = value;
         }
+        
+        #endregion
 
-    
+        #region References
+        
+        public PathsBar AttachedView;
+        public MainWindowViewModel? ParentViewModel;
+        
+        #endregion
+        
         public PathsBarViewModel(PathsBar attachedView)
         {
-            _model = null;
-            _modelPathsBar = null;
             AttachedView = attachedView;
         }
 

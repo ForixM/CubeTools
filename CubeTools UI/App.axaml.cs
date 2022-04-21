@@ -1,9 +1,6 @@
-using System.Linq;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.Models;
-using CubeTools_UI.ViewModels;
 using CubeTools_UI.Views;
 
 namespace CubeTools_UI

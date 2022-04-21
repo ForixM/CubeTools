@@ -4,10 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Width="250" Height="150"
-        x:Class="CubeTools_UI.Views.PopUps.SearchPopUp"
-        Title="CubeTools - Search">
-    <StackPanel Margin="10">
-        <TextBox Watermark="Enter Name" Name="NameEntered"/>
-        <Button Name="Search" Width="250" Height="50" Click="Search_OnClick"/>
-    </StackPanel>
+        x:Class="CubeTools_UI.Views.SearchPopUp"
+        Title="Search">
+        <StackPanel Margin="10">
+                <TextBox Watermark="Enter Name" Name="TextEntered"/>
+                <Button Name="Search" Width="250" Click="Search_OnClick"/>
+        </StackPanel>
 </Window>

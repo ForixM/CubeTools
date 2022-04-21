@@ -50,6 +50,7 @@ namespace CubeTools_UI.ViewModels
         public NavigationBarViewModel(NavigationBar attachedView)
         {
             AttachedView = attachedView;
+            
             _directoryPointer = new DirectoryType();
             _queuePointers = new List<string>();
             _queueIndex = -1;

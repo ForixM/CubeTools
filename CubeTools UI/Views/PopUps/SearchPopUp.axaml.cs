@@ -1,18 +1,26 @@
 ﻿using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
 using Library.ManagerReader;
 
-namespace CubeTools_UI.Views.PopUps
+namespace CubeTools_UI.Views
 {
     public class SearchPopUp : Window
     {
-        private PathsBarViewModel ParentViewModel;
-        
+        private ActionBarViewModel ParentViewModel;
+
         private TextBox TextEntered;
+        
+        public SearchPopUp(ActionBarViewModel vm)
+        {
+            InitializeComponent();
+            ParentViewModel = vm;
+            TextEntered = this.FindControl<TextBox>("TextEntered");
+        }
         
         public SearchPopUp()
         {

@@ -53,7 +53,7 @@ namespace CubeTools_UI.ViewModels
             // LinkBar
             ViewModelLinkBar = LinkBar.ViewModel;
             // NavigationBar
-            ViewModelNavigationBar = NavigationBar.ViewModel;
+            ViewModelNavigationBar = NavigationBar.Vie;
             // PathsBar
             ViewModelPathsBar = PathsBar.ViewModel;
             try
@@ -68,15 +68,17 @@ namespace CubeTools_UI.ViewModels
                 ErrorMessageBox(new SystemErrorException("Critical error occured"), "A critical error occured while loading the directory");
             }
             // Referencing THIS
-            ViewModelNavigationBar.ParentViewModelXaml = this;
-            ViewModelPathsBar.ParentViewModelXaml = this;
+            ViewModelNavigationBar.ParentViewModel = this;
+            ViewModelPathsBar.ParentViewModel = this;
+            ViewModelLinkBar.ParentViewModel = this;
+            ViewModelActionBar.ParentViewModel = this;
             // Setting up current path
             ViewModelNavigationBar.AttachedView.CurrentPathXaml.Text = ViewModelNavigationBar.DirectoryPointer.Path;
             // Setting up Queue
             ViewModelNavigationBar.QueuePointers = new List<string>(){ViewModelNavigationBar.DirectoryPointer.Path};
             ViewModelNavigationBar.QueueIndex = 0;
             // Setting up Items
-            ViewModelPathsBar.Items = ManagerReader.ListToObservable(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);;
+            ViewModelPathsBar.Items = ManagerReader.ListToObservable(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
         
         /// <summary>

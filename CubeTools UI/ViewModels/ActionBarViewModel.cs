@@ -36,9 +36,12 @@ namespace CubeTools_UI.ViewModels
         #endregion
 
         // CTOR
-        public ActionBarViewModel(ActionBar AttachedView)
+        public ActionBarViewModel(ActionBar attachedView)
         {
-            this.AttachedView = AttachedView;
+            AttachedView = attachedView;
+            _selected = new List<FileType>();
+            _copied = new List<FileType>();
+            _cut = new List<FileType>();
         }
 
     }

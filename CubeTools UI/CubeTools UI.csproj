@@ -66,6 +66,10 @@
       <Compile Update="Views\NavigationBar.axaml.cs">
         <DependentUpon>NavigationBar.axaml</DependentUpon>
       </Compile>
+      <Compile Update="Views\PopUps\SearchPopUp.axaml.cs">
+        <DependentUpon>SearchPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models" />
