@@ -198,9 +198,11 @@ namespace CubeTools_UI.ViewModels
     ///     - XAML : <br></br>
     ///     - Implementation :
     /// </summary>
-    public void SearchBtnClick()
+    public void Search()
     {
-        // TODO Implement Popup for searching
+        var searchpopup = new SearchPopUp(this);
+        searchpopup.Show();
+        //ModelXaml.ViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ModelXaml.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
     }
     #endregion
     
