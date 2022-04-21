@@ -9,6 +9,18 @@
         <local:ViewLocator />
     </Application.DataTemplates>
 
+    <Application.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:GoogleDriveFileModelView}">
+            <views:GoogleDriveFileList/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:OneDriveModelView}">
+            <views:OneDriveFileList/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:PathsBarViewModel}">
+            <views:PathsBar/>
+        </DataTemplate>
+    </Application.Resources>
+    
     <Application.Styles>
         <FluentTheme Mode="Light" />
     </Application.Styles>

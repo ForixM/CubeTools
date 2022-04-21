@@ -31,7 +31,20 @@
 		
 		<Grid Grid.Row="1">
 			<ListBox>
-		<ListBoxItem Height="57">
+				
+				<ListBox.Background>
+					<LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%" >
+
+						<GradientStop Color="White" Offset="0.5" />
+
+						<GradientStop Color="Yellow" Offset="0.75" />
+
+						<GradientStop Color="Orange" Offset="0.90" />
+
+					</LinearGradientBrush>
+				</ListBox.Background>
+				
+				<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="FavoritesButton" Command="{Binding GoToHomeBtnClick}">
 				<StackPanel VerticalAlignment="Center">
 					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Favorites.ico"/>

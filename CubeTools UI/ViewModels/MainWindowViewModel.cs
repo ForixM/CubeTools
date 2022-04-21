@@ -23,8 +23,19 @@ using ReactiveUI;
 
 namespace CubeTools_UI.ViewModels
 {
-    public class MainWindowViewModel : ReactiveObject
+    public class MainWindowViewModel : BaseViewModel
     {
+        private BaseViewModel _selectedViewModel;
+        public BaseViewModel SelectedViewModel
+        {
+            get { return _selectedViewModel; }
+            set
+            {
+                _selectedViewModel = value;
+                OnPropertyChanged(nameof(SelectedViewModel));
+            }
+        }
+
         // MODELS
         public MainWindowModel Model;
         // VIEW MODELS

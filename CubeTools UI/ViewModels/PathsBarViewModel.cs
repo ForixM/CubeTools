@@ -9,7 +9,7 @@ using ReactiveUI;
 namespace CubeTools_UI.ViewModels
 {
     
-    public class PathsBarViewModel : ReactiveObject
+    public class PathsBarViewModel : BaseViewModel
     {
 
         public PathsBar AttachedView;
