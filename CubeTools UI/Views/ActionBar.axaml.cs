@@ -10,6 +10,7 @@ using CubeTools_UI.Views.PopUps;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
+using Library.Pointers;
 using ReactiveUI;
 
 namespace CubeTools_UI.Views
@@ -45,16 +46,13 @@ namespace CubeTools_UI.Views
             {
                 if (exception is ManagerException @managerException)
                     ViewModel.ParentViewModel.ErrorMessageBox(@managerException, "Unable to create a new file");
-                else
-                    throw;
+                else throw;
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void CreatDir(object? sender, RoutedEventArgs e)
         {
             try
@@ -67,8 +65,7 @@ namespace CubeTools_UI.Views
             {
                 if (exception is ManagerException @managerException)
                     ViewModel.ParentViewModel.ErrorMessageBox(@managerException, "Unable to create a new file");
-                else 
-                    throw;
+                else throw;
             }
         }
 
@@ -81,49 +78,46 @@ namespace CubeTools_UI.Views
         {
             ViewModel.CopiedXaml.Clear();
             ViewModel.CutXaml.Clear();
-            foreach (var ft in ViewModel.SelectedXaml) ViewModel.CopiedXaml.Add(ft);
+            foreach (var item in ViewModel.SelectedXaml) 
+                ViewModel.CopiedXaml.Add(item);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Cut(object? sender, RoutedEventArgs e)
         {
             ViewModel.CopiedXaml.Clear();
             ViewModel.CutXaml.Clear();
-            foreach (var ft in ViewModel.SelectedXaml)
+            foreach (var item in ViewModel.SelectedXaml)
             {
-                ViewModel.CopiedXaml.Add(ft);
-                ViewModel.CutXaml.Add(ft);
+                ViewModel.CopiedXaml.Add(item);
+                ViewModel.CutXaml.Add(item);
             }
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Paste(object? sender, RoutedEventArgs e)
         {
             try
             {
-                foreach (var ft in ViewModel.CopiedXaml)
-                    ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.AddChild(ManagerWriter.Copy(ft.Name));
-                foreach (var ft in ViewModel.CutXaml)
+                foreach (var item in ViewModel.CopiedXaml)
+                    ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.AddChild(ManagerWriter.Copy(((FileType) item.DataContext).Path));
+                foreach (var item in ViewModel.CutXaml)
                 {
+                    var ft = (FileType) item.DataContext!;
                     ManagerWriter.Delete(ft);
-                    ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Remove(ft);
+                    ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(ft);
                 }
                 ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
             }
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
-                    ViewModel.ParentViewModel.ErrorMessageBox(@managerException, "Unable to copy");
-                else 
-                    throw;
+                    ViewModel?.ParentViewModel?.ErrorMessageBox(@managerException, "Unable to copy");
+                else throw;
             }
         }
 
@@ -138,11 +132,12 @@ namespace CubeTools_UI.Views
             {
                 if (ViewModel.SelectedXaml.Count == 1)
                 {
-                    var renamePopup = new RenamePopUp(ViewModel.SelectedXaml[0]);
+                    var renamePopup = new RenamePopUp((FileType) ViewModel.SelectedXaml[0].DataContext, ViewModel?.ParentViewModel?.ViewModelPathsBar.Items);
+                    renamePopup.Show();
                 }
                 else
                 {
-                    ViewModel.ParentViewModel.ErrorMessageBox(new ManagerException(), "Unable to rename multiple data");
+                    ViewModel?.ParentViewModel?.ErrorMessageBox(new ManagerException(), "Unable to rename multiple data");
                 }
             }
         }
@@ -156,19 +151,20 @@ namespace CubeTools_UI.Views
         {
             List<string> undestroyed = new List<string>();
             ManagerException lastError = new ManagerException();
-            foreach (var ft in ViewModel.SelectedXaml)
+            foreach (var item in ViewModel.SelectedXaml)
             {
+                var ft = (FileType) item.DataContext!;
                 try
                 {
                     ManagerWriter.Delete(ft);
-                    ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Remove(ft);
+                    ViewModel?.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(ft);
                     ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
                 }
                 catch (Exception exception)
                 {
                     if (exception is CorruptedPointerException or CorruptedDirectoryException)
                     {
-                        ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Remove(ft);
+                        ViewModel?.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(ft);
                         ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
                     }
                     else if (exception is ManagerException @managerException)
@@ -184,7 +180,7 @@ namespace CubeTools_UI.Views
                 string res = "";
                 foreach (var s in undestroyed)
                     res += s + ",";
-                ViewModel.ParentViewModel.ErrorMessageBox(lastError, "CubeTools was unable to destroy : " +res);
+                ViewModel?.ParentViewModel?.ErrorMessageBox(lastError, "CubeTools was unable to destroy : " +res);
             }
         }
 
@@ -197,6 +193,14 @@ namespace CubeTools_UI.Views
         {
             var searchPopup = new SearchPopUp(ViewModel);
             searchPopup.Show();
+        }
+
+        private void Sort(object? sender, RoutedEventArgs e)
+        {
+            ManagerReader.SortByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            ViewModel.ParentViewModel.ViewModelPathsBar.Items =
+                ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer
+                    .ChildrenFiles);
         }
     }
 }

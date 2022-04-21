@@ -35,11 +35,9 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
-            
-            if (((Button) sender!)?.DataContext is FileType context && ViewModel?.ParentViewModel != null)
+            if (((Button) sender!)?.DataContext is FileType context && ((Button) sender!)?.Parent is ListBoxItem item && ViewModel?.ParentViewModel != null)
             {
                 ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Clear();
-                ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Add(context);
                 ViewModel.ParentViewModel.AccessPath(context.Path, Directory.Exists(context.Path));
             }
         }
@@ -49,24 +47,25 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void OnTaped(object? sender, PointerPressedEventArgs e)
         {
-            ViewModel.ParentViewModel.ErrorMessageBox(new AccessException());
             Button button = ((Button) sender!);
-            if (button.DataContext is FileType context && ViewModel?.ParentViewModel != null)
+            if (button.DataContext is FileType context && button.Parent is ListBoxItem item && ViewModel?.ParentViewModel != null)
+            {
+                if ((File.Exists(context.Path) || Directory.Exists(context.Path)) && e.MouseButton is MouseButton.Right)
+                {
+                    ViewModel.ParentViewModel.PropertiesBox(context);
+                }
+            }
+        }
+
+        private void OnClick(object? sender, RoutedEventArgs e)
+        {
+            Button button = ((Button) sender!);
+            if (button.DataContext is FileType context && button.Parent is ListBoxItem item && ViewModel?.ParentViewModel != null)
             {
                 if (File.Exists(context.Path) || Directory.Exists(context.Path))
                 {
-                    //ListBox? listBox = (ListBox) ((ListBoxItem) button.Parent!).Parent!;
-                    button.Background = new SolidColorBrush(new Color(255, 200, 200, 200));
-                    if (e.MouseButton is MouseButton.Left)
-                    {
-                        ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Clear();
-                        ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Add(context);
-                    }
-                    else if (e.MouseButton is MouseButton.Right)
-                    {
-                        // TODO Implement view for properties
-                        ViewModel.ParentViewModel.PropertiesBox(context);
-                    }
+                    ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Clear();
+                    ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Add(item);
                 }
                 else
                 {

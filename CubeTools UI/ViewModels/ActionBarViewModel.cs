@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Avalonia.Controls;
 using CubeTools_UI.Views;
-using Library.Pointers;
 
 namespace CubeTools_UI.ViewModels
 {
@@ -8,24 +8,10 @@ namespace CubeTools_UI.ViewModels
     {
         #region Models Variables
         
-        private List<FileType> _selected;
-        private List<FileType> _copied;
-        private List<FileType> _cut;
-        public List<FileType> SelectedXaml
-        {
-            get => _selected;
-            set => _selected = value;
-        }
-        public List<FileType> CopiedXaml
-        {
-            get => _copied;
-            set => _copied = value;
-        }
-        public List<FileType> CutXaml
-        {
-            get => _cut;
-            set => _cut = value;
-        }
+        public List<ListBoxItem> SelectedXaml;
+        public List<ListBoxItem> CopiedXaml;
+        public List<ListBoxItem> CutXaml;
+        
         #endregion
         
         #region References
@@ -39,9 +25,9 @@ namespace CubeTools_UI.ViewModels
         public ActionBarViewModel(ActionBar attachedView)
         {
             AttachedView = attachedView;
-            _selected = new List<FileType>();
-            _copied = new List<FileType>();
-            _cut = new List<FileType>();
+            SelectedXaml = new List<ListBoxItem>();
+            CopiedXaml = new List<ListBoxItem>();
+            CutXaml = new List<ListBoxItem>();
         }
 
     }

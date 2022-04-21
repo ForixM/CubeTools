@@ -7,7 +7,7 @@ using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
 using Library.ManagerReader;
 
-namespace CubeTools_UI.Views
+namespace CubeTools_UI.Views.PopUps
 {
     public class SearchPopUp : Window
     {
@@ -31,11 +31,12 @@ namespace CubeTools_UI.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void Search_OnClick(object? sender, RoutedEventArgs e)
+        private void SearchClick(object? sender, RoutedEventArgs e)
         {
             if (sender is Button && ViewModel?.ParentViewModel != null)
                 ViewModel.ParentViewModel.ViewModelPathsBar.Items = 
                     ManagerReader.ListToObservable(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path, TextEntered.Text, 25).ToList());
+            Close();
         }
     }
 }

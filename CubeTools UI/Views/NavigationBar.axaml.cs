@@ -109,7 +109,7 @@ namespace CubeTools_UI.Views
             try
             {
                 ViewModel.DirectoryPointer.SetChildrenFiles();
-                ViewModel.ParentViewModel.ViewModelPathsBarXaml.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+                ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
             }
             catch (Exception exception)
             {

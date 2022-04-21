@@ -137,7 +137,7 @@ namespace Library.Pointers
                 Watcher.Changed += OnChanged;
                 Watcher.Created += OnCreated;
                 Watcher.Deleted += OnDeleted;
-                Watcher.Renamed += OnRenamed;
+                //Watcher.Renamed += OnRenamed;
                 Watcher.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName | NotifyFilters.FileName
                                        | NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.Security | NotifyFilters.Size;
                 Watcher.Filter = "*";

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Avalonia.Controls;
 // CubeTools UI's Imports
 using CubeTools_UI.Views;
 // Libraries Imports
@@ -31,17 +32,10 @@ namespace CubeTools_UI.ViewModels
         
         #region Children ViewModels
         
-        public ActionBarViewModel ViewModelActionBar;
-        public ActionBarViewModel ViewModelActionBarXaml => ViewModelActionBar;
-        
-        public LinkBarViewModel ViewModelLinkBar;
-        public LinkBarViewModel ViewModelLinkBarXaml => ViewModelLinkBar;
-        
-        public NavigationBarViewModel ViewModelNavigationBar;
-        public NavigationBarViewModel ViewModelNavigationBarXaml => ViewModelNavigationBar;
-        
-        public PathsBarViewModel ViewModelPathsBar;
-        public PathsBarViewModel ViewModelPathsBarXaml => ViewModelPathsBar;
+        public readonly ActionBarViewModel ViewModelActionBar;
+        public readonly LinkBarViewModel ViewModelLinkBar;
+        public readonly NavigationBarViewModel ViewModelNavigationBar;
+        public readonly PathsBarViewModel ViewModelPathsBar;
 
         #endregion
 
@@ -206,8 +200,9 @@ namespace CubeTools_UI.ViewModels
                     ViewModelNavigationBar.QueueIndex--;
                 }
             }
-            ViewModelActionBar.SelectedXaml = new List<FileType>();
-            }
+
+            ViewModelActionBar.SelectedXaml = new List<ListBoxItem>();
+        }
 
         /// <summary>
         /// Reload the current directory

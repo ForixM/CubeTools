@@ -84,6 +84,7 @@ namespace Library.Pointers
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         public FileType(string path) : this()
         {
+            path = path.Replace("\\", "/");
             if (!File.Exists(path) && !Directory.Exists(path))
             {
                 Dispose();
@@ -137,12 +138,10 @@ namespace Library.Pointers
 
         public static bool operator ==(FileType ft, FileType ft2)
         {
-            if (ft is null && ft2 is null)
-                return true;
             if ((!File.Exists(ft.Path) || !Directory.Exists(ft.Path)) &&
                 ft.IsNull() || (!File.Exists(ft2.Path) || !Directory.Exists(ft2.Path)) && ft.IsNull())
                 return true;
-            if (ft.Name != "" && ft2.Name != null)
+            if (ft.Name != "" && ft2.Name != "")
             {
                 var res = true;
                 res &= ft.Path == ft2.Path;

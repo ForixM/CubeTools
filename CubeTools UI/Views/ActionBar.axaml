@@ -10,13 +10,6 @@
 		<StyleInclude Source="/Styles/Styles.axaml"/>
 	</UserControl.Styles>
 	 
-	 <Design.DataContext>
-		 <vm:ActionBarViewModel>
-			 <x:Type/>
-		 </vm:ActionBarViewModel>
-	 </Design.DataContext>
-	
-	
 	 <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="45" />
@@ -25,6 +18,7 @@
 			<ColumnDefinition Width="45" />
 			<ColumnDefinition Width="45" />
 			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45"/>
 			<ColumnDefinition Width="45"/>
 			<ColumnDefinition />
 			<ColumnDefinition Width="45"/>
@@ -88,8 +82,16 @@
 				</StackPanel>
 			</Button>
 		</Grid>
+		<!-- Seventh column : Sort Button-->
+		<Grid Grid.Column="7">
+			<Button Classes="Manager" Name="SortButton" Click="Sort">
+				<StackPanel>
+					<Image Classes="Manager" Source="/Assets/arrow-left.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
 		<!-- Seventh column : Search button -->
-		<Grid Grid.Column="8">
+		<Grid Grid.Column="9">
 			<Button Classes="Manager" Name="SearchButton" Click="Search">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Search.ico"/>
@@ -97,24 +99,24 @@
 			</Button>
 		</Grid>
 		<!-- Eight column : Snapdrop button -->
-		<Grid Grid.Column="9">
-			<Button Classes="Manager" Name="SnapdropButton" Command="{Binding Rename}">
+		<Grid Grid.Column="10">
+			<Button Classes="Manager" Name="SnapdropButton">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Snapdrop.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
 		<!-- Eight column : Snapdrop button -->
-		<Grid Grid.Column="10">
-			<Button Classes="Manager" Name="SmashButton" Command="{Binding Rename}">
+		<Grid Grid.Column="11">
+			<Button Classes="Manager" Name="SmashButton">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Smash.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
 		<!-- Eighth column : Nearby Send button -->
-		<Grid Grid.Column="11">
-			<Button Classes="Manager" Name="NearBySendButton" Command="{Binding Rename}">
+		<Grid Grid.Column="12">
+			<Button Classes="Manager" Name="NearBySendButton">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/nearbysend.ico"/>
 				</StackPanel>
