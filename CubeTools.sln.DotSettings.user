@@ -3,7 +3,7 @@
   &lt;Assembly Path="C:\Users\mateo\.nuget\packages\nunit\3.13.2\lib\netstandard2.0\nunit.framework.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\forix\Documents\CubeTools\ConfigLoader\obj\Debug\net5.0\ConfigLoader.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">C:\Users\mateo\AppData\Local\JetBrains\Rider2021.3\resharper-host\temp\Rider\vAny\CoverageData\_CubeTools.-1034283486\Snapshot\snapshot.utdcvr</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a1606753_002Dbfd8_002D4852_002D93d2_002D2567619f7540/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;NUnit3x::8AD18212-820C-419F-9EE3-917B7F75BF15::net6.0::TestFTP.Tests.Test1&lt;/TestId&gt;&#xD;
