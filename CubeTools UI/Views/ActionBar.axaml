@@ -34,14 +34,14 @@
 
 		<!-- First column : Creation-->
 		<Grid Grid.Column="0">
-			<Button Classes="Manager" Name="AddFileButton" Command="{Binding CreateFile}">
+			<Button Classes="Manager" Name="AddFileButton" Click="CreateFile">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Create.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
 		<Grid Grid.Column="1">
-			<Button Classes="Manager" Name="AddDirButton" Command="{Binding CreateDir}">
+			<Button Classes="Manager" Name="AddDirButton" Click="CreatDir">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/CreateFolder.ico"/>
 				</StackPanel>
@@ -49,7 +49,7 @@
 		</Grid>
 		<!-- Second column : Copy function-->
 		<Grid Grid.Column="2">
-			<Button Classes="Manager" Name="CopyButton" Command="{Binding Copy}">
+			<Button Classes="Manager" Name="CopyButton" Click="Copy">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Copy.ico"/>
 				</StackPanel>
@@ -57,7 +57,7 @@
 		</Grid>
 		<!-- Third column : Cut Button -->
 		<Grid Grid.Column="3">
-			<Button Classes="Manager" Name="CutButton" Command="{Binding Cut}">
+			<Button Classes="Manager" Name="CutButton" Click="Cut">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Cut.ico"/>
 				</StackPanel>
@@ -65,7 +65,7 @@
 		</Grid>
 		<!-- Fourth column : Paste button -->
 		<Grid Grid.Column="4">
-			<Button Classes="Manager" Name="PasteButton" Command="{Binding Paste}">
+			<Button Classes="Manager" Name="PasteButton" Click="Paste">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Paste.ico"/>
 				</StackPanel>
@@ -73,7 +73,7 @@
 		</Grid>
 		<!-- Fifth column : Rename button -->
 		<Grid Grid.Column="5">
-			<Button Classes="Manager" Name="RenameButton" Command="{Binding Rename}">
+			<Button Classes="Manager" Name="RenameButton" Click="Rename">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Rename.ico"/>
 				</StackPanel>
@@ -81,7 +81,7 @@
 		</Grid>
 		<!-- Sixth column : Delete button -->
 		<Grid Grid.Column="6">
-			<Button Classes="Manager" Name="DeleteButton" Command="{Binding Delete}">
+			<Button Classes="Manager" Name="DeleteButton" Click="Delete">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Delete.ico"/>
 				</StackPanel>
@@ -89,7 +89,7 @@
 		</Grid>
 		<!-- Seventh column : Search button -->
 		<Grid Grid.Column="8">
-			<Button Classes="Manager" Name="SearchButton" Command="{Binding Search}">
+			<Button Classes="Manager" Name="SearchButton" Click="Search">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Search.ico"/>
 				</StackPanel>

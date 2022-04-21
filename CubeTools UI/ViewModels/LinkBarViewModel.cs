@@ -1,44 +1,37 @@
-﻿using CubeTools_UI.Models;
+﻿using System.Collections.Generic;
+using CubeTools_UI.Views;
 using ReactiveUI;
 
 namespace CubeTools_UI.ViewModels
 {
     public class LinkBarViewModel : ReactiveObject
     {
-        // INIT
-        private MainWindowModel model;
-        public MainWindowModel ModelXaml
-        {
-            get => model;
-            set => model = value;
-        }
+        #region Models Variables
 
-        private LinkBarModel modelLinkBar;
-
-        public LinkBarModel ModelLinkBarXaml
-        {
-            get => modelLinkBar;
-            set => modelLinkBar = value;
-        }
-        public LinkBarViewModel(MainWindowModel model)
-        {
-            this.model = model;
-            this.modelLinkBar = model.ModelLinkBar;
-        }
-
-        public LinkBarViewModel()
-        {
-            model = null;
-            modelLinkBar = null;
-        }
-
-        #region Bindings
-    
+        // MODELS VARIABLE 
+        public Dictionary<string, string> StaticPaths;
 
         #endregion
-    
-        #region Actions
-    
+
+        #region References
+        
+        public MainWindowViewModel? ParentViewModel;
+        public LinkBar AttachedView;
+        
         #endregion
+        
+        public LinkBarViewModel(LinkBar attachedView)
+        {
+            this.AttachedView = attachedView;
+            StaticPaths = new Dictionary<string, string>
+            {
+                            {"Home", "C:/..."},
+                            {"Desktop", "C:/..."},
+                            {"Document", "C:/..."},
+                            {"Download", "C:/"},
+                            {"Picture", "C:/"},
+                            {"Trash", "C::"}
+            };
+        }
     }
 }

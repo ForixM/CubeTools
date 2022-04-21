@@ -13,21 +13,7 @@ namespace CubeTools_UI.ViewModels
     {
 
         public PathsBar AttachedView;
-    
-        private MainWindowModel? _model;
-        public MainWindowModel? ModelXaml
-        {
-            get => _model;
-            set => _model = value;
-        }
 
-        private PathsBarModel? _modelPathsBar;
-        public PathsBarModel? ModelPathsBar
-        {
-            get => _modelPathsBar;
-            set => _modelPathsBar = value;
-        }
-    
         private MainWindowViewModel _parentParentViewModel;
         public MainWindowViewModel ParentViewModelXaml
         {

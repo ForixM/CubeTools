@@ -11,7 +11,7 @@ namespace CubeTools_UI.Views
         public LinkBar()
         {
             InitializeComponent();
-            ViewModel = new LinkBarViewModel();
+            ViewModel = new LinkBarViewModel(this);
             DataContext = ViewModel;
         }
 

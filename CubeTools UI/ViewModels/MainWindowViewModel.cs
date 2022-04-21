@@ -1,25 +1,18 @@
 // System's imports
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using Avalonia.Controls;
-using Avalonia.Media.Imaging;
 // CubeTools UI's Imports
-using CubeTools_UI.Models;
 using CubeTools_UI.Views;
 // Libraries Imports
 using Library.ManagerExceptions;
 using Library.ManagerReader;
-using Library.ManagerWriter;
 using Library.Pointers;
 // UI's Imports
 using MessageBox.Avalonia;
-using MessageBox.Avalonia.BaseWindows.Base;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 using MessageBox.Avalonia.Models;
-using ReactiveUI;
 
 namespace CubeTools_UI.ViewModels
 {
@@ -35,10 +28,9 @@ namespace CubeTools_UI.ViewModels
                 OnPropertyChanged(nameof(SelectedViewModel));
             }
         }
-
-        // MODELS
-        public MainWindowModel Model;
-        // VIEW MODELS
+        
+        #region Children ViewModels
+        
         public ActionBarViewModel ViewModelActionBar;
         public ActionBarViewModel ViewModelActionBarXaml => ViewModelActionBar;
         
@@ -51,32 +43,23 @@ namespace CubeTools_UI.ViewModels
         public PathsBarViewModel ViewModelPathsBar;
         public PathsBarViewModel ViewModelPathsBarXaml => ViewModelPathsBar;
 
+        #endregion
+
         // CTOR
         public MainWindowViewModel()
         {
-            Model = new MainWindowModel(this);
             // ActionBar : Setting up ModelXaml
             ViewModelActionBar = ActionBar.ViewModel;
-            ActionBar.ViewModel.ModelXaml = Model;
-            ViewModelActionBar.ModelXaml = Model;
             // LinkBar
             ViewModelLinkBar = LinkBar.ViewModel;
-            LinkBar.ViewModel.ModelXaml = Model;
-            ViewModelLinkBar.ModelXaml = Model;
             // NavigationBar
             ViewModelNavigationBar = NavigationBar.ViewModel;
-            NavigationBar.ViewModel.ModelXaml = Model;
-            ViewModelNavigationBar.ModelXaml = Model;
             // PathsBar
             ViewModelPathsBar = PathsBar.ViewModel;
-            PathsBar.ViewModel.ModelXaml = Model;
-            ViewModelPathsBar.ModelXaml = Model;
-            // Initialize References of Models
-            Model.Initialize();
             try
             {
                 // Setting up loaded directory
-                Model.ModelNavigationBar.DirectoryPointer = new DirectoryType(Directory.GetCurrentDirectory());
+                ViewModelNavigationBar.DirectoryPointer = new DirectoryType(Directory.GetCurrentDirectory());
             }
             catch (Exception e)
             {
@@ -84,26 +67,16 @@ namespace CubeTools_UI.ViewModels
                     ErrorMessageBox(@managerException, "A critical error occured while loading the directory");
                 ErrorMessageBox(new SystemErrorException("Critical error occured"), "A critical error occured while loading the directory");
             }
-            // Referencing Models
-            ViewModelActionBar.ModelXaml = Model;
-            ViewModelLinkBar.ModelXaml = Model;
-            ViewModelNavigationBar.ModelXaml = Model;
-            ViewModelPathsBar.ModelXaml = Model;
-            // Referencing SubModels
-            ViewModelActionBar.ModelActionBarXaml = Model.ModelActionBar;
-            ViewModelLinkBar.ModelLinkBarXaml = Model.ModelLinkBar;
-            ViewModelNavigationBar.ModelNavigationBarXaml = Model.ModelNavigationBar;
-            ViewModelPathsBar.ModelPathsBar = Model.ModelPathsBar;
             // Referencing THIS
             ViewModelNavigationBar.ParentViewModelXaml = this;
             ViewModelPathsBar.ParentViewModelXaml = this;
             // Setting up current path
-            ViewModelNavigationBar.AttachedView.CurrentPathXaml.Text = Model.ModelNavigationBar.DirectoryPointer.Path;
+            ViewModelNavigationBar.AttachedView.CurrentPathXaml.Text = ViewModelNavigationBar.DirectoryPointer.Path;
             // Setting up Queue
-            Model.ModelNavigationBar.QueuePointers = new List<string>(){Model.ModelNavigationBar.DirectoryPointer.Path};
-            Model.ModelNavigationBar.QueueIndex = 0;
+            ViewModelNavigationBar.QueuePointers = new List<string>(){ViewModelNavigationBar.DirectoryPointer.Path};
+            ViewModelNavigationBar.QueueIndex = 0;
             // Setting up Items
-            ViewModelPathsBar.Items = ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);;
+            ViewModelPathsBar.Items = ManagerReader.ListToObservable(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);;
         }
         
         /// <summary>
@@ -209,7 +182,7 @@ namespace CubeTools_UI.ViewModels
             {
                 try
                 {
-                    Model.ModelNavigationBar.DirectoryPointer.ChangeDirectory(path);
+                    ViewModelNavigationBar.DirectoryPointer.ChangeDirectory(path);
                 }
                 catch (Exception e)
                 {
@@ -220,18 +193,18 @@ namespace CubeTools_UI.ViewModels
                 }
 
                 // Setting up the Path for UI
-                ViewModelNavigationBar.AttachedView.CurrentPathXaml.Text = Model.ModelNavigationBar.DirectoryPointer.Path;
+                ViewModelNavigationBar.AttachedView.CurrentPathXaml.Text = ViewModelNavigationBar.DirectoryPointer.Path;
                 // Modified ListBox associated
-                ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+                ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
                 // Adding path to queue
-                Model.ModelNavigationBar.QueuePointers.Add(path);
-                if (Model.ModelNavigationBar.QueuePointers.Count >= 9)
+                ViewModelNavigationBar.QueuePointers.Add(path);
+                if (ViewModelNavigationBar.QueuePointers.Count >= 9)
                 {
-                    Model.ModelNavigationBar.QueuePointers.RemoveAt(0);
-                    Model.ModelNavigationBar.QueueIndex--;
+                    ViewModelNavigationBar.QueuePointers.RemoveAt(0);
+                    ViewModelNavigationBar.QueueIndex--;
                 }
             }
-            Model.ModelActionBar.SelectedXaml = new List<FileType>();
+            ViewModelActionBar.SelectedXaml = new List<FileType>();
             }
 
         /// <summary>
@@ -241,14 +214,14 @@ namespace CubeTools_UI.ViewModels
         {
             try
             {
-                Model.ModelNavigationBar.DirectoryPointer.SetChildrenFiles();
+                ViewModelNavigationBar.DirectoryPointer.SetChildrenFiles();
             }
             catch (Exception e)
             {
                 if (e is ManagerException @managerException)
                     ErrorMessageBox(@managerException);
             }
-            ViewModelPathsBar.Items = ManagerReader.ListToObservable(Model.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            ViewModelPathsBar.Items = ManagerReader.ListToObservable(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
     }
 }

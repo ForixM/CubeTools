@@ -28,7 +28,7 @@ namespace CubeTools_UI.Commands
         {
             if(parameter.ToString() == "Path")
             {
-                viewModel.SelectedViewModel = new PathsBarViewModel();
+                //viewModel.SelectedViewModel = new PathsBarViewModel();
             }
             else if(parameter.ToString() == "GoogleDrive")
             {
