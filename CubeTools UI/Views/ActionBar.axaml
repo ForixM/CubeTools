@@ -89,7 +89,7 @@
 		</Grid>
 		<!-- Seventh column : Search button -->
 		<Grid Grid.Column="8">
-			<Button Classes="Manager" Name="SearchButton" Command="{Binding Rename}">
+			<Button Classes="Manager" Name="SearchButton" Command="{Binding Search}">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Search.ico"/>
 				</StackPanel>
