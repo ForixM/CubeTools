@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
@@ -607,156 +608,51 @@ namespace Library.ManagerReader
         {
             return SearchByIndeterminedName(directoryType.ChildrenFiles, indeterminated);
         }
+        
+        // FAST READER
 
-        // RESEARCH USING FILES :
-        // Method : Using files that stores all files, this algorithm will efficiently gets information about a file
-        // Indexation : It uses lines number on each line of the file
-        // Searching : Dichotomy research
-
-        //
-        public static List<string> SearchIndexationByFullName(string source, string name)
+        public static IEnumerable<FileType> FastSearchByName(string path, string regex="", int max = 20)
         {
-            var res = new List<string>();
-            var sr = StreamReader.Null;
-            try
+            if (Directory.Exists(path))
             {
-                sr = new StreamReader(GenerateIndexation(source));
-            }
-            catch (Exception e)
-            {
-                if (e is UnauthorizedAccessException)
-                    Console.WriteLine("hhelo");
-                if (e is ArgumentException or ArgumentNullException)
-                    throw new PathFormatException("", "SearchIndexationByFullName");
-                if (e is FileNotFoundException or DirectoryNotFoundException)
-                    throw new PathNotFoundException("", "SearchIndexationByFullName");
-                throw new ManagerException("", "", "", "", "");
-            }
-
-            var line = sr.ReadLine();
-            while (line != null)
-            {
-                var tmp = GetInformationByLineIndexation(line);
-                if (tmp.Item2 == name)
-                    res.Add(tmp.Item3);
-                line = sr.ReadLine();
-            }
-
-            return res;
-        }
-
-        /// <summary>
-        ///     - Action : Generate the indexation files
-        ///     - Implementation : NOT CHECK
-        /// </summary>
-        /// <param name="baseRoot">The given working directory</param>
-        /// <exception cref="InUseException"></exception>
-        /// <exception cref="AccessException"></exception>
-        /// <exception cref="PathFormatException"></exception>
-        /// <exception cref="PathNotFoundException">The given baseRoot does not exist</exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// //TODO ADD OTHERS EXCEPTIONS
-        private static string GenerateIndexation(string baseRoot)
-        {
-            if (!Directory.Exists(baseRoot))
-                throw new PathNotFoundException($"{baseRoot} does not exist", "GenerateIndexation");
-
-            var indexationName = $"indexation{GetPathToName(baseRoot)}.txt";
-            var indexationPath = "";
-            indexationPath = GetNameToPath(indexationName);
-            if (File.Exists(indexationPath))
-                ManagerWriter.ManagerWriter.Delete(indexationPath); // Delete all indexation
-            ManagerWriter.ManagerWriter.Create(indexationName); // Create new one
-            var sw = StreamWriter.Null;
-            try
-            {
-                sw = new StreamWriter(indexationName); // Generate a stream
-            }
-            catch (Exception e)
-            {
-                if (e is UnauthorizedAccessException or SecurityException)
-                    throw new AccessException($"{indexationName} could not be created", "GenerateIndexation");
-                throw new ManagerException("", "", "", "", "");
-            }
-
-            var di = new DirectoryInfo(baseRoot);
-            var line = 0;
-            WriteRec(di, sw, ref line);
-            sw.Close();
-            return di.FullName;
-        }
-
-        /// <summary>
-        ///     - Action : Using recursive method, the given function browses all subdirs and subfiles using a directory
-        ///     the name, path and line are written in the stream sw
-        ///     - Implementation : NOT CHECK
-        /// </summary>
-        /// <param name="di">The given current directory browsed</param>
-        /// <param name="sw">The stream to modify</param>
-        /// <param name="line">The current line in the file</param>
-        private static void WriteRec(DirectoryInfo di, StreamWriter sw, ref int line)
-        {
-            // Browse each sub-files
-            IEnumerable<FileInfo> subfis = new List<FileInfo>();
-            try
-            {
-                subfis = di.EnumerateFiles();
-            }
-            catch (SecurityException)
-            {
-            }
-            catch (UnauthorizedAccessException)
-            {
-            }
-
-            foreach (var fi in subfis)
-            {
-                line++;
+                List<string> paths = new List<string>();
                 try
                 {
-                    sw.WriteLine(line + ":" + fi.Name + "," + fi.FullName);
+                    if (!regex.Contains('*'))
+                        regex += '*';
+                    foreach (var _path in Directory.EnumerateFiles(path, regex, SearchOption.AllDirectories))
+                        paths.Add(_path);
                 }
-                catch (SecurityException)
+                catch (Exception e)
                 {
-                    sw.WriteLine(line + ":" + fi.Name + "," + "UNKNOWN!");
+                    if (e is ArgumentException or ArgumentNullException or PathTooLongException)
+                        throw new PathFormatException();// TODO EDIT EXCEPTION
+                    if (e is DirectoryNotFoundException or IOException)
+                        throw new PathNotFoundException(); //TODO EDIT EXCEPTION
+                }
+                foreach (var file in paths)
+                {
+                    var ft = FileType.NullPointer;
+                    try
+                    {
+                        ft = new FileType(file);
+                    }
+                    catch (Exception)
+                    { 
+                        // ignored
+                    }
+
+                    if (ft != FileType.NullPointer)
+                    {
+                        yield return ft;
+                        max--;
+                    }
+                    if (max <= 0) break;
                 }
             }
-
-            // Browse each sub-directories
-            IEnumerable<DirectoryInfo> subdirs = new List<DirectoryInfo>();
-            try
-            {
-                subdirs = di.EnumerateDirectories();
-            }
-            catch (SecurityException)
-            {
-            }
-            catch (UnauthorizedAccessException)
-            {
-            }
-
-            foreach (var subDi in subdirs) WriteRec(subDi, sw, ref line);
+            else throw new PathNotFoundException(path + " could not be identified as a directory", "FastSearchByName"); //
         }
-
-        private static Tuple<int, string, string> GetInformationByLineIndexation(string line)
-        {
-            var i = 0;
-            // Getting the line's number
-            var lineNumber = "";
-            while (i < line.Length && line[i] != ':')
-            {
-                lineNumber += line[i];
-                i++;
-            }
-
-            // Getting the name's number
-            var name = "";
-            while (i < line.Length && line[i] != ',') name += line[i];
-            // Getting the path's number
-            var path = "";
-            while (i < line.Length) path += line[i];
-            return new Tuple<int, string, string>(int.Parse(lineNumber), name, path);
-        }
+        
 
         #endregion
 
@@ -766,7 +662,7 @@ namespace Library.ManagerReader
         [DllImport("shell32.dll")]
         static extern int FindExecutable(string lpFile, string lpDirectory, [Out] StringBuilder lpResult);
 
-        // This region implements all algorithm to run an app using conf file
+        /*
         public static List<string> RecommendedProgramsWindows(string ext)
         {
             
@@ -812,6 +708,7 @@ namespace Library.ManagerReader
 
             return paths;
         }
+        */
 
         public static List<string> RecommendedProgramsUnix(string ext)
         {
@@ -833,7 +730,6 @@ namespace Library.ManagerReader
                     StringBuilder res = new StringBuilder();
                     FindExecutable(path, ManagerReader.GetParent(path), res);
                     return new List<string>(){(res.ToString())};
-                    //return RecommendedProgramsWindows(ext);
                 case PlatformID.MacOSX:
                     return RecommendedProgramsMac(ext);
             }
