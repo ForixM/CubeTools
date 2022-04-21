@@ -14,7 +14,7 @@ namespace CubeTools_UI.Views
 {
     public class PathsBar : UserControl
     {
-        public static PathsBarViewModel? ViewModel;
+        public static PathsBarViewModel ViewModel;
         public ListBox ItemsXaml;
         
         public PathsBar()

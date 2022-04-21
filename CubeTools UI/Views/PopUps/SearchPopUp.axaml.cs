@@ -11,20 +11,19 @@ namespace CubeTools_UI.Views
 {
     public class SearchPopUp : Window
     {
-        private ActionBarViewModel ParentViewModel;
+        private ActionBarViewModel? ViewModel;
 
         private TextBox TextEntered;
-        
-        public SearchPopUp(ActionBarViewModel vm)
-        {
-            InitializeComponent();
-            ParentViewModel = vm;
-            TextEntered = this.FindControl<TextBox>("TextEntered");
-        }
-        
+
         public SearchPopUp()
         {
             InitializeComponent();
+            TextEntered = this.FindControl<TextBox>("TextEntered");
+            ViewModel = null;
+        }
+        public SearchPopUp(ActionBarViewModel vm) : this()
+        {
+            ViewModel = vm;
         }
 
         private void InitializeComponent()
@@ -34,12 +33,9 @@ namespace CubeTools_UI.Views
 
         private void Search_OnClick(object? sender, RoutedEventArgs e)
         {
-            if (sender is Button)
-            {
-                ParentViewModel.ModelXaml.ViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = 
-                                ManagerReader.ListToObservable(ManagerReader.FastSearchByName(ParentViewModel.ModelXaml.ModelNavigationBar.DirectoryPointer.Path, TextEntered.Text, 25).ToList());
-
-            }
+            if (sender is Button && ViewModel?.ParentViewModel != null)
+                ViewModel.ParentViewModel.ViewModelPathsBar.Items = 
+                    ManagerReader.ListToObservable(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path, TextEntered.Text, 25).ToList());
         }
     }
 }

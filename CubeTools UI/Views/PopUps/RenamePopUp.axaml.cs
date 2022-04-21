@@ -11,13 +11,18 @@ namespace CubeTools_UI.Views.PopUps
 {
     public class RenamePopUp : Window
     {
-        private ActionBarViewModel ParentViewModel;
-        
-        private TextBox TextEntered;
-        
-        public RenamePopUp(FileType ft)
+        private TextBox _textEntered;
+        private FileType _modifiedPointer;
+
+        public RenamePopUp()
         {
             InitializeComponent();
+            _textEntered = this.FindControl<TextBox>("TextEntered");
+            _modifiedPointer = FileType.NullPointer;
+        }
+        public RenamePopUp(FileType ft) : this()
+        {
+            _modifiedPointer = ft;
         }
 
         private void InitializeComponent()
@@ -25,13 +30,11 @@ namespace CubeTools_UI.Views.PopUps
             AvaloniaXamlLoader.Load(this);
         }
 
-        private void Rename_OnClick(object? sender, RoutedEventArgs e)
+        private void RenameClick(object? sender, RoutedEventArgs e)
         {
             if (sender is Button)
             {
-                ParentViewModel.ModelXaml.ViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = 
-                                ManagerReader.ListToObservable(ManagerReader.FastSearchByName(ParentViewModel.ModelXaml.ModelNavigationBar.DirectoryPointer.Path, TextEntered.Text, 25).ToList());
-
+                // RENAME
             }
         }
     }

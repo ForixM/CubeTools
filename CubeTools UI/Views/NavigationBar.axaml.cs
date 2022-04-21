@@ -11,7 +11,7 @@ namespace CubeTools_UI.Views
 {
     public class NavigationBar : UserControl
     {
-        public NavigationBarViewModel ViewModel;
+        public static NavigationBarViewModel ViewModel;
         public TextBox CurrentPathXaml;
         
         public NavigationBar()
@@ -30,10 +30,7 @@ namespace CubeTools_UI.Views
         private void EditCurrentPath(object? sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            if (((TextBox) sender!)?.DataContext is NavigationBarViewModel navigationBarViewModel)
-            {
-                ViewModel.ParentViewModel.AccessPath(((TextBox) sender).Text);
-            }
+            ViewModel.ParentViewModel?.AccessPath(((TextBox) sender).Text);
         }
 
         private void LeftArrowClick(object? sender, RoutedEventArgs e)
@@ -46,12 +43,12 @@ namespace CubeTools_UI.Views
                 try
                 {
                     string path = ViewModel.QueuePointers[ViewModel.QueueIndex];
-                    ViewModel.ParentViewModel.AccessPath(path);
+                    ViewModel.ParentViewModel?.AccessPath(path);
                 }
                 catch (Exception exception)
                 {
                     if (exception is ManagerException @managerException)
-                        ViewModel.ParentViewModel.ErrorMessageBox(@managerException, $"Unable to get the last directory");
+                        ViewModel.ParentViewModel?.ErrorMessageBox(@managerException, $"Unable to get the last directory");
                     ViewModel.QueueIndex--;
                 }
             }
@@ -64,12 +61,12 @@ namespace CubeTools_UI.Views
                 ViewModel.QueueIndex++;
                 try
                 {
-                    ViewModel.ParentViewModel.AccessPath(ViewModel.QueuePointers[ViewModel.QueueIndex]);
+                    ViewModel.ParentViewModel?.AccessPath(ViewModel.QueuePointers[ViewModel.QueueIndex]);
                 }
                 catch (Exception exception)
                 {
                     if (exception is ManagerException @managerException)
-                        ViewModel.ParentViewModel.ErrorMessageBox(@managerException, $"Unable to get the next directory");
+                        ViewModel.ParentViewModel?.ErrorMessageBox(@managerException, $"Unable to get the next directory");
                     ViewModel.QueueIndex--;
                 }
             }
@@ -89,7 +86,7 @@ namespace CubeTools_UI.Views
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
-                    ViewModel.ParentViewModel.ErrorMessageBox(@managerException, $"Unable to get directory of ");
+                    ViewModel.ParentViewModel?.ErrorMessageBox(@managerException, $"Unable to get directory of ");
                 else
                     throw;
             }
@@ -98,12 +95,12 @@ namespace CubeTools_UI.Views
             ViewModel.QueueIndex = ViewModel.QueuePointers.Count-1;
             try
             {
-                ViewModel.ParentViewModel.AccessPath(ViewModel.QueuePointers[ViewModel.QueueIndex]);
+                ViewModel.ParentViewModel?.AccessPath(ViewModel.QueuePointers[ViewModel.QueueIndex]);
             }
             catch (Exception exception)
             {
                 if ( exception is ManagerException @managerException)
-                    ViewModel.ParentViewModel.ErrorMessageBox(@managerException, "Unable to get parent");
+                    ViewModel.ParentViewModel?.ErrorMessageBox(@managerException, "Unable to get parent");
             }
         }
 
@@ -117,7 +114,7 @@ namespace CubeTools_UI.Views
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
-                    ViewModel.ParentViewModel.ErrorMessageBox(@managerException, "Enable to reload the directory");
+                    ViewModel.ParentViewModel?.ErrorMessageBox(@managerException, "Enable to reload the directory");
             }
         }
 

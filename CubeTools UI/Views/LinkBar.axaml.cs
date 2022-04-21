@@ -5,7 +5,7 @@ using CubeTools_UI.ViewModels;
 
 namespace CubeTools_UI.Views
 {
-    public partial class LinkBar : UserControl
+    public class LinkBar : UserControl
     {
         public static LinkBarViewModel ViewModel;
         public LinkBar()

@@ -61,7 +61,8 @@
                     <!-- Second row : files and directories list -->
                     
                     <Grid Grid.Row="2">
-                        <ContentControl Content="{Binding SelectedViewModel}"/>
+                        <views:PathsBar/>
+                        <!--<ContentControl Content="{Binding SelectedViewModel}"/>-->
                     </Grid>
                 
                 </Grid>

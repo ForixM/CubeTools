@@ -8,7 +8,8 @@
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>
-
+    
+    <!--
     <Application.Resources>
         <DataTemplate DataType="{x:Type viewmodels:GoogleDriveFileModelView}">
             <views:GoogleDriveFileList/>
@@ -20,7 +21,7 @@
             <views:PathsBar/>
         </DataTemplate>
     </Application.Resources>
-    
+    -->
     <Application.Styles>
         <FluentTheme Mode="Light" />
     </Application.Styles>

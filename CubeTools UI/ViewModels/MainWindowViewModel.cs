@@ -53,7 +53,7 @@ namespace CubeTools_UI.ViewModels
             // LinkBar
             ViewModelLinkBar = LinkBar.ViewModel;
             // NavigationBar
-            ViewModelNavigationBar = NavigationBar.Vie;
+            ViewModelNavigationBar = NavigationBar.ViewModel;
             // PathsBar
             ViewModelPathsBar = PathsBar.ViewModel;
             try

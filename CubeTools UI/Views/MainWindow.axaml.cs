@@ -16,12 +16,12 @@ namespace CubeTools_UI.Views
         {
             InitializeComponent();
             this.AttachDevTools();
+            DataContext = new MainWindowViewModel();
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-            DataContext = new MainWindowViewModel();
         }
     }
 }

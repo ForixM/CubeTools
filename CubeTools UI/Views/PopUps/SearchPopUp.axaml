@@ -7,7 +7,7 @@
         x:Class="CubeTools_UI.Views.SearchPopUp"
         Title="Search">
         <StackPanel Margin="10">
-                <TextBox Watermark="Enter Name" Name="TextEntered"/>
+                <TextBox Watermark="Enter to search" Name="TextEntered"/>
                 <Button Name="Search" Width="250" Click="Search_OnClick"/>
         </StackPanel>
 </Window>
