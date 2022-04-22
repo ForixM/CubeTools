@@ -86,7 +86,7 @@
 		<Grid Grid.Column="7">
 			<Button Classes="Manager" Name="SortButton" Click="Sort">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets/arrow-left.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/Sort.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>

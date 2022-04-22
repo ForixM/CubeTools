@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -101,37 +103,32 @@ namespace CubeTools_UI.Views
         }
 
         /// <summary>
-        /// 
+        /// Paste copied and delete cut
         /// </summary>
         private void Paste(object? sender, RoutedEventArgs e)
         {
-            try
+            // 1) Copy Copied
+            foreach (var item in ViewModel.CopiedXaml)
             {
-                foreach (var item in ViewModel.CopiedXaml)
-                    ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.AddChild(ManagerWriter.Copy(((FileType) item.DataContext).Path));
-                foreach (var item in ViewModel.CutXaml)
-                {
-                    var ft = (FileType) item.DataContext!;
-                    ManagerWriter.Delete(ft);
-                    ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(ft);
-                }
-                ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+                var ft = (FileType) item.DataContext;
+                var task = new Task(() => CopyAsync(ft));
+                if (ft.Size > 1000000) task.Start();
+                else task.RunSynchronously();
             }
-            catch (Exception exception)
+            // 2) Destroy Cut
+            foreach (var item in ViewModel.CutXaml)
             {
-                if (exception is ManagerException @managerException)
-                {
-                    @managerException.Errorstd = "Unable to copy";
-                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
-                }
+                var ft = (FileType) item.DataContext;
+                var task = new Task(() => DeleteAsync(ft));
+                if (ft.Size > 1000000) task.Start();
+                else task.RunSynchronously();
             }
+            ViewModel.ParentViewModel.ReloadPath();
         }
 
         /// <summary>
-        /// 
+        /// Rename a file or directory
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Rename(object? sender, RoutedEventArgs e)
         {
             if (ViewModel.SelectedXaml.Count >= 1)
@@ -144,65 +141,77 @@ namespace CubeTools_UI.Views
         }
 
         /// <summary>
-        /// 
+        /// Delete selected
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Delete(object? sender, RoutedEventArgs e)
         {
-            List<string> undestroyed = new List<string>();
-            ManagerException lastError = new ManagerException();
             foreach (var item in ViewModel.SelectedXaml)
             {
-                var ft = (FileType) item.DataContext!;
-                try
-                {
-                    ManagerWriter.Delete(ft);
-                    ViewModel?.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(ft);
-                    ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-                }
-                catch (Exception exception)
-                {
-                    if (exception is CorruptedPointerException or CorruptedDirectoryException)
-                    {
-                        ViewModel?.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(ft);
-                        ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-                    }
-                    else if (exception is ManagerException @managerException)
-                    {
-                        undestroyed.Add(ft.Path);
-                        lastError = managerException;
-                    }
-                }
-            }
-
-            if (undestroyed.Count != 0)
-            {
-                string res = "";
-                foreach (var s in undestroyed)
-                    res += s + ",";
-                lastError.Errorstd = res;
-                new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, lastError).Show();
+                var ft = (FileType) item.DataContext;
+                var task = new Task(() => DeleteAsync(ft));
+                if (ft.Size > 1000000) task.Start();
+                else task.RunSynchronously();
+                ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
             }
         }
 
         /// <summary>
-        /// 
+        /// Display the search box
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Search(object? sender, RoutedEventArgs e)
         {
             var searchPopup = new SearchPopUp(ViewModel);
             searchPopup.Show();
         }
 
+        /// <summary>
+        /// Sort the ListBox
+        /// </summary>
         private void Sort(object? sender, RoutedEventArgs e)
         {
             ManagerReader.SortByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
             ViewModel.ParentViewModel.ViewModelPathsBar.Items =
                 ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer
                     .ChildrenFiles);
+        }
+        
+        
+        // PROCESS
+        private void CopyAsync(FileType item)
+        {
+            try
+            {
+                var ft = ManagerWriter.Copy(item.Path);
+                ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.AddChild(ft);
+            }
+            catch (Exception exception)
+            {
+                if (exception is ManagerException @managerException)
+                {
+                    @managerException.Errorstd = $"Unable to copy {item.Name}";
+                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                }
+            }
+        }
+
+        private void DeleteAsync(FileType ft)
+        {
+            ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(ft);
+            try
+            {
+                if (ft.IsDir)
+                    ManagerWriter.DeleteDir(ft);
+                else 
+                    ManagerWriter.Delete(ft);
+            }
+            catch (Exception exception)
+            {
+                if (exception is ManagerException @managerException)
+                {
+                    @managerException.Errorstd = $"Unable to delete {ft.Name}";
+                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                }
+            }
         }
     }
 }
