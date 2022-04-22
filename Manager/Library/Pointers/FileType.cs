@@ -92,23 +92,21 @@ namespace Library.Pointers
             }
             // Path
             _path = path;
+            _isDir = Directory.Exists(_path);
             // Primary
             _name = ManagerReader.ManagerReader.GetPathToName(_path);
-            if (!IsDir)
-                _size = ManagerReader.ManagerReader.GetFileSize(_path);
-            else _size = 0;
-            _isDir = Directory.Exists(_path);
+            _size = ManagerReader.ManagerReader.GetFileSize(_path);
             _type = ManagerReader.ManagerReader.GetFileExtension(_path);
             try
             {
-                // Properties
-                _readOnly = ManagerReader.ManagerReader.HasAttribute(FileAttributes.ReadOnly, _path);
-                _hidden = ManagerReader.ManagerReader.HasAttribute(FileAttributes.Hidden, _path);
-                _archived = ManagerReader.ManagerReader.HasAttribute(FileAttributes.Archive, _path);
                 // Time
                 _date = ManagerReader.ManagerReader.GetFileCreationDate(_path);
                 _lastDate = ManagerReader.ManagerReader.GetFileLastEdition(_path);
                 _accessDate = ManagerReader.ManagerReader.GetFileAccessDate(_path);
+                // Properties
+                _archived = ManagerReader.ManagerReader.HasAttribute(FileAttributes.Archive, _path);
+                _readOnly = ManagerReader.ManagerReader.HasAttribute(FileAttributes.ReadOnly, _path);
+                _hidden = ManagerReader.ManagerReader.HasAttribute(FileAttributes.Hidden, _path);
             }
             catch (ManagerException)
             {
