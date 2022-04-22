@@ -3,7 +3,7 @@
 }
 
 .First-Page .Title {
-  margin: 5% 0 20% 0;
+  margin: 0% 0 3% 0;
 }
 
 .First-Page .Title h1 {
@@ -24,4 +24,54 @@
   margin-top: -170px;
   color: #ffb957;
   mix-blend-mode: difference;
+}
+
+.download {
+  left: 20%;
+}
+
+.documentation {
+  left: 45%;
+}
+
+.download,
+.documentation {
+  display: inline-block;
+  position: relative;
+  margin: 5% 0 10% 0;
+  height: 75px;
+  width: 250px;
+  background: #f0921f;
+  border-radius: 55px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.download .content,
+.documentation .content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.download .content:hover,
+.documentation .content:hover {
+  background: #ffb957;
+  border-radius: 55px;
+  transform: translate(-6px, -6px);
+}
+
+.download .content .button-text,
+.download .content i,
+.documentation .content .documentation-text,
+.documentation .content i {
+  color: #FFF;
+  font-size: 20px;
+}
+
+.download .content .button-text,
+.documentation .content .documentation-text {
+  margin-left: 8px;
 }
