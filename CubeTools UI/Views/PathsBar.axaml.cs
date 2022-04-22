@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using CubeTools_UI.ViewModels;
+using CubeTools_UI.Views.PopUps;
 using Library.ManagerExceptions;
 using Library.Pointers;
 
@@ -52,7 +53,8 @@ namespace CubeTools_UI.Views
             {
                 if ((File.Exists(context.Path) || Directory.Exists(context.Path)) && e.MouseButton is MouseButton.Right)
                 {
-                    ViewModel.ParentViewModel.PropertiesBox(context);
+                    var propertiesPopUp = new PropertiesPopUp(context, ViewModel.Items);
+                    propertiesPopUp.Show();
                 }
             }
         }

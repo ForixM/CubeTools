@@ -70,6 +70,10 @@
         <DependentUpon>SearchPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\PopUps\PropertiesPopUp.axaml.cs">
+        <DependentUpon>PropertiesPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models" />
