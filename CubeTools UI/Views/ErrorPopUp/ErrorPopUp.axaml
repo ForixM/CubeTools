@@ -1,0 +1,47 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="200"
+        x:Class="CubeTools_UI.Views.ErrorPopUp.ErrorPopUp"
+        Width="350" Height="220"
+        MinWidth="350" MinHeight="220"
+        CanResize="False"
+        Title="ErrorPopUp">
+    
+        <Grid RowDefinitions="100,50,*">
+
+                <Grid Row="0" ColumnDefinitions="70,*">
+                        <Grid Grid.Column="0">
+                                <Image Grid.Column="0" Width="60" Height="50" Source="/Assets/CubeToolsIcons/CubeTools.ico" Name="ImageError" Margin="20 5"/>
+                        </Grid>
+            
+                        <Grid Grid.Column="1">
+                                <TextBlock Name="StdError" TextAlignment="Center" FontSize="20"/>
+                                <Border Background="Red" Margin="10 5 10 0" Width="50" Height="2" />
+                        </Grid>
+                </Grid>
+                
+                <Grid Row="1">
+                        <Canvas>
+                                <TextBlock Name="ContentError" FontSize="13" Foreground="Orange" TextWrapping="WrapWithOverflow"/>
+                        </Canvas>
+                </Grid>
+                        
+                <Grid Row="2" ColumnDefinitions="80,80,*">
+            
+                        <Grid Grid.Column="0">
+                                <Button Click="Button1Clicked" Name="Button1" Height="20" Width="70" Margin="5"/>
+                        </Grid>
+            
+                        <Grid Grid.Column="1">
+                                <Button Click="Button2Clicked" Name="Button2" Height="20" Width="70" Margin="5"/>
+                        </Grid>
+                        
+                        <Grid Grid.Column="2">
+                                <Button Click="Button3Clicked" Name="Button3" Height="20" Width="70" Margin="5"/>
+                        </Grid>
+            
+                </Grid>
+        </Grid>
+</Window>

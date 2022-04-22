@@ -4,8 +4,8 @@ namespace Library.ManagerExceptions
 {
     public class ManagerException : Exception
     {
-        public static string ErrorMessage;
-        public static string ErrorFunction;
+        public string ErrorMessage;
+        public string ErrorFunction;
         public string CriticalLevel;
         public string Errorstd;
         public string ErrorType;

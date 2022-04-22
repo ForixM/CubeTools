@@ -45,8 +45,10 @@ namespace CubeTools_UI.Views
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
-                    ViewModel.ParentViewModel.ErrorMessageBox(@managerException, "Unable to create a new file");
-                else throw;
+                {
+                    @managerException.Errorstd = "Unable to create a new file";
+                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                }
             }
         }
 
@@ -64,8 +66,10 @@ namespace CubeTools_UI.Views
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
-                    ViewModel.ParentViewModel.ErrorMessageBox(@managerException, "Unable to create a new file");
-                else throw;
+                {
+                    @managerException.Errorstd = "Unable to create a new directory";
+                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                }
             }
         }
 
@@ -116,8 +120,10 @@ namespace CubeTools_UI.Views
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
-                    ViewModel?.ParentViewModel?.ErrorMessageBox(@managerException, "Unable to copy");
-                else throw;
+                {
+                    @managerException.Errorstd = "Unable to copy";
+                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                }
             }
         }
 
@@ -131,14 +137,9 @@ namespace CubeTools_UI.Views
             if (ViewModel.SelectedXaml.Count >= 1)
             {
                 if (ViewModel.SelectedXaml.Count == 1)
-                {
-                    var renamePopup = new RenamePopUp((FileType) ViewModel.SelectedXaml[0].DataContext, ViewModel?.ParentViewModel?.ViewModelPathsBar.Items);
-                    renamePopup.Show();
-                }
-                else
-                {
-                    ViewModel?.ParentViewModel?.ErrorMessageBox(new ManagerException(), "Unable to rename multiple data");
-                }
+                    new RenamePopUp((FileType) ViewModel.SelectedXaml[0].DataContext, ViewModel?.ParentViewModel?.ViewModelPathsBar.Items).Show();
+                else 
+                    new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, new ManagerException("Unable to rename multiple data")).Show();
             }
         }
 
@@ -180,7 +181,8 @@ namespace CubeTools_UI.Views
                 string res = "";
                 foreach (var s in undestroyed)
                     res += s + ",";
-                ViewModel?.ParentViewModel?.ErrorMessageBox(lastError, "CubeTools was unable to destroy : " +res);
+                lastError.Errorstd = res;
+                new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, lastError).Show();
             }
         }
 

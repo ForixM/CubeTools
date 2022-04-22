@@ -29,6 +29,8 @@ namespace CubeTools_UI.ViewModels
                 OnPropertyChanged(nameof(SelectedViewModel));
             }
         }
+
+        public MainWindow AttachedView;
         
         #region Children ViewModels
         
@@ -58,8 +60,15 @@ namespace CubeTools_UI.ViewModels
             catch (Exception e)
             {
                 if (e is ManagerException @managerException)
-                    ErrorMessageBox(@managerException, "A critical error occured while loading the directory");
-                ErrorMessageBox(new SystemErrorException("Critical error occured"), "A critical error occured while loading the directory");
+                {
+                    var popup = new Views.ErrorPopUp.ErrorPopUp(this, @managerException);
+                    popup.Show();
+                }
+                else
+                {
+                    var popup = new Views.ErrorPopUp.ErrorPopUp(this, new SystemErrorException("Critical error occured while loading the directory"));
+                    popup.Show();
+                }
             }
             // Referencing THIS
             ViewModelNavigationBar.ParentViewModel = this;
@@ -74,85 +83,10 @@ namespace CubeTools_UI.ViewModels
             // Setting up Items
             ViewModelPathsBar.Items = ManagerReader.ListToObservable(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
-        
-        /// <summary>
-        ///  XAML Method : Display an Error Message Box for information purpose
-        /// </summary>
-        public void ErrorMessageBox(ManagerException e, string custom = "", ButtonEnum buttonEnum = ButtonEnum.Ok, Icon icon = Icon.None)
-        {
-            switch (e)
-            {
-                case PathNotFoundException :
-                    icon = Icon.Warning;
-                    buttonEnum = ButtonEnum.Ok;
-                    custom = "The given path could not be found by CubeTools";
-                    break;
-                case AccessException :
-                    icon = Icon.Forbidden;
-                    buttonEnum = ButtonEnum.Ok;
-                    custom = "The given path could not be accessed by CubeTools"; 
-                    break;
-                case CorruptedDirectoryException :
-                case CorruptedPointerException :
-                    icon = Icon.Error;
-                    buttonEnum = ButtonEnum.Ok;
-                    custom = "An error occured while accessing your files"; 
-                    break;
-                case InUseException :
-                    icon = Icon.Forbidden;
-                    buttonEnum = ButtonEnum.YesNo;
-                    custom = "One of the given files you've selected are being used by another process" + "\n" + "Would you like to try again ?"; 
-                    break;
-                case PathFormatException :
-                    icon = Icon.Forbidden;
-                    buttonEnum = ButtonEnum.Ok;
-                    custom = "The given path is incorrect, make sure it does not contain one of the invalid characters"; 
-                    break;
-            }
-            var button = new ButtonDefinition();
-            button.Type = ButtonType.Default;
-            button.Name = "OK";
 
-            var parameters = new MessageBoxCustomParams();
-            parameters.Icon = icon;
-            parameters.Height = 200;
-            parameters.Width = 200;
-            parameters.CanResize = true;
-            parameters.ContentHeader = e.Errorstd;
-            parameters.ContentTitle = e.Errorstd;
-            parameters.ContentMessage = $"Message : {e.ErrorType}"+ "\n" + $"Level : {e.CriticalLevel}" + "\n\n" + $"{custom}";
-            parameters.ShowInCenter = true;
-            parameters.ButtonDefinitions = new[] {button};
-            var messageBox =  MessageBoxManager.GetMessageBoxCustomWindow(parameters);
-            messageBox.Show();
-        }
-
-        /// <summary>
-        /// XAML Method : Display a Properties Box for information purpose
-        /// </summary>
-        /// <param name="ft"></param>
-        /// <returns></returns>
-        public async void PropertiesBox(FileType ft)
+        public MainWindowViewModel(MainWindow attachedView) : this()
         {
-            var parameters = new MessageBoxCustomParams();
-            parameters.Icon = Icon.Info;
-            parameters.CanResize = false;
-            parameters.Height = 200;
-            parameters.Width = 200;
-            parameters.ContentTitle = $"{ft.Name} Properties\n";
-            parameters.ContentMessage = $"File : {ft.Name}\n" +
-                                        $"Type of file : {ft.Type}\n" +
-                                        $"Open with : ...\n" +
-                                        $"Size : {ft.SizeXaml}\n" +
-                                        $"Created : {ft.Date}\n" +
-                                        $"Modified : {ft.LastDate}\n" +
-                                        $"Accessed : {ft.AccessDate}\n" +
-                                        $"Attributes : Compressed[{ft.Compressed}] Archived[{ft.Archived}]\n" +
-                                        $"             Hidden[{ft.Hidden} Read-Only[{ft.ReadOnly}]\n";
-            parameters.ShowInCenter = true;
-            //parameters.WindowIcon = new WindowIcon(new Bitmap("../Assets"));
-            var messageBox = MessageBoxManager.GetMessageBoxCustomWindow(parameters);
-            await messageBox.Show();
+            AttachedView = attachedView;
         }
 
         /// <summary>
@@ -171,7 +105,10 @@ namespace CubeTools_UI.ViewModels
                 catch (Exception e)
                 {
                     if (e is ManagerException @managerException)
-                        ErrorMessageBox(@managerException);
+                    {
+                        var popup = new Views.ErrorPopUp.ErrorPopUp(this, managerException);
+                        popup.Show();
+                    }
                 }
             }
             else
@@ -183,9 +120,15 @@ namespace CubeTools_UI.ViewModels
                 catch (Exception e)
                 {
                     if (e is ManagerException @managerException)
-                        ErrorMessageBox(@managerException, "A critical error occured while loading the directory");
-                    ErrorMessageBox(new SystemErrorException("Critical error occured"),
-                        "A critical error occured while loading the directory");
+                    {
+                        var popup = new Views.ErrorPopUp.ErrorPopUp(this, @managerException);
+                        popup.Show();
+                    }
+                    else
+                    {
+                        var popup = new Views.ErrorPopUp.ErrorPopUp(this, new SystemErrorException("Critical error occured while loading the directory"));
+                        popup.Show();
+                    }
                 }
 
                 // Setting up the Path for UI
@@ -216,7 +159,10 @@ namespace CubeTools_UI.ViewModels
             catch (Exception e)
             {
                 if (e is ManagerException @managerException)
-                    ErrorMessageBox(@managerException);
+                {
+                    var popup = new Views.ErrorPopUp.ErrorPopUp(this, @managerException);
+                    popup.Show();
+                }
             }
             ViewModelPathsBar.Items = ManagerReader.ListToObservable(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }

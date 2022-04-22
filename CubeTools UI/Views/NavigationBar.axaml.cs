@@ -48,7 +48,11 @@ namespace CubeTools_UI.Views
                 catch (Exception exception)
                 {
                     if (exception is ManagerException @managerException)
-                        ViewModel.ParentViewModel?.ErrorMessageBox(@managerException, $"Unable to get the last directory");
+                    {
+                        @managerException.Errorstd = "Unable to get the last directory";
+                        new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                    }
+
                     ViewModel.QueueIndex--;
                 }
             }
@@ -66,7 +70,10 @@ namespace CubeTools_UI.Views
                 catch (Exception exception)
                 {
                     if (exception is ManagerException @managerException)
-                        ViewModel.ParentViewModel?.ErrorMessageBox(@managerException, $"Unable to get the next directory");
+                    {
+                        @managerException.Errorstd = "Unable to get the next directory";
+                        new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                    }
                     ViewModel.QueueIndex--;
                 }
             }
@@ -86,9 +93,10 @@ namespace CubeTools_UI.Views
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
-                    ViewModel.ParentViewModel?.ErrorMessageBox(@managerException, $"Unable to get directory of ");
-                else
-                    throw;
+                {
+                    @managerException.Errorstd = "Unable to get the parent directory";
+                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                }
             }
             
             ViewModel.QueuePointers.Add(parent);
@@ -99,8 +107,11 @@ namespace CubeTools_UI.Views
             }
             catch (Exception exception)
             {
-                if ( exception is ManagerException @managerException)
-                    ViewModel.ParentViewModel?.ErrorMessageBox(@managerException, "Unable to get parent");
+                if (exception is ManagerException @managerException)
+                {
+                    @managerException.Errorstd = "Unable to get the parent directory";
+                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                }
             }
         }
 
@@ -114,7 +125,10 @@ namespace CubeTools_UI.Views
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
-                    ViewModel.ParentViewModel?.ErrorMessageBox(@managerException, "Enable to reload the directory");
+                {
+                    @managerException.Errorstd = "Unable to reload directory";
+                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                }
             }
         }
 

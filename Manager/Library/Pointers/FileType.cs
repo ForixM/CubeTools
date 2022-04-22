@@ -94,7 +94,9 @@ namespace Library.Pointers
             _path = path;
             // Primary
             _name = ManagerReader.ManagerReader.GetPathToName(_path);
-            _size = ManagerReader.ManagerReader.GetFileSize(_path);
+            if (!IsDir)
+                _size = ManagerReader.ManagerReader.GetFileSize(_path);
+            else _size = 0;
             _isDir = Directory.Exists(_path);
             _type = ManagerReader.ManagerReader.GetFileExtension(_path);
             try

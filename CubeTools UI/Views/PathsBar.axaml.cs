@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using CubeTools_UI.ViewModels;
+using CubeTools_UI.ViewModels.ErrorPopUp;
 using CubeTools_UI.Views.PopUps;
 using Library.ManagerExceptions;
 using Library.Pointers;
@@ -71,8 +72,8 @@ namespace CubeTools_UI.Views
                 }
                 else
                 {
-                    // TODO
-                    ViewModel.ParentViewModel.ErrorMessageBox(new PathNotFoundException($"{context.Path} does not exist anymore"));
+                    var pathNotFoundPopUp = new ErrorPopUp.ErrorPopUp();
+                    pathNotFoundPopUp.Show();
                     ViewModel.ParentViewModel.ReloadPath();
                 }
             }

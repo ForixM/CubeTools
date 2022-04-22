@@ -30,7 +30,7 @@
 					<ColumnDefinition Width="50" />
 					<ColumnDefinition Width="50" />
 					<ColumnDefinition Width="50" />
-					<ColumnDefinition />
+					<ColumnDefinition/>
 					<ColumnDefinition Width="50" />
 				</Grid.ColumnDefinitions>
 
@@ -65,7 +65,6 @@
 					</Border>
 				</Grid>
 				<Grid Grid.Column="5">
-					<Button Command="{Binding }"></Button>
 					<Button Classes="TopBar" Name="SettingButton" Click="SettingsClick">
 						<Image Source="/Assets/CubeToolsIcons/Settings.ico" Height="25" />
 					</Button>
