@@ -4,16 +4,67 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="200"
         x:Class="CubeTools_UI.Views.ErrorPopUp.ErrorPopUp"
-        Width="350" Height="220"
-        MinWidth="350" MinHeight="220"
+        Width="350" Height="135"
+        MinWidth="350" MinHeight="135"
         CanResize="False"
-        Title="ErrorPopUp">
+        Title="ERROR">
+        
+        <Grid>
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid Grid.Column="0">
+                        <Image Source="../../Assets/CubeToolsIcons/Error.ico" Margin="10"/>
+                </Grid>
+                
+                <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Grid Grid.Row="0">
+                                <TextBlock Text="ERROR" VerticalAlignment="Center" TextAlignment="Center" Foreground="#A56C00" FontSize="20"/>
+                        </Grid>
+                        
+                        <Grid Grid.Row="1">
+                                <TextBlock Name="StdError" VerticalAlignment="Center" TextAlignment="Center" FontSize="14"/>
+                        </Grid>
+                        
+                        <Grid Grid.Row="2">
+                                <TextBlock Name="ContentError" VerticalAlignment="Center" TextAlignment="Center" FontSize="12" Foreground="#251A00" TextWrapping="WrapWithOverflow"/>
+                        </Grid>
+                        
+                        <Grid Grid.Row="3" ColumnDefinitions="80,80,*">
+
+                                <Grid Grid.Column="0">
+                                        <Button Click="Button1Clicked" Name="Button1" />
+                                </Grid>
+            
+                                <Grid Grid.Column="1">
+                                        <Button Click="Button2Clicked" Name="Button2" />
+                                </Grid>
+                        
+                                <Grid Grid.Column="2">
+                                        <Button Click="Button3Clicked" Name="Button3" />
+                                </Grid>
+                        </Grid>
+                        <!--
+                        <StackPanel Margin="10">
+                        </StackPanel> -->
+                </Grid>
+        </Grid>
     
+        <!--
         <Grid RowDefinitions="100,50,*">
 
                 <Grid Row="0" ColumnDefinitions="70,*">
                         <Grid Grid.Column="0">
-                                <Image Grid.Column="0" Width="60" Height="50" Source="/Assets/CubeToolsIcons/CubeTools.ico" Name="ImageError" Margin="20 5"/>
+                                <Image Grid.Column="0" Width="60" Height="50" Source="../../Assets/CubeToolsIcons/Error.ico" Name="ImageError" Margin="20 5"/>
                         </Grid>
             
                         <Grid Grid.Column="1">
@@ -44,4 +95,5 @@
             
                 </Grid>
         </Grid>
+        -->
 </Window>
