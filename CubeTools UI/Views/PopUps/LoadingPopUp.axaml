@@ -2,21 +2,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="200"
-        Width="400" Height="200"
+        mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="100"
+        Width="300" Height="50"
         x:Class="CubeTools_UI.Views.PopUps.LoadingPopUp"
-        Title="Loading ...">
+        Title="Loading" Closing="OnClosing">
     
-    <Grid RowDefinitions="70">
-        <Grid Row="0" ColumnDefinitions="70,*">
-            
-            <Grid Column="0">
-                <TextBlock FontSize="15" Foreground="Black" Text="Process to operation"></TextBlock>
-            </Grid>
-            
-            <Grid Column="1">
-                <ProgressBar ShowProgressText="True" Name="ProgressBar" Value="0" Minimum="0" Maximum="100" Background="#FF5F1F" Height="20" Width="200" Margin="20" Orientation="Horizontal"/>
-            </Grid>
-        </Grid>
-    </Grid>
+    <StackPanel>
+        <TextBlock Name="OperationType" FontSize="15" Foreground="Black" Text="Process to operation" Height="30"/>
+        <ProgressBar Foreground="Red" Name="Progress" Minimum="0" Maximum="100" Value="0" Width="150" Height="8"/>
+    </StackPanel>
 </Window>

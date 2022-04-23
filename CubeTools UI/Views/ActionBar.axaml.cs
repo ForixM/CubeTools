@@ -185,9 +185,7 @@ namespace CubeTools_UI.Views
         private void CopyPointer(FileType source)
         {
             // Create a new task to delete the pointer
-            var task = new Task(() => ManagerWriter.Copy(source.Path));
-            // Calculate the size of the pointer
-            int nbFiles = ManagerReader.FastReaderFiles(source.Path);
+            var task = new Task<FileType>(() => ManagerWriter.Copy(source.Path));
             // Getting new Path
             string path = ManagerReader.GenerateNameForModification(source.Path).Replace('\\','/');
             // Remove reference from Directory Pointer
@@ -200,20 +198,13 @@ namespace CubeTools_UI.Views
                     // Run async task
                     task.Start();
                     // Display loading box
-                    var loadingPopUp = new LoadingPopUp(true);
+                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(source), source, false);
                     loadingPopUp.Show();
-                    // Update percentages
-                    int current = ManagerReader.FastReaderFiles(path);
-                    while (current != nbFiles && Directory.Exists(source.Path))
-                    {
-                        current = ManagerReader.FastReaderFiles(source.Path);
-                        loadingPopUp.ReloadProgress(current, nbFiles);
-                        Thread.Sleep(200);
-                    }
                     // Close display
-                    loadingPopUp.Close();
+                    task.GetAwaiter().OnCompleted(() => loadingPopUp.Close());
                 }
                 else task.RunSynchronously();
+                ViewModel.ParentViewModel!.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result);
             }
             catch (Exception exception)
             {
@@ -223,9 +214,6 @@ namespace CubeTools_UI.Views
                     new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
                 }
             }
-
-            FileType copied = new FileType(path);
-            ViewModel.ParentViewModel!.ViewModelNavigationBar.DirectoryPointer.AddChild(copied);
         }
 
         /// <summary>
@@ -236,10 +224,6 @@ namespace CubeTools_UI.Views
         {
             // Create a new task to delete the pointer
             var task = new Task(() => ManagerWriter.DeleteDir(source));
-            // Calculate the size of the pointer
-            int nbFiles = ManagerReader.FastReaderFiles(source.Path);
-            // Unable to remove files
-            int unableRemove = 0;
             // Remove reference from Directory Pointer
             ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(source);
             // Run Tasks Async
@@ -250,35 +234,18 @@ namespace CubeTools_UI.Views
                     // Run async task
                     task.Start();
                     // Display loading box
-                    var loadingPopUp = new LoadingPopUp(true);
+                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(source), source,true);
                     loadingPopUp.Show();
-                    // Update percentages
-                    int current = ManagerReader.FastReaderFiles(source.Path);
-                    int last = 0;
-                    int infiniteLoopAvoider = 10;
-                    while (current-unableRemove > 0 && infiniteLoopAvoider != 0 && Directory.Exists(source.Path))
-                    {
-                        last = current;
-                        current = ManagerReader.FastReaderFiles(source.Path);
-                        if (last != current)
-                            infiniteLoopAvoider = 10;
-                        else 
-                            infiniteLoopAvoider -= 1;
-                        loadingPopUp.ReloadProgress(current, nbFiles);
-                        Thread.Sleep(250);
-                    }
                     // Close display
-                    loadingPopUp.Close();
+                    task.GetAwaiter().OnCompleted(() => loadingPopUp.Close());
                 }
                 // Run task sync
-                else
-                    task.RunSynchronously();
+                else task.RunSynchronously();
             }
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
                 {
-                    unableRemove--;
                     @managerException.Errorstd = $"Unable to delete {source.Name}";
                     new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
                 }

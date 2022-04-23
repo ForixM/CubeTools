@@ -41,7 +41,7 @@ namespace CubeTools_UI.Views.ErrorPopUp
         public ErrorPopUp(MainWindowViewModel parent,ManagerException exception) : this(parent)
         {
             ViewModel = SelectViewModel(exception);
-            ViewModel.Initialize();
+            ViewModel?.Initialize();
         }
 
         private void InitializeComponent()

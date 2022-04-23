@@ -78,10 +78,41 @@ namespace CubeTools_UI.Views.PopUps
                 }
             }
 
-            if (_modifiedPointer.Path == "")
+            if (_modifiedPointer.Path == "" || _modifiedPointer.Name == _renameBox.Text)
+                Close();
+        }
+        
+        private void OnClickRename(object? sender, RoutedEventArgs e)
+        {
+            if (File.Exists(_renameBox.Text) || Directory.Exists(_renameBox.Text))
+            {
+                // File Already exists, try to overwrite ?
+            }
+            else if (!ManagerReader.IsPathCorrect(_renameBox.Text))
+            {
+                _renameBox.Text = "";
+                _renameBox.Watermark = "Incorrect characters !";
+            }
+            else
+            {
+                try
+                {
+                    int index = _itemsReference.IndexOf(_modifiedPointer);
+                    ManagerWriter.Rename(_modifiedPointer, _renameBox.Text, false);
+                    _itemsReference[index] = _modifiedPointer;
+                }
+                catch (ManagerException exception)
+                {
+                    var popup = new ErrorPopUp.ErrorPopUp(_main, exception);
+                    popup.Show();
+                }
+                Close();
+            }
+            if (_modifiedPointer.Path == "" || _modifiedPointer.Name == _renameBox.Text)
                 Close();
         }
         
         #endregion
+        
     }
 }
