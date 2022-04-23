@@ -4,26 +4,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="200"
         x:Class="CubeTools_UI.Views.ErrorPopUp.ErrorPopUp"
-        Width="350" Height="135"
+        Width="400" Height="200"
         MinWidth="350" MinHeight="135"
         CanResize="False"
         Title="ERROR">
         
         <Grid>
                 <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="150"/>
                         <ColumnDefinition Width="250"/>
                 </Grid.ColumnDefinitions>
                 
                 <Grid Grid.Column="0">
-                        <Image Source="../../Assets/CubeToolsIcons/Error.ico" Margin="10"/>
+                        <Image Source="../../Assets/CubeToolsIcons/Error.ico" Height="100"/>
                 </Grid>
                 
                 <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                                 <RowDefinition Height="45"/>
-                                <RowDefinition Height="25"/>
-                                <RowDefinition Height="20"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="60"/>
                                 <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
                         
@@ -32,11 +32,11 @@
                         </Grid>
                         
                         <Grid Grid.Row="1">
-                                <TextBlock Name="StdError" VerticalAlignment="Center" TextAlignment="Center" FontSize="14"/>
+                                <TextBlock TextWrapping="Wrap" MaxLines="2" Name="StdError" VerticalAlignment="Center" TextAlignment="Center" FontSize="14"/>
                         </Grid>
                         
                         <Grid Grid.Row="2">
-                                <TextBlock Name="ContentError" VerticalAlignment="Center" TextAlignment="Center" FontSize="12" Foreground="#251A00" TextWrapping="WrapWithOverflow"/>
+                                <TextBlock TextWrapping="Wrap" MaxLines="3" Name="ContentError" VerticalAlignment="Center" TextAlignment="Center" FontSize="12" Foreground="#251A00"/>
                         </Grid>
                         
                         <Grid Grid.Row="3" ColumnDefinitions="80,80,*">
