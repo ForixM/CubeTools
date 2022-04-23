@@ -90,6 +90,10 @@
         <DependentUpon>LoadingPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\PopUps\SortPopUp.axaml.cs">
+        <DependentUpon>SortPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models" />

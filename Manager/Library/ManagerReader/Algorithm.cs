@@ -446,7 +446,23 @@ namespace Library.ManagerReader
         /// <returns>Returns the sorted list of filetype</returns>
         public static List<FileType> SortByName(List<FileType> ftList)
         {
-            return DivideAndMergeAlgorithm(ftList, "name");
+            var dirList = new List<FileType>();
+            foreach (var ft in ftList.Where(ft => ft.IsDir))
+            {
+                dirList.Add(ft);
+            }
+
+            var fileList = new List<FileType>();
+            foreach (var ft in ftList.Where(ft => !ft.IsDir))
+            {
+                fileList.Add(ft);
+            }
+            fileList = DivideAndMergeAlgorithm(fileList, "name");
+            fileList.Reverse();
+            dirList = DivideAndMergeAlgorithm(dirList, "name");
+            dirList.Reverse();
+            dirList = dirList.Concat(fileList).ToList();
+            return dirList;
         }
 
         /// <summary>
@@ -457,7 +473,21 @@ namespace Library.ManagerReader
         /// <returns>Returns the sorted list of filetype</returns>
         public static List<FileType> SortBySize(List<FileType> ftList)
         {
-            return DivideAndMergeAlgorithm(ftList, "size");
+            var dirList = new List<FileType>();
+            foreach (var ft in ftList.Where(ft => ft.IsDir))
+            {
+                dirList.Add(ft);
+            }
+
+            var fileList = new List<FileType>();
+            foreach (var ft in ftList.Where(ft => !ft.IsDir))
+            {
+                fileList.Add(ft);
+            }
+            fileList = DivideAndMergeAlgorithm(fileList, "size");
+            dirList = DivideAndMergeAlgorithm(dirList, "size");
+            dirList = dirList.Concat(fileList).ToList();
+            return dirList;
         }
 
         /// <summary>
@@ -468,7 +498,9 @@ namespace Library.ManagerReader
         /// <returns>Returns the sorted list of filetype</returns>
         public static List<FileType> SortByType(List<FileType> ftList)
         {
-            return DivideAndMergeAlgorithm(ftList, "type");
+            var res =  DivideAndMergeAlgorithm(ftList, "type");
+            res.Reverse();
+            return res;
         }
 
         /// <summary>
@@ -477,10 +509,23 @@ namespace Library.ManagerReader
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>the sorted list of filetype</returns>
-        public static List<FileType>
-            SortByModifiedDate(List<FileType> ftList)
+        public static List<FileType> SortByModifiedDate(List<FileType> ftList)
         {
-            return DivideAndMergeAlgorithm(ftList, "date");
+            var dirList = new List<FileType>();
+            foreach (var ft in ftList.Where(ft => ft.IsDir))
+            {
+                dirList.Add(ft);
+            }
+
+            var fileList = new List<FileType>();
+            foreach (var ft in ftList.Where(ft => !ft.IsDir))
+            {
+                fileList.Add(ft);
+            }
+            fileList = DivideAndMergeAlgorithm(fileList, "date");
+            dirList = DivideAndMergeAlgorithm(dirList, "date");
+            dirList = dirList.Concat(fileList).ToList();
+            return dirList;
         }
 
         // Main functions

@@ -243,10 +243,10 @@ namespace Library.Pointers
         {
             foreach (var file in ChildrenFiles) file.Dispose();
             ChildrenFiles.Clear();
-            foreach (var file in Directory.GetFiles(Path)) 
-                ChildrenFiles.Add(new FileType(file.Replace('\\', '/')));
             foreach (var dir in Directory.GetDirectories(Path))
                 ChildrenFiles.Add(new FileType(dir.Replace('\\', '/')));
+            foreach (var file in Directory.GetFiles(Path)) 
+                ChildrenFiles.Add(new FileType(file.Replace('\\', '/')));
         }
 
         /// <summary>

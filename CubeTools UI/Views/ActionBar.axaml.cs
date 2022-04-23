@@ -167,10 +167,8 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void Sort(object? sender, RoutedEventArgs e)
         {
-            ManagerReader.SortByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            ViewModel.ParentViewModel.ViewModelPathsBar.Items =
-                ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer
-                    .ChildrenFiles);
+            var popup = new SortPopUp(ViewModel.ParentViewModel);
+            popup.Show();
         }
         
         #endregion
