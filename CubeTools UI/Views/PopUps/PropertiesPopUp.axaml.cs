@@ -33,7 +33,9 @@ namespace CubeTools_UI.Views.PopUps
         private CheckBox _hidden;
 
         #endregion
-        
+
+        private bool _userActivation = false;
+
         private readonly FileType _pointer;
         private MainWindowViewModel ParentViewModel;
         
@@ -54,6 +56,7 @@ namespace CubeTools_UI.Views.PopUps
             _readOnly = this.FindControl<CheckBox>("Read-Only");
             _hidden = this.FindControl<CheckBox>("Hidden");
 
+            _userActivation = false;
             ParentViewModel = null;
         }
         public PropertiesPopUp(FileType ft, ObservableCollection<FileType> items, MainWindowViewModel main) : this()
@@ -83,6 +86,11 @@ namespace CubeTools_UI.Views.PopUps
         
         private void ReadOnlyUnchecked(object? sender, RoutedEventArgs e)
         {
+            if (_userActivation)
+            {
+                _userActivation = false;
+                return;
+            }
             try
             {
                 ManagerWriter.SetAttributes(_pointer, false, FileAttributes.ReadOnly);
@@ -92,12 +100,18 @@ namespace CubeTools_UI.Views.PopUps
             {
                 var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
                 popup.Show();
+                _userActivation = true;
                 _readOnly.IsChecked = !_readOnly.IsChecked;
             }
         }
 
         private void ReadOnlyChecked(object? sender, RoutedEventArgs e)
         {
+            if (_userActivation)
+            {
+                _userActivation = false;
+                return;
+            }
             try
             {
                 ManagerWriter.SetAttributes(_pointer, true, FileAttributes.ReadOnly);
@@ -107,12 +121,18 @@ namespace CubeTools_UI.Views.PopUps
             {
                 var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
                 popup.Show();
+                _userActivation = true;
                 _readOnly.IsChecked = !_readOnly.IsChecked;
             }
         }
         
         private void HiddenUnchecked(object? sender, RoutedEventArgs e)
         {
+            if (_userActivation)
+            {
+                _userActivation = false;
+                return;
+            }
             try
             {
                 ManagerWriter.SetAttributes(_pointer, false, FileAttributes.Hidden);
@@ -122,12 +142,18 @@ namespace CubeTools_UI.Views.PopUps
             {
                 var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
                 popup.Show();
-                _readOnly.IsChecked = !_readOnly.IsChecked;
+                _userActivation = true;
+                _hidden.IsChecked = !_hidden.IsChecked;
             }
         }
         
         private void HiddenChecked(object? sender, RoutedEventArgs e)
         {
+            if (_userActivation)
+            {
+                _userActivation = false;
+                return;
+            }
             try
             {
                 ManagerWriter.SetAttributes(_pointer, true, FileAttributes.Hidden);
@@ -137,7 +163,8 @@ namespace CubeTools_UI.Views.PopUps
             {
                 var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
                 popup.Show();
-                _readOnly.IsChecked = !_readOnly.IsChecked;
+                _userActivation = true;
+                _hidden.IsChecked = !_hidden.IsChecked;
             }
         }
 
