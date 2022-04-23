@@ -23,7 +23,7 @@
                 <Grid Grid.Column="1">
                         <StackPanel Margin="10">
                                 <TextBox Watermark="*.txt" Name="TextEntered"/>
-                                <Button HorizontalAlignment="Center" Margin="0 10 0 0" Content="Search" Click="SearchClick"/>
+                                <Button HorizontalAlignment="Center" Margin="0 10 0 0" Content="Search" KeyDown="SearchEnter" Click="SearchClick"/>
                         </StackPanel>
                 </Grid>
                

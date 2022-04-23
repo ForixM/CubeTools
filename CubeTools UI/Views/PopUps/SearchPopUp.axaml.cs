@@ -12,9 +12,10 @@ namespace CubeTools_UI.Views.PopUps
     public class SearchPopUp : Window
     {
         private ActionBarViewModel? ViewModel;
-
         private TextBox TextEntered;
 
+        #region Init
+        
         public SearchPopUp()
         {
             InitializeComponent();
@@ -30,7 +31,11 @@ namespace CubeTools_UI.Views.PopUps
         {
             AvaloniaXamlLoader.Load(this);
         }
+        
+        #endregion
 
+        #region Events
+        
         private void SearchClick(object? sender, RoutedEventArgs e)
         {
             if (sender is Button && ViewModel?.ParentViewModel != null)
@@ -38,5 +43,15 @@ namespace CubeTools_UI.Views.PopUps
                     ManagerReader.ListToObservable(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path, TextEntered.Text, 25).ToList());
             Close();
         }
+
+        private void SearchEnter(object? sender, KeyEventArgs e)
+        {
+            if (sender is Button && e.Key is Key.Enter && ViewModel?.ParentViewModel != null)
+                ViewModel.ParentViewModel.ViewModelPathsBar.Items = 
+                    ManagerReader.ListToObservable(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path, TextEntered.Text, 25).ToList());
+            Close();
+        }
+        
+        #endregion
     }
 }

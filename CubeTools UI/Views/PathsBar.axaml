@@ -12,7 +12,7 @@
 		<viewModels:PathsBarViewModel/>
 	</Design.DataContext>
 	
-	<ListBox Name="ItemsXaml" Items="{Binding Items}" Margin="5">
+	<ListBox Name="ItemsXaml" Items="{Binding Items}" Margin="5" Background="White" SelectionMode="Multiple"  >
 		<ListBox.ItemTemplate>
 			<DataTemplate>
 				<Button PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped">
