@@ -1,7 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
+using Library.ManagerExceptions;
 
 namespace CubeTools_UI.Views
 {
@@ -18,6 +20,12 @@ namespace CubeTools_UI.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private void AccessError(object? sender, RoutedEventArgs e)
+        {
+            var popup = new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, new AccessException("Not Implemented Yet"));
+            popup.Show();
         }
     }
 }

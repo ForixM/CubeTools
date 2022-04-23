@@ -24,11 +24,14 @@
 		<Setter Property="HorizontalAlignment" Value="Center"/>
 		<Setter Property="Width" Value="225"/>
 		<Setter Property="Height" Value="60"/>
+		<Setter Property="CornerRadius" Value="8"/>
+		<Setter Property="Background" Value="#F9F9F9"/>
 	</Style>
 
 	<Style Selector="TextBlock.DirectoryList">
 		<Setter Property="HorizontalAlignment" Value="Center"/>
 		<Setter Property="Margin" Value="-22"/>
+		<Setter Property="Foreground" Value="#BC7404"/>
 	</Style>
 
 	<Style Selector="Image.DirectoryList">
