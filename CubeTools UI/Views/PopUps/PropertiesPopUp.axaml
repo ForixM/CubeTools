@@ -6,7 +6,7 @@
         Width="500" Height="650"
         CanResize="False"
         Closing="OnClose"
-        Icon="../../Assets/info.ico"
+        Icon="../../Assets/OLD/info.ico"
         x:Class="CubeTools_UI.Views.PopUps.PropertiesPopUp"
         Title="Properties">
     

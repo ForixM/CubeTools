@@ -17,7 +17,7 @@
 			<DataTemplate>
 				<Button PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped">
 					<WrapPanel>
-						<Image Source="/Assets/CubeToolsIcons/Folder.ico" Height="20"/>
+						<Image Source="/Assets/CubeToolsIcons/FolderCompressed.ico" Height="20"/>
 						<TextBlock Text="{Binding Name}" Margin="5"/>
 						<TextBlock Text="{Binding SizeXaml}" Margin="5"/>
 					</WrapPanel>

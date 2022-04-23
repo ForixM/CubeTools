@@ -47,7 +47,7 @@
 				<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="FavoritesButton">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Favorites.ico"/>
+					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Favorites.ico"/>
 					<TextBlock Classes="DirectoryList" Text="Favorites"/>
 				</StackPanel>
 			</Button>
@@ -55,7 +55,7 @@
 		<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="DesktopButton">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Desktop.ico"/>
+					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Desktop.ico"/>
 					<TextBlock Classes="DirectoryList" Text="Desktop"/>
 				</StackPanel>
 			</Button>
@@ -63,7 +63,7 @@
 		<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="DocumentsButton">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Documents.ico"/>
+					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Documents.ico"/>
 					<TextBlock Classes="DirectoryList" Text="Documents"/>
 				</StackPanel>
 			</Button>
@@ -71,7 +71,7 @@
 		<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="ImagesButton">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Images.ico"/>
+					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Images.ico"/>
 					<TextBlock Classes="DirectoryList" Text="Images"/>
 				</StackPanel>
 			</Button>
@@ -79,7 +79,7 @@
 		<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="DownloadsBtton">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Downloads.ico"/>
+					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Downloads.ico"/>
 					<TextBlock Classes="DirectoryList" Text="Downloads"/>
 				</StackPanel>
 			</Button>
@@ -87,7 +87,7 @@
 		<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="MusicButton">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Music.ico"/>
+					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Music.ico"/>
 					<TextBlock Classes="DirectoryList" Text="Music"/>
 				</StackPanel>
 			</Button>
@@ -95,7 +95,7 @@
 		<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="Videos">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Videos.ico"/>
+					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Video.ico"/>
 					<TextBlock Classes="DirectoryList" Text="Videos"/>
 				</StackPanel>
 			</Button>
@@ -103,7 +103,7 @@
 				<ListBoxItem Height="57">
 			<Button Classes="DirectoryList" Name="FTP">
 				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/Ftp.ico"/>
+					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/FTP.ico"/>
 					<TextBlock Classes="DirectoryList" Text="OneDrive"/>
 				</StackPanel>
 			</Button>
@@ -111,7 +111,7 @@
 				<ListBoxItem Height="57">
 					<Button Classes="DirectoryList" Name="OneDrive">
 						<StackPanel VerticalAlignment="Center">
-							<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/OneDrive.ico"/>
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/OneDrive.ico"/>
 							<TextBlock Classes="DirectoryList" Text="OneDrive"/>
 						</StackPanel>
 					</Button>
@@ -119,7 +119,7 @@
 				<ListBoxItem Height="57">
 					<Button Classes="DirectoryList" Name="GoogleDrive">
 						<StackPanel VerticalAlignment="Center">
-							<Image Classes="DirectoryList" Source="/Assets/CubeToolsIcons/GoogleDrive.ico"/>
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/GoogleDrive.ico"/>
 							<TextBlock Classes="DirectoryList" Text="GoogleDrive"/>
 						</StackPanel>
 					</Button>

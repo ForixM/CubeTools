@@ -7,7 +7,7 @@
         MinHeight="100" MinWidth="200"
         CanResize="False"
         x:Class="CubeTools_UI.Views.PopUps.RenamePopUp"
-        Icon="../../Assets/rename.ico"
+        Icon="../../Assets/OLD/rename.ico"
         Title="Rename">
     
     <Grid>
