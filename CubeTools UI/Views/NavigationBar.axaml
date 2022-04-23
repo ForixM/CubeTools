@@ -19,8 +19,7 @@
 		<vm:NavigationBarViewModel/>
 	</Design.DataContext>
 	
-	<Border CornerRadius="8" BorderThickness="3" HorizontalAlignment="Center"
-	        Height="47">
+	<Border CornerRadius="8" BorderThickness="3" Height="47">
 
 		<StackPanel VerticalAlignment="Center">
 			<!-- Adding columns definitions -->
@@ -61,8 +60,7 @@
 				<!-- Fifth column : Path bar-->
 				<Grid Grid.Column="4">
 					<Border CornerRadius="4" Background="White" Margin="0 1" >
-						<TextBox Name="CurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" 
-						         MaxWidth="500" MinWidth="500"/>
+						<TextBox Name="CurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" />
 					</Border>
 				</Grid>
 				<Grid Grid.Column="5">
