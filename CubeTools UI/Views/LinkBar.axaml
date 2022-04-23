@@ -39,9 +39,9 @@
 						
 						<GradientStop Color="#FFFBDF" Offset="0.45" />
 						
-						<GradientStop Color="#FFFBAD" Offset="0.75" />
+						<GradientStop Color="#fff59d" Offset="0.75" />
 
-						<GradientStop Color="#FEDD7E" Offset="0.95" />
+						<GradientStop Color="#ffcc80" Offset="0.95" />
 
 					</LinearGradientBrush>
 				</ListBox.Background>
