@@ -173,7 +173,13 @@ namespace CubeTools_UI.Views.PopUps
             ParentViewModel.ReloadPath();
         }
         
+        private void OnClick(object? sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+        
         #endregion
 
+        
     }
 }

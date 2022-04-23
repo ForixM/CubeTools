@@ -122,7 +122,7 @@
         </Grid>
         <!--Fourteenth Row : Button-->
         <Grid Row="13">
-            <Button VerticalAlignment="Center" HorizontalAlignment="Center" Content="OK" Width="100"/>
+            <Button Click="OnClick" VerticalAlignment="Center" HorizontalAlignment="Center" Content="OK" Width="100"/>
         </Grid>
     </Grid>
 </Window>
