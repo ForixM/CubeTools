@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using CubeTools_UI.ViewModels;
+using CubeTools_UI.ViewModels.PopUps;
 using Library.ManagerReader;
 using Library.Pointers;
 
@@ -12,12 +14,10 @@ namespace CubeTools_UI.Views.PopUps
 {
     public class LoadingPopUp : Window
     {
-        private bool _destroy = false;
-        private int _nbFiles = 0;
-        private bool _processFinished;
+        public bool ProcessFinished;
         private ProgressBar _progress;
         private TextBlock _operationType;
-        private FileType _modified;
+        private LoadingPopUpViewModel _viewModel;
 
         #region Init
         
@@ -26,19 +26,20 @@ namespace CubeTools_UI.Views.PopUps
             InitializeComponent();
             _progress = this.FindControl<ProgressBar>("Progress");
             _operationType = this.FindControl<TextBlock>("OperationType");
+            _viewModel = null;
+            ProcessFinished = false;
         }
         public LoadingPopUp(int nbFiles, FileType modified, bool destroy=false) : this()
         {
-            _nbFiles = nbFiles;
-            _destroy = destroy;
-            _modified = modified;
-            if (_destroy)
+            if (destroy)
                 _operationType.Text = "Deleting ";
             else
                 _operationType.Text = "Copying ";
-            _operationType.Text += _nbFiles + " files";
+            _operationType.Text += nbFiles + " files";
             _progress.Maximum = nbFiles;
-            ReloadProgress();
+            _viewModel = new LoadingPopUpViewModel(this, modified, nbFiles, destroy);
+            DataContext = _viewModel;
+            Task.Run(_viewModel.ReloadProgress);
         }
         
         private void InitializeComponent()
@@ -47,22 +48,11 @@ namespace CubeTools_UI.Views.PopUps
         }
         
         #endregion
-
-        public void ReloadProgress()
-        {
-            int value = 0;
-            try
-            {
-                value = ManagerReader.FastReaderFiles(_modified.Path);
-            }
-            catch (Exception) {}
-            Thread.Sleep(200);
-        }
-
+        
 
         private void OnClosing(object? sender, CancelEventArgs e)
         {
-            _processFinished = true;
+            ProcessFinished = true;
         }
     }
 }
