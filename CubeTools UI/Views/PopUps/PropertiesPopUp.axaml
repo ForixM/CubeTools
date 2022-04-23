@@ -3,47 +3,47 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
-        Width="500" Height="600"
+        Width="500" Height="650"
         CanResize="False"
         Closing="OnClose"
+        Icon="../../Assets/info.ico"
         x:Class="CubeTools_UI.Views.PopUps.PropertiesPopUp"
         Title="Properties">
     
-    <Grid RowDefinitions="50,10,50,50,10,50,50,10,50,50,30,10,60,*">
+    <Grid RowDefinitions="100,25,50,50,25,50,50,25,50,50,30,25,60,*">
         <!-- First Row : Image and FullName-->
-        <Grid Row="0" ColumnDefinitions="70,*">
+        <Grid Row="0" ColumnDefinitions="150,*">
             
             <Grid Column="0">
-                <Image Source="/Assets/file.ico"/>
+                <Image Height="75" Source="../../Assets/CubeToolsIcons/Info.ico"/>
             </Grid>
             
             <Grid Column="1">
                 <StackPanel>
                     <Border Background="#FFFFFF">
-                        <TextBlock Name="FileName"/>
+                        <TextBlock Margin="0 40 0 0" Name="FileName"/>
                     </Border>
-                    <Canvas Background="#FFAC1C" Height="2"/>
                 </StackPanel>
             </Grid>
             
         </Grid>
         <!--Second Row : Line -->
         <Grid Row="1">
-            <Canvas Background="#FF5F1F" Width="400" Height="2"/>
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 0" Width="350"/>
         </Grid>
         <!--Third Row : Type of file-->
-        <Grid Row="2" ColumnDefinitions="120,*">
+        <Grid Row="2" Margin="25 5" ColumnDefinitions="100,*">
             <Grid Column="0">
-                <TextBlock Text="Type of file :"/>
+                <TextBlock FontWeight="Bold" Text="Type of file :"/>
             </Grid>
             <Grid Column="1">
                 <TextBlock Name="Type"/>
             </Grid>
         </Grid>
         <!--Fourth Row : Description -->
-        <Grid Row="3" ColumnDefinitions="50,*">
+        <Grid Row="3" Margin="25 5" ColumnDefinitions="100,*">
             <Grid Column="0">
-                <TextBlock Text="Description :"/>
+                <TextBlock FontWeight="Bold" Text="Description :"/>
             </Grid>
             <Grid Column="1">
                 <TextBlock Name="Description"/>
@@ -51,21 +51,21 @@
         </Grid>
         <!--Fifth Row : Line -->
         <Grid Row="4">
-            <Canvas Background="Black" Height="2" Margin="50 0" Width="400"/>
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 0" Width="350"/>
         </Grid>
         <!--Sixth Row : Path -->
-        <Grid Row="5" ColumnDefinitions="70,*">
+        <Grid Row="5" Margin="25 5" ColumnDefinitions="100,*">
             <Grid Column="0">
-                <TextBlock Text="Location :"/>
+                <TextBlock FontWeight="Bold" Text="Location :"/>
             </Grid>
             <Grid Column="1">
-                <TextBlock Name="Path"/>
+                <TextBlock TextWrapping="Wrap" MaxLines="3" MaxHeight="50" Name="Path"/>
             </Grid>
         </Grid>
         <!--Seventh Row : Size -->
-        <Grid Row="6" ColumnDefinitions="70,*">
+        <Grid Row="6" Margin="25 5" ColumnDefinitions="100,*">
             <Grid Column="0">
-                <TextBlock Text="Size :"/>
+                <TextBlock FontWeight="Bold" Text="Size :"/>
             </Grid>
             <Grid Column="1">
                 <TextBlock Name="Size"/>
@@ -73,30 +73,30 @@
         </Grid>
         <!--Eight Row : Line -->
         <Grid Row="7">
-            <Canvas Background="Black" Height="2" Margin="50 0" Width="400"/>
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 0" Width="350"/>
         </Grid>
         <!--Ninth Row : Creation Date -->
-        <Grid Row="8" ColumnDefinitions="70,*">
+        <Grid Row="8" Margin="25 5" ColumnDefinitions="100,*">
             <Grid Column="0">
-                <TextBlock Text="Created :"/>
+                <TextBlock FontWeight="Bold" Text="Created :"/>
             </Grid>
             <Grid Column="1">
                 <TextBlock Name="Created"/>
             </Grid>
         </Grid>
         <!--Tenth Row : Modified Date -->
-        <Grid Row="9" ColumnDefinitions="70,*">
+        <Grid Row="9" Margin="25 5" ColumnDefinitions="100,*">
             <Grid Column="0">
-                <TextBlock Text="Modified :"/>
+                <TextBlock FontWeight="Bold" Text="Modified :"/>
             </Grid>
             <Grid Column="1">
                 <TextBlock Name="Modified"/>
             </Grid>
         </Grid>
         <!--Eleventh Row : Accessed Date -->
-        <Grid Row="10" ColumnDefinitions="70,*">
+        <Grid Row="10" Margin="25 5" ColumnDefinitions="100,*">
             <Grid Column="0">
-                <TextBlock Text="Accessed :"/>
+                <TextBlock FontWeight="Bold" Text="Accessed :"/>
             </Grid>
             <Grid Column="1">
                 <TextBlock Name="Accessed"/>
@@ -104,12 +104,12 @@
         </Grid>
         <!--Twelve Row : Line -->
         <Grid Row="11">
-            <Canvas Background="Black" Height="2" Margin="50 0" Width="400"/>
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 0" Width="350"/>
         </Grid>
         <!--Thirteenth Row : Attributes -->
-        <Grid Row="12" ColumnDefinitions="50,100,100,*">
+        <Grid Row="12" Margin="25 5" ColumnDefinitions="100,100,100,*">
             <Grid Column="0">
-                <TextBlock Text="Attributes :"/>
+                <TextBlock FontWeight="Bold" Text="Attributes :"/>
             </Grid>
             <Grid Column="1">
                 <TextBlock Text="Read-Only"/>
@@ -122,8 +122,7 @@
         </Grid>
         <!--Fourteenth Row : Button-->
         <Grid Row="13">
-            <Button VerticalAlignment="Center" Content="OK" Width="100" Margin="100 0 0 0"/>
-            <Button VerticalAlignment="Center" Content="Cancel" Width="100"/>
+            <Button VerticalAlignment="Center" HorizontalAlignment="Center" Content="OK" Width="100"/>
         </Grid>
     </Grid>
 </Window>
