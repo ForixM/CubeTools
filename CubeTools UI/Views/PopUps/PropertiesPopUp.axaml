@@ -6,6 +6,7 @@
         Width="500" Height="650"
         CanResize="False"
         Closing="OnClose"
+        Topmost="True"
         Icon="../../Assets/OLD/info.ico"
         x:Class="CubeTools_UI.Views.PopUps.PropertiesPopUp"
         Title="Properties">
@@ -113,16 +114,18 @@
             </Grid>
             <Grid Column="1">
                 <TextBlock Text="Read-Only"/>
-                <CheckBox Unchecked="ReadOnlyUnchecked" Checked="ReadOnlyChecked" Name="Read-Only"/>
+                <CheckBox Unchecked="ReadOnlyUnchecked" Margin="25 10 0 0" Checked="ReadOnlyChecked" Name="Read-Only"/>
             </Grid>
             <Grid Column="2">
                 <TextBlock Text="Hidden"/>
-                <CheckBox Unchecked="HiddenUnchecked" Checked="HiddenChecked" Name="Hidden"/>
+                <CheckBox Unchecked="HiddenUnchecked" Margin="15 10 0 0" Checked="HiddenChecked" Name="Hidden"/>
             </Grid>
         </Grid>
         <!--Fourteenth Row : Button-->
         <Grid Row="13">
-            <Button Click="OnClick" VerticalAlignment="Center" HorizontalAlignment="Center" Content="OK" Width="100"/>
+            <Button Click="OnClick" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100">
+                    <TextBlock Text="OK" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Button>
         </Grid>
     </Grid>
 </Window>
