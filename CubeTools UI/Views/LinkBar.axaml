@@ -35,11 +35,13 @@
 				<ListBox.Background>
 					<LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%" >
 
-						<GradientStop Color="White" Offset="0.5" />
+						<GradientStop Color="White" Offset="0.10" />
+						
+						<GradientStop Color="#FFFBDF" Offset="0.45" />
+						
+						<GradientStop Color="#FFFBAD" Offset="0.75" />
 
-						<GradientStop Color="Yellow" Offset="0.75" />
-
-						<GradientStop Color="Orange" Offset="0.90" />
+						<GradientStop Color="#FEDD7E" Offset="0.95" />
 
 					</LinearGradientBrush>
 				</ListBox.Background>
