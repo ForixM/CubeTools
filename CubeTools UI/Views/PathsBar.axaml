@@ -12,11 +12,17 @@
 		<viewModels:PathsBarViewModel/>
 	</Design.DataContext>
 	
-	<ListBox Name="ItemsXaml" Items="{Binding Items}" Margin="5" Background="White" SelectionMode="Multiple"  >
+	<ListBox Name="ItemsXaml" Items="{Binding Items}" Margin="5" Background="White" SelectionMode="Multiple" HorizontalAlignment="Left">
+		<ListBox.Styles>
+			<Style Selector="ListBoxItem">
+				<Setter Property="Height" Value="60"/>
+				<Setter Property="HorizontalContentAlignment" Value="Left"/>
+			</Style>
+		</ListBox.Styles>
 		<ListBox.ItemTemplate>
 			<DataTemplate>
-				<Button PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped">
-					<WrapPanel>
+				<Button PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped" Width="1500" Height="60">
+					<WrapPanel VerticalAlignment="Center">
 						<Image Source="/Assets/CubeToolsIcons/FolderCompressed.ico" Height="20"/>
 						<TextBlock Text="{Binding Name}" Margin="5"/>
 						<TextBlock Text="{Binding SizeXaml}" Margin="5"/>
