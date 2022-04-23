@@ -223,7 +223,13 @@ namespace CubeTools_UI.Views
         private void DeletePointer(FileType source)
         {
             // Create a new task to delete the pointer
-            var task = new Task(() => ManagerWriter.DeleteDir(source));
+            var task = new Task(() =>
+            {
+                if (source.IsDir)
+                    ManagerWriter.DeleteDir(source);
+                else 
+                    ManagerWriter.Delete(source);
+            });
             // Remove reference from Directory Pointer
             ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(source);
             // Run Tasks Async

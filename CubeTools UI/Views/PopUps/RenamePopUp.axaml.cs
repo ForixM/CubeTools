@@ -74,12 +74,17 @@ namespace CubeTools_UI.Views.PopUps
                         var popup = new ErrorPopUp.ErrorPopUp(_main, exception);
                         popup.Show();
                     }
+                    _main.ReloadPath();
+                    Close();
+                }
+
+                if (_modifiedPointer.Path == "" || _modifiedPointer.Name == _renameBox.Text)
+                {
+                    _main.ReloadPath();
                     Close();
                 }
             }
-
-            if (_modifiedPointer.Path == "" || _modifiedPointer.Name == _renameBox.Text)
-                Close();
+            
         }
         
         private void OnClickRename(object? sender, RoutedEventArgs e)
@@ -106,10 +111,15 @@ namespace CubeTools_UI.Views.PopUps
                     var popup = new ErrorPopUp.ErrorPopUp(_main, exception);
                     popup.Show();
                 }
+                _main.ReloadPath();
                 Close();
             }
+
             if (_modifiedPointer.Path == "" || _modifiedPointer.Name == _renameBox.Text)
+            {
+                _main.ReloadPath();
                 Close();
+            }
         }
         
         #endregion

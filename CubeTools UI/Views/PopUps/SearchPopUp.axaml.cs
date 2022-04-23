@@ -46,10 +46,14 @@ namespace CubeTools_UI.Views.PopUps
 
         private void SearchEnter(object? sender, KeyEventArgs e)
         {
-            if (sender is Button && e.Key is Key.Enter && ViewModel?.ParentViewModel != null)
-                ViewModel.ParentViewModel.ViewModelPathsBar.Items = 
-                    ManagerReader.ListToObservable(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path, TextEntered.Text, 25).ToList());
-            Close();
+            if (e.Key is Key.Enter && ViewModel?.ParentViewModel != null)
+            {
+                ViewModel.ParentViewModel.ViewModelPathsBar.Items =
+                    ManagerReader.ListToObservable(ManagerReader
+                        .FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path,
+                            TextEntered.Text, 25).ToList());
+                Close();
+            }
         }
         
         #endregion
