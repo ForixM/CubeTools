@@ -22,10 +22,10 @@
 			</Grid.ColumnDefinitions>
 			
 			<Grid Grid.Column="0">
-				<Image Source="/Assets/CubeToolsIcons/CubeTools.ico" Margin="25 0 0 0" Width="70"/>
+				<Image Source="../../Assets/CubeToolsIconsCompressed/CubeTools.ico" Margin="25 0 0 0" Width="70"/>
 			</Grid>
 			<Grid Grid.Column="1">
-				<Image Source="/Assets/CubeToolsIcons/CubeToolsName.ico" Margin="0 0 25 0" Width="125"/>
+				<Image Source="../../Assets/CubeToolsIconsCompressed/CubeToolsName.ico" Margin="0 0 25 0" Width="125"/>
 			</Grid>
 		</Grid>
 		
