@@ -15,13 +15,13 @@
 	<ListBox Name="ItemsXaml" Items="{Binding Items}" Margin="5" Background="White" SelectionMode="Multiple" HorizontalAlignment="Left">
 		<ListBox.Styles>
 			<Style Selector="ListBoxItem">
-				<Setter Property="Height" Value="60"/>
+				<Setter Property="Height" Value="50"/>
 				<Setter Property="HorizontalContentAlignment" Value="Left"/>
 			</Style>
 		</ListBox.Styles>
 		<ListBox.ItemTemplate>
 			<DataTemplate>
-				<Button PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped" Width="1500" Height="60">
+				<Button HorizontalAlignment="Left" PointerPressed="OnTaped" CornerRadius="8" Click="OnClick" Background="White" DoubleTapped="OnDoubleTaped" Width="1500" Height="50">
 					<WrapPanel VerticalAlignment="Center">
 						<Image Source="/Assets/CubeToolsIcons/FolderCompressed.ico" Height="20"/>
 						<TextBlock Text="{Binding Name}" Margin="5"/>
