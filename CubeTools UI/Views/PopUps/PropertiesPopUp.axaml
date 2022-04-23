@@ -4,6 +4,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
         Width="500" Height="600"
+        CanResize="False"
+        Closing="OnClose"
         x:Class="CubeTools_UI.Views.PopUps.PropertiesPopUp"
         Title="Properties">
     
@@ -20,14 +22,14 @@
                     <Border Background="#FFFFFF">
                         <TextBlock Name="FileName"/>
                     </Border>
-                    <Line Fill="#FFAC1C" Height="5"/>
+                    <Canvas Background="#FFAC1C" Height="2"/>
                 </StackPanel>
             </Grid>
             
         </Grid>
         <!--Second Row : Line -->
         <Grid Row="1">
-            <Line Fill="#FF5F1F" Height="5"/>
+            <Canvas Background="#FF5F1F" Width="400" Height="2"/>
         </Grid>
         <!--Third Row : Type of file-->
         <Grid Row="2" ColumnDefinitions="120,*">
@@ -49,7 +51,7 @@
         </Grid>
         <!--Fifth Row : Line -->
         <Grid Row="4">
-            <Line Fill="#FF5F1F" Height="5" Margin="50 0" Width="400"/>
+            <Canvas Background="Black" Height="2" Margin="50 0" Width="400"/>
         </Grid>
         <!--Sixth Row : Path -->
         <Grid Row="5" ColumnDefinitions="70,*">
@@ -71,7 +73,7 @@
         </Grid>
         <!--Eight Row : Line -->
         <Grid Row="7">
-            <Line Fill="#FF5F1F" Height="5" Margin="50 0" Width="400"/>
+            <Canvas Background="Black" Height="2" Margin="50 0" Width="400"/>
         </Grid>
         <!--Ninth Row : Creation Date -->
         <Grid Row="8" ColumnDefinitions="70,*">
@@ -102,7 +104,7 @@
         </Grid>
         <!--Twelve Row : Line -->
         <Grid Row="11">
-            <Line Fill="#FF5F1F" Height="5" Margin="50 0" Width="400"/>
+            <Canvas Background="Black" Height="2" Margin="50 0" Width="400"/>
         </Grid>
         <!--Thirteenth Row : Attributes -->
         <Grid Row="12" ColumnDefinitions="50,100,100,*">
@@ -111,17 +113,17 @@
             </Grid>
             <Grid Column="1">
                 <TextBlock Text="Read-Only"/>
-                <CheckBox Name="Read-Only"/>
+                <CheckBox Unchecked="ReadOnlyUnchecked" Checked="ReadOnlyChecked" Name="Read-Only"/>
             </Grid>
             <Grid Column="2">
                 <TextBlock Text="Hidden"/>
-                <CheckBox Name="Hidden"/>
+                <CheckBox Unchecked="HiddenUnchecked" Checked="HiddenChecked" Name="Hidden"/>
             </Grid>
         </Grid>
         <!--Fourteenth Row : Button-->
         <Grid Row="13">
-            <Button Content="OK" Width="100" Margin="100 0 0 0"/>
-            <Button Content="Cancel" Width="100"/>
+            <Button VerticalAlignment="Center" Content="OK" Width="100" Margin="100 0 0 0"/>
+            <Button VerticalAlignment="Center" Content="Cancel" Width="100"/>
         </Grid>
     </Grid>
 </Window>

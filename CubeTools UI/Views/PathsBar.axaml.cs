@@ -52,9 +52,9 @@ namespace CubeTools_UI.Views
             Button button = ((Button) sender!);
             if (button.DataContext is FileType context && button.Parent is ListBoxItem item && ViewModel?.ParentViewModel != null)
             {
-                if ((File.Exists(context.Path) || Directory.Exists(context.Path)) && e.MouseButton is MouseButton.Right)
+                if ((File.Exists(context.Path) || Directory.Exists(context.Path)) && e.MouseButton is MouseButton.Right && ViewModel.ParentViewModel != null)
                 {
-                    var propertiesPopUp = new PropertiesPopUp(context, ViewModel.Items);
+                    var propertiesPopUp = new PropertiesPopUp(context, ViewModel.Items, ViewModel.ParentViewModel);
                     propertiesPopUp.Show();
                 }
             }

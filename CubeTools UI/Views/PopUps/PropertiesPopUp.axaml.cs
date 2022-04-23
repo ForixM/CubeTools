@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace CubeTools_UI.Views.PopUps
 {
     public class PropertiesPopUp : Window
     {
+        #region Children Components
+
         private TextBlock _fileName;
         private TextBlock _type;
         private TextBlock _description;
@@ -28,7 +31,13 @@ namespace CubeTools_UI.Views.PopUps
         private TextBlock _accessed;
         private CheckBox _readOnly;
         private CheckBox _hidden;
+
+        #endregion
+        
         private readonly FileType _pointer;
+        private MainWindowViewModel ParentViewModel;
+        
+        #region Init
         public PropertiesPopUp()
         {
             InitializeComponent();
@@ -44,8 +53,10 @@ namespace CubeTools_UI.Views.PopUps
             _accessed = this.FindControl<TextBlock>("Accessed");
             _readOnly = this.FindControl<CheckBox>("Read-Only");
             _hidden = this.FindControl<CheckBox>("Hidden");
+
+            ParentViewModel = null;
         }
-        public PropertiesPopUp(FileType ft, ObservableCollection<FileType> items) : this()
+        public PropertiesPopUp(FileType ft, ObservableCollection<FileType> items, MainWindowViewModel main) : this()
         {
             _pointer = ft;
             _fileName.Text = ft.Name;
@@ -58,11 +69,84 @@ namespace CubeTools_UI.Views.PopUps
             _accessed.Text = ft.AccessDate;
             _readOnly.IsChecked = ft.ReadOnly;
             _hidden.IsChecked = ft.Hidden;
+
+            ParentViewModel = main;
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+        #endregion
+
+        #region Events
+        
+        private void ReadOnlyUnchecked(object? sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ManagerWriter.SetAttributes(_pointer, false, FileAttributes.ReadOnly);
+                ParentViewModel.ReloadPath();
+            }
+            catch (ManagerException exception)
+            {
+                var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
+                popup.Show();
+                _readOnly.IsChecked = !_readOnly.IsChecked;
+            }
+        }
+
+        private void ReadOnlyChecked(object? sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ManagerWriter.SetAttributes(_pointer, true, FileAttributes.ReadOnly);
+                ParentViewModel?.ReloadPath();
+            }
+            catch (ManagerException exception)
+            {
+                var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
+                popup.Show();
+                _readOnly.IsChecked = !_readOnly.IsChecked;
+            }
+        }
+        
+        private void HiddenUnchecked(object? sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ManagerWriter.SetAttributes(_pointer, false, FileAttributes.Hidden);
+                ParentViewModel.ReloadPath();
+            }
+            catch (ManagerException exception)
+            {
+                var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
+                popup.Show();
+                _readOnly.IsChecked = !_readOnly.IsChecked;
+            }
+        }
+        
+        private void HiddenChecked(object? sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ManagerWriter.SetAttributes(_pointer, true, FileAttributes.Hidden);
+                ParentViewModel.ReloadPath();
+            }
+            catch (ManagerException exception)
+            {
+                var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
+                popup.Show();
+                _readOnly.IsChecked = !_readOnly.IsChecked;
+            }
+        }
+
+        private void OnClose(object? sender, CancelEventArgs e)
+        {
+            ParentViewModel.ReloadPath();
+        }
+        
+        #endregion
+
     }
 }

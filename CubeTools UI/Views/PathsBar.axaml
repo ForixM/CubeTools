@@ -12,19 +12,17 @@
 		<viewModels:PathsBarViewModel/>
 	</Design.DataContext>
 	
-	<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-		<ListBox Name="ItemsXaml" Items="{Binding Items}" CornerRadius="0 30 0 30" Margin="5">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-					<Button PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped">
-						<WrapPanel>
-							<Image Source="/Assets/CubeToolsIcons/Folder.ico" Height="20"/>
-							<TextBlock Text="{Binding Name}" Margin="5"/>
-							<TextBlock Text="{Binding SizeXaml}" Margin="5"/>
-						</WrapPanel>
-					</Button>
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
-	</ScrollViewer>
+	<ListBox Name="ItemsXaml" Items="{Binding Items}" Margin="5">
+		<ListBox.ItemTemplate>
+			<DataTemplate>
+				<Button PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped">
+					<WrapPanel>
+						<Image Source="/Assets/CubeToolsIcons/Folder.ico" Height="20"/>
+						<TextBlock Text="{Binding Name}" Margin="5"/>
+						<TextBlock Text="{Binding SizeXaml}" Margin="5"/>
+					</WrapPanel>
+				</Button>
+			</DataTemplate>
+		</ListBox.ItemTemplate>
+	</ListBox>
 </UserControl>

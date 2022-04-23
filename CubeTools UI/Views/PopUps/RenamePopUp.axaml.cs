@@ -21,26 +21,33 @@ namespace CubeTools_UI.Views.PopUps
         private readonly TextBox _renameBox;
         private readonly FileType _modifiedPointer;
         private ObservableCollection<FileType> _itemsReference;
+        private MainWindowViewModel _main;
 
+        #region Init
         public RenamePopUp()
         {
             InitializeComponent();
             _renameBox = this.FindControl<TextBox>("Rename");
             _modifiedPointer = FileType.NullPointer;
             _itemsReference = new ObservableCollection<FileType>();
+            _main = null;
         }
-        public RenamePopUp(FileType ft, ObservableCollection<FileType> items) : this()
+        public RenamePopUp(FileType ft, ObservableCollection<FileType> items, MainWindowViewModel main) : this()
         {
             _modifiedPointer = ft;
             _itemsReference = items;
             _renameBox.Text = _modifiedPointer.Name;
+            _main = main;
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
-
+        
+        #endregion
+        
+        #region Events
         private void OnRename(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Enter)
@@ -61,17 +68,20 @@ namespace CubeTools_UI.Views.PopUps
                         int index = _itemsReference.IndexOf(_modifiedPointer);
                         ManagerWriter.Rename(_modifiedPointer, _renameBox.Text, false);
                         _itemsReference[index] = _modifiedPointer;
-                        Close();
                     }
                     catch (ManagerException exception)
                     {
-                        // TODO Display error !
+                        var popup = new ErrorPopUp.ErrorPopUp(_main, exception);
+                        popup.Show();
                     }
+                    Close();
                 }
             }
 
             if (_modifiedPointer.Path == "")
                 Close();
         }
+        
+        #endregion
     }
 }

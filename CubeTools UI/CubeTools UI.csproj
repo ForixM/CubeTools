@@ -86,6 +86,10 @@
         <DependentUpon>AppCrashedPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\PopUps\LoadingPopUp.axaml.cs">
+        <DependentUpon>LoadingPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models" />

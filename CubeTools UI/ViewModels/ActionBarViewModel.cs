@@ -16,7 +16,7 @@ namespace CubeTools_UI.ViewModels
         
         #region References
         
-        public MainWindowViewModel? ParentViewModel;
+        public MainWindowViewModel ParentViewModel;
         public ActionBar AttachedView;
         
         #endregion
