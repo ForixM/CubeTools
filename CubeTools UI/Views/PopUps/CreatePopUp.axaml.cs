@@ -90,5 +90,13 @@ namespace CubeTools_UI.Views.PopUps
         }
 
         #endregion
+
+        private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Escape)
+                Close();
+            if (e.Key is Key.Enter)
+                CreateFile(TextEntered.Text);
+        }
     }
 }

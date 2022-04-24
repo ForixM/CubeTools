@@ -41,12 +41,12 @@ namespace CubeTools_UI.Views.PopUps
         private void OnEnterPressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Enter)
-                CreateFile(TextEntered.Text);
+                CreateDir(TextEntered.Text);
         }
 
         private void OnPressed(object? sender, RoutedEventArgs e)
         {
-            CreateFile(TextEntered.Text);
+            CreateDir(TextEntered.Text);
         }
         
         private void OnCancelPressed(object? sender, RoutedEventArgs e)
@@ -54,11 +54,17 @@ namespace CubeTools_UI.Views.PopUps
             Close();
         }
         
+        private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Escape) Close();
+            if (e.Key is Key.Enter) CreateDir(TextEntered.Text);
+        }
+        
         #endregion
 
         #region Process
 
-        private void CreateFile(string name)
+        private void CreateDir(string name)
         {
             if (!ManagerReader.IsPathCorrect(name))
                 new Views.ErrorPopUp.ErrorPopUp(ViewModel, new PathFormatException("Format is invalid !")).Show();
@@ -86,6 +92,7 @@ namespace CubeTools_UI.Views.PopUps
         }
 
         #endregion
+
         
     }
 }

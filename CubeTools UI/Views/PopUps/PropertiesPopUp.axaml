@@ -9,7 +9,8 @@
         Topmost="True"
         Icon="../../Assets/OLD/info.ico"
         x:Class="CubeTools_UI.Views.PopUps.PropertiesPopUp"
-        Title="Properties">
+        Title="Properties"
+        KeyDown="OnEscapePressed">
     
     <Grid RowDefinitions="100,25,50,50,25,50,50,25,50,50,30,25,60,*">
         <!-- First Row : Image and FullName-->

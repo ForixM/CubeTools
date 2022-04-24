@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
@@ -66,6 +67,10 @@ namespace CubeTools_UI.Views.PopUps
         }
         
         #endregion
-        
+
+        private void OnEscapePressed(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Escape) Close();
+        }
     }
 }

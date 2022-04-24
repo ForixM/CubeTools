@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
@@ -88,6 +89,11 @@ namespace CubeTools_UI.Views.ErrorPopUp
         private void Button3Clicked(object? sender, RoutedEventArgs e)
         {
             ViewModel?.Button3Clicked();
+        }
+
+        private void OnEscapePressed(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Escape) Close();
         }
     }
 }

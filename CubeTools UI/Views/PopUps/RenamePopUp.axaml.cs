@@ -52,44 +52,24 @@ namespace CubeTools_UI.Views.PopUps
         
         private void OnRename(object? sender, KeyEventArgs e)
         {
-            if (e.Key is Key.Enter)
-            {
-                if (File.Exists(_renameBox.Text) || Directory.Exists(_renameBox.Text))
-                {
-                    // File Already exists, try to overwrite ?
-                }
-                else if (!ManagerReader.IsPathCorrect(_renameBox.Text))
-                {
-                    _renameBox.Text = "";
-                    _renameBox.Watermark = "Incorrect characters !";
-                }
-                else
-                {
-                    try
-                    {
-                        int index = _itemsReference.IndexOf(_modifiedPointer);
-                        ManagerWriter.Rename(_modifiedPointer, _renameBox.Text, false);
-                        _itemsReference[index] = _modifiedPointer;
-                    }
-                    catch (ManagerException exception)
-                    {
-                        var popup = new ErrorPopUp.ErrorPopUp(_main, exception);
-                        popup.Show();
-                    }
-                    _main.ReloadPath();
-                    Close();
-                }
-
-                if (_modifiedPointer.Path == "" || _modifiedPointer.Name == _renameBox.Text)
-                {
-                    _main.ReloadPath();
-                    Close();
-                }
-            }
-            
+            if (e.Key is Key.Enter) RenamePointer();
         }
         
         private void OnClickRename(object? sender, RoutedEventArgs e)
+        {
+            RenamePointer();
+        }
+        
+        private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Enter) RenamePointer();
+            else if (e.Key is Key.Escape) Close();
+                
+        }
+        
+        #endregion
+        
+        private void RenamePointer()
         {
             if (File.Exists(_renameBox.Text) || Directory.Exists(_renameBox.Text))
             {
@@ -123,8 +103,5 @@ namespace CubeTools_UI.Views.PopUps
                 Close();
             }
         }
-        
-        #endregion
-        
     }
 }

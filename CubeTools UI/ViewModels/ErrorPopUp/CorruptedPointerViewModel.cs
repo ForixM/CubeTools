@@ -20,8 +20,8 @@ namespace CubeTools_UI.ViewModels.ErrorPopUp
             _attachedView.Title = "Internal Error";
             _attachedView.StdError.Text = _exception.Errorstd;
             _attachedView.ContentError.Text = _exception.ErrorMessage;
-            // TODO BE CAREFULL
-            _attachedView.ImageError.Source = new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/CubeTools.ico");
+            // TODO BE CAREFUL
+            _attachedView.ImageError.Source = new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/CriticalError.ico");
             _attachedView.Button1.IsVisible = false;
             _attachedView.Button2.IsVisible = false;
             _attachedView.Button3.IsVisible = true;

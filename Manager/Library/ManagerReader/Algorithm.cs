@@ -75,7 +75,7 @@ namespace Library.ManagerReader
             var name = GetPathToName(path);
             if (name.Length > 165 || path.Length > 255)
                 return false;
-            foreach (var c in Path.GetInvalidPathChars())
+            foreach (var c in Path.GetInvalidPathChars().Concat(new []{'*', '/', '\\', '<', '>', '?', ':', '\"'}))
                 if (name.Contains(c))
                     return false;
             return true;

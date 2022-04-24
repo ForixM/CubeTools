@@ -8,7 +8,8 @@
         MinWidth="350" MinHeight="135"
         CanResize="False"
         Topmost="True"
-        Title="ERROR">
+        Title="ERROR"
+        KeyDown="OnEscapePressed">
         
         <Grid>
                 <Grid.ColumnDefinitions>

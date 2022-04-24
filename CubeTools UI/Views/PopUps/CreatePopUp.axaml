@@ -8,7 +8,8 @@
         CanResize="False"
         x:Class="CubeTools_UI.Views.PopUps.CreatePopUp"
         Title="Create a File"
-        Icon="../../Assets/OLD/file.ico">
+        Icon="../../Assets/OLD/file.ico"
+        KeyDown="OnKeyPressedWindow">
         
         <Grid>
                 <Grid.ColumnDefinitions>

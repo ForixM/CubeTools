@@ -1,28 +1,23 @@
-﻿using System.Linq;
-using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
-using Library.ManagerReader;
 
 namespace CubeTools_UI.Views.PopUps
 {
     public class DeletePopUp : Window
     {
-        private ActionBarViewModel? ViewModel;
-        private TextBox TextEntered;
+        private MainWindowViewModel? ViewModel;
 
         #region Init
         
         public DeletePopUp()
         {
             InitializeComponent();
-            TextEntered = this.FindControl<TextBox>("TextEntered");
             ViewModel = null;
         }
-        public DeletePopUp(ActionBarViewModel vm) : this()
+        public DeletePopUp(MainWindowViewModel vm) : this()
         {
             ViewModel = vm;
         }
@@ -35,25 +30,25 @@ namespace CubeTools_UI.Views.PopUps
         #endregion
 
         #region Events
-        
-        private void SearchClick(object? sender, RoutedEventArgs e)
+
+        private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
         {
-            if (sender is Button && ViewModel?.ParentViewModel != null)
-                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path, TextEntered.Text, 25).ToList());
-            Close();
+            if (e.Key is Key.Escape) Close();
+            if (e.Key is Key.Enter) DeletePointer();
+        }
+        
+        private void OnDeleteClick(object? sender, RoutedEventArgs e)
+        {
+            DeletePointer();
         }
 
-        private void SearchEnter(object? sender, KeyEventArgs e)
-        {
-            if (e.Key is Key.Enter && ViewModel?.ParentViewModel != null)
-            {
-                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ManagerReader
-                    .FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path,
-                        TextEntered.Text, 25).ToList());
-                Close();
-            }
-        }
-        
         #endregion
+
+        
+
+        private void DeletePointer()
+        {
+            
+        }
     }
 }

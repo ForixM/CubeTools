@@ -47,13 +47,26 @@ namespace CubeTools_UI.Views.PopUps
         {
             if (e.Key is Key.Enter && ViewModel?.ParentViewModel != null)
             {
-                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ManagerReader
-                    .FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path,
+                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path,
                         TextEntered.Text, 25).ToList());
                 Close();
             }
         }
         
+        private void OnKeyPressed(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Enter && ViewModel?.ParentViewModel != null)
+            {
+                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path,
+                    TextEntered.Text, 25).ToList());
+                Close();
+            }
+            else if (e.Key is Key.Escape)
+                Close();
+        }
+        
         #endregion
+
+        
     }
 }

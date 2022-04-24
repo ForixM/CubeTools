@@ -20,8 +20,7 @@ namespace CubeTools_UI.ViewModels.ErrorPopUp
             _attachedView.Title = "Conflict with files";
             _attachedView.StdError.Text = _exception.Errorstd;
             _attachedView.ContentError.Text = _exception.ErrorMessage;
-            // TODO BE CAREFUL
-            _attachedView.ImageError.Source = new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/CubeTools.ico");
+            _attachedView.ImageError.Source = new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/Error.ico");
             _attachedView.Button1.IsVisible = true;
             _attachedView.Button2.Content = new TextBlock() {Text = "Cancel"};
             _attachedView.Button2.IsVisible = true;

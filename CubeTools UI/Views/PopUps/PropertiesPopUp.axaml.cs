@@ -180,6 +180,10 @@ namespace CubeTools_UI.Views.PopUps
         
         #endregion
 
-        
+
+        private void OnEscapePressed(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Escape) Close();
+        }
     }
 }

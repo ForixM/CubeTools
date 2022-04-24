@@ -8,7 +8,8 @@
         CanResize="False"
         x:Class="CubeTools_UI.Views.PopUps.SearchPopUp"
         Title="Search"
-        Icon="../../Assets/OLD/search.ico">
+        Icon="../../Assets/OLD/search.ico" KeyDown="OnKeyPressed"
+        >
         
         <Grid>
                 <Grid.ColumnDefinitions>

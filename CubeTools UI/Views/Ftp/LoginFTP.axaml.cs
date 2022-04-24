@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 
 namespace CubeTools_UI.Views.Ftp
@@ -20,5 +21,9 @@ namespace CubeTools_UI.Views.Ftp
         
         #endregion
 
+        private void OnEscapePressed(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Escape) Close();
+        }
     }
 }
