@@ -162,6 +162,24 @@ namespace CubeTools_UI.Views
             popup.Show();
         }
         
+        private void Snap(object? sender, RoutedEventArgs e)
+        {
+            var uri = "https://www.snapdrop.net";
+            var psi = new System.Diagnostics.ProcessStartInfo();
+            psi.UseShellExecute = true;
+            psi.FileName = uri;
+            System.Diagnostics.Process.Start(psi);
+        }
+        
+        private void Smash(object? sender, RoutedEventArgs e)
+        {
+            var uri = "https://www.fromsmash.com";
+            var psi = new System.Diagnostics.ProcessStartInfo();
+            psi.UseShellExecute = true;
+            psi.FileName = uri;
+            System.Diagnostics.Process.Start(psi);
+        }
+        
         #endregion
 
 
