@@ -23,7 +23,7 @@
 			<DataTemplate>
 				<Button HorizontalAlignment="Left" PointerPressed="OnTaped" CornerRadius="8" Click="OnClick" Background="White" DoubleTapped="OnDoubleTaped" Width="1500" Height="50">
 					<WrapPanel VerticalAlignment="Center">
-						<Image Source="/Assets/CubeToolsAppsExtensionsCompressed/pdf.ico" Height="25"/>
+						<Image Source="/Assets/CubeToolsAppsExtensionsCompressed/pdf.ico" Height="30"/>
 						<TextBlock Text="{Binding Name}" Margin="5" VerticalAlignment="Center"/>
 						<TextBlock Text="{Binding SizeXaml}" Margin="5" VerticalAlignment="Center"/>
 					</WrapPanel>
