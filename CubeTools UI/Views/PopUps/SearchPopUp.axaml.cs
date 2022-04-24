@@ -39,7 +39,7 @@ namespace CubeTools_UI.Views.PopUps
         private void SearchClick(object? sender, RoutedEventArgs e)
         {
             if (sender is Button && ViewModel?.ParentViewModel != null)
-                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path, TextEntered.Text, 25).ToList());
+                SearchList();
             Close();
         }
 
@@ -47,8 +47,7 @@ namespace CubeTools_UI.Views.PopUps
         {
             if (e.Key is Key.Enter && ViewModel?.ParentViewModel != null)
             {
-                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path,
-                        TextEntered.Text, 25).ToList());
+                SearchList();
                 Close();
             }
         }
@@ -57,8 +56,7 @@ namespace CubeTools_UI.Views.PopUps
         {
             if (e.Key is Key.Enter && ViewModel?.ParentViewModel != null)
             {
-                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path,
-                    TextEntered.Text, 25).ToList());
+                SearchList();
                 Close();
             }
             else if (e.Key is Key.Escape)
@@ -67,6 +65,11 @@ namespace CubeTools_UI.Views.PopUps
         
         #endregion
 
+        private void SearchList()
+        {
+            ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path,
+                TextEntered.Text, 50).ToList());
+        }
         
     }
 }

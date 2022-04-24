@@ -3,12 +3,11 @@
              x:Class="CubeTools_UI.Views.PointerItem">
      
      <Button CornerRadius="8"  Background="White" 
-             HorizontalAlignment="Left" PointerPressed="OnTaped" 
-             Click="OnClick" DoubleTapped="OnDoubleTaped" Height="50">
+             HorizontalAlignment="Left" PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped" Height="50" Width="1500">
          <WrapPanel VerticalAlignment="Center">
              <Image Name="Icon" Source="../../Assets/CubeToolsAppsExtensionsCompressed/None.ico" Height="30"/>
              <TextBlock Name="Name" Margin="5" VerticalAlignment="Center"/>
-             <TextBlock Name="Size" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+             <TextBlock Name="Size" Margin="5" VerticalAlignment="Center"/>
          </WrapPanel>
      </Button>
      

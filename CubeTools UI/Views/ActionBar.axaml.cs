@@ -217,48 +217,7 @@ namespace CubeTools_UI.Views
         /// <param name="source">The given pointer to delete</param>
         private void DeletePointer(FileType source)
         {
-            // Create a new task to delete the pointer
-            var task = new Task(() =>
-            {
-                if (source.IsDir)
-                    ManagerWriter.DeleteDir(source);
-                else 
-                    ManagerWriter.Delete(source);
-            });
-            // Remove reference from Directory Pointer
-            ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Remove(source);
-            // Run Tasks Async
-            try
-            {
-                if (source.Size > 1000000)
-                {
-                    // Run async task
-                    task.Start();
-                    // Display loading box
-                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(source), source,true);
-                    loadingPopUp.Show();
-                    // Close display
-                    task.GetAwaiter().OnCompleted(() =>
-                    {
-                        loadingPopUp.Close();
-                        ViewModel.ParentViewModel.ReloadPath();
-                    });
-                }
-                // Run task sync
-                else
-                {
-                    task.RunSynchronously();
-                    ViewModel.ParentViewModel.ReloadPath();
-                }
-            }
-            catch (Exception exception)
-            {
-                if (exception is ManagerException @managerException)
-                {
-                    @managerException.Errorstd = $"Unable to delete {source.Name}";
-                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
-                }
-            }
+            new DeletePopUp(ViewModel.ParentViewModel, source).Show();
         }
         
         #endregion
