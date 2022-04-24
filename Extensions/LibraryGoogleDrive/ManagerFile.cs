@@ -4,31 +4,23 @@ using System.IO;
 namespace LibraryGoogleDrive
 {
     
-public class GoogleDriveFile
+public static class ManagerFile
 {
-    public GoogleDriveFile()
-    {
-        fileName = "";
-        fileMime = "";
-        folder = "";
-        fileDescription = "";
-        fileID = "";
-    }
-
-    public Stream file { get; private set; }
-    public string fileName { get; set; }
-    public string fileMime { get; set; }
-    public string folder { get; set; }
-    public string fileDescription { get; set; }
-    public string fileID { get; set; }
-
-    public static string CreateFolder(string parent, string folderName)
+    public static string CreateFolder(string parent, string folderName = "")
     {
         var Service = OAuth.GetDriveService();
         var DriveFolder = new Google.Apis.Drive.v3.Data.File();
 
-        DriveFolder.Name = folderName;
-        DriveFolder.MimeType = "application/vnd.google-apps.folder";
+            if (folderName == "")
+            {
+                DriveFolder.Name = "Nouveau Dossier";
+            }
+            else
+            {
+                DriveFolder.Name = folderName;
+            }
+
+            DriveFolder.MimeType = "application/vnd.google-apps.folder";
         DriveFolder.Parents = new[] {parent};
 
         var command = Service.Files.Create(DriveFolder);
@@ -36,10 +28,19 @@ public class GoogleDriveFile
         return file.Id;
     }
 
-    public static string CreateFile(string folderId, string fileName)
+    public static string CreateFile(string folderId, string fileName = "")
     {
         var Service = OAuth.GetDriveService();
         var DriveFile = new Google.Apis.Drive.v3.Data.File();
+
+        if (fileName == "")
+        {
+            DriveFile.Name = "Nouveau Fichier";
+        }
+        else
+        {
+            DriveFile.Name = fileName;
+        }
 
         DriveFile.Name = fileName;
         DriveFile.MimeType = "application/octet-stream";
@@ -70,7 +71,7 @@ public class GoogleDriveFile
         return request.ResponseBody.Id;
     }
 
-    public void DownloadFile(string fileName)
+    public static void DownloadFile(string fileName)
     {
         var Service = OAuth.GetDriveService();
         var fileId = FileReader.GetFileId(fileName);
@@ -121,17 +122,15 @@ public class GoogleDriveFile
         return CopyFile.Id;
     }
 
-    public static void ChangeParentsFile(string file_ID, string newfolderID)
+    public static void ChangeParentsFile(string fileid, string newfolderid)
     {
         var Service = OAuth.GetDriveService();
-        var DriveFile = Service.Files.Get(file_ID).Execute();
+        var DriveFile = Service.Files.Get(fileid).Execute();
         
         DriveFile.Parents.Clear();
-        DriveFile.Parents = new[] {newfolderID};
+        DriveFile.Parents = new[] {newfolderid};
 
-        DriveFile = Service.Files.Update(DriveFile, file_ID).Execute();
-
-        return;
+        Service.Files.Update(DriveFile, fileid).Execute();
     }
 }
 }

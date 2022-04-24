@@ -19,16 +19,30 @@ public static class FileReader
         IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
             .Files;
 
-        return files[0].Id;
+            if (files.Count == 0)
+            {
+                throw new Exception("Folder with doesn't exist");
+            }
+
+            return files[0].Id;
     }
 
-    public static string GetFileId(string FileName)
+    public static string GetFileId(string FileName, string Parent = "")
     {
         var service = OAuth.GetDriveService();
 
         FilesResource.ListRequest listRequest = service.Files.List();
         listRequest.PageSize = 10;
-        listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}'";
+
+        if (Parent == "")
+        {
+            listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}'";
+        }
+        else
+        {
+                listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}' and '{Parent}' in parents";
+            }
+
         listRequest.Fields = "nextPageToken, files(id, name)";
 
         IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
@@ -36,12 +50,34 @@ public static class FileReader
 
         if (files.Count == 0)
         {
-            throw new Exception();
+            throw new Exception("File with doesn't exist");
         }
 
         return files[0].Id;
     }
 
+    public static List<string> GetFileProperties(string fileid)
+    {
+        var service = OAuth.GetDriveService();
+
+        FilesResource.ListRequest listRequest = service.Files.List();
+        listRequest.DriveId = fileid;
+        IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute().Files;
+
+        if (files.Count == 0)
+        {
+            throw new Exception("File doesn't exist");
+        }
+
+        List<string> fileproperties = new List<string>();
+        fileproperties.Add(files[0].Name);
+        fileproperties.Add(files[0].MimeType);
+        fileproperties.Add(files[0].Size.ToString());
+        fileproperties.Add(files[0].Parents[0]);
+
+        return fileproperties;
+    }
+    
     public static void ListFileAndFolder(string folderID)
     {
         var service = OAuth.GetDriveService();
