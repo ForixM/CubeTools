@@ -1,4 +1,3 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
@@ -30,7 +29,8 @@ namespace CubeTools_UI.Views
         
         private void FTP(object? sender, RoutedEventArgs e)
         {
-            
+            var popup = new Ftp.LoginFTP();
+            popup.Show();
         }
     }
 }

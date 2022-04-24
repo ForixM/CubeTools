@@ -159,7 +159,13 @@ namespace CubeTools_UI.Views
         private void CopyPointer(FileType source)
         {
             // Create a new task to delete the pointer
-            var task = new Task<FileType>(() => ManagerWriter.Copy(source.Path,ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path + "/" + source.Name));
+            var task = new Task<FileType>(() =>
+            {
+                if (ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path == ManagerReader.GetParent(source.Path).Replace('\\','/'))
+                    return ManagerWriter.Copy(source.Path);
+                return ManagerWriter.Copy(source.Path,
+                        ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path + "/" + source.Name);
+            });
             // Remove reference from Directory Pointer
             ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Remove(source);
             // Run Tasks Async

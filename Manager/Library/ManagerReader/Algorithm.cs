@@ -43,29 +43,21 @@ namespace Library.ManagerReader
                 return path;
 
             var res = path;
-            var dir = GetParent(path); // Access Exception, PathNotFoundException, ManagerException
-            var i = 0;
+            var dir = GetParent(path);
             // If it is a File, deal with extension
             if (File.Exists(path))
             {
                 var name = GetPathToNameNoExtension(path);
                 var extension = GetFileExtension(path);
                 while (File.Exists(res) || Directory.Exists(res))
-                {
-                    i += 1;
-                    res = $"{dir}/{name}({i}){extension}";
-                }
-
+                    res = $"{dir}/{name} - Copy.{extension}";
                 return res;
             }
             else
             {
                 var name = GetPathToName(path);
                 while (File.Exists(res) || Directory.Exists(res))
-                {
-                    i += 1;
-                    res = $"{dir}/{name}({i})";
-                }
+                    res = $"{dir}/{name} - Copy";
 
                 return res;
             }

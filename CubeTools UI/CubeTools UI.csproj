@@ -102,6 +102,10 @@
         <DependentUpon>DeletePopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Ftp\LoginFTP.axaml.cs">
+        <DependentUpon>LoginFTP.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models" />
