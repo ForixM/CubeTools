@@ -184,25 +184,23 @@ namespace CubeTools_UI.Views
         {
             // Create a new task to delete the pointer
             var task = new Task<FileType>(() => ManagerWriter.Copy(source.Path));
-            // Getting new Path
-            string path = ManagerReader.GenerateNameForModification(source.Path).Replace('\\','/');
             // Remove reference from Directory Pointer
             ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(source);
             // Run Tasks Async
             try
             {
-                if (source.Size > 1000000 && source.IsDir)
+                if (source.Size > 1000000)
                 {
                     // Run async task
                     task.Start();
                     // Display loading box
-                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(source), source, false);
+                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(source), source ,false);
                     loadingPopUp.Show();
                     // Close display
                     task.GetAwaiter().OnCompleted(() => loadingPopUp.Close());
                 }
                 else task.RunSynchronously();
-                ViewModel.ParentViewModel!.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result);
+                Task.Run(() => ViewModel.ParentViewModel!.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result));
             }
             catch (Exception exception)
             {
@@ -233,7 +231,7 @@ namespace CubeTools_UI.Views
             // Run Tasks Async
             try
             {
-                if (source.Size > 1000000 && source.IsDir)
+                if (source.Size > 1000000)
                 {
                     // Run async task
                     task.Start();
