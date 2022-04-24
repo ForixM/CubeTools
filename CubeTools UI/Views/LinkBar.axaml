@@ -103,10 +103,10 @@
 			</Button>
 		</ListBoxItem>
 				<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="FTP" Click="AccessError">
+			<Button Classes="DirectoryList" Name="Ftp" Click="FTP">
 				<StackPanel VerticalAlignment="Center">
 					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/FTP.ico"/>
-					<TextBlock Classes="DirectoryList" Text="OneDrive"/>
+					<TextBlock Classes="DirectoryList" Text="FTP Server"/>
 				</StackPanel>
 			</Button>
 		</ListBoxItem>
