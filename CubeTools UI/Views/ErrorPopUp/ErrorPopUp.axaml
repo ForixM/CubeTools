@@ -7,6 +7,7 @@
         Width="400" Height="200"
         MinWidth="350" MinHeight="135"
         CanResize="False"
+        Topmost="True"
         Title="ERROR">
         
         <Grid>
