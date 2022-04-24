@@ -17,14 +17,13 @@ namespace CubeTools_UI.Views
     public class PathsBar : UserControl
     {
         public static PathsBarViewModel ViewModel;
-        public ListBox ItemsXaml;
-        
+        private StackPanel _generator;
+
         public PathsBar()
         {
             InitializeComponent();
-            ItemsXaml = this.FindControl<ListBox>("ItemsXaml");
+            _generator = this.FindControl<StackPanel>("Generator");
             ViewModel = new PathsBarViewModel(this);
-            DataContext = ViewModel;
         }
 
         private void InitializeComponent()
@@ -32,50 +31,13 @@ namespace CubeTools_UI.Views
             AvaloniaXamlLoader.Load(this);
         }
 
-        /// <summary>
-        /// XAML Method : On Item double taped
-        /// </summary>
-        private void OnDoubleTaped(object? sender, RoutedEventArgs e)
+        public void ReloadPath(List<FileType> ftList)
         {
-            if (((Button) sender!)?.DataContext is FileType context && ((Button) sender!)?.Parent is ListBoxItem item && ViewModel?.ParentViewModel != null)
+            _generator.Children.Clear();
+            foreach (var ft in ftList)
             {
-                ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Clear();
-                ViewModel.ParentViewModel.AccessPath(context.Path, Directory.Exists(context.Path));
-            }
-        }
-
-        /// <summary>
-        /// XAML Method : On Item taped
-        /// </summary>
-        private void OnTaped(object? sender, PointerPressedEventArgs e)
-        {
-            Button button = ((Button) sender!);
-            if (button.DataContext is FileType context && button.Parent is ListBoxItem item && ViewModel?.ParentViewModel != null)
-            {
-                if ((File.Exists(context.Path) || Directory.Exists(context.Path)) && e.MouseButton is MouseButton.Right && ViewModel.ParentViewModel != null)
-                {
-                    var propertiesPopUp = new PropertiesPopUp(context, ViewModel.Items, ViewModel.ParentViewModel);
-                    propertiesPopUp.Show();
-                }
-            }
-        }
-
-        private void OnClick(object? sender, RoutedEventArgs e)
-        {
-            Button button = ((Button) sender!);
-            if (button.DataContext is FileType context && button.Parent is ListBoxItem item && ViewModel?.ParentViewModel != null)
-            {
-                if (File.Exists(context.Path) || Directory.Exists(context.Path))
-                {
-                    ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Clear();
-                    ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Add(item);
-                }
-                else
-                {
-                    var pathNotFoundPopUp = new ErrorPopUp.ErrorPopUp();
-                    pathNotFoundPopUp.Show();
-                    ViewModel.ParentViewModel.ReloadPath();
-                }
+                var pi = new PointerItem(ft, ViewModel.ParentViewModel);
+                _generator.Children.Add(pi);
             }
         }
     }

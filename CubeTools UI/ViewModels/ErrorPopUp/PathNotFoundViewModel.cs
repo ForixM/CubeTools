@@ -1,7 +1,5 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using CubeTools_UI.ViewModels;
-using CubeTools_UI.ViewModels.ErrorPopUp;
 using Library.ManagerExceptions;
 
 namespace CubeTools_UI.ViewModels.ErrorPopUp
@@ -21,7 +19,8 @@ namespace CubeTools_UI.ViewModels.ErrorPopUp
             _attachedView.Title = "Path not found";
             _attachedView.StdError.Text = _exception.Errorstd;
             _attachedView.ContentError.Text = _exception.ErrorMessage;
-            //_attachedView.ImageError.Source = new Bitmap("Assets/CubeToolsIcons/CubeTools.ico");
+            // TODO BE CAREFUL
+            _attachedView.ImageError.Source = new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/CubeTools.ico");
             _attachedView.Button1.IsVisible = false;
             _attachedView.Button2.IsVisible = false;
             _attachedView.Button3.IsVisible = true;

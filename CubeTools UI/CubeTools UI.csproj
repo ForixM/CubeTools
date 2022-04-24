@@ -74,16 +74,8 @@
         <DependentUpon>PropertiesPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\ErrorPopUp\CriticalErrorPopUp.axaml.cs">
-        <DependentUpon>CriticalErrorPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\ErrorPopUp\ErrorPopUp.axaml.cs">
         <DependentUpon>ErrorPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\ErrorPopUp\AppCrashedPopUp.axaml.cs">
-        <DependentUpon>AppCrashedPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\PopUps\LoadingPopUp.axaml.cs">
@@ -92,6 +84,10 @@
       </Compile>
       <Compile Update="Views\PopUps\SortPopUp.axaml.cs">
         <DependentUpon>SortPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PointerItem.axaml.cs">
+        <DependentUpon>PointerItem.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

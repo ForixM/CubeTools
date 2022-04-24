@@ -32,11 +32,11 @@ namespace CubeTools_UI.Commands
             }
             else if(parameter.ToString() == "GoogleDrive")
             {
-                viewModel.SelectedViewModel = new GoogleDriveFileModelView();
+                //viewModel.SelectedViewModel = new GoogleDriveFileModelView();
             }
             else if(parameter.ToString() == "OneDrive")
             {
-                viewModel.SelectedViewModel = new OneDriveModelView();
+                //viewModel.SelectedViewModel = new OneDriveModelView();
             }
         }
     }

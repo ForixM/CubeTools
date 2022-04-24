@@ -3,34 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Avalonia.Controls;
-// CubeTools UI's Imports
+// CubeTools UIs Imports
 using CubeTools_UI.Views;
 // Libraries Imports
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.Pointers;
-// UI's Imports
-using MessageBox.Avalonia;
-using MessageBox.Avalonia.DTO;
-using MessageBox.Avalonia.Enums;
-using MessageBox.Avalonia.Models;
 
 namespace CubeTools_UI.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private BaseViewModel _selectedViewModel;
-        public BaseViewModel SelectedViewModel
-        {
-            get { return _selectedViewModel; }
-            set
-            {
-                _selectedViewModel = value;
-                OnPropertyChanged(nameof(SelectedViewModel));
-            }
-        }
 
         public MainWindow AttachedView;
+        public static string CubeToolsPath;
         
         #region Children ViewModels
         
@@ -44,6 +30,7 @@ namespace CubeTools_UI.ViewModels
         // CTOR
         public MainWindowViewModel()
         {
+            CubeToolsPath = Directory.GetCurrentDirectory();
             // ActionBar : Setting up ModelXaml
             ViewModelActionBar = ActionBar.ViewModel;
             // LinkBar
@@ -81,7 +68,7 @@ namespace CubeTools_UI.ViewModels
             ViewModelNavigationBar.QueuePointers = new List<string>(){ViewModelNavigationBar.DirectoryPointer.Path};
             ViewModelNavigationBar.QueueIndex = 0;
             // Setting up Items
-            ViewModelPathsBar.Items = ManagerReader.ListToObservable(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            ViewModelPathsBar.ReloadPath(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
 
         public MainWindowViewModel(MainWindow attachedView) : this()
@@ -130,11 +117,10 @@ namespace CubeTools_UI.ViewModels
                         popup.Show();
                     }
                 }
-
                 // Setting up the Path for UI
                 ViewModelNavigationBar.AttachedView.CurrentPathXaml.Text = ViewModelNavigationBar.DirectoryPointer.Path;
                 // Modified ListBox associated
-                ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+                ViewModelPathsBar.ReloadPath(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
                 // Adding path to queue
                 ViewModelNavigationBar.QueuePointers.Add(path);
                 if (ViewModelNavigationBar.QueuePointers.Count >= 9)
@@ -143,8 +129,7 @@ namespace CubeTools_UI.ViewModels
                     ViewModelNavigationBar.QueueIndex--;
                 }
             }
-
-            ViewModelActionBar.SelectedXaml = new List<ListBoxItem>();
+            ViewModelActionBar.SelectedXaml = new List<PointerItem>();
         }
 
         /// <summary>
@@ -164,7 +149,7 @@ namespace CubeTools_UI.ViewModels
                     popup.Show();
                 }
             }
-            ViewModelPathsBar.Items = ManagerReader.ListToObservable(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            ViewModelPathsBar.ReloadPath(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
     }
 }

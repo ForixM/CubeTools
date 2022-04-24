@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
 using Library.ManagerReader;
-using Library.Pointers;
 
 namespace CubeTools_UI.Views.PopUps
 {
@@ -42,32 +35,28 @@ namespace CubeTools_UI.Views.PopUps
         private void OnNameClick(object? sender, RoutedEventArgs e)
         {
             _main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortByName(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            _main.ViewModelPathsBar.Items =
-                ManagerReader.ListToObservable(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main.ViewModelPathsBar.ReloadPath(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
             Close();
         }
         
         private void OnTypeClick(object? sender, RoutedEventArgs e)
         {
             _main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortByType(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            _main.ViewModelPathsBar.Items =
-                ManagerReader.ListToObservable(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main.ViewModelPathsBar.ReloadPath(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
             Close();
         }
         
         private void OnSizeClick(object? sender, RoutedEventArgs e)
         {
             _main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortBySize(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            _main.ViewModelPathsBar.Items =
-                ManagerReader.ListToObservable(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main.ViewModelPathsBar.ReloadPath(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
             Close();
         }
         
         private void OnDateClick(object? sender, RoutedEventArgs e)
         {
             _main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortByModifiedDate(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            _main.ViewModelPathsBar.Items =
-                ManagerReader.ListToObservable(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main.ViewModelPathsBar.ReloadPath(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
             Close();
         }
         

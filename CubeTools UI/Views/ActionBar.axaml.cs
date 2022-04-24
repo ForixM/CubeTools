@@ -46,9 +46,8 @@ namespace CubeTools_UI.Views
             {
                 var ft = ManagerWriter.Create();
                 ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles.Add(ft);
-                ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items =
-                    ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer
-                        .ChildrenFiles);
+                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer
+                    .ChildrenFiles);
             }
             catch (Exception exception)
             {
@@ -69,9 +68,8 @@ namespace CubeTools_UI.Views
             {
                 var ft = ManagerWriter.CreateDir();
                 ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles.Add(ft);
-                ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items =
-                    ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer
-                        .ChildrenFiles);
+                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer
+                    .ChildrenFiles);
             }
             catch (Exception exception)
             {
@@ -115,17 +113,11 @@ namespace CubeTools_UI.Views
         {
             // 1) Copy Copied
             foreach (var item in ViewModel.CopiedXaml)
-                CopyPointer((FileType) item.DataContext!);
-            
-            // Reload Path
-            ViewModel.ParentViewModel!.ReloadPath();
-            
+                CopyPointer(item.Pointer);
+
             // 2) Destroy Cut
             foreach (var item in ViewModel.CutXaml)
-                DeletePointer((FileType) item.DataContext!);
-
-            // Reload Path
-            ViewModel.ParentViewModel!.ReloadPath();
+                DeletePointer(item.Pointer);
         }
 
         /// <summary>
@@ -133,14 +125,13 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void Rename(object? sender, RoutedEventArgs e)
         {
-            if (ViewModel.SelectedXaml.Count >= 1)
-            {
-                if (ViewModel.SelectedXaml.Count == 1)
-                    new RenamePopUp((FileType) ViewModel.SelectedXaml[0].DataContext!, ViewModel.ParentViewModel.ViewModelPathsBar.Items!, ViewModel.ParentViewModel).Show();
-                else
-                    new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel,
-                        new ManagerException("Unable to rename multiple data")).Show();
-            }
+            if (ViewModel.SelectedXaml.Count < 1) return;
+            
+            if (ViewModel.SelectedXaml.Count == 1)
+                new RenamePopUp(ViewModel.SelectedXaml[0].Pointer, ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles, ViewModel.ParentViewModel).Show();
+            else
+                new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel,
+                    new ManagerException("Unable to rename multiple data")).Show();
         }
 
         /// <summary>
@@ -149,8 +140,8 @@ namespace CubeTools_UI.Views
         private void Delete(object? sender, RoutedEventArgs e)
         {
             foreach (var item in ViewModel.SelectedXaml)
-                DeletePointer((FileType) item.DataContext!);
-            ViewModel?.ParentViewModel?.ReloadPath();
+                DeletePointer(item.Pointer);
+            ViewModel.ParentViewModel.ReloadPath();
         }
 
         /// <summary>
@@ -163,7 +154,7 @@ namespace CubeTools_UI.Views
         }
 
         /// <summary>
-        /// Sort the ListBox
+        /// Display the sort box
         /// </summary>
         private void Sort(object? sender, RoutedEventArgs e)
         {
@@ -185,7 +176,7 @@ namespace CubeTools_UI.Views
             // Create a new task to delete the pointer
             var task = new Task<FileType>(() => ManagerWriter.Copy(source.Path));
             // Remove reference from Directory Pointer
-            ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(source);
+            ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Remove(source);
             // Run Tasks Async
             try
             {
@@ -194,13 +185,22 @@ namespace CubeTools_UI.Views
                     // Run async task
                     task.Start();
                     // Display loading box
-                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(source), source ,false);
+                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(source), source);
                     loadingPopUp.Show();
                     // Close display
-                    task.GetAwaiter().OnCompleted(() => loadingPopUp.Close());
+                    task.GetAwaiter().OnCompleted(() =>
+                    {
+                        loadingPopUp.Close();
+                        ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result);
+                        ViewModel.ParentViewModel.ReloadPath();
+                    });
                 }
-                else task.RunSynchronously();
-                Task.Run(() => ViewModel.ParentViewModel!.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result));
+                else
+                {
+                    task.RunSynchronously();
+                    ViewModel.ParentViewModel!.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result);
+                    ViewModel.ParentViewModel.ReloadPath();
+                }
             }
             catch (Exception exception)
             {
@@ -239,10 +239,18 @@ namespace CubeTools_UI.Views
                     var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(source), source,true);
                     loadingPopUp.Show();
                     // Close display
-                    task.GetAwaiter().OnCompleted(() => loadingPopUp.Close());
+                    task.GetAwaiter().OnCompleted(() =>
+                    {
+                        loadingPopUp.Close();
+                        ViewModel.ParentViewModel!.ReloadPath();
+                    });
                 }
                 // Run task sync
-                else task.RunSynchronously();
+                else
+                {
+                    task.RunSynchronously();
+                    ViewModel.ParentViewModel!.ReloadPath();
+                }
             }
             catch (Exception exception)
             {

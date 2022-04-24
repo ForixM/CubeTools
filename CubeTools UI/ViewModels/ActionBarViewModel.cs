@@ -8,9 +8,9 @@ namespace CubeTools_UI.ViewModels
     {
         #region Models Variables
         
-        public List<ListBoxItem> SelectedXaml;
-        public List<ListBoxItem> CopiedXaml;
-        public List<ListBoxItem> CutXaml;
+        public List<PointerItem> SelectedXaml;
+        public List<PointerItem> CopiedXaml;
+        public List<PointerItem> CutXaml;
         
         #endregion
         
@@ -25,9 +25,9 @@ namespace CubeTools_UI.ViewModels
         public ActionBarViewModel(ActionBar attachedView)
         {
             AttachedView = attachedView;
-            SelectedXaml = new List<ListBoxItem>();
-            CopiedXaml = new List<ListBoxItem>();
-            CutXaml = new List<ListBoxItem>();
+            SelectedXaml = new List<PointerItem>();
+            CopiedXaml = new List<PointerItem>();
+            CutXaml = new List<PointerItem>();
         }
 
     }

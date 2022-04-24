@@ -15,7 +15,7 @@ namespace CubeTools_UI.Views.PopUps
     public class LoadingPopUp : Window
     {
         public bool ProcessFinished;
-        private ProgressBar _progress;
+        private ProgressBar _progressBar;
         private TextBlock _operationType;
         private LoadingPopUpViewModel _viewModel;
 
@@ -24,7 +24,7 @@ namespace CubeTools_UI.Views.PopUps
         public LoadingPopUp()
         {
             InitializeComponent();
-            _progress = this.FindControl<ProgressBar>("Progress");
+            _progressBar = this.FindControl<ProgressBar>("ProgressBar");
             _operationType = this.FindControl<TextBlock>("OperationType");
             _viewModel = null;
             ProcessFinished = false;
@@ -36,8 +36,7 @@ namespace CubeTools_UI.Views.PopUps
             else
                 _operationType.Text = "Copying ";
             _operationType.Text += nbFiles + " files";
-            _progress.Maximum = nbFiles;
-            _viewModel = new LoadingPopUpViewModel(this, modified, nbFiles, destroy);
+            _viewModel = new LoadingPopUpViewModel(this, modified, nbFiles, destroy, _progressBar);
             DataContext = _viewModel;
             Task.Run(_viewModel.ReloadProgress);
         }

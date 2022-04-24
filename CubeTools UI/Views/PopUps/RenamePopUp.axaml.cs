@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
@@ -20,7 +21,7 @@ namespace CubeTools_UI.Views.PopUps
     {
         private readonly TextBox _renameBox;
         private readonly FileType _modifiedPointer;
-        private ObservableCollection<FileType> _itemsReference;
+        private List<FileType> _itemsReference;
         private MainWindowViewModel _main;
 
         #region Init
@@ -29,10 +30,10 @@ namespace CubeTools_UI.Views.PopUps
             InitializeComponent();
             _renameBox = this.FindControl<TextBox>("Rename");
             _modifiedPointer = FileType.NullPointer;
-            _itemsReference = new ObservableCollection<FileType>();
+            _itemsReference = new List<FileType>();
             _main = null;
         }
-        public RenamePopUp(FileType ft, ObservableCollection<FileType> items, MainWindowViewModel main) : this()
+        public RenamePopUp(FileType ft, List<FileType> items, MainWindowViewModel main) : this()
         {
             _modifiedPointer = ft;
             _itemsReference = items;
@@ -48,6 +49,7 @@ namespace CubeTools_UI.Views.PopUps
         #endregion
         
         #region Events
+        
         private void OnRename(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Enter)

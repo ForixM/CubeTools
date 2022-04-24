@@ -810,7 +810,7 @@ namespace Library.ManagerReader
             var process = new Process();
             var startInfo = process.StartInfo;
             startInfo.FileName = app;
-            startInfo.Arguments = "\'" + obj.Replace('/','\\') + "\'";
+            startInfo.Arguments = obj.Replace('/','\\');
             try
             {
                 process.Start();

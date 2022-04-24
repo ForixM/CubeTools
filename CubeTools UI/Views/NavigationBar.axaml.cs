@@ -14,6 +14,7 @@ namespace CubeTools_UI.Views
         public static NavigationBarViewModel ViewModel;
         public TextBox CurrentPathXaml;
         
+        #region Init
         public NavigationBar()
         {
             InitializeComponent();
@@ -26,6 +27,9 @@ namespace CubeTools_UI.Views
         {
             AvaloniaXamlLoader.Load(this);
         }
+        #endregion
+        
+        #region Events
 
         private void EditCurrentPath(object? sender, KeyEventArgs e)
         {
@@ -52,7 +56,6 @@ namespace CubeTools_UI.Views
                         @managerException.Errorstd = "Unable to get the last directory";
                         new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
                     }
-
                     ViewModel.QueueIndex--;
                 }
             }
@@ -84,8 +87,7 @@ namespace CubeTools_UI.Views
             string parent = "";
             try
             {
-                if (ManagerReader.GetRootPath(ViewModel.DirectoryPointer.Path) ==
-                    ViewModel.DirectoryPointer.Path)
+                if (ManagerReader.GetRootPath(ViewModel.DirectoryPointer.Path) == ViewModel.DirectoryPointer.Path)
                     parent = ViewModel.DirectoryPointer.Path;
                 else 
                     parent = ManagerReader.GetParent(ViewModel.DirectoryPointer.Path);
@@ -98,7 +100,6 @@ namespace CubeTools_UI.Views
                     new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
                 }
             }
-            
             ViewModel.QueuePointers.Add(parent);
             ViewModel.QueueIndex = ViewModel.QueuePointers.Count-1;
             try
@@ -120,7 +121,7 @@ namespace CubeTools_UI.Views
             try
             {
                 ViewModel.DirectoryPointer.SetChildrenFiles();
-                ViewModel.ParentViewModel.ViewModelPathsBar.AttachedView.ItemsXaml.Items = ManagerReader.ListToObservable(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+                ViewModel.ParentViewModel.ReloadPath();
             }
             catch (Exception exception)
             {
@@ -136,5 +137,7 @@ namespace CubeTools_UI.Views
         {
             // TODO Implement a settings Window
         }
+        
+        #endregion
     }
 }

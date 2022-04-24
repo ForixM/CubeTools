@@ -59,7 +59,7 @@ namespace CubeTools_UI.Views.PopUps
             _userActivation = false;
             ParentViewModel = null;
         }
-        public PropertiesPopUp(FileType ft, ObservableCollection<FileType> items, MainWindowViewModel main) : this()
+        public PropertiesPopUp(FileType ft, MainWindowViewModel main) : this()
         {
             _pointer = ft;
             _fileName.Text = ft.Name;
