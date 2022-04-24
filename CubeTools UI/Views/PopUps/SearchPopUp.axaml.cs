@@ -68,7 +68,7 @@ namespace CubeTools_UI.Views.PopUps
         private void SearchList()
         {
             ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ManagerReader.FastSearchByName(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path,
-                TextEntered.Text, 50).ToList());
+                TextEntered.Text, 100).ToList());
         }
         
     }
