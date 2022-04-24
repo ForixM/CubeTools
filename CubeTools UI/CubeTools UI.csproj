@@ -90,6 +90,18 @@
         <DependentUpon>PointerItem.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\PopUps\CreatePopUp.axaml.cs">
+        <DependentUpon>CreatePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PopUps\CreateFolderPopUp.axaml.cs">
+        <DependentUpon>CreateFolderPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PopUps\DeletePopUp.axaml.cs">
+        <DependentUpon>DeletePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Models" />
