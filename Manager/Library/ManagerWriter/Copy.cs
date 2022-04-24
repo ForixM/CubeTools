@@ -73,7 +73,7 @@ namespace Library.ManagerWriter
         /// <exception cref="AccessException">The given path could not be accessed</exception>
         /// <exception cref="InUseException">The given path is already used in another process</exception>
         /// <exception cref="ManagerException">An error occured while copying</exception>
-        public static void Copy(string source, string dest, bool replace = false)
+        public static FileType Copy(string source, string dest, bool replace = false)
         {
             // Source or dest have an incorrect format
             if (!ManagerReader.ManagerReader.IsPathCorrect(source) || !ManagerReader.ManagerReader.IsPathCorrect(dest))
@@ -116,11 +116,10 @@ namespace Library.ManagerWriter
             try
             {
                 if (File.Exists(source))
-                    //Create(dest); // TODO CREATED BUGS VERIFICATION NEEDED
                     File.Copy(source, dest);
                 else
-                    //CreateDir(dest); // TODO VERIFICATION NEEDED
                     CopyDirectory(source, dest, true);
+                return new FileType(dest);
             }
             catch (UnauthorizedAccessException e)
             {
