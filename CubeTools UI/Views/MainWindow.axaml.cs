@@ -2,6 +2,7 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
@@ -22,6 +23,10 @@ namespace CubeTools_UI.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
+        {
         }
     }
 }

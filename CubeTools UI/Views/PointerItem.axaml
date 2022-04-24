@@ -2,13 +2,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="CubeTools_UI.Views.PointerItem">
      
-     <Button CornerRadius="8"  Background="White" 
-             HorizontalAlignment="Left" PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped" Height="50" Width="1500">
+     <Button CornerRadius="8"  Background="White" Name="Button"
+             HorizontalAlignment="Left" Height="50" Width="1500"
+             PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped" >
+         
          <WrapPanel VerticalAlignment="Center">
              <Image Name="Icon" Source="../../Assets/CubeToolsAppsExtensionsCompressed/None.ico" Height="30"/>
              <TextBlock Name="Name" Margin="5" VerticalAlignment="Center"/>
              <TextBlock Name="Size" Margin="5" VerticalAlignment="Center"/>
          </WrapPanel>
+         
      </Button>
      
  </UserControl>
