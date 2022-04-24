@@ -100,7 +100,7 @@
 		</Grid>
 		<!-- Eight column : Snapdrop button -->
 		<Grid Grid.Column="10">
-			<Button Classes="Manager" Name="SnapdropButton">
+			<Button Classes="Manager" Name="SnapdropButton" Click="Snap">
 				<StackPanel>
 					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Snapdrop.ico"/>
 				</StackPanel>
@@ -108,7 +108,7 @@
 		</Grid>
 		<!-- Eight column : Snapdrop button -->
 		<Grid Grid.Column="11">
-			<Button Classes="Manager" Name="SmashButton">
+			<Button Classes="Manager" Name="SmashButton" Click="Smash">
 				<StackPanel>
 					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Smash.ico"/>
 				</StackPanel>

@@ -171,10 +171,10 @@ public class ClientFtp
     public void DeleteItem(IFtpItem item)
     {
         FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + item.Path);
-        if (item is FtpFolder)
+        if (item is FtpFolder folder)
         {
             request.Method = WebRequestMethods.Ftp.RemoveDirectory;
-            FtpArboresence arbo = ListDirectory((FtpFolder) item);
+            FtpArboresence arbo = ListDirectory(folder);
             foreach (IFtpItem arboItem in arbo.Items)
             {
                 DeleteItem(arboItem);

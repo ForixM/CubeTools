@@ -27,5 +27,10 @@ namespace CubeTools_UI.Views
             var popup = new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, new AccessException("Not Implemented Yet"));
             popup.Show();
         }
+        
+        private void FTP(object? sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }
