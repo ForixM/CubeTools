@@ -14,7 +14,7 @@
         {
             ErrorType = "Format of the path is incorrect";
             CriticalLevel = "Medium";
-            Errorstd = "DiskNotReadyException";
+            Errorstd = "PathFormatException";
         }
 
         public PathFormatException(string message, string func) : base("PathFormatException", "Medium",

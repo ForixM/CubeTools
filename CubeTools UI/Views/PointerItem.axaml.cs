@@ -48,7 +48,7 @@ namespace CubeTools_UI.Views
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/exe.ico");
                 case "docx":
                 case "odt":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/exe.ico");
+                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/docx.ico");
                 case "pdf":
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/pdf.ico");
                 case "py":
@@ -63,8 +63,10 @@ namespace CubeTools_UI.Views
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/html.ico");
                 case "pptx":
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/pptx.ico");
-                case "xsls":
+                case "xlsx":
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/xsls.ico");
+                case "gitignore":
+                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/gitignore.ico");
                 case "zip":
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/zip.ico");
                 case "rar":

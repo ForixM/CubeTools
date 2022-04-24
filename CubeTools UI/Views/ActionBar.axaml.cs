@@ -38,21 +38,7 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void CreateFile(object? sender, RoutedEventArgs e)
         {
-            try
-            {
-                var ft = ManagerWriter.Create();
-                ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles.Add(ft);
-                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer
-                    .ChildrenFiles);
-            }
-            catch (Exception exception)
-            {
-                if (exception is ManagerException @managerException)
-                {
-                    @managerException.Errorstd = "Unable to create a new file";
-                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
-                }
-            }
+            new CreatePopUp(ViewModel.ParentViewModel).Show();
         }
 
         /// <summary>
@@ -60,21 +46,7 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void CreatDir(object? sender, RoutedEventArgs e)
         {
-            try
-            {
-                var ft = ManagerWriter.CreateDir();
-                ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles.Add(ft);
-                ViewModel.ParentViewModel.ViewModelPathsBar.ReloadPath(ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer
-                    .ChildrenFiles);
-            }
-            catch (Exception exception)
-            {
-                if (exception is ManagerException @managerException)
-                {
-                    @managerException.Errorstd = "Unable to create a new directory";
-                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
-                }
-            }
+            new CreateFolderPopUp(ViewModel.ParentViewModel).Show();
         }
 
         /// <summary>
