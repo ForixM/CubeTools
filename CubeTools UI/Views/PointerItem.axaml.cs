@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -12,9 +7,6 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using CubeTools_UI.ViewModels;
 using CubeTools_UI.Views.PopUps;
-using Library.ManagerExceptions;
-using Library.ManagerReader;
-using Library.ManagerWriter;
 using Library.Pointers;
 
 namespace CubeTools_UI.Views
@@ -26,11 +18,13 @@ namespace CubeTools_UI.Views
         #region Variables
         
         public FileType Pointer;
+        
         private Image _icon;
         private TextBlock _name;
         private TextBlock _size;
+        public Button button;
 
-        public Bitmap typeToIcon(string type)
+        public Bitmap TypeToIcon(string type)
         {
             if (Pointer.IsDir)
                 return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIconsCompressed/Folder.ico");
@@ -97,6 +91,7 @@ namespace CubeTools_UI.Views
             _icon = this.FindControl<Image>("Icon");
             _name = this.FindControl<TextBlock>("Name");
             _size = this.FindControl<TextBlock>("Size");
+            button = this.FindControl<Button>("Button");
         }
 
         public PointerItem(FileType pointer, MainWindowViewModel main) : this()
@@ -105,7 +100,7 @@ namespace CubeTools_UI.Views
             _main = main;
             _name.Text = pointer.Name;
             _size.Text = pointer.SizeXaml;
-            _icon.Source = typeToIcon(pointer.Type);
+            _icon.Source = TypeToIcon(pointer.Type);
         }
 
         private void InitializeComponent()
@@ -114,6 +109,8 @@ namespace CubeTools_UI.Views
         }
         
         #endregion
+        
+        #region Events
         
         /// <summary>
         /// On pointer double taped
@@ -145,6 +142,14 @@ namespace CubeTools_UI.Views
             {
                 _main.ViewModelActionBar.SelectedXaml.Clear();
                 _main.ViewModelActionBar.SelectedXaml.Add(this);
+                foreach (var control in _main.ViewModelPathsBar.AttachedView.Generator.Children)
+                {
+                    ((PointerItem) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
+                }
+                foreach (var control in _main.ViewModelActionBar.SelectedXaml)
+                {
+                    control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
+                }
             }
             else
             {
@@ -153,5 +158,8 @@ namespace CubeTools_UI.Views
                 _main.ReloadPath();
             }
         }
+
+        #endregion
+        
     }
 }

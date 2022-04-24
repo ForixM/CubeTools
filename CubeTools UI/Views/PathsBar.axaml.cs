@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -17,12 +18,12 @@ namespace CubeTools_UI.Views
     public class PathsBar : UserControl
     {
         public static PathsBarViewModel ViewModel;
-        private StackPanel _generator;
+        public StackPanel Generator;
 
         public PathsBar()
         {
             InitializeComponent();
-            _generator = this.FindControl<StackPanel>("Generator");
+            Generator = this.FindControl<StackPanel>("Generator");
             ViewModel = new PathsBarViewModel(this);
         }
 
@@ -33,11 +34,15 @@ namespace CubeTools_UI.Views
 
         public void ReloadPath(List<FileType> ftList)
         {
-            _generator.Children.Clear();
+            Generator.Children.Clear();
             foreach (var ft in ftList)
             {
                 var pi = new PointerItem(ft, ViewModel.ParentViewModel);
-                _generator.Children.Add(pi);
+                if (ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Contains(pi))
+                    pi.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
+                else
+                    pi.button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
+                Generator.Children.Add(pi);
             }
         }
     }

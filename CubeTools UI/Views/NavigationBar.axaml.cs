@@ -39,6 +39,27 @@ namespace CubeTools_UI.Views
 
         private void LeftArrowClick(object? sender, RoutedEventArgs e)
         {
+            if (ViewModel.QueueIndex < ViewModel.QueuePointers.Count - 1)
+            {
+                ViewModel.QueueIndex++;
+                try
+                {
+                    ViewModel.ParentViewModel?.AccessPath(ViewModel.QueuePointers[ViewModel.QueueIndex]);
+                }
+                catch (Exception exception)
+                {
+                    if (exception is ManagerException @managerException)
+                    {
+                        @managerException.Errorstd = "Unable to get the next directory";
+                        new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                    }
+                    ViewModel.QueueIndex--;
+                }
+            }
+        }
+
+        private void RightArrowClick(object? sender, RoutedEventArgs e)
+        {
             // End of the queue
             if (ViewModel.QueueIndex > 0)
             {
@@ -54,27 +75,6 @@ namespace CubeTools_UI.Views
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to get the last directory";
-                        new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
-                    }
-                    ViewModel.QueueIndex--;
-                }
-            }
-        }
-
-        private void RightArrowClick(object? sender, RoutedEventArgs e)
-        {
-            if (ViewModel.QueueIndex < ViewModel.QueuePointers.Count - 1)
-            {
-                ViewModel.QueueIndex++;
-                try
-                {
-                    ViewModel.ParentViewModel?.AccessPath(ViewModel.QueuePointers[ViewModel.QueueIndex]);
-                }
-                catch (Exception exception)
-                {
-                    if (exception is ManagerException @managerException)
-                    {
-                        @managerException.Errorstd = "Unable to get the next directory";
                         new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
                     }
                     ViewModel.QueueIndex--;
