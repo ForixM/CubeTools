@@ -23,9 +23,9 @@
 			<DataTemplate>
 				<Button HorizontalAlignment="Left" PointerPressed="OnTaped" CornerRadius="8" Click="OnClick" Background="White" DoubleTapped="OnDoubleTaped" Width="1500" Height="50">
 					<WrapPanel VerticalAlignment="Center">
-						<Image Source="/Assets/CubeToolsIcons/FolderCompressed.ico" Height="20"/>
-						<TextBlock Text="{Binding Name}" Margin="5"/>
-						<TextBlock Text="{Binding SizeXaml}" Margin="5"/>
+						<Image Source="/Assets/CubeToolsAppsExtensionsCompressed/pdf.ico" Height="25"/>
+						<TextBlock Text="{Binding Name}" Margin="5" VerticalAlignment="Center"/>
+						<TextBlock Text="{Binding SizeXaml}" Margin="5" VerticalAlignment="Center"/>
 					</WrapPanel>
 				</Button>
 			</DataTemplate>
