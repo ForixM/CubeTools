@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -164,7 +160,6 @@ namespace CubeTools_UI.Views
         
         #endregion
 
-
         #region Process
      
         /// <summary>
@@ -191,14 +186,22 @@ namespace CubeTools_UI.Views
                     task.GetAwaiter().OnCompleted(() =>
                     {
                         loadingPopUp.Close();
-                        ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result);
+                        try
+                        {
+                            ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result);
+                        }
+                        catch (Exception e)
+                        {
+                            if (e is ManagerException @managerException)
+                                new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, managerException).Show();
+                        }
                         ViewModel.ParentViewModel.ReloadPath();
                     });
                 }
                 else
                 {
                     task.RunSynchronously();
-                    ViewModel.ParentViewModel!.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result);
+                    ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result);
                     ViewModel.ParentViewModel.ReloadPath();
                 }
             }
@@ -227,7 +230,7 @@ namespace CubeTools_UI.Views
                     ManagerWriter.Delete(source);
             });
             // Remove reference from Directory Pointer
-            ViewModel.ParentViewModel?.ViewModelNavigationBar.DirectoryPointer.Remove(source);
+            ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Remove(source);
             // Run Tasks Async
             try
             {
@@ -242,14 +245,14 @@ namespace CubeTools_UI.Views
                     task.GetAwaiter().OnCompleted(() =>
                     {
                         loadingPopUp.Close();
-                        ViewModel.ParentViewModel!.ReloadPath();
+                        ViewModel.ParentViewModel.ReloadPath();
                     });
                 }
                 // Run task sync
                 else
                 {
                     task.RunSynchronously();
-                    ViewModel.ParentViewModel!.ReloadPath();
+                    ViewModel.ParentViewModel.ReloadPath();
                 }
             }
             catch (Exception exception)
