@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Avalonia.Controls;
 // CubeTools UIs Imports
 using CubeTools_UI.Views;
 // Libraries Imports
@@ -17,6 +16,8 @@ namespace CubeTools_UI.ViewModels
 
         public MainWindow AttachedView;
         public static string CubeToolsPath;
+
+        public bool IsCtrlPressed;
         
         #region Children ViewModels
         
@@ -27,9 +28,11 @@ namespace CubeTools_UI.ViewModels
 
         #endregion
 
-        // CTOR
+        #region Init
+        
         public MainWindowViewModel()
         {
+            IsCtrlPressed = false;
             CubeToolsPath = Directory.GetCurrentDirectory();
             // ActionBar : Setting up ModelXaml
             ViewModelActionBar = ActionBar.ViewModel;
@@ -76,6 +79,10 @@ namespace CubeTools_UI.ViewModels
             AttachedView = attachedView;
         }
 
+        #endregion
+
+        #region Process
+        
         /// <summary>
         /// Access the given path by reloading the current directory or accessing a file
         /// </summary>
@@ -151,5 +158,6 @@ namespace CubeTools_UI.ViewModels
             }
             ViewModelPathsBar.ReloadPath(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
+        #endregion
     }
 }

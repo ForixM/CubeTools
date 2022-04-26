@@ -41,8 +41,7 @@ public static class ManagerFile
         {
             DriveFile.Name = fileName;
         }
-
-        DriveFile.Name = fileName;
+        
         DriveFile.MimeType = "application/octet-stream";
         DriveFile.Parents = new[] {folderId};
 

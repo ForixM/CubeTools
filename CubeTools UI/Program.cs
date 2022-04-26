@@ -3,6 +3,9 @@
 using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
+using LibraryCompression;
+using LibraryFTP;
+
 // CubeTools UI's imports
 
 
@@ -16,6 +19,11 @@ namespace CubeTools_UI
         [STAThread]
         public static void Main(string[] args)
         {
+            // Initialization of Libraries
+            Compression.Init();
+            // Initialization of global paramters
+            //
+            
             BuildAvaloniaApp()
                 .StartWithClassicDesktopLifetime(args);
         }

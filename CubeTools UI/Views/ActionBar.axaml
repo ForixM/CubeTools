@@ -23,6 +23,7 @@
 			<ColumnDefinition Width="45"/>
 			<ColumnDefinition Width="45"/>
 			<ColumnDefinition Width="45"/>
+			<ColumnDefinition Width="45"/>
 			<ColumnDefinition Width="45" />
 		</Grid.ColumnDefinitions>
 
@@ -81,7 +82,7 @@
 				</StackPanel>
 			</Button>
 		</Grid>
-		<!-- Seventh column : Sort Button-->
+		<!-- Sort Button-->
 		<Grid Grid.Column="7">
 			<Button Classes="Manager" Name="SortButton" Click="Sort">
 				<StackPanel>
@@ -89,32 +90,40 @@
 				</StackPanel>
 			</Button>
 		</Grid>
-		<!-- Seventh column : Search button -->
+		<!-- -->
 		<Grid Grid.Column="9">
+			<Button Classes="Manager" Name="CompressButton" Click="Compress">
+				<StackPanel>
+					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Sort.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!--  Search button -->
+		<Grid Grid.Column="10">
 			<Button Classes="Manager" Name="SearchButton" Click="Search">
 				<StackPanel>
 					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Search.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
-		<!-- Eight column : Snapdrop button -->
-		<Grid Grid.Column="10">
+		<!-- Snapdrop button -->
+		<Grid Grid.Column="11">
 			<Button Classes="Manager" Name="SnapdropButton" Click="Snap">
 				<StackPanel>
 					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Snapdrop.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
-		<!-- Eight column : Snapdrop button -->
-		<Grid Grid.Column="11">
+		<!-- Smash button -->
+		<Grid Grid.Column="12">
 			<Button Classes="Manager" Name="SmashButton" Click="Smash">
 				<StackPanel>
 					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Smash.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
-		<!-- Eighth column : Nearby Send button -->
-		<Grid Grid.Column="12">
+		<!-- Nearby Send button -->
+		<Grid Grid.Column="13">
 			<Button Classes="Manager" Name="NearBySendButton">
 				<StackPanel>
 					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/nearbysend.ico"/>

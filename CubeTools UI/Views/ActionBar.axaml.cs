@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
@@ -32,11 +34,11 @@ namespace CubeTools_UI.Views
         #endregion
 
         #region Events
-        
+
         /// <summary>
         /// Create a new file (New File by default)
         /// </summary>
-        private void CreateFile(object? sender, RoutedEventArgs e)
+        public void CreateFile(object? sender, RoutedEventArgs e)
         {
             new CreatePopUp(ViewModel.ParentViewModel).Show();
         }
@@ -44,7 +46,7 @@ namespace CubeTools_UI.Views
         /// <summary>
         /// Create a new directory (New Folder by default)
         /// </summary>
-        private void CreatDir(object? sender, RoutedEventArgs e)
+        public void CreatDir(object? sender, RoutedEventArgs e)
         {
             new CreateFolderPopUp(ViewModel.ParentViewModel).Show();
         }
@@ -52,7 +54,7 @@ namespace CubeTools_UI.Views
         /// <summary>
         /// Add to Copied the selected elements
         /// </summary>
-        private void Copy(object? sender, RoutedEventArgs e)
+        public void Copy(object? sender, RoutedEventArgs e)
         {
             ViewModel.CopiedXaml.Clear();
             ViewModel.CutXaml.Clear();
@@ -63,7 +65,7 @@ namespace CubeTools_UI.Views
         /// <summary>
         /// Add to cut the selected elements
         /// </summary>
-        private void Cut(object? sender, RoutedEventArgs e)
+        public void Cut(object? sender, RoutedEventArgs e)
         {
             ViewModel.CopiedXaml.Clear();
             ViewModel.CutXaml.Clear();
@@ -77,7 +79,7 @@ namespace CubeTools_UI.Views
         /// <summary>
         /// Paste copied and delete cut
         /// </summary>
-        private void Paste(object? sender, RoutedEventArgs e)
+        public void Paste(object? sender, RoutedEventArgs e)
         {
             // 1) Copy Copied
             foreach (var item in ViewModel.CopiedXaml)
@@ -85,37 +87,36 @@ namespace CubeTools_UI.Views
 
             // 2) Destroy Cut
             foreach (var item in ViewModel.CutXaml)
-                DeletePointer(item.Pointer);
+                new DeletePopUp(ViewModel.ParentViewModel, item.Pointer).Show();
         }
 
         /// <summary>
         /// Rename a file or directory
         /// </summary>
-        private void Rename(object? sender, RoutedEventArgs e)
+        public void Rename(object? sender, RoutedEventArgs e)
         {
             if (ViewModel.SelectedXaml.Count < 1) return;
             
             if (ViewModel.SelectedXaml.Count == 1)
                 new RenamePopUp(ViewModel.SelectedXaml[0].Pointer, ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles, ViewModel.ParentViewModel).Show();
             else
-                new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel,
-                    new ManagerException("Unable to rename multiple data")).Show();
+                new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, new ManagerException("Unable to rename multiple data")).Show();
         }
 
         /// <summary>
         /// Delete selected
         /// </summary>
-        private void Delete(object? sender, RoutedEventArgs e)
+        public void Delete(object? sender, RoutedEventArgs e)
         {
             foreach (var item in ViewModel.SelectedXaml)
-                DeletePointer(item.Pointer);
+                new DeletePopUp(ViewModel.ParentViewModel, item.Pointer).Show();
             ViewModel.ParentViewModel.ReloadPath();
         }
 
         /// <summary>
         /// Display the search box
         /// </summary>
-        private void Search(object? sender, RoutedEventArgs e)
+        public void Search(object? sender, RoutedEventArgs e)
         {
             var searchPopup = new SearchPopUp(ViewModel);
             searchPopup.Show();
@@ -124,12 +125,15 @@ namespace CubeTools_UI.Views
         /// <summary>
         /// Display the sort box
         /// </summary>
-        private void Sort(object? sender, RoutedEventArgs e)
+        public void Sort(object? sender, RoutedEventArgs e)
         {
             var popup = new SortPopUp(ViewModel.ParentViewModel);
             popup.Show();
         }
         
+        /// <summary>
+        /// Open the snapdrop application in a browser
+        /// </summary>
         private void Snap(object? sender, RoutedEventArgs e)
         {
             var uri = "https://www.snapdrop.net";
@@ -139,6 +143,9 @@ namespace CubeTools_UI.Views
             System.Diagnostics.Process.Start(psi);
         }
         
+        /// <summary>
+        /// Open the smash application in a browser
+        /// </summary>
         private void Smash(object? sender, RoutedEventArgs e)
         {
             var uri = "https://www.fromsmash.com";
@@ -146,6 +153,26 @@ namespace CubeTools_UI.Views
             psi.UseShellExecute = true;
             psi.FileName = uri;
             System.Diagnostics.Process.Start(psi);
+        }
+
+        /// <summary>
+        /// Compress selected files adn folders by displaying folder and files popup for compression
+        /// </summary>
+        private void Compress(object? sender, RoutedEventArgs e)
+        {
+            if (ViewModel.SelectedXaml.Count == 0) return;
+            
+            var folder = ViewModel.SelectedXaml.Where(ft => ft.Pointer.IsDir).Select(item => item.Pointer);
+            var files = ViewModel.SelectedXaml.Where(ft => !ft.Pointer.IsDir).Select(item => item.Pointer);
+
+            var fileTypes = files.ToList();
+            if (fileTypes.Any())
+                new CompressPopUp(ViewModel.ParentViewModel, fileTypes).Show();
+            
+            var folderTypes = folder.ToList();
+            if (folderTypes.Any())
+                foreach (var dir in folder.ToList()) 
+                    new CompressFolderPopUp(ViewModel.ParentViewModel, dir).Show();   
         }
         
         #endregion
@@ -211,15 +238,6 @@ namespace CubeTools_UI.Views
             }
         }
 
-        /// <summary>
-        /// Delete the given pointer
-        /// </summary>
-        /// <param name="source">The given pointer to delete</param>
-        private void DeletePointer(FileType source)
-        {
-            new DeletePopUp(ViewModel.ParentViewModel, source).Show();
-        }
-        
         #endregion
     }
 }

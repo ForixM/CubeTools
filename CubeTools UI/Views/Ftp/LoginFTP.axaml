@@ -7,8 +7,7 @@
         MinHeight="200" MinWidth="200"
         CanResize="False"
         x:Class="CubeTools_UI.Views.Ftp.LoginFTP"
-        Title="Create a Folder"
-        Icon="../../Assets/OLD/add-folder.ico"
+        Title="Connect to FTP server"
         KeyDown="OnEscapePressed">
         
         <Grid>
@@ -34,8 +33,8 @@
                 <Grid Grid.Row="3">
                         <StackPanel Orientation="Horizontal" Margin="10">
                                 <TextBox Name="Port" Watermark="Enter Port" />
-                                <Button Content="Cancel" Margin="35 0 0 0"/>
-                                <Button Content="Connect" Margin="10 0 0 0"/>
+                                <Button Click="OnCancelClick" Content="Cancel" Margin="35 0 0 0"/>
+                                <Button Click="OnConnexionClicked" Content="Connect" Margin="10 0 0 0"/>
                         </StackPanel>
                 </Grid>
 

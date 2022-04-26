@@ -11,7 +11,33 @@ namespace LibraryOneDrive
         private static void Main(string[] args)
         {
             client = new OnedriveClient();
-            var file = new FileType("C:/Users/forix/Desktop/test.txt");
+            client.authenticated += delegate(object sender, bool success)
+            {
+                if (!success)
+                {
+                    Console.Error.WriteLine("Couldn't connect");
+                    return;
+                }
+
+                var arbo = client.GetArboresence();
+                Console.WriteLine(arbo);
+                OneItem folder = null;
+                foreach (OneItem item in arbo.items)
+                {
+                    if (item.name == "Test" && item.Type == OneItemType.FOLDER)
+                    {
+                        folder = item;
+                    }
+                }
+
+                if (folder == null)
+                {
+                    Console.Error.WriteLine("Couldn't find folder");
+                    return;
+                }
+                client.CreateFolder("Soutenance2Folder", folder);
+            };
+            /*var file = new FileType("C:/Users/forix/Desktop/test.txt");
 
             client.uploadFinished += (sender, success) =>
                 Console.WriteLine(success ? "Upload finished" : "Error in upload");
@@ -35,7 +61,7 @@ namespace LibraryOneDrive
 
                 Console.WriteLine(client.UploadFile(new FileType("C:/Users/forix/Desktop/wow.txt"), f1));
                 // Console.WriteLine(client.Copy(file, f1));
-            };
+            };*/
         }
     }
 }

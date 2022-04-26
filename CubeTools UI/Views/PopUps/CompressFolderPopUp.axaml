@@ -1,0 +1,33 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="200"
+        Width="500" Height="200"
+        CanResize="False"
+        x:Class="CubeTools_UI.Views.PopUps.CompressFolderPopUp"
+        Title="Compress a Folder"
+        KeyDown="OnKeyPressedWindow">
+        
+    <Grid ColumnDefinitions="100,400">
+        <Grid Grid.Column="0">
+            <Image Margin="10"/>
+        </Grid>
+                
+        <Grid Grid.Column="1">
+            <StackPanel Margin="10">
+                <TextBox KeyDown="OnEnterPressed" Name="NameArchive" Watermark="Enter a folder name" Text="New Archive" />
+                <ComboBox Name="SelectedMode" HorizontalContentAlignment="Center" SelectionChanged="OnCompressModeChanged">
+                    <TextBlock Text="7zip"/>
+                    <TextBlock Text="Zip"/>
+                </ComboBox>
+                <WrapPanel Margin="0 10 0 0">
+                    <Button Click="OnCompressionPressed" HorizontalAlignment="Center" Margin="0 10 0 0" Content="Compress Folder"/>
+                    <Button Click="OnCancelPressed" HorizontalAlignment="Center" Margin="0 10 0 0" Content="Cancel"/>
+                </WrapPanel>
+            </StackPanel>
+        </Grid>
+               
+    </Grid>
+        
+</Window>

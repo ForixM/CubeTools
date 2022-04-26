@@ -9,9 +9,9 @@ using CubeTools_UI.ViewModels;
 using CubeTools_UI.Views.PopUps;
 using Library.Pointers;
 
-namespace CubeTools_UI.Views
+namespace CubeTools_UI.Views.Ftp
 {
-    public class PointerItem : UserControl
+    public class LocalPointer : UserControl
     {
         private MainWindowViewModel _main;
         
@@ -61,7 +61,6 @@ namespace CubeTools_UI.Views
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/xsls.ico");
                 case "gitignore":
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/gitignore.ico");
-                case "7z":
                 case "zip":
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/zip.ico");
                 case "rar":
@@ -70,7 +69,7 @@ namespace CubeTools_UI.Views
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/key.ico");
                 case "mp3":
                 case "alac":
-                case "flac": 
+                case "flac":    
                 case "wav":
                     return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/mp3.ico");
                 case "mp4":
@@ -86,7 +85,7 @@ namespace CubeTools_UI.Views
 
         #region Init
         
-        public PointerItem()
+        public LocalPointer()
         {
             InitializeComponent();
             _icon = this.FindControl<Image>("Icon");
@@ -95,7 +94,7 @@ namespace CubeTools_UI.Views
             button = this.FindControl<Button>("Button");
         }
 
-        public PointerItem(FileType pointer, MainWindowViewModel main) : this()
+        public LocalPointer(FileType pointer, MainWindowViewModel main) : this()
         {
             Pointer = pointer;
             _main = main;
@@ -141,13 +140,16 @@ namespace CubeTools_UI.Views
         {
             if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
             {
-                if (!_main.IsCtrlPressed)
-                    _main.ViewModelActionBar.SelectedXaml.Clear();
-                _main.ViewModelActionBar.SelectedXaml.Add(this);
+                _main.ViewModelActionBar.SelectedXaml.Clear();
+                //_main.ViewModelActionBar.SelectedXaml.Add(this);
                 foreach (var control in _main.ViewModelPathsBar.AttachedView.Generator.Children)
+                {
                     ((PointerItem) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
+                }
                 foreach (var control in _main.ViewModelActionBar.SelectedXaml)
+                {
                     control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
+                }
             }
             else
             {

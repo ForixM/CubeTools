@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.ViewModels;
 using Library.ManagerExceptions;
-using Library.ManagerReader;
 using Library.ManagerWriter;
 using Library.Pointers;
 
@@ -157,12 +151,11 @@ namespace CubeTools_UI.Views.PopUps
             try
             {
                 ManagerWriter.SetAttributes(_pointer, true, FileAttributes.Hidden);
-                ParentViewModel.ReloadPath();
+                ParentViewModel?.ReloadPath();
             }
             catch (ManagerException exception)
             {
-                var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
-                popup.Show();
+                new ErrorPopUp.ErrorPopUp(ParentViewModel, exception).Show();
                 _userActivation = true;
                 _hidden.IsChecked = !_hidden.IsChecked;
             }

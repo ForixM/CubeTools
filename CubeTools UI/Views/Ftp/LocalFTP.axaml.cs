@@ -13,18 +13,16 @@ using CubeTools_UI.Views.PopUps;
 using Library.ManagerExceptions;
 using Library.Pointers;
 
-namespace CubeTools_UI.Views
+namespace CubeTools_UI.Views.Ftp
 {
-    public class PathsBar : UserControl
+    public class LocalFTP : UserControl
     {
-        public static PathsBarViewModel ViewModel;
         public StackPanel Generator;
 
-        public PathsBar()
+        public LocalFTP()
         {
             InitializeComponent();
-            Generator = this.FindControl<StackPanel>("Generator");
-            ViewModel = new PathsBarViewModel(this);
+            Generator = this.FindControl<StackPanel>("LocalGenerator");
         }
 
         private void InitializeComponent()
@@ -35,16 +33,16 @@ namespace CubeTools_UI.Views
         public void ReloadPath(List<FileType> ftList)
         {
             Generator.Children.Clear();
-            int size = ftList.Count;
-            for (int i = 0; i < size; i++)
+            foreach (var ft in ftList)
             {
-                var pi = new PointerItem(ftList[i], ViewModel.ParentViewModel);
+                /*
+                var pi = new LocalPointer(ft, ViewModel.ParentViewModel);
                 if (ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Contains(pi))
                     pi.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
                 else
                     pi.button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
                 Generator.Children.Add(pi);
-                size = ftList.Count;
+                */
             }
         }
     }

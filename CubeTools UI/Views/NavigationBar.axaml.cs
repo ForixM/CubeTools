@@ -30,13 +30,16 @@ namespace CubeTools_UI.Views
         #endregion
         
         #region Events
-
+        
         private void EditCurrentPath(object? sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
             ViewModel.ParentViewModel?.AccessPath(((TextBox) sender).Text);
         }
 
+        /// <summary>
+        /// The last pointer is chosen
+        /// </summary>
         private void LeftArrowClick(object? sender, RoutedEventArgs e)
         {
             if (ViewModel.QueueIndex < ViewModel.QueuePointers.Count - 1)
@@ -50,7 +53,7 @@ namespace CubeTools_UI.Views
                 {
                     if (exception is ManagerException @managerException)
                     {
-                        @managerException.Errorstd = "Unable to get the next directory";
+                        @managerException.Errorstd = "Unable to get the next file";
                         new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
                     }
                     ViewModel.QueueIndex--;
@@ -58,6 +61,9 @@ namespace CubeTools_UI.Views
             }
         }
 
+        /// <summary>
+        /// The next pointer in the stack is chosen
+        /// </summary>
         private void RightArrowClick(object? sender, RoutedEventArgs e)
         {
             // End of the queue
@@ -74,7 +80,7 @@ namespace CubeTools_UI.Views
                 {
                     if (exception is ManagerException @managerException)
                     {
-                        @managerException.Errorstd = "Unable to get the last directory";
+                        @managerException.Errorstd = "Unable to get the last file";
                         new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
                     }
                     ViewModel.QueueIndex--;
@@ -82,6 +88,9 @@ namespace CubeTools_UI.Views
             }
         }
 
+        /// <summary>
+        /// The parent is being selected
+        /// </summary>
         private void UpArrowClick(object? sender, RoutedEventArgs e)
         {
             string parent = "";
@@ -96,7 +105,7 @@ namespace CubeTools_UI.Views
             {
                 if (exception is ManagerException @managerException)
                 {
-                    @managerException.Errorstd = "Unable to get the parent directory";
+                    @managerException.Errorstd = "Unable to get the parent file";
                     new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
                 }
             }
@@ -110,13 +119,16 @@ namespace CubeTools_UI.Views
             {
                 if (exception is ManagerException @managerException)
                 {
-                    @managerException.Errorstd = "Unable to get the parent directory";
+                    @managerException.Errorstd = "Unable to get the parent file";
                     new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
                 }
             }
         }
 
-        private void SyncClick(object? sender, RoutedEventArgs e)
+        /// <summary>
+        /// The sync is being pressed
+        /// </summary>
+        public void SyncClick(object? sender, RoutedEventArgs e)
         {
             try
             {
@@ -127,12 +139,15 @@ namespace CubeTools_UI.Views
             {
                 if (exception is ManagerException @managerException)
                 {
-                    @managerException.Errorstd = "Unable to reload directory";
+                    @managerException.Errorstd = "Unable to reload file";
                     new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
                 }
             }
         }
-
+        
+        /// <summary>
+        /// The settings is opened
+        /// </summary>
         private void SettingsClick(object? sender, RoutedEventArgs e)
         {
             // TODO Implement a settings Window

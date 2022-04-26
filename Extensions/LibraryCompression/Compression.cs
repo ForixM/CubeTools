@@ -1,13 +1,9 @@
 ﻿// System
-using System;
-using System.Threading.Tasks;
-// Libraries
-using Library.ManagerReader;
 using Library.Pointers;
 // External libraries
 using SevenZip;
 
-namespace LibraryFTP
+namespace LibraryCompression
 {
     public class Compression
     {
@@ -18,7 +14,7 @@ namespace LibraryFTP
         /// </summary>
         public static void Init()
         {
-            var path = @"C:\Users\forix\Documents\CubeTools\FTPs\bin\Debug\net5.0\Assets\7z.dll";
+            var path = "7z.dll";
             SevenZipBase.SetLibraryPath(path);
 
             Console.WriteLine(SevenZipBase.CurrentLibraryFeatures);
@@ -34,9 +30,11 @@ namespace LibraryFTP
         /// <param name="compressingEvent">Optional method parameter to track compression progression</param>
         /// <param name="finishedEvent">Optional method parameter called when compression have finished</param>
         /// <returns>Compression Task which is async and already ran</returns>
-        public static Task CompressDirectory(DirectoryType directory, OutArchiveFormat archiveFormat,
+        public static Task CompressDirectory(FileType directory, OutArchiveFormat archiveFormat,
             Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
         {
+            if (!_initialized)
+                throw new SystemException("Compression haven't been initialized");
             var dest = directory.Path[directory.Path.Length - 1] == '/'
                 ? directory.Path.Remove(directory.Path.Length - 1, 1)
                 : directory.Path;
@@ -51,8 +49,6 @@ namespace LibraryFTP
                 default:
                     throw new ArgumentException("Archive format not supported: " + archiveFormat);
             }
-
-            Console.WriteLine(dest);
             return CompressDirectory(directory, dest, archiveFormat, compressingEvent, finishedEvent);
         }
 
@@ -65,11 +61,19 @@ namespace LibraryFTP
         /// <param name="compressingEvent">Optional method parameter to track compression progression</param>
         /// <param name="finishedEvent">Optional method parameter called when compression have finished</param>
         /// <returns>Compression Task which is async and already ran</returns>
-        public static Task CompressDirectory(DirectoryType directory, string dest, OutArchiveFormat archiveFormat,
+        public static Task CompressDirectory(FileType directory, string dest = "", OutArchiveFormat archiveFormat = OutArchiveFormat.SevenZip,
             Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
         {
             if (!_initialized)
                 throw new SystemException("Compression haven't been initialized");
+            directory.Name += archiveFormat switch
+            {
+                OutArchiveFormat.Zip => ".zip",
+                OutArchiveFormat.SevenZip => ".7z",
+                OutArchiveFormat.Tar => ".tar",
+                _ => ".7z"
+            };
+
             var compressor = new SevenZipCompressor();
             if (compressingEvent != null)
                 compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
@@ -93,23 +97,19 @@ namespace LibraryFTP
         public static Task CompressFiles(FileType[] files, OutArchiveFormat archiveFormat,
             Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
         {
-            var dest = files[0];
-            var parent = ManagerReader.GetParent(files[0]);
-            var name = ManagerReader.GetPathToName(parent);
-            var path = ManagerReader.GetParent(files[0]) + "/" + ManagerReader.GetPathToName(parent);
             switch (archiveFormat)
             {
                 case OutArchiveFormat.SevenZip:
-                    path += ".7z";
+                    files[0].Path += ".7z";
                     break;
                 case OutArchiveFormat.Zip:
-                    path += ".zip";
+                    files[0].Path += ".zip";
                     break;
                 default:
                     throw new ArgumentException("Archive format not supported: " + archiveFormat);
             }
 
-            return CompressFiles(files, path, archiveFormat, compressingEvent, finishedEvent);
+            return CompressFiles(files, files[0].Path, archiveFormat, compressingEvent, finishedEvent);
         }
 
         /// <summary>
@@ -136,7 +136,6 @@ namespace LibraryFTP
             compressor.ScanOnlyWritable = true;
             var filePaths = new string[files.Length];
             for (var i = 0; i < files.Length; i++) filePaths[i] = files[i].Path;
-
             return compressor.CompressFilesAsync(dest, filePaths);
         }
 

@@ -14,6 +14,10 @@ public class ClientFtp
     private string _host = "ftp://";
     private string _username;
     private string _password;
+
+    public string Host => _host;
+    public string Username => _username;
+    public string Password => _password;
     
     public delegate void FinishEventHandler(object sender, bool success);
     public delegate void TransfertEventHandler(object sender, long bytesTransfered, long totalBytes);

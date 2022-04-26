@@ -43,6 +43,7 @@
     <ItemGroup>
         <ProjectReference Include="..\CubeTools CLI\CubeTools CLI.csproj" />
         <ProjectReference Include="..\Extensions\Default SandBox\Default SandBox.csproj" />
+        <ProjectReference Include="..\Extensions\LibraryCompression\LibraryCompression.csproj" />
         <ProjectReference Include="..\Extensions\LibraryFTP\LibraryFTP.csproj" />
         <ProjectReference Include="..\Extensions\LibraryGoogleDrive\LibraryGoogleDrive.csproj" />
         <ProjectReference Include="..\Extensions\LibraryOneDrive\LibraryOnedrive.csproj" />
@@ -104,6 +105,26 @@
       </Compile>
       <Compile Update="Views\Ftp\LoginFTP.axaml.cs">
         <DependentUpon>LoginFTP.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Ftp\MainWindowFTP.axaml.cs">
+        <DependentUpon>MainWindowFTP.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Ftp\LocalFTP.axaml.cs">
+        <DependentUpon>LocalFTP.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Ftp\LocalPointer.axaml.cs">
+        <DependentUpon>LocalPointer.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PopUps\CompressPopUp.axaml.cs">
+        <DependentUpon>CompressPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PopUps\CompressFolderPopUp.axaml.cs">
+        <DependentUpon>CompressFolderPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

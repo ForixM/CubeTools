@@ -1,28 +1,13 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:CubeTools_UI"
-             xmlns:views="clr-namespace:CubeTools_UI.Views"
-             xmlns:viewmodels="clr-namespace:CubeTools_UI.ViewModels"
              x:Class="CubeTools_UI.App">
     
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>
     
-    <!--
-    <Application.Resources>
-        <DataTemplate DataType="{x:Type viewmodels:GoogleDriveFileModelView}">
-            <views:GoogleDriveFileList/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:OneDriveModelView}">
-            <views:OneDriveFileList/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:PathsBarViewModel}">
-            <views:PathsBar/>
-        </DataTemplate>
-    </Application.Resources>
-    -->
     <Application.Styles>
-        <FluentTheme Mode="Light" />
+        <FluentTheme Mode="Light"/>
     </Application.Styles>
 </Application>

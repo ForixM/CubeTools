@@ -1,14 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Google.Apis.Drive.v3" Version="1.57.0.2663" />
+      <PackageReference Include="Squid-Box.SevenZipSharp" Version="1.5.0.366" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Manager\Library\Library.csproj" />
     </ItemGroup>
 
 </Project>

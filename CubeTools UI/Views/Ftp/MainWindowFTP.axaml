@@ -1,0 +1,30 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:views="clr-namespace:CubeTools_UI.Views.Ftp"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="100"
+        Width="1000" Height="750"
+        MinWidth="800" MinHeight="450" 
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        x:Class="CubeTools_UI.Views.Ftp.MainWindowFTP"
+        Title="CubeTools FTP">
+        
+        <Grid ColumnDefinitions="Auto,Auto">
+                 
+                <!--Local Files-->
+                <Grid Column="0">
+                        <views:LocalFTP/> 
+                </Grid>
+                
+                <!--Remote Files-->
+                <Grid Column="1">
+                        <ScrollViewer>
+                                <!--<views:RemoteFTP/>--> 
+                        </ScrollViewer>
+                </Grid>
+        </Grid>
+        
+</Window>

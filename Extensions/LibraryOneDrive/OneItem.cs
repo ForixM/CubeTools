@@ -13,7 +13,7 @@ namespace LibraryOneDrive
     {
         [DataMember(Name = "name")] public string name { get; set; }
 
-        [DataMember(Name = "size")] public int size { get; set; }
+        [DataMember(Name = "size")] public long size { get; set; }
 
         [DataMember(Name = "id")] public string id { get; set; }
 

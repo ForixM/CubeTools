@@ -14,7 +14,8 @@
         WindowStartupLocation="CenterScreen"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="-1"
-        KeyDown="OnKeyPressedWindow">
+        KeyDown="OnKeyPressedWindow"
+        KeyUp='OnKeyReleasedWindow'>
     
     <!-- Styles Imports -->
     <Window.Styles>

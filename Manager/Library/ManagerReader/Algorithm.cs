@@ -1,22 +1,11 @@
-// System's imports
-
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using Library.ManagerExceptions;
 using Library.Pointers;
-using Microsoft.Win32;
-// Windows
-// Imports of Library Project
-// Imports of Class Library ConfigLoader
 
 namespace Library.ManagerReader
 {
@@ -765,7 +754,7 @@ namespace Library.ManagerReader
                     return RecommendedProgramsUnix(ext);
                 case PlatformID.Win32NT:
                     StringBuilder res = new StringBuilder();
-                    FindExecutable(path, ManagerReader.GetParent(path), res);
+                    FindExecutable(path, GetParent(path), res);
                     return new List<string>(){(res.ToString())};
                 case PlatformID.MacOSX:
                     return RecommendedProgramsMac(ext);
@@ -795,14 +784,14 @@ namespace Library.ManagerReader
         /// <summary>
         /// Launch an app process with the application
         /// </summary>
-        /// <param name="app"></param>
-        /// <param name="obj"></param>
+        /// <param name="app">The application to run</param>
+        /// <param name="obj">The file to open</param>
         public static void LaunchAppProcess(string app, string obj)
         {
             var process = new Process();
             var startInfo = process.StartInfo;
             startInfo.FileName = app;
-            startInfo.Arguments = obj.Replace('/','\\');
+            startInfo.Arguments = "\"" + obj.Replace('/','\\') + "\"";
             try
             {
                 process.Start();

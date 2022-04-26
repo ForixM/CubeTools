@@ -1,17 +1,29 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using LibraryFTP;
 
 namespace CubeTools_UI.Views.Ftp
 {
     public class LoginFTP : Window
     {
 
+        private TextBox _ip;
+        private TextBox _user;
+        private TextBox _mdp;
+        private TextBox _port;
+
         #region Init
         
         public LoginFTP()
         {
             InitializeComponent();
+            _ip = this.FindControl<TextBox>("Ip");
+            _user = this.FindControl<TextBox>("User");
+            _mdp = this.FindControl<TextBox>("Mdp");
+            _port = this.FindControl<TextBox>("Port");
         }
 
         private void InitializeComponent()
@@ -24,6 +36,32 @@ namespace CubeTools_UI.Views.Ftp
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Escape) Close();
+        }
+
+        private void OnCancelClick(object? sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void OnConnexionClicked(object? sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(_ip.Text) || String.IsNullOrEmpty(_user.Text) || string.IsNullOrEmpty(_mdp.Text) ||
+                string.IsNullOrEmpty(_port.Text))
+            {
+                if (string.IsNullOrEmpty(_ip.Text))
+                    _ip.Watermark = "Missing information !";
+                if (string.IsNullOrEmpty(_user.Text))
+                    _user.Watermark = "Missing information !";
+                if (string.IsNullOrEmpty(_mdp.Text))
+                    _mdp.Watermark = "Missing information !";
+                if (string.IsNullOrEmpty(_port.Text))
+                    _port.Watermark = "Missing Information !";
+            }
+            else
+            {
+                new MainWindowFTP(new ClientFtp(_ip.Text, _user.Text+":"+_port.Text, _mdp.Text)).Show();
+                Close();
+            }
         }
     }
 }
