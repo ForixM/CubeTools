@@ -1,7 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 
 namespace CubeTools_UI
 {
@@ -19,7 +19,7 @@ namespace CubeTools_UI
 
         public bool Match(object data)
         {
-            return data is MainWindowViewModel;
+            return data is MainWindowModel;
         }
     }
 }

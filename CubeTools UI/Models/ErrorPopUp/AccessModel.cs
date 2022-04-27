@@ -2,12 +2,12 @@
 using Avalonia.Media.Imaging;
 using Library.ManagerExceptions;
 
-namespace CubeTools_UI.ViewModels.ErrorPopUp
+namespace CubeTools_UI.Models.ErrorPopUp
 {
-    public class AccessViewModel : ErrorPopUpViewModel
+    public class AccessModel : ErrorPopUpModel
     {
 
-        public AccessViewModel(Views.ErrorPopUp.ErrorPopUp attachedView, ManagerException exception) : base(attachedView, exception)
+        public AccessModel(Views.ErrorPopUp.ErrorPopUp attachedView, ManagerException exception) : base(attachedView, exception)
         {
         
         }
@@ -18,7 +18,7 @@ namespace CubeTools_UI.ViewModels.ErrorPopUp
             _attachedView.Title = "Missing Privileges";
             _attachedView.StdError.Text = "Missing Privileges to execute operation !\nWould you like to continue as administrator ?";
             _attachedView.ContentError.Text = _exception.ErrorMessage;
-            _attachedView.ImageError.Source = new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/Error.ico");
+            _attachedView.ImageError.Source = new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/Error.ico");
             _attachedView.Button1.IsVisible = false;
             _attachedView.Button2.IsVisible = true;
             _attachedView.Button2.Content = new TextBlock() {Text = "No"};

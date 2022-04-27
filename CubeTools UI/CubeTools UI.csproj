@@ -129,6 +129,6 @@
       </Compile>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Models" />
+      <Folder Include="ViewModels" />
     </ItemGroup>
 </Project>

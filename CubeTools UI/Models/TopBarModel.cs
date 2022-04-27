@@ -1,11 +1,11 @@
 ﻿using CubeTools_UI.Views;
 
-namespace CubeTools_UI.ViewModels
+namespace CubeTools_UI.Models
 {
-    public class TopBarViewModel
+    public class TopBarModel
     {
         public TopBar AttachedView;
-        public TopBarViewModel(TopBar attachedView)
+        public TopBarModel(TopBar attachedView)
         {
             AttachedView = attachedView;
         }

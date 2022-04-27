@@ -1,13 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
-using System.Threading;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
-using CubeTools_UI.ViewModels.PopUps;
-using Library.ManagerReader;
+using CubeTools_UI.Models.PopUps;
 using Library.Pointers;
 
 namespace CubeTools_UI.Views.PopUps
@@ -17,8 +12,8 @@ namespace CubeTools_UI.Views.PopUps
         public bool ProcessFinished;
         private ProgressBar _progressBar;
         private TextBlock _operationType;
-        private LoadingPopUpViewModel _viewModel;
-
+        private LoadingPopUpModel _viewModel;
+        
         #region Init
         
         public LoadingPopUp()
@@ -36,7 +31,7 @@ namespace CubeTools_UI.Views.PopUps
             else
                 _operationType.Text = "Copying ";
             _operationType.Text += nbFiles + " files";
-            _viewModel = new LoadingPopUpViewModel(this, modified, nbFiles, destroy, _progressBar);
+            _viewModel = new LoadingPopUpModel(this, modified, nbFiles, destroy, _progressBar);
             DataContext = _viewModel;
             Task.Run(_viewModel.ReloadProgress);
         }

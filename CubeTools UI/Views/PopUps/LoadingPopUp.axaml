@@ -2,14 +2,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:popUps="clr-namespace:CubeTools_UI.ViewModels.PopUps"
+        xmlns:popUps="clr-namespace:CubeTools_UI.Models.PopUps"
         mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="100"
         Width="300" Height="50"
         x:Class="CubeTools_UI.Views.PopUps.LoadingPopUp"
         Title="Loading" Closing="OnClosing">
     
     <Window.DataContext>
-        <popUps:LoadingPopUpViewModel/>
+        <popUps:LoadingPopUpModel/>
     </Window.DataContext>
     
     <StackPanel>

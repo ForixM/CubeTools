@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
@@ -22,7 +17,7 @@ namespace CubeTools_UI.Views.PopUps
         private readonly TextBox _renameBox;
         private readonly FileType _modifiedPointer;
         private List<FileType> _itemsReference;
-        private MainWindowViewModel _main;
+        private MainWindowModel _main;
 
         #region Init
         public RenamePopUp()
@@ -33,7 +28,7 @@ namespace CubeTools_UI.Views.PopUps
             _itemsReference = new List<FileType>();
             _main = null;
         }
-        public RenamePopUp(FileType ft, List<FileType> items, MainWindowViewModel main) : this()
+        public RenamePopUp(FileType ft, List<FileType> items, MainWindowModel main) : this()
         {
             _modifiedPointer = ft;
             _itemsReference = items;

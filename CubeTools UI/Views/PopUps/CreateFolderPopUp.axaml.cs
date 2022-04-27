@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
@@ -13,7 +13,7 @@ namespace CubeTools_UI.Views.PopUps
 {
     public class CreateFolderPopUp : Window
     {
-        private MainWindowViewModel ViewModel;
+        private MainWindowModel _model;
         private TextBox TextEntered;
 
         #region Init
@@ -22,11 +22,11 @@ namespace CubeTools_UI.Views.PopUps
         {
             InitializeComponent();
             TextEntered = this.FindControl<TextBox>("TextEntered");
-            ViewModel = null;
+            _model = null;
         }
-        public CreateFolderPopUp(MainWindowViewModel vm) : this()
+        public CreateFolderPopUp(MainWindowModel vm) : this()
         {
-            ViewModel = vm;
+            _model = vm;
         }
 
         private void InitializeComponent()
@@ -67,16 +67,16 @@ namespace CubeTools_UI.Views.PopUps
         private void CreateDir(string name)
         {
             if (!ManagerReader.IsPathCorrect(name))
-                new Views.ErrorPopUp.ErrorPopUp(ViewModel, new PathFormatException("Format is invalid !")).Show();
+                new Views.ErrorPopUp.ErrorPopUp(_model, new PathFormatException("Format is invalid !")).Show();
             else if (Directory.Exists(name))
-                new Views.ErrorPopUp.ErrorPopUp(ViewModel, new ReplaceException("File already exists !")).Show();
+                new Views.ErrorPopUp.ErrorPopUp(_model, new ReplaceException("File already exists !")).Show();
             else
             {
                 try
                 {
                     var ft = ManagerWriter.CreateDir(name);
-                    ViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles.Add(ft);
-                    ViewModel.ViewModelPathsBar.ReloadPath(ViewModel.ViewModelNavigationBar.DirectoryPointer
+                    _model.ModelNavigationBar.DirectoryPointer.ChildrenFiles.Add(ft);
+                    _model.ModelPathsBar.ReloadPath(_model.ModelNavigationBar.DirectoryPointer
                         .ChildrenFiles);
                     Close();
                 }
@@ -85,7 +85,7 @@ namespace CubeTools_UI.Views.PopUps
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to create a new folder";
-                        new Views.ErrorPopUp.ErrorPopUp(ViewModel, @managerException).Show();
+                        new Views.ErrorPopUp.ErrorPopUp(_model, @managerException).Show();
                     }
                 }
             }

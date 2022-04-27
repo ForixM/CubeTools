@@ -6,9 +6,9 @@ using Library.ManagerReader;
 using Library.Pointers;
 using ReactiveUI;
 
-namespace CubeTools_UI.ViewModels.PopUps
+namespace CubeTools_UI.Models.PopUps
 {
-    public class LoadingPopUpViewModel : ReactiveObject
+    public class LoadingPopUpModel : ReactiveObject
     {
         private LoadingPopUp _main;
         private ProgressBar _progressBar;
@@ -33,14 +33,14 @@ namespace CubeTools_UI.ViewModels.PopUps
     
         #endregion
     
-        public LoadingPopUpViewModel()
+        public LoadingPopUpModel()
         {
             _modified = FileType.NullPointer;
             _main = null;
             _max = 100;
             
         }
-        public LoadingPopUpViewModel(LoadingPopUp main, FileType modified, double max, bool destroy, ProgressBar progressBar)
+        public LoadingPopUpModel(LoadingPopUp main, FileType modified, double max, bool destroy, ProgressBar progressBar)
         {
             _main = main;
             _modified = modified;

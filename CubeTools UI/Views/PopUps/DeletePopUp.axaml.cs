@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
@@ -14,7 +14,7 @@ namespace CubeTools_UI.Views.PopUps
 {
     public class DeletePopUp : Window
     {
-        private MainWindowViewModel? ViewModel;
+        private MainWindowModel? Model;
         private FileType _pointer;
 
         #region Init
@@ -22,11 +22,12 @@ namespace CubeTools_UI.Views.PopUps
         public DeletePopUp()
         {
             InitializeComponent();
-            ViewModel = null;
+            Model = null;
+            _pointer = FileType.NullPointer;
         }
-        public DeletePopUp(MainWindowViewModel vm, FileType pointer) : this()
+        public DeletePopUp(MainWindowModel vm, FileType pointer) : this()
         {
-            ViewModel = vm;
+            Model = vm;
             _pointer = pointer;
         }
 
@@ -76,7 +77,7 @@ namespace CubeTools_UI.Views.PopUps
                     ManagerWriter.Delete(_pointer);
             });
             // Remove reference from Directory Pointer
-            ViewModel.ViewModelNavigationBar.DirectoryPointer.Remove(_pointer);
+            Model?.ModelNavigationBar.DirectoryPointer.Remove(_pointer);
             // Run Tasks Async
             try
             {
@@ -91,14 +92,14 @@ namespace CubeTools_UI.Views.PopUps
                     task.GetAwaiter().OnCompleted(() =>
                     {
                         loadingPopUp.Close();
-                        ViewModel.ReloadPath();
+                        Model?.ReloadPath();
                     });
                 }
                 // Run task sync
                 else
                 {
                     task.RunSynchronously();
-                    ViewModel.ReloadPath();
+                    Model?.ReloadPath();
                 }
             }
             catch (Exception exception)
@@ -106,7 +107,7 @@ namespace CubeTools_UI.Views.PopUps
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = $"Unable to delete {_pointer.Name}";
-                    new Views.ErrorPopUp.ErrorPopUp(ViewModel, @managerException).Show();
+                    new Views.ErrorPopUp.ErrorPopUp(Model!, @managerException).Show();
                 }
             }
         }

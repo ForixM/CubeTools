@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Avalonia.Controls;
 using CubeTools_UI.Views;
 
-namespace CubeTools_UI.ViewModels
+namespace CubeTools_UI.Models
 {
-    public class ActionBarViewModel
+    public class ActionBarModel
     {
         #region Models Variables
         
@@ -16,15 +15,15 @@ namespace CubeTools_UI.ViewModels
         
         #region References
         
-        public MainWindowViewModel ParentViewModel;
-        public ActionBar AttachedView;
+        public MainWindowModel ParentModel;
+        public ActionBar View;
         
         #endregion
 
         // CTOR
-        public ActionBarViewModel(ActionBar attachedView)
+        public ActionBarModel(ActionBar view)
         {
-            AttachedView = attachedView;
+            View = view;
             SelectedXaml = new List<PointerItem>();
             CopiedXaml = new List<PointerItem>();
             CutXaml = new List<PointerItem>();

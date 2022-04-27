@@ -48,14 +48,17 @@ namespace CubeTools_UI.Views.Ftp
             if (String.IsNullOrEmpty(_ip.Text) || String.IsNullOrEmpty(_user.Text) || string.IsNullOrEmpty(_mdp.Text) ||
                 string.IsNullOrEmpty(_port.Text))
             {
-                if (string.IsNullOrEmpty(_ip.Text))
-                    _ip.Watermark = "Missing information !";
-                if (string.IsNullOrEmpty(_user.Text))
-                    _user.Watermark = "Missing information !";
-                if (string.IsNullOrEmpty(_mdp.Text))
-                    _mdp.Watermark = "Missing information !";
-                if (string.IsNullOrEmpty(_port.Text))
-                    _port.Watermark = "Missing Information !";
+                if (string.IsNullOrEmpty(_ip.Text)) _ip.Watermark = "Missing information !";
+                else _ip.Watermark = "Enter IP";
+
+                if (string.IsNullOrEmpty(_user.Text)) _user.Watermark = "Missing information !";
+                else _user.Watermark = "Enter Username";
+
+                if (string.IsNullOrEmpty(_mdp.Text)) _mdp.Watermark = "Missing information !";
+                else _mdp.Watermark = "Enter Password";
+
+                if (string.IsNullOrEmpty(_port.Text)) _port.Watermark = "Missing Information !";
+                else _port.Watermark = "Enter Port";
             }
             else
             {

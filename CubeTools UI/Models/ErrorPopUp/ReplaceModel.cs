@@ -2,16 +2,16 @@
 using Avalonia.Media.Imaging;
 using Library.ManagerExceptions;
 
-namespace CubeTools_UI.ViewModels.ErrorPopUp
+namespace CubeTools_UI.Models.ErrorPopUp
 {
-    public class ReplaceViewModel : ErrorPopUpViewModel
+    public class ReplaceModel : ErrorPopUpModel
     {
-        public MainWindowViewModel ParentViewModel;
+        public MainWindowModel ParentModel;
 
-        public ReplaceViewModel(Views.ErrorPopUp.ErrorPopUp attachedView, ManagerException exception, MainWindowViewModel parent) : base(attachedView,
+        public ReplaceModel(Views.ErrorPopUp.ErrorPopUp attachedView, ManagerException exception, MainWindowModel parent) : base(attachedView,
                         exception)
         {
-            ParentViewModel = parent;
+            ParentModel = parent;
         }
 
         public override void Initialize()
@@ -20,7 +20,7 @@ namespace CubeTools_UI.ViewModels.ErrorPopUp
             _attachedView.Title = "Conflict with files";
             _attachedView.StdError.Text = _exception.Errorstd;
             _attachedView.ContentError.Text = _exception.ErrorMessage;
-            _attachedView.ImageError.Source = new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/Error.ico");
+            _attachedView.ImageError.Source = new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/Error.ico");
             _attachedView.Button1.IsVisible = true;
             _attachedView.Button2.Content = new TextBlock() {Text = "Cancel"};
             _attachedView.Button2.IsVisible = true;
@@ -31,20 +31,8 @@ namespace CubeTools_UI.ViewModels.ErrorPopUp
 
         public override void Button1Clicked()
         {
-            ParentViewModel.ReloadPath();
+            ParentModel.ReloadPath();
             _attachedView?.Close();
-        }
-
-        public override void Button2Clicked()
-        {
-            // TODO Add new stuff here
-            base.Button2Clicked();
-        }
-
-        public override void Button3Clicked()
-        {
-            // TODO Add new Stuff here
-            base.Button3Clicked();
         }
     }   
 }

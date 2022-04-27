@@ -2,10 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using CubeTools_UI.Views.PopUps;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
@@ -16,14 +15,13 @@ namespace CubeTools_UI.Views
 {
     public class ActionBar : UserControl
     {
-        public static ActionBarViewModel ViewModel;
+        public static ActionBarModel Model;
 
         #region Init
         public ActionBar()
         {
             InitializeComponent();
-            ViewModel = new ActionBarViewModel(this);
-            DataContext = ViewModel;
+            Model = new ActionBarModel(this);
         }
 
         private void InitializeComponent()
@@ -40,7 +38,7 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void CreateFile(object? sender, RoutedEventArgs e)
         {
-            new CreatePopUp(ViewModel.ParentViewModel).Show();
+            new CreatePopUp(Model.ParentModel).Show();
         }
 
         /// <summary>
@@ -48,7 +46,7 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void CreatDir(object? sender, RoutedEventArgs e)
         {
-            new CreateFolderPopUp(ViewModel.ParentViewModel).Show();
+            new CreateFolderPopUp(Model.ParentModel).Show();
         }
 
         /// <summary>
@@ -56,10 +54,10 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void Copy(object? sender, RoutedEventArgs e)
         {
-            ViewModel.CopiedXaml.Clear();
-            ViewModel.CutXaml.Clear();
-            foreach (var item in ViewModel.SelectedXaml)
-                ViewModel.CopiedXaml.Add(item);
+            Model.CopiedXaml.Clear();
+            Model.CutXaml.Clear();
+            foreach (var item in Model.SelectedXaml)
+                Model.CopiedXaml.Add(item);
         }
 
         /// <summary>
@@ -67,12 +65,12 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void Cut(object? sender, RoutedEventArgs e)
         {
-            ViewModel.CopiedXaml.Clear();
-            ViewModel.CutXaml.Clear();
-            foreach (var item in ViewModel.SelectedXaml)
+            Model.CopiedXaml.Clear();
+            Model.CutXaml.Clear();
+            foreach (var item in Model.SelectedXaml)
             {
-                ViewModel.CopiedXaml.Add(item);
-                ViewModel.CutXaml.Add(item);
+                Model.CopiedXaml.Add(item);
+                Model.CutXaml.Add(item);
             }
         }
 
@@ -82,12 +80,12 @@ namespace CubeTools_UI.Views
         public void Paste(object? sender, RoutedEventArgs e)
         {
             // 1) Copy Copied
-            foreach (var item in ViewModel.CopiedXaml)
+            foreach (var item in Model.CopiedXaml)
                 CopyPointer(item.Pointer);
 
             // 2) Destroy Cut
-            foreach (var item in ViewModel.CutXaml)
-                new DeletePopUp(ViewModel.ParentViewModel, item.Pointer).Show();
+            foreach (var item in Model.CutXaml)
+                new DeletePopUp(Model.ParentModel, item.Pointer).Show();
         }
 
         /// <summary>
@@ -95,12 +93,12 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void Rename(object? sender, RoutedEventArgs e)
         {
-            if (ViewModel.SelectedXaml.Count < 1) return;
+            if (Model.SelectedXaml.Count < 1) return;
             
-            if (ViewModel.SelectedXaml.Count == 1)
-                new RenamePopUp(ViewModel.SelectedXaml[0].Pointer, ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles, ViewModel.ParentViewModel).Show();
+            if (Model.SelectedXaml.Count == 1)
+                new RenamePopUp(Model.SelectedXaml[0].Pointer, Model.ParentModel.ModelNavigationBar.DirectoryPointer.ChildrenFiles, Model.ParentModel).Show();
             else
-                new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, new ManagerException("Unable to rename multiple data")).Show();
+                new ErrorPopUp.ErrorPopUp(Model.ParentModel, new ManagerException("Unable to rename multiple data")).Show();
         }
 
         /// <summary>
@@ -108,9 +106,9 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void Delete(object? sender, RoutedEventArgs e)
         {
-            foreach (var item in ViewModel.SelectedXaml)
-                new DeletePopUp(ViewModel.ParentViewModel, item.Pointer).Show();
-            ViewModel.ParentViewModel.ReloadPath();
+            foreach (var item in Model.SelectedXaml)
+                new DeletePopUp(Model.ParentModel, item.Pointer).Show();
+            Model.ParentModel.ReloadPath();
         }
 
         /// <summary>
@@ -118,7 +116,7 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void Search(object? sender, RoutedEventArgs e)
         {
-            var searchPopup = new SearchPopUp(ViewModel);
+            var searchPopup = new SearchPopUp(Model);
             searchPopup.Show();
         }
 
@@ -127,12 +125,12 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void Sort(object? sender, RoutedEventArgs e)
         {
-            var popup = new SortPopUp(ViewModel.ParentViewModel);
+            var popup = new SortPopUp(Model.ParentModel);
             popup.Show();
         }
         
         /// <summary>
-        /// Open the snapdrop application in a browser
+        /// Open the Snap Drop application in a browser
         /// </summary>
         private void Snap(object? sender, RoutedEventArgs e)
         {
@@ -148,10 +146,12 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void Smash(object? sender, RoutedEventArgs e)
         {
-            var uri = "https://www.fromsmash.com";
-            var psi = new System.Diagnostics.ProcessStartInfo();
-            psi.UseShellExecute = true;
-            psi.FileName = uri;
+            const string uri = "https://www.fromsmash.com";
+            var psi = new System.Diagnostics.ProcessStartInfo
+            {
+                UseShellExecute = true,
+                FileName = uri
+            };
             System.Diagnostics.Process.Start(psi);
         }
 
@@ -160,19 +160,19 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void Compress(object? sender, RoutedEventArgs e)
         {
-            if (ViewModel.SelectedXaml.Count == 0) return;
+            if (Model.SelectedXaml.Count == 0) return;
             
-            var folder = ViewModel.SelectedXaml.Where(ft => ft.Pointer.IsDir).Select(item => item.Pointer);
-            var files = ViewModel.SelectedXaml.Where(ft => !ft.Pointer.IsDir).Select(item => item.Pointer);
+            var folder = Model.SelectedXaml.Where(ft => ft.Pointer.IsDir).Select(item => item.Pointer);
+            var files = Model.SelectedXaml.Where(ft => !ft.Pointer.IsDir).Select(item => item.Pointer);
 
             var fileTypes = files.ToList();
             if (fileTypes.Any())
-                new CompressPopUp(ViewModel.ParentViewModel, fileTypes).Show();
+                new CompressPopUp(Model.ParentModel, fileTypes).Show();
             
             var folderTypes = folder.ToList();
             if (folderTypes.Any())
-                foreach (var dir in folder.ToList()) 
-                    new CompressFolderPopUp(ViewModel.ParentViewModel, dir).Show();   
+                foreach (var dir in folderTypes) 
+                    new CompressFolderPopUp(Model.ParentModel, dir).Show();   
         }
         
         #endregion
@@ -188,13 +188,13 @@ namespace CubeTools_UI.Views
             // Create a new task to delete the pointer
             var task = new Task<FileType>(() =>
             {
-                if (ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path == ManagerReader.GetParent(source.Path).Replace('\\','/'))
+                if (Model.ParentModel.ModelNavigationBar.DirectoryPointer.Path == ManagerReader.GetParent(source.Path).Replace('\\','/'))
                     return ManagerWriter.Copy(source.Path);
                 return ManagerWriter.Copy(source.Path,
-                        ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Path + "/" + source.Name);
+                        Model.ParentModel.ModelNavigationBar.DirectoryPointer.Path + "/" + source.Name);
             });
             // Remove reference from Directory Pointer
-            ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.Remove(source);
+            Model.ParentModel.ModelNavigationBar.DirectoryPointer.Remove(source);
             // Run Tasks Async
             try
             {
@@ -211,21 +211,21 @@ namespace CubeTools_UI.Views
                         loadingPopUp.Close();
                         try
                         {
-                            ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result);
+                            Model.ParentModel.ModelNavigationBar.DirectoryPointer.AddChild(task.Result);
                         }
                         catch (Exception e)
                         {
                             if (e is ManagerException @managerException)
-                                new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, managerException).Show();
+                                new ErrorPopUp.ErrorPopUp(Model.ParentModel, managerException).Show();
                         }
-                        ViewModel.ParentViewModel.ReloadPath();
+                        Model.ParentModel.ReloadPath();
                     });
                 }
                 else
                 {
                     task.RunSynchronously();
-                    ViewModel.ParentViewModel.ViewModelNavigationBar.DirectoryPointer.AddChild(task.Result);
-                    ViewModel.ParentViewModel.ReloadPath();
+                    Model.ParentModel.ModelNavigationBar.DirectoryPointer.AddChild(task.Result);
+                    Model.ParentModel.ReloadPath();
                 }
             }
             catch (Exception exception)
@@ -233,7 +233,7 @@ namespace CubeTools_UI.Views
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = $"Unable to copy {source.Name}";
-                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel, @managerException).Show();
                 }
             }
         }

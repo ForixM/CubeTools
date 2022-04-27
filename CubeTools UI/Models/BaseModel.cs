@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace CubeTools_UI.ViewModels
+namespace CubeTools_UI.Models
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

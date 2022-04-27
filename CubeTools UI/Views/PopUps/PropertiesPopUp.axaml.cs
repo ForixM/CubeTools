@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 using Library.ManagerWriter;
 using Library.Pointers;
@@ -28,10 +28,10 @@ namespace CubeTools_UI.Views.PopUps
 
         #endregion
 
-        private bool _userActivation = false;
+        private bool _userActivation;
 
         private readonly FileType _pointer;
-        private MainWindowViewModel ParentViewModel;
+        private readonly MainWindowModel? _parentModel;
         
         #region Init
         public PropertiesPopUp()
@@ -51,9 +51,9 @@ namespace CubeTools_UI.Views.PopUps
             _hidden = this.FindControl<CheckBox>("Hidden");
 
             _userActivation = false;
-            ParentViewModel = null;
+            _parentModel = null;
         }
-        public PropertiesPopUp(FileType ft, MainWindowViewModel main) : this()
+        public PropertiesPopUp(FileType ft, MainWindowModel main) : this()
         {
             _pointer = ft;
             _fileName.Text = ft.Name;
@@ -67,7 +67,7 @@ namespace CubeTools_UI.Views.PopUps
             _readOnly.IsChecked = ft.ReadOnly;
             _hidden.IsChecked = ft.Hidden;
 
-            ParentViewModel = main;
+            _parentModel = main;
         }
 
         private void InitializeComponent()
@@ -88,11 +88,11 @@ namespace CubeTools_UI.Views.PopUps
             try
             {
                 ManagerWriter.SetAttributes(_pointer, false, FileAttributes.ReadOnly);
-                ParentViewModel.ReloadPath();
+                _parentModel!.ReloadPath();
             }
             catch (ManagerException exception)
             {
-                var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
+                var popup = new ErrorPopUp.ErrorPopUp(_parentModel!, exception);
                 popup.Show();
                 _userActivation = true;
                 _readOnly.IsChecked = !_readOnly.IsChecked;
@@ -109,11 +109,11 @@ namespace CubeTools_UI.Views.PopUps
             try
             {
                 ManagerWriter.SetAttributes(_pointer, true, FileAttributes.ReadOnly);
-                ParentViewModel?.ReloadPath();
+                _parentModel!.ReloadPath();
             }
             catch (ManagerException exception)
             {
-                var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
+                var popup = new ErrorPopUp.ErrorPopUp(_parentModel!, exception);
                 popup.Show();
                 _userActivation = true;
                 _readOnly.IsChecked = !_readOnly.IsChecked;
@@ -130,11 +130,11 @@ namespace CubeTools_UI.Views.PopUps
             try
             {
                 ManagerWriter.SetAttributes(_pointer, false, FileAttributes.Hidden);
-                ParentViewModel.ReloadPath();
+                _parentModel!.ReloadPath();
             }
             catch (ManagerException exception)
             {
-                var popup = new ErrorPopUp.ErrorPopUp(ParentViewModel, exception);
+                var popup = new ErrorPopUp.ErrorPopUp(_parentModel!, exception);
                 popup.Show();
                 _userActivation = true;
                 _hidden.IsChecked = !_hidden.IsChecked;
@@ -151,11 +151,11 @@ namespace CubeTools_UI.Views.PopUps
             try
             {
                 ManagerWriter.SetAttributes(_pointer, true, FileAttributes.Hidden);
-                ParentViewModel?.ReloadPath();
+                _parentModel?.ReloadPath();
             }
             catch (ManagerException exception)
             {
-                new ErrorPopUp.ErrorPopUp(ParentViewModel, exception).Show();
+                new ErrorPopUp.ErrorPopUp(_parentModel!, exception).Show();
                 _userActivation = true;
                 _hidden.IsChecked = !_hidden.IsChecked;
             }
@@ -163,7 +163,7 @@ namespace CubeTools_UI.Views.PopUps
 
         private void OnClose(object? sender, CancelEventArgs e)
         {
-            ParentViewModel.ReloadPath();
+            _parentModel!.ReloadPath();
         }
         
         private void OnClick(object? sender, RoutedEventArgs e)

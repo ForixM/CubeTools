@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using Library.Pointers;
 using LibraryCompression;
 using SevenZip;
@@ -15,7 +14,7 @@ namespace CubeTools_UI.Views.PopUps
 {
     public class CompressPopUp : Window
     {
-        private MainWindowViewModel ViewModel;
+        private MainWindowModel? _model;
 
         #region Visual References
         
@@ -40,12 +39,12 @@ namespace CubeTools_UI.Views.PopUps
             _archiveNameVisual = this.FindControl<TextBox>("NameArchive");
             _archiveFormatVisual = this.FindControl<ComboBox>("SelectedMode");
             
-            ViewModel = null;
+            _model = null;
             _data = new List<FileType>();
         }
-        public CompressPopUp(MainWindowViewModel vm, List<FileType> dataIn) : this()
+        public CompressPopUp(MainWindowModel vm, List<FileType> dataIn) : this()
         {
-            ViewModel = vm;
+            _model = vm;
             _data = dataIn;
         }
 
@@ -117,7 +116,7 @@ namespace CubeTools_UI.Views.PopUps
                 var task = Compression.CompressFiles(_data.ToArray(), _archiveNameVisual.Text, _archiveFormat);
                 task.GetAwaiter().OnCompleted(() =>
                 {
-                    ViewModel.ReloadPath();
+                    _model!.ReloadPath();
                     Close();
                 });
             }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
-using System.Net;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
@@ -15,20 +13,20 @@ namespace CubeTools_UI.Views.PopUps
 {
     public class CreatePopUp : Window
     {
-        private MainWindowViewModel ViewModel;
-        private TextBox TextEntered;
+        private readonly MainWindowModel? _model;
+        private readonly TextBox _textEntered;
 
         #region Init
         
         public CreatePopUp()
         {
             InitializeComponent();
-            TextEntered = this.FindControl<TextBox>("TextEntered");
-            ViewModel = null;
+            _textEntered = this.FindControl<TextBox>("_textEntered");
+            _model = null;
         }
-        public CreatePopUp(MainWindowViewModel vm) : this()
+        public CreatePopUp(MainWindowModel vm) : this()
         {
-            ViewModel = vm;
+            _model = vm;
         }
 
         private void InitializeComponent()
@@ -44,13 +42,13 @@ namespace CubeTools_UI.Views.PopUps
         {
             if (e.Key is Key.Enter)
             {
-                CreateFile(TextEntered.Text);
+                CreateFile(_textEntered.Text);
             }
         }
 
         private void OnPressed(object? sender, RoutedEventArgs e)
         {
-            CreateFile(TextEntered.Text);
+            CreateFile(_textEntered.Text);
         }
 
         private void OnCancelPressed(object? sender, RoutedEventArgs e)
@@ -65,16 +63,16 @@ namespace CubeTools_UI.Views.PopUps
         private void CreateFile(string name)
         {
             if (!ManagerReader.IsPathCorrect(name))
-                new Views.ErrorPopUp.ErrorPopUp(ViewModel, new PathFormatException("Format is invalid !")).Show();
+                new Views.ErrorPopUp.ErrorPopUp(_model!, new PathFormatException("Format is invalid !")).Show();
             else if (File.Exists(name))
-                new Views.ErrorPopUp.ErrorPopUp(ViewModel, new ReplaceException("File already exists !")).Show();
+                new Views.ErrorPopUp.ErrorPopUp(_model!, new ReplaceException("File already exists !")).Show();
             else
             {
                 try
                 {
                     var ft = ManagerWriter.Create(name);
-                    ViewModel.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles.Add(ft);
-                    ViewModel.ViewModelPathsBar.ReloadPath(ViewModel.ViewModelNavigationBar.DirectoryPointer
+                    _model!.ModelNavigationBar.DirectoryPointer.ChildrenFiles.Add(ft);
+                    _model.ModelPathsBar.ReloadPath(_model.ModelNavigationBar.DirectoryPointer
                         .ChildrenFiles);
                     Close();
                 }
@@ -83,7 +81,7 @@ namespace CubeTools_UI.Views.PopUps
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to create a new file";
-                        new Views.ErrorPopUp.ErrorPopUp(ViewModel, @managerException).Show();
+                        new Views.ErrorPopUp.ErrorPopUp(_model!, @managerException).Show();
                     }
                 }
             }
@@ -96,7 +94,7 @@ namespace CubeTools_UI.Views.PopUps
             if (e.Key is Key.Escape)
                 Close();
             if (e.Key is Key.Enter)
-                CreateFile(TextEntered.Text);
+                CreateFile(_textEntered.Text);
         }
     }
 }

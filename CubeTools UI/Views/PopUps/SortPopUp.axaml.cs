@@ -2,14 +2,14 @@
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using Library.ManagerReader;
 
 namespace CubeTools_UI.Views.PopUps
 {
     public class SortPopUp : Window
     {
-        private MainWindowViewModel _main;
+        private readonly MainWindowModel? _main;
 
         #region Init
         
@@ -19,7 +19,7 @@ namespace CubeTools_UI.Views.PopUps
             _main = null;
         }
         
-        public SortPopUp(MainWindowViewModel main) : this()
+        public SortPopUp(MainWindowModel main) : this()
         {
             _main = main;
         }
@@ -35,29 +35,29 @@ namespace CubeTools_UI.Views.PopUps
 
         private void OnNameClick(object? sender, RoutedEventArgs e)
         {
-            _main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortByName(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            _main.ViewModelPathsBar.ReloadPath(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main!.ModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortByName(_main.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main.ModelPathsBar.ReloadPath(_main.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
             Close();
         }
         
         private void OnTypeClick(object? sender, RoutedEventArgs e)
         {
-            _main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortByType(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            _main.ViewModelPathsBar.ReloadPath(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main!.ModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortByType(_main.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main.ModelPathsBar.ReloadPath(_main.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
             Close();
         }
         
         private void OnSizeClick(object? sender, RoutedEventArgs e)
         {
-            _main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortBySize(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            _main.ViewModelPathsBar.ReloadPath(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main!.ModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortBySize(_main.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main.ModelPathsBar.ReloadPath(_main.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
             Close();
         }
         
         private void OnDateClick(object? sender, RoutedEventArgs e)
         {
-            _main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortByModifiedDate(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
-            _main.ViewModelPathsBar.ReloadPath(_main.ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main!.ModelNavigationBar.DirectoryPointer.ChildrenFiles = ManagerReader.SortByModifiedDate(_main.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            _main.ModelPathsBar.ReloadPath(_main.ModelNavigationBar.DirectoryPointer.ChildrenFiles);
             Close();
         }
         

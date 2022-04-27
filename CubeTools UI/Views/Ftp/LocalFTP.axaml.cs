@@ -1,16 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
-using CubeTools_UI.ViewModels;
-using CubeTools_UI.ViewModels.ErrorPopUp;
-using CubeTools_UI.Views.PopUps;
-using Library.ManagerExceptions;
 using Library.Pointers;
 
 namespace CubeTools_UI.Views.Ftp
@@ -36,8 +26,8 @@ namespace CubeTools_UI.Views.Ftp
             foreach (var ft in ftList)
             {
                 /*
-                var pi = new LocalPointer(ft, ViewModel.ParentViewModel);
-                if (ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Contains(pi))
+                var pi = new LocalPointer(ft, Model.ParentModel);
+                if (Model.ParentModel.ModelActionBar.SelectedXaml.Contains(pi))
                     pi.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
                 else
                     pi.button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));

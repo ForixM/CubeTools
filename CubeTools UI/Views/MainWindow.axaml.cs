@@ -3,18 +3,18 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 
 namespace CubeTools_UI.Views
 {
     public class MainWindow : Window
     {
-        public MainWindowViewModel ViewModel;
+        public MainWindowModel Model;
         public MainWindow()
         {
             InitializeComponent();
             this.AttachDevTools();
-            ViewModel = new MainWindowViewModel();
+            Model = new MainWindowModel();
         }
 
         private void InitializeComponent()
@@ -25,8 +25,8 @@ namespace CubeTools_UI.Views
         private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
         {
              if (e.Key is Key.LeftCtrl or Key.RightCtrl)
-                ViewModel.IsCtrlPressed = true;
-             else if (ViewModel.IsCtrlPressed)
+                Model.IsCtrlPressed = true;
+             else if (Model.IsCtrlPressed)
              {
                  switch (e.Key)
                  {
@@ -37,30 +37,30 @@ namespace CubeTools_UI.Views
                          new MainWindow().Show();
                          break;
                      case Key.C :
-                         ViewModel.ViewModelActionBar.AttachedView.Copy(sender, e);
+                         Model.ModelActionBar.View.Copy(sender, e);
                          break;
                      case Key.X :
-                         ViewModel.ViewModelActionBar.AttachedView.Cut(sender, e);
+                         Model.ModelActionBar.View.Cut(sender, e);
                          break;
                      case Key.V :
-                         ViewModel.ViewModelActionBar.AttachedView.Paste(sender, e);
+                         Model.ModelActionBar.View.Paste(sender, e);
                          break;
                      case Key.A :
-                         ViewModel.ViewModelActionBar.SelectedXaml.Clear();
-                         int size = ViewModel.ViewModelPathsBar.AttachedView.Generator.Children.Count;
+                         Model.ModelActionBar.SelectedXaml.Clear();
+                         int size = Model.ModelPathsBar.View.Generator.Children.Count;
                          for (int i = 0; i < size; i++)
                          {
-                             ViewModel.ViewModelActionBar.SelectedXaml.Add((PointerItem)ViewModel.ViewModelPathsBar.AttachedView.Generator.Children[i]);
-                             size = ViewModel.ViewModelPathsBar.AttachedView.Generator.Children.Count;
+                             Model.ModelActionBar.SelectedXaml.Add((PointerItem)Model.ModelPathsBar.View.Generator.Children[i]);
+                             size = Model.ModelPathsBar.View.Generator.Children.Count;
                          }
-                         ViewModel.ReloadPath();
+                         Model.ReloadPath();
                          break;
                      case Key.F :
-                         ViewModel.ViewModelActionBar.AttachedView.Search(sender, e);
+                         Model.ModelActionBar.View.Search(sender, e);
                          break;
                      case Key.H:
                      case Key.R :
-                         ViewModel.ViewModelNavigationBar.AttachedView.SyncClick(sender, e);
+                         Model.ModelNavigationBar.View.SyncClick(sender, e);
                          break;
                  }
              }
@@ -69,7 +69,7 @@ namespace CubeTools_UI.Views
         private void OnKeyReleasedWindow(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.LeftCtrl or Key.RightCtrl)
-                ViewModel.IsCtrlPressed = false;
+                Model.IsCtrlPressed = false;
         }
     }
 }

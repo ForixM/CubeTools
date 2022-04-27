@@ -1,19 +1,19 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 
 namespace CubeTools_UI.Views
 {
     public class LinkBar : UserControl
     {
-        public static LinkBarViewModel ViewModel;
+        public static LinkBarModel Model;
         public LinkBar()
         {
             InitializeComponent();
-            ViewModel = new LinkBarViewModel(this);
-            DataContext = ViewModel;
+            Model = new LinkBarModel(this);
+            DataContext = Model;
         }
 
         private void InitializeComponent()
@@ -23,7 +23,7 @@ namespace CubeTools_UI.Views
 
         private void AccessError(object? sender, RoutedEventArgs e)
         {
-            var popup = new ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, new AccessException("Not Implemented Yet"));
+            var popup = new ErrorPopUp.ErrorPopUp(Model.ParentModel!, new AccessException("Not Implemented Yet"));
             popup.Show();
         }
         

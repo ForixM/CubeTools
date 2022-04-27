@@ -2,9 +2,9 @@
 using CubeTools_UI.Views;
 using ReactiveUI;
 
-namespace CubeTools_UI.ViewModels
+namespace CubeTools_UI.Models
 {
-    public class LinkBarViewModel : ReactiveObject
+    public class LinkBarModel
     {
         #region Models Variables
 
@@ -15,14 +15,14 @@ namespace CubeTools_UI.ViewModels
 
         #region References
         
-        public MainWindowViewModel? ParentViewModel;
-        public LinkBar AttachedView;
+        public MainWindowModel? ParentModel;
+        public LinkBar View;
         
         #endregion
         
-        public LinkBarViewModel(LinkBar attachedView)
+        public LinkBarModel(LinkBar view)
         {
-            AttachedView = attachedView;
+            View = view;
             StaticPaths = new Dictionary<string, string>
             {
                             {"Home", "C:/..."},

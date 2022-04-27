@@ -9,43 +9,43 @@ using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.Pointers;
 
-namespace CubeTools_UI.ViewModels
+namespace CubeTools_UI.Models
 {
-    public class MainWindowViewModel : BaseViewModel
+    public class MainWindowModel : BaseModel
     {
 
-        public MainWindow AttachedView;
+        public MainWindow View;
         public static string CubeToolsPath;
 
         public bool IsCtrlPressed;
         
         #region Children ViewModels
         
-        public readonly ActionBarViewModel ViewModelActionBar;
-        public readonly LinkBarViewModel ViewModelLinkBar;
-        public readonly NavigationBarViewModel ViewModelNavigationBar;
-        public readonly PathsBarViewModel ViewModelPathsBar;
+        public readonly ActionBarModel ModelActionBar;
+        public readonly LinkBarModel ModelLinkBar;
+        public readonly NavigationBarModel ModelNavigationBar;
+        public readonly PathsBarModel ModelPathsBar;
 
         #endregion
 
         #region Init
         
-        public MainWindowViewModel()
+        public MainWindowModel()
         {
             IsCtrlPressed = false;
             CubeToolsPath = Directory.GetCurrentDirectory();
             // ActionBar : Setting up ModelXaml
-            ViewModelActionBar = ActionBar.ViewModel;
+            ModelActionBar = ActionBar.Model;
             // LinkBar
-            ViewModelLinkBar = LinkBar.ViewModel;
+            ModelLinkBar = LinkBar.Model;
             // NavigationBar
-            ViewModelNavigationBar = NavigationBar.ViewModel;
+            ModelNavigationBar = NavigationBar.Model;
             // PathsBar
-            ViewModelPathsBar = PathsBar.ViewModel;
+            ModelPathsBar = PathsBar.Model;
             try
             {
                 // Setting up loaded directory
-                ViewModelNavigationBar.DirectoryPointer = new DirectoryType(Directory.GetCurrentDirectory());
+                ModelNavigationBar.DirectoryPointer = new DirectoryType(Directory.GetCurrentDirectory());
             }
             catch (Exception e)
             {
@@ -61,22 +61,22 @@ namespace CubeTools_UI.ViewModels
                 }
             }
             // Referencing THIS
-            ViewModelNavigationBar.ParentViewModel = this;
-            ViewModelPathsBar.ParentViewModel = this;
-            ViewModelLinkBar.ParentViewModel = this;
-            ViewModelActionBar.ParentViewModel = this;
+            ModelNavigationBar.ParentModel = this;
+            ModelPathsBar.ParentModel = this;
+            ModelLinkBar.ParentModel = this;
+            ModelActionBar.ParentModel = this;
             // Setting up current path
-            ViewModelNavigationBar.AttachedView.CurrentPathXaml.Text = ViewModelNavigationBar.DirectoryPointer.Path;
+            ModelNavigationBar.View.CurrentPathXaml.Text = ModelNavigationBar.DirectoryPointer.Path;
             // Setting up Queue
-            ViewModelNavigationBar.QueuePointers = new List<string>(){ViewModelNavigationBar.DirectoryPointer.Path};
-            ViewModelNavigationBar.QueueIndex = 0;
+            ModelNavigationBar.QueuePointers = new List<string>(){ModelNavigationBar.DirectoryPointer.Path};
+            ModelNavigationBar.QueueIndex = 0;
             // Setting up Items
-            ViewModelPathsBar.ReloadPath(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            ModelPathsBar.ReloadPath(ModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
 
-        public MainWindowViewModel(MainWindow attachedView) : this()
+        public MainWindowModel(MainWindow view) : this()
         {
-            AttachedView = attachedView;
+            View = view;
         }
 
         #endregion
@@ -109,7 +109,7 @@ namespace CubeTools_UI.ViewModels
             {
                 try
                 {
-                    ViewModelNavigationBar.DirectoryPointer.ChangeDirectory(path);
+                    ModelNavigationBar.DirectoryPointer.ChangeDirectory(path);
                 }
                 catch (Exception e)
                 {
@@ -125,18 +125,18 @@ namespace CubeTools_UI.ViewModels
                     }
                 }
                 // Setting up the Path for UI
-                ViewModelNavigationBar.AttachedView.CurrentPathXaml.Text = ViewModelNavigationBar.DirectoryPointer.Path;
+                ModelNavigationBar.View.CurrentPathXaml.Text = ModelNavigationBar.DirectoryPointer.Path;
                 // Modified ListBox associated
-                ViewModelPathsBar.ReloadPath(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+                ModelPathsBar.ReloadPath(ModelNavigationBar.DirectoryPointer.ChildrenFiles);
                 // Adding path to queue
-                ViewModelNavigationBar.QueuePointers.Add(path);
-                if (ViewModelNavigationBar.QueuePointers.Count >= 9)
+                ModelNavigationBar.QueuePointers.Add(path);
+                if (ModelNavigationBar.QueuePointers.Count >= 9)
                 {
-                    ViewModelNavigationBar.QueuePointers.RemoveAt(0);
-                    ViewModelNavigationBar.QueueIndex--;
+                    ModelNavigationBar.QueuePointers.RemoveAt(0);
+                    ModelNavigationBar.QueueIndex--;
                 }
             }
-            ViewModelActionBar.SelectedXaml = new List<PointerItem>();
+            ModelActionBar.SelectedXaml = new List<PointerItem>();
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace CubeTools_UI.ViewModels
         {
             try
             {
-                ViewModelNavigationBar.DirectoryPointer.SetChildrenFiles();
+                ModelNavigationBar.DirectoryPointer.SetChildrenFiles();
             }
             catch (Exception e)
             {
@@ -156,7 +156,7 @@ namespace CubeTools_UI.ViewModels
                     popup.Show();
                 }
             }
-            ViewModelPathsBar.ReloadPath(ViewModelNavigationBar.DirectoryPointer.ChildrenFiles);
+            ModelPathsBar.ReloadPath(ModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
         #endregion
     }

@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using CubeTools_UI.Views.PopUps;
 using Library.Pointers;
 
@@ -13,7 +13,7 @@ namespace CubeTools_UI.Views
 {
     public class PointerItem : UserControl
     {
-        private MainWindowViewModel _main;
+        private MainWindowModel _main;
         
         #region Variables
         
@@ -27,58 +27,58 @@ namespace CubeTools_UI.Views
         public Bitmap TypeToIcon(string type)
         {
             if (Pointer.IsDir)
-                return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIconsCompressed/Folder.ico");
+                return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsIconsCompressed/Folder.ico");
             switch (type)
             {
                 case "jpg":
                 case "jpeg":
                 case "png" :
                 case "ico":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/jpg.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/jpg.ico");
                 case "txt":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIconsCompressed/File.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsIconsCompressed/File.ico");
                 case "exe":
                 case "iso":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/exe.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/exe.ico");
                 case "docx":
                 case "odt":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/docx.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/docx.ico");
                 case "pdf":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/pdf.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/pdf.ico");
                 case "py":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/py.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/py.ico");
                 case "cs":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/csharp.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/csharp.ico");
                 case "c++":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/c++.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/c++.ico");
                 case "java":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/java.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/java.ico");
                 case "html":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/html.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/html.ico");
                 case "pptx":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/pptx.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/pptx.ico");
                 case "xlsx":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/xsls.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/xsls.ico");
                 case "gitignore":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/gitignore.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/gitignore.ico");
                 case "7z":
                 case "zip":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/zip.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/zip.ico");
                 case "rar":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/rar.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/rar.ico");
                 case "key":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/key.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/key.ico");
                 case "mp3":
                 case "alac":
                 case "flac": 
                 case "wav":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/mp3.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/mp3.ico");
                 case "mp4":
                 case "mov":
                 case "mpeg":
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/mp4.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/mp4.ico");
                 default:
-                    return new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/None.ico");
+                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/None.ico");
             }
         }
 
@@ -95,7 +95,7 @@ namespace CubeTools_UI.Views
             button = this.FindControl<Button>("Button");
         }
 
-        public PointerItem(FileType pointer, MainWindowViewModel main) : this()
+        public PointerItem(FileType pointer, MainWindowModel main) : this()
         {
             Pointer = pointer;
             _main = main;
@@ -118,7 +118,7 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
-            _main.ViewModelActionBar.SelectedXaml.Clear();
+            _main.ModelActionBar.SelectedXaml.Clear();
             _main.AccessPath(Pointer.Path, Pointer.IsDir);
         }
 
@@ -142,11 +142,11 @@ namespace CubeTools_UI.Views
             if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
             {
                 if (!_main.IsCtrlPressed)
-                    _main.ViewModelActionBar.SelectedXaml.Clear();
-                _main.ViewModelActionBar.SelectedXaml.Add(this);
-                foreach (var control in _main.ViewModelPathsBar.AttachedView.Generator.Children)
+                    _main.ModelActionBar.SelectedXaml.Clear();
+                _main.ModelActionBar.SelectedXaml.Add(this);
+                foreach (var control in _main.ModelPathsBar.View.Generator.Children)
                     ((PointerItem) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
-                foreach (var control in _main.ViewModelActionBar.SelectedXaml)
+                foreach (var control in _main.ModelActionBar.SelectedXaml)
                     control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
             }
             else

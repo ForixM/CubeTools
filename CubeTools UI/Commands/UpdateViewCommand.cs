@@ -1,20 +1,16 @@
-﻿using CubeTools_UI.ViewModels;
+﻿using CubeTools_UI.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CubeTools_UI.Commands
 {
     public class UpdateViewCommand : ICommand
     {
-        private MainWindowViewModel viewModel;
+        private MainWindowModel _model;
 
-        public UpdateViewCommand(MainWindowViewModel viewModel)
+        public UpdateViewCommand(MainWindowModel model)
         {
-            this.viewModel = viewModel;
+            this._model = model;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -28,15 +24,15 @@ namespace CubeTools_UI.Commands
         {
             if(parameter.ToString() == "Path")
             {
-                //viewModel.SelectedViewModel = new PathsBarViewModel();
+                //model.SelectedViewModel = new PathsBarModel();
             }
             else if(parameter.ToString() == "GoogleDrive")
             {
-                //viewModel.SelectedViewModel = new GoogleDriveFileModelView();
+                //model.SelectedViewModel = new GoogleDriveFileModel();
             }
             else if(parameter.ToString() == "OneDrive")
             {
-                //viewModel.SelectedViewModel = new OneDriveModelView();
+                //model.SelectedViewModel = new OneDriveModel();
             }
         }
     }

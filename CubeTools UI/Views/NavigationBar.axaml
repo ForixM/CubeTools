@@ -1,7 +1,7 @@
 <UserControl 
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:vm="using:CubeTools_UI.ViewModels"
+	xmlns:vm="using:CubeTools_UI.Models"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	
@@ -15,7 +15,7 @@
 	
 	<!-- Link between DataContext and ViewModel -->
 	<Design.DataContext>
-		<vm:NavigationBarViewModel/>
+		<vm:NavigationBarModel/>
 	</Design.DataContext>
 	
 	<Border CornerRadius="8" BorderThickness="3" Height="47">

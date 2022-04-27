@@ -2,17 +2,17 @@
 using Avalonia.Media.Imaging;
 using Library.ManagerExceptions;
 
-namespace CubeTools_UI.ViewModels.ErrorPopUp
+namespace CubeTools_UI.Models.ErrorPopUp
 {
-    public class SystemErrorViewModel : ErrorPopUpViewModel
+    public class SystemErrorModel : ErrorPopUpModel
     {
-        public MainWindowViewModel ParentViewModel;
+        public MainWindowModel ParentModel;
 
-        public SystemErrorViewModel(Views.ErrorPopUp.ErrorPopUp attachedView, ManagerException exception,
-                        MainWindowViewModel parent) : base(attachedView,
+        public SystemErrorModel(Views.ErrorPopUp.ErrorPopUp attachedView, ManagerException exception,
+                        MainWindowModel parent) : base(attachedView,
                         exception)
         {
-            ParentViewModel = parent;
+            ParentModel = parent;
         }
 
         public override void Initialize()
@@ -21,7 +21,7 @@ namespace CubeTools_UI.ViewModels.ErrorPopUp
             _attachedView.Title = "System crashes the application";
             _attachedView.StdError.Text = _exception.Errorstd;
             _attachedView.ContentError.Text = _exception.ErrorMessage;
-            _attachedView.ImageError.Source = new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/AppCrashed.ico");
+            _attachedView.ImageError.Source = new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/AppCrashed.ico");
             _attachedView.Button1.IsVisible = false;
             _attachedView.Button2.IsVisible = true;
             _attachedView.Button2.Content = new TextBlock() {Text = "Reload"};
@@ -31,14 +31,14 @@ namespace CubeTools_UI.ViewModels.ErrorPopUp
 
         public override void Button2Clicked()
         {
-            ParentViewModel.ReloadPath();
+            ParentModel.ReloadPath();
             _attachedView?.Close();
         }
 
         public override void Button3Clicked()
         {
             _attachedView?.Close();
-            ParentViewModel.AttachedView.Close();
+            ParentModel.View.Close();
         }
     }
 }

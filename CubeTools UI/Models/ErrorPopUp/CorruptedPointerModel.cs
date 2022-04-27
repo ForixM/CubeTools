@@ -1,15 +1,16 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
+using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 
-namespace CubeTools_UI.ViewModels.ErrorPopUp
+namespace CubeTools_UI.Models.ErrorPopUp
 {
     
-    public class CorruptedPointerViewModel : ErrorPopUpViewModel
+    public class CorruptedPointerModel : ErrorPopUpModel
     {
-        private MainWindowViewModel _mainReference;
+        private MainWindowModel _mainReference;
     
-        public CorruptedPointerViewModel(Views.ErrorPopUp.ErrorPopUp attachedView, ManagerException exception, MainWindowViewModel main) : base(attachedView, exception)
+        public CorruptedPointerModel(Views.ErrorPopUp.ErrorPopUp attachedView, ManagerException exception, MainWindowModel main) : base(attachedView, exception)
         {
             _mainReference = main;
         }
@@ -21,7 +22,7 @@ namespace CubeTools_UI.ViewModels.ErrorPopUp
             _attachedView.StdError.Text = _exception.Errorstd;
             _attachedView.ContentError.Text = _exception.ErrorMessage;
             // TODO BE CAREFUL
-            _attachedView.ImageError.Source = new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/CriticalError.ico");
+            _attachedView.ImageError.Source = new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/CriticalError.ico");
             _attachedView.Button1.IsVisible = false;
             _attachedView.Button2.IsVisible = false;
             _attachedView.Button3.IsVisible = true;

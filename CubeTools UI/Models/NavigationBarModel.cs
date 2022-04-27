@@ -6,9 +6,9 @@ using Library.ManagerReader;
 using Library.Pointers;
 using ReactiveUI;
 
-namespace CubeTools_UI.ViewModels
+namespace CubeTools_UI.Models
 {
-    public class NavigationBarViewModel
+    public class NavigationBarModel
     {
         
         #region Models variables
@@ -41,15 +41,15 @@ namespace CubeTools_UI.ViewModels
         
         #region References
         
-        public NavigationBar AttachedView;
-        public MainWindowViewModel? ParentViewModel;
+        public NavigationBar View;
+        public MainWindowModel? ParentModel;
         
         #endregion
 
         // CTOR
-        public NavigationBarViewModel(NavigationBar attachedView)
+        public NavigationBarModel(NavigationBar view)
         {
-            AttachedView = attachedView;
+            View = view;
             
             _directoryPointer = new DirectoryType();
             _queuePointers = new List<string>();

@@ -2,8 +2,8 @@
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
-using CubeTools_UI.ViewModels.ErrorPopUp;
+using CubeTools_UI.Models;
+using CubeTools_UI.Models.ErrorPopUp;
 using Library.ManagerExceptions;
 
 namespace CubeTools_UI.Views.ErrorPopUp
@@ -13,17 +13,17 @@ namespace CubeTools_UI.Views.ErrorPopUp
         
         #region Attached Components
 
-        public Image ImageError;
-        public TextBlock StdError;
-        public TextBlock ContentError;
-        public Button Button1;
-        public Button Button2;
-        public Button Button3;
+        public readonly Image ImageError;
+        public readonly TextBlock StdError;
+        public readonly TextBlock ContentError;
+        public readonly Button Button1;
+        public readonly Button Button2;
+        public readonly Button Button3;
         
         #endregion
 
-        public ErrorPopUpViewModel? ViewModel;
-        public MainWindowViewModel? ParentViewModel;
+        public readonly ErrorPopUpModel? Model;
+        public readonly MainWindowModel? ParentModel;
 
         public ErrorPopUp()
         {
@@ -35,14 +35,14 @@ namespace CubeTools_UI.Views.ErrorPopUp
             Button2 = this.FindControl<Button>("Button2");
             Button3 = this.FindControl<Button>("Button3");
         }
-        public ErrorPopUp(MainWindowViewModel parent) : this()
+        public ErrorPopUp(MainWindowModel parent) : this()
         {
-            ParentViewModel = parent;
+            ParentModel = parent;
         }
-        public ErrorPopUp(MainWindowViewModel parent,ManagerException exception) : this(parent)
+        public ErrorPopUp(MainWindowModel parent,ManagerException exception) : this(parent)
         {
-            ViewModel = SelectViewModel(exception);
-            ViewModel?.Initialize();
+            Model = SelectViewModel(exception);
+            Model?.Initialize();
         }
 
         private void InitializeComponent()
@@ -50,27 +50,27 @@ namespace CubeTools_UI.Views.ErrorPopUp
             AvaloniaXamlLoader.Load(this);
         }
 
-        private ErrorPopUpViewModel SelectViewModel(ManagerException exception)
+        private ErrorPopUpModel SelectViewModel(ManagerException exception)
         {
-            if (ParentViewModel == null) return null;
+            if (ParentModel == null) return null;
             switch (exception)
             {
                 case AccessException:
-                    return new AccessViewModel(this, exception);
+                    return new AccessModel(this, exception);
                 case CorruptedDirectoryException or CorruptedPointerException:
-                    return new CorruptedPointerViewModel(this, exception, ParentViewModel);
+                    return new CorruptedPointerModel(this, exception, ParentModel);
                 case PathFormatException:
-                    return new PathFormatViewModel(this, exception, ParentViewModel);
+                    return new PathFormatModel(this, exception, ParentModel);
                 case PathNotFoundException:
-                    return new PathNotFoundViewModel(this, exception, ParentViewModel);
+                    return new PathNotFoundModel(this, exception, ParentModel);
                 case DiskNotReadyException :
-                    return new DiskNotReadyViewModel(this, exception);
+                    return new DiskNotReadyModel(this, exception);
                 case ReplaceException :
-                    return new ReplaceViewModel(this, exception, ParentViewModel);
+                    return new ReplaceModel(this, exception, ParentModel);
                 case SystemErrorException :
-                    return new SystemErrorViewModel(this,exception,ParentViewModel);
+                    return new SystemErrorModel(this,exception,ParentModel);
                 default :
-                    return new ErrorPopUpViewModel(this, exception);
+                    return new ErrorPopUpModel(this, exception);
             }
         }
 
@@ -78,17 +78,17 @@ namespace CubeTools_UI.Views.ErrorPopUp
         
         private void Button1Clicked(object? sender, RoutedEventArgs e)
         {
-            ViewModel?.Button1Clicked();
+            Model?.Button1Clicked();
         }
 
         private void Button2Clicked(object? sender, RoutedEventArgs e)
         {
-            ViewModel?.Button2Clicked();
+            Model?.Button2Clicked();
         }
 
         private void Button3Clicked(object? sender, RoutedEventArgs e)
         {
-            ViewModel?.Button3Clicked();
+            Model?.Button3Clicked();
         }
 
         private void OnEscapePressed(object? sender, KeyEventArgs e)

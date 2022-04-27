@@ -1,30 +1,22 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using CubeTools_UI.ViewModels;
-using CubeTools_UI.ViewModels.ErrorPopUp;
-using CubeTools_UI.Views.PopUps;
-using Library.ManagerExceptions;
+using CubeTools_UI.Models;
 using Library.Pointers;
 
 namespace CubeTools_UI.Views
 {
     public class PathsBar : UserControl
     {
-        public static PathsBarViewModel ViewModel;
+        public static PathsBarModel Model;
         public StackPanel Generator;
 
         public PathsBar()
         {
             InitializeComponent();
             Generator = this.FindControl<StackPanel>("Generator");
-            ViewModel = new PathsBarViewModel(this);
+            Model = new PathsBarModel(this);
         }
 
         private void InitializeComponent()
@@ -38,8 +30,8 @@ namespace CubeTools_UI.Views
             int size = ftList.Count;
             for (int i = 0; i < size; i++)
             {
-                var pi = new PointerItem(ftList[i], ViewModel.ParentViewModel);
-                if (ViewModel.ParentViewModel.ViewModelActionBar.SelectedXaml.Contains(pi))
+                var pi = new PointerItem(ftList[i], Model.ParentModel);
+                if (Model.ParentModel.ModelActionBar.SelectedXaml.Contains(pi))
                     pi.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
                 else
                     pi.button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));

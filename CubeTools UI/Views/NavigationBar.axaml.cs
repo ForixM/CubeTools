@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using CubeTools_UI.ViewModels;
+using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 
@@ -11,7 +11,7 @@ namespace CubeTools_UI.Views
 {
     public class NavigationBar : UserControl
     {
-        public static NavigationBarViewModel ViewModel;
+        public static NavigationBarModel Model;
         public TextBox CurrentPathXaml;
         
         #region Init
@@ -19,8 +19,8 @@ namespace CubeTools_UI.Views
         {
             InitializeComponent();
             CurrentPathXaml = this.FindControl<TextBox>("CurrentPath");
-            ViewModel = new NavigationBarViewModel(this);
-            DataContext = ViewModel;
+            Model = new NavigationBarModel(this);
+            DataContext = Model;
         }
 
         private void InitializeComponent()
@@ -34,7 +34,7 @@ namespace CubeTools_UI.Views
         private void EditCurrentPath(object? sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            ViewModel.ParentViewModel?.AccessPath(((TextBox) sender).Text);
+            Model.ParentModel?.AccessPath(((TextBox) sender!).Text);
         }
 
         /// <summary>
@@ -42,21 +42,21 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void LeftArrowClick(object? sender, RoutedEventArgs e)
         {
-            if (ViewModel.QueueIndex < ViewModel.QueuePointers.Count - 1)
+            if (Model.QueueIndex < Model.QueuePointers.Count - 1)
             {
-                ViewModel.QueueIndex++;
+                Model.QueueIndex++;
                 try
                 {
-                    ViewModel.ParentViewModel?.AccessPath(ViewModel.QueuePointers[ViewModel.QueueIndex]);
+                    Model.ParentModel?.AccessPath(Model.QueuePointers[Model.QueueIndex]);
                 }
                 catch (Exception exception)
                 {
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to get the next file";
-                        new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                        new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
                     }
-                    ViewModel.QueueIndex--;
+                    Model.QueueIndex--;
                 }
             }
         }
@@ -67,23 +67,23 @@ namespace CubeTools_UI.Views
         private void RightArrowClick(object? sender, RoutedEventArgs e)
         {
             // End of the queue
-            if (ViewModel.QueueIndex > 0)
+            if (Model.QueueIndex > 0)
             {
                 // Get the index before
-                ViewModel.QueueIndex--;
+                Model.QueueIndex--;
                 try
                 {
-                    string path = ViewModel.QueuePointers[ViewModel.QueueIndex];
-                    ViewModel.ParentViewModel?.AccessPath(path);
+                    string path = Model.QueuePointers[Model.QueueIndex];
+                    Model.ParentModel?.AccessPath(path);
                 }
                 catch (Exception exception)
                 {
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to get the last file";
-                        new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                        new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
                     }
-                    ViewModel.QueueIndex--;
+                    Model.QueueIndex--;
                 }
             }
         }
@@ -96,31 +96,31 @@ namespace CubeTools_UI.Views
             string parent = "";
             try
             {
-                if (ManagerReader.GetRootPath(ViewModel.DirectoryPointer.Path) == ViewModel.DirectoryPointer.Path)
-                    parent = ViewModel.DirectoryPointer.Path;
+                if (ManagerReader.GetRootPath(Model.DirectoryPointer.Path) == Model.DirectoryPointer.Path)
+                    parent = Model.DirectoryPointer.Path;
                 else 
-                    parent = ManagerReader.GetParent(ViewModel.DirectoryPointer.Path);
+                    parent = ManagerReader.GetParent(Model.DirectoryPointer.Path);
             }
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = "Unable to get the parent file";
-                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
                 }
             }
-            ViewModel.QueuePointers.Add(parent);
-            ViewModel.QueueIndex = ViewModel.QueuePointers.Count-1;
+            Model.QueuePointers.Add(parent);
+            Model.QueueIndex = Model.QueuePointers.Count-1;
             try
             {
-                ViewModel.ParentViewModel?.AccessPath(ViewModel.QueuePointers[ViewModel.QueueIndex]);
+                Model.ParentModel?.AccessPath(Model.QueuePointers[Model.QueueIndex]);
             }
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = "Unable to get the parent file";
-                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
                 }
             }
         }
@@ -132,15 +132,15 @@ namespace CubeTools_UI.Views
         {
             try
             {
-                ViewModel.DirectoryPointer.SetChildrenFiles();
-                ViewModel.ParentViewModel.ReloadPath();
+                Model.DirectoryPointer.SetChildrenFiles();
+                Model.ParentModel!.ReloadPath();
             }
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = "Unable to reload file";
-                    new Views.ErrorPopUp.ErrorPopUp(ViewModel.ParentViewModel, @managerException).Show();
+                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
                 }
             }
         }

@@ -2,13 +2,13 @@
 using Avalonia.Media.Imaging;
 using Library.ManagerExceptions;
 
-namespace CubeTools_UI.ViewModels.ErrorPopUp
+namespace CubeTools_UI.Models.ErrorPopUp
 {
-    public class PathNotFoundViewModel : ErrorPopUpViewModel
+    public class PathFormatModel : ErrorPopUpModel
     {
-        private MainWindowViewModel _mainReference;
+        private MainWindowModel _mainReference;
     
-        public PathNotFoundViewModel(Views.ErrorPopUp.ErrorPopUp attachedView, ManagerException exception, MainWindowViewModel main) : base(attachedView, exception)
+        public PathFormatModel(Views.ErrorPopUp.ErrorPopUp attachedView, ManagerException exception, MainWindowModel main) : base(attachedView, exception)
         {
             _mainReference = main;
         }
@@ -16,10 +16,11 @@ namespace CubeTools_UI.ViewModels.ErrorPopUp
         public override void Initialize()
         {
             if (_attachedView == null || _exception == null) return;
-            _attachedView.Title = "Path not found";
+            _attachedView.Title = "Path format invalid";
             _attachedView.StdError.Text = _exception.Errorstd;
             _attachedView.ContentError.Text = _exception.ErrorMessage;
-            _attachedView.ImageError.Source = new Bitmap(MainWindowViewModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/Error.ico");
+            // TODO BE CAREFUL
+            _attachedView.ImageError.Source = new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsIcons/Error.ico");
             _attachedView.Button1.IsVisible = false;
             _attachedView.Button2.IsVisible = false;
             _attachedView.Button3.IsVisible = true;
