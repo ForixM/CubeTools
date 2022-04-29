@@ -13,7 +13,7 @@ namespace CubeTools_UI.Views
         public MainWindow()
         {
             InitializeComponent();
-            this.AttachDevTools();
+            //this.AttachDevTools();
             Model = new MainWindowModel();
         }
 

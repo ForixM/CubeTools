@@ -1,0 +1,17 @@
+ <UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="CubeTools_UI.Views.Ftp.RemotePointer">
+     
+     <Button CornerRadius="8"  Background="White" Name="Button"
+             HorizontalAlignment="Left" Height="50" Width="1500"
+             PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped" >
+         
+         <WrapPanel VerticalAlignment="Center">
+             <Image Name="Icon" Source="../../Assets/CubeToolsAppsExtensionsCompressed/None.ico" Height="30"/>
+             <TextBlock Name="Name" Margin="5" VerticalAlignment="Center"/>
+             <TextBlock Name="Size" Margin="5" VerticalAlignment="Center"/>
+         </WrapPanel>
+         
+     </Button>
+     
+ </UserControl>

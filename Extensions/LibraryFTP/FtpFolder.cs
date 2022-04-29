@@ -16,6 +16,12 @@ namespace LibraryFTP
             this._parentPath = parentPath;
         }
 
+        public FtpFolder(string path) // TODO Implement constructor with a path
+        {
+            this._name = "";
+            this._parentPath = "";
+        }
+
         public override string ToString()
         {
             return $"{{name={_name}}}";

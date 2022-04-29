@@ -13,11 +13,6 @@
 		<StyleInclude Source="/Styles/Styles.axaml"/>
 	</UserControl.Styles>
 	
-	<!-- Link between DataContext and ViewModel -->
-	<Design.DataContext>
-		<vm:NavigationBarModel/>
-	</Design.DataContext>
-	
 	<Border CornerRadius="8" BorderThickness="3" Height="47">
 
 		<StackPanel VerticalAlignment="Center">

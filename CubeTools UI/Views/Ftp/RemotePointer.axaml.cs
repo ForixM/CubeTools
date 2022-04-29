@@ -7,17 +7,20 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using CubeTools_UI.Models;
 using CubeTools_UI.Models.Ftp;
+using CubeTools_UI.Views.PopUps;
+using Library.ManagerExceptions;
 using Library.Pointers;
+using LibraryFTP;
 
 namespace CubeTools_UI.Views.Ftp
 {
-    public class LocalPointer : UserControl
+    public class RemotePointer : UserControl
     {
-        private LocalFTPModel LocalModel;
+        private RemoteFTPModel RemoteModel;
         
         #region Variables
         
-        public FileType Pointer;
+        public IFtpItem Pointer;
         
         private Image _icon;
         private TextBlock _name;
@@ -85,7 +88,7 @@ namespace CubeTools_UI.Views.Ftp
 
         #region Init
         
-        public LocalPointer()
+        public RemotePointer()
         {
             InitializeComponent();
             _icon = this.FindControl<Image>("Icon");
@@ -94,9 +97,9 @@ namespace CubeTools_UI.Views.Ftp
             button = this.FindControl<Button>("Button");
         }
 
-        public LocalPointer(FileType pointer, LocalFTPModel main) : this()
+        public RemotePointer(IFtpItem pointer, RemoteFTPModel main) : this()
         {
-            LocalModel = main;
+            RemoteModel = main;
             Pointer = pointer;
             _name.Text = pointer.Name;
             _size.Text = pointer.SizeXaml;
@@ -117,8 +120,8 @@ namespace CubeTools_UI.Views.Ftp
         /// </summary>
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
-            LocalModel.SelectedLocal.Clear();
-            LocalModel.ParentModel.View.AccessPathLocal(Pointer.Path, Pointer.IsDir);
+            RemoteModel.SelectedRemote.Clear();
+            RemoteModel.ParentModel.View.AccessPathRemote(Pointer.Path, Pointer.IsDir);
         }
 
         /// <summary>
@@ -140,21 +143,18 @@ namespace CubeTools_UI.Views.Ftp
         {
             if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
             {
-                LocalModel.SelectedLocal.Clear();
+                RemoteModel.SelectedRemote.Clear();
                 //_main.ModelActionBar.SelectedXaml.Add(this);
-                foreach (var control in LocalModel.ParentModel.View.Local.Generator.Children)
-                {
-                    ((PointerItem) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
-                }
-                foreach (var control in LocalModel.SelectedLocal)
-                {
+                foreach (var control in RemoteModel.ParentModel.View.Remote.Generator.Children)
+                    ((RemotePointer) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
+                foreach (var control in RemoteModel.SelectedRemote)
                     control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
-                }
             }
             else
             {
-                new ErrorPopUp.ErrorPopUp().Show();
-                LocalModel.ParentModel.View.ReloadPathLocal();
+                var pathNotFoundPopUp = new ErrorPopUp.ErrorPopUp();
+                pathNotFoundPopUp.Show();
+                RemoteModel.ParentModel.View.ReloadPathRemote();
             }
         }
 

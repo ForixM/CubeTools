@@ -63,7 +63,6 @@
                     
                     <Grid Grid.Row="2">
                         <views:PathsBar/>
-                        <!--<ContentControl Content="{Binding SelectedViewModel}"/>-->
                     </Grid>
                 
                 </Grid>

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Library.ManagerReader;
 
 namespace LibraryFTP
 {
@@ -7,6 +8,7 @@ namespace LibraryFTP
     {
         private List<IFtpItem> _items;
 
+        public string ParentFolder; // TODO Implement
         public List<IFtpItem> Items => _items;
 
         public FtpArboresence()
