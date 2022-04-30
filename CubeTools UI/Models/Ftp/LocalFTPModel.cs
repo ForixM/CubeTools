@@ -8,20 +8,26 @@ namespace CubeTools_UI.Models.Ftp
     public class LocalFTPModel
     {
         public MainWindowFTPModel ParentModel;
-        public DirectoryType Local;
-        public List<LocalPointer> SelectedLocal;
-        public List<LocalPointer> CopiedLocal;
-        public List<LocalPointer> CutLocal;
+        private LocalFTP _view;
+        
+        public DirectoryType LocalDirectory;
+        
+        public List<LocalPointer> Selected;
+        public List<LocalPointer> Copied;
+        public List<LocalPointer> Cut;
 
-        public LocalFTPModel(MainWindowFTPModel main, string path)
+        public LocalFTPModel(MainWindowFTPModel main, LocalFTP view, string path)
         {
-            SelectedLocal = new List<LocalPointer>();
-            CopiedLocal = new List<LocalPointer>();
-            CutLocal = new List<LocalPointer>();
+            //
+            Selected = new List<LocalPointer>();
+            Copied = new List<LocalPointer>();
+            Cut = new List<LocalPointer>();
+            //
             ParentModel = main;
+            _view = view;
             try
             {
-                Local = new DirectoryType(path);
+                LocalDirectory = new DirectoryType(path);
             }
             catch (Exception e)
             {

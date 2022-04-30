@@ -8,20 +8,26 @@ namespace CubeTools_UI.Models.Ftp
     public class RemoteFTPModel
     {
         public MainWindowFTPModel ParentModel;
-        public FtpArboresence Remote;
-        public List<RemotePointer> SelectedRemote;
-        public List<RemotePointer> CopiedRemote;
-        public List<RemotePointer> CutRemote;
+        private RemoteFTP _view;
+        //
+        public FtpFolder RemoteDirectory;
+        public FtpArboresence Children;
+        //
+        public List<RemotePointer> Selected;
+        public List<RemotePointer> Copied;
+        public List<RemotePointer> Cut;
 
-        public RemoteFTPModel(MainWindowFTPModel main, string path)
+        public RemoteFTPModel(MainWindowFTPModel main, RemoteFTP view, string path)
         {
-            SelectedRemote = new List<RemotePointer>();
-            CopiedRemote = new List<RemotePointer>();
-            CutRemote = new List<RemotePointer>();
+            Selected = new List<RemotePointer>();
+            Copied = new List<RemotePointer>();
+            Cut = new List<RemotePointer>(); 
             ParentModel = main;
+            _view = view;
             try
             {
-                Remote = main.Client.ListDirectory(new FtpFolder(path));
+                RemoteDirectory = new FtpFolder(path);
+                Children = main.Client.ListDirectory(RemoteDirectory);
             }
             catch (Exception e)
             {

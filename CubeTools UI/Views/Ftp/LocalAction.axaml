@@ -1,0 +1,39 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="CubeTools_UI.Views.Ftp.LocalAction">
+	<WrapPanel>
+		
+		<Button Name="AddFileButton" Click="CreateFile">
+			<Image Source="../../Assets/CubeToolsIconsCompressed/Create.ico"/>
+		</Button>
+		
+		<Button Name="AddDirButton" Click="CreatDir">
+			<Image Source="../../Assets/CubeToolsIconsCompressed/CreateFolder.ico"/>
+		</Button>
+		
+		<Button Name="UploadButton" Click="Upload">
+			<Image Source="../../Assets/CubeToolsIcons/Downloads.ico"/>
+		</Button>
+		
+		<Button Name="CopyButton" Click="Copy">
+			<Image Source="../../Assets/CubeToolsIconsCompressed/Copy.ico"/>
+		</Button>
+		
+		<Button Name="CutButton" Click="Cut">
+			<Image Source="../../Assets/CubeToolsIconsCompressed/Cut.ico"/>
+		</Button>
+		
+		<Button Name="PasteButton" Click="Paste">
+			<Image Source="../../Assets/CubeToolsIconsCompressed/Paste.ico"/>
+		</Button>
+		
+		<Button Name="RenameButton" Click="Rename">
+			<Image Source="../../Assets/CubeToolsIconsCompressed/Rename.ico"/>
+		</Button>
+		
+		<Button Name="DeleteButton" Click="Delete">
+			<Image Source="../../Assets/CubeToolsIconsCompressed/Delete.ico"/>
+		</Button>
+		
+	</WrapPanel>
+</UserControl>

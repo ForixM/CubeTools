@@ -1,9 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="CubeTools_UI.Models.Ftp.LocalFTP">
+             x:Class="CubeTools_UI.Views.Ftp.LocalFTP">
 	
-	<ScrollViewer>
-		<StackPanel Name="LocalGenerator">
-		</StackPanel>
-	</ScrollViewer>
+	<StackPanel Name="LocalGenerator"/>
 </UserControl>

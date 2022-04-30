@@ -12,17 +12,20 @@ namespace CubeTools_UI.Views.Ftp
         public StackPanel Generator;
         public RemoteFTPModel FtpModel;
 
-        public RemoteFTP(MainWindowFTP main)
+        #region Init
+        
+        public RemoteFTP()
         {
             InitializeComponent();
             Generator = this.FindControl<StackPanel>("RemoteGenerator");
-            FtpModel = new RemoteFTPModel(main.Model, main.Model.Client.ListRoot().ParentFolder);
         }
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
         }
+        
+        #endregion
 
         public void ReloadPath(List<IFtpItem> ftList)
         {
@@ -30,12 +33,9 @@ namespace CubeTools_UI.Views.Ftp
             foreach (var ft in ftList)
             {
                 var pi = new RemotePointer(ft, FtpModel);
-                if (FtpModel.SelectedRemote.Contains(pi))
-                    pi.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
-                else
-                    pi.button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
+                if (FtpModel.Selected.Contains(pi)) pi.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
+                else pi.button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
                 Generator.Children.Add(pi);
-                
             }
         }
     }

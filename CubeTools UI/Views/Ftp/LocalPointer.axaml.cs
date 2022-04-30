@@ -117,7 +117,7 @@ namespace CubeTools_UI.Views.Ftp
         /// </summary>
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
-            LocalModel.SelectedLocal.Clear();
+            LocalModel.Selected.Clear();
             LocalModel.ParentModel.View.AccessPathLocal(Pointer.Path, Pointer.IsDir);
         }
 
@@ -140,16 +140,12 @@ namespace CubeTools_UI.Views.Ftp
         {
             if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
             {
-                LocalModel.SelectedLocal.Clear();
-                //_main.ModelActionBar.SelectedXaml.Add(this);
+                LocalModel.Selected.Clear();
+                LocalModel.Selected.Add(this);
                 foreach (var control in LocalModel.ParentModel.View.Local.Generator.Children)
-                {
-                    ((PointerItem) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
-                }
-                foreach (var control in LocalModel.SelectedLocal)
-                {
+                    ((LocalPointer) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
+                foreach (var control in LocalModel.Selected)
                     control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
-                }
             }
             else
             {

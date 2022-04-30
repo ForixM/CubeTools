@@ -7,9 +7,6 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using CubeTools_UI.Models;
 using CubeTools_UI.Models.Ftp;
-using CubeTools_UI.Views.PopUps;
-using Library.ManagerExceptions;
-using Library.Pointers;
 using LibraryFTP;
 
 namespace CubeTools_UI.Views.Ftp
@@ -120,7 +117,7 @@ namespace CubeTools_UI.Views.Ftp
         /// </summary>
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
-            RemoteModel.SelectedRemote.Clear();
+            RemoteModel.Selected.Clear();
             RemoteModel.ParentModel.View.AccessPathRemote(Pointer.Path, Pointer.IsDir);
         }
 
@@ -143,11 +140,11 @@ namespace CubeTools_UI.Views.Ftp
         {
             if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
             {
-                RemoteModel.SelectedRemote.Clear();
-                //_main.ModelActionBar.SelectedXaml.Add(this);
+                RemoteModel.Selected.Clear();
+                RemoteModel.Selected.Add(this);
                 foreach (var control in RemoteModel.ParentModel.View.Remote.Generator.Children)
                     ((RemotePointer) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
-                foreach (var control in RemoteModel.SelectedRemote)
+                foreach (var control in RemoteModel.Selected)
                     control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
             }
             else

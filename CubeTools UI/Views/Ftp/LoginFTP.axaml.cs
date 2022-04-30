@@ -62,7 +62,7 @@ namespace CubeTools_UI.Views.Ftp
             }
             else
             {
-                new MainWindowFTP(new ClientFtp(_ip.Text, _user.Text+":"+_port.Text, _mdp.Text)).Show();
+                new MainWindowFTP(new ClientFtp(_ip.Text+":"+_port.Text, _user.Text, _mdp.Text)).Show();
                 Close();
             }
         }

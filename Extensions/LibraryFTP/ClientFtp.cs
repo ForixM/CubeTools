@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -141,6 +142,28 @@ public class ClientFtp
             }
         }
         finish?.Invoke(this,(int)response.StatusCode == 200);
+    }
+
+    public void UploadFolder(FileType ft, FtpFolder destination)
+    {
+        if (ft.IsDir)
+        {
+            // Store directory into a Local variable for treatment
+            DirectoryType tmp = new DirectoryType(ft.Path);
+            // Upload each files to its location
+            foreach (var item in tmp.ChildrenFiles.Where(item => !item.IsDir))
+                UploadFile(item, destination);
+            // Store a new FTP Folder for treatment
+            FtpFolder currentFolder = new FtpFolder(ft.Path);
+            // Recursive call on sub-dirs for treatment
+            foreach (var item in tmp.ChildrenFiles.Where(item => item.IsDir))
+            {
+                MakeDirectory(currentFolder, item.Name);
+                UploadFolder(item, currentFolder);
+            }
+        }
+        else 
+            UploadFile(ft, destination);
     }
 
     public void UploadFile(FileType file, FtpFolder destination)

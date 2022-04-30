@@ -1,5 +1,3 @@
-using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
@@ -13,7 +11,6 @@ namespace CubeTools_UI.Views
         public MainWindow()
         {
             InitializeComponent();
-            //this.AttachDevTools();
             Model = new MainWindowModel();
         }
 

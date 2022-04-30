@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.IO;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models.Ftp;
@@ -14,7 +15,7 @@ namespace CubeTools_UI.Views.Ftp
         public MainWindowFTPModel Model;
         public LocalFTP Local;
         public RemoteFTP Remote;
-        
+
         #endregion
 
         #region Init
@@ -24,9 +25,9 @@ namespace CubeTools_UI.Views.Ftp
             InitializeComponent();
             // Global
             Model = null;
-            Client = null;
             Title = "CubeTools FTP -";
-            Local = null;
+            Local = this.FindControl<LocalFTP>("LocalFtp");
+            Remote = this.FindControl<RemoteFTP>("RemoteFtp");
         }
 
         public MainWindowFTP(ClientFtp client) : this()
@@ -34,8 +35,14 @@ namespace CubeTools_UI.Views.Ftp
             Client = client;
             Model = new MainWindowFTPModel(this, Client);
             Title += client.Host;
-            Remote = new RemoteFTP(this);
-            Local = new LocalFTP(this);
+            // Local
+            Local.FtpModel = new LocalFTPModel(Model, Local, Directory.GetCurrentDirectory());
+            ReloadPathLocal();
+            // Remote
+            Remote.FtpModel = new RemoteFTPModel(Model, Remote, "/");
+            ReloadPathRemote();
+            // Debug
+            this.AttachDevTools();
         }
 
         private void InitializeComponent()
@@ -45,25 +52,30 @@ namespace CubeTools_UI.Views.Ftp
         
         #endregion
 
-        #region Local
+        #region LocalDirectory
 
         public void ReloadPathLocal()
         {
-            //
+            // Reload Pointers
+            Local.FtpModel.LocalDirectory.SetChildrenFiles();
+            // Reload Graphic
+            Local.ReloadPath(Local.FtpModel.LocalDirectory.ChildrenFiles);
         }
 
         public void AccessPathLocal(string path, bool isdir)
         {
-            
         }
 
         #endregion
 
-        #region Remote
+        #region Children
 
         public void ReloadPathRemote()
         {
-            
+            // Reload Pointers
+            Remote.FtpModel.Children = Client!.ListDirectory(Remote.FtpModel.RemoteDirectory);
+            // Reload Graphic
+            Remote.ReloadPath(Remote.FtpModel.Children.Items);
         }
 
         public void AccessPathRemote(string path, bool isdir)

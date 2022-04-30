@@ -135,6 +135,14 @@
         <DependentUpon>RemotePointer.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Ftp\LocalAction.axaml.cs">
+        <DependentUpon>LocalActions.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Ftp\RemoteAction.axaml.cs">
+        <DependentUpon>RemoteActions.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="ViewModels" />
