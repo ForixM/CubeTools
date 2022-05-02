@@ -66,7 +66,7 @@ namespace LibraryCompression
         {
             if (!_initialized)
                 throw new SystemException("Compression haven't been initialized");
-            directory.Name += archiveFormat switch
+            dest += archiveFormat switch
             {
                 OutArchiveFormat.Zip => ".zip",
                 OutArchiveFormat.SevenZip => ".7z",
