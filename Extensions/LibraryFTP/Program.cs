@@ -12,10 +12,11 @@ namespace LibraryFTP
 
         private static void Main(string[] args)
         {
-            ClientFtp ftp = new ClientFtp("127.0.0.1","forix", "lolmdr");
-            FtpArboresence arbo = ftp.ListRoot();
-            Console.WriteLine(arbo.ToString());
-
+            // ClientFtp ftp = new ClientFtp("127.0.0.1","forix", "lolmdr");
+            // FtpArboresence arbo = ftp.ListDirectory(FtpFolder.ROOT);
+            // Console.WriteLine(arbo.ToString());
+            // arbo = ftp.ListDirectory(FtpFolder.ROOT);
+            // Console.WriteLine(arbo.ToString());
         }
         private static void Progress(object sender, ProgressEventArgs progress)
         {
