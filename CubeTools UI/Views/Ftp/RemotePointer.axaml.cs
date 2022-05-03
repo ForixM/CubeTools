@@ -138,21 +138,21 @@ namespace CubeTools_UI.Views.Ftp
         /// </summary>
         private void OnClick(object? sender, RoutedEventArgs e)
         {
-            if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
-            {
+            // if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
+            // {
                 RemoteModel.Selected.Clear();
                 RemoteModel.Selected.Add(this);
                 foreach (var control in RemoteModel.ParentModel.View.Remote.Generator.Children)
                     ((RemotePointer) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
                 foreach (var control in RemoteModel.Selected)
                     control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
-            }
-            else
-            {
-                var pathNotFoundPopUp = new ErrorPopUp.ErrorPopUp();
-                pathNotFoundPopUp.Show();
-                RemoteModel.ParentModel.View.ReloadPathRemote();
-            }
+            // }
+            // else
+            // {
+                // var pathNotFoundPopUp = new ErrorPopUp.ErrorPopUp();
+                // pathNotFoundPopUp.Show();
+                // RemoteModel.ParentModel.View.ReloadPathRemote();
+            // }
         }
 
         #endregion
