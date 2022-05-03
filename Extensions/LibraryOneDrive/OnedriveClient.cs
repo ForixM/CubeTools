@@ -86,7 +86,18 @@ namespace Onedrive
                 client.GetStringAsync(_api + path + ":/children?access_token=" + token.access_token +
                                       "&select=name,size,folder,file,parentReference,id");
             responseString.Wait();
-            return JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
+            Console.WriteLine("test");
+            Console.WriteLine(responseString.Result);
+            try
+            {
+                Console.WriteLine("ok");
+                return JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
         }
         
         public OneArboresence GetArboresence(OneItem folder)
@@ -333,21 +344,8 @@ namespace Onedrive
             response.Wait();
             Task<string> str = response.Result.Content.ReadAsStringAsync();
             str.Wait();
-            // Console.WriteLine(str.Result);
+            Console.WriteLine(str.Result);
             return (int)response.Result.StatusCode == 202;
-        }
-
-        public bool Rename(OneItem item, string newName)
-        {
-            JObject body = new JObject();
-            body.Add("name", newName);
-            Task<HttpResponseMessage> response =
-                _client.PatchAsync(_api + item.path + "?access_token=" + token.access_token,
-                    new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
-            response.Wait();
-            Task<string> str = response.Result.Content.ReadAsStringAsync();
-            str.Wait();
-            return (int) response.Result.StatusCode == 200;
         }
 
         private void Authenticator()

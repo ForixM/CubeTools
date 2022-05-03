@@ -20,10 +20,11 @@ namespace LibraryOneDrive
                 }
 
                 var arbo = client.GetArboresence();
+                Console.WriteLine(arbo);
                 OneItem folder = null;
                 foreach (OneItem item in arbo.items)
                 {
-                    if (item.name == "F1" && item.Type == OneItemType.FOLDER)
+                    if (item.name == "Test" && item.Type == OneItemType.FOLDER)
                     {
                         folder = item;
                     }
@@ -34,7 +35,7 @@ namespace LibraryOneDrive
                     Console.Error.WriteLine("Couldn't find folder");
                     return;
                 }
-                client.Rename(folder, "Test");
+                client.CreateFolder("Soutenance2Folder", folder);
             };
             /*var file = new FileType("C:/Users/forix/Desktop/test.txt");
 
