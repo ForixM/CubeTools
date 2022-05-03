@@ -73,7 +73,7 @@ namespace CubeTools_UI.Views.PopUps
 
                 if (_data.Count > 0)
                 {
-                    Task task = Compression.CompressFiles(_data.ToArray(), _archiveFormat);
+                    Task task = Task.Run(() => Compression.CompressFiles(_data.ToArray(), _archiveFormat));
                     task.GetAwaiter().OnCompleted(Close);
                 }
             }
@@ -126,8 +126,8 @@ namespace CubeTools_UI.Views.PopUps
         {
             return archive switch
             {
-                "Zip" => OutArchiveFormat.Zip,
-                "7zip" => OutArchiveFormat.SevenZip,
+                ".zip" => OutArchiveFormat.Zip,
+                ".7z" => OutArchiveFormat.SevenZip,
                 _ => OutArchiveFormat.SevenZip
             };
         }

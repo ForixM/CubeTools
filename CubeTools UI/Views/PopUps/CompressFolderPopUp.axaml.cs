@@ -116,8 +116,8 @@ namespace CubeTools_UI.Views.PopUps
         {
             return archive switch
             {
-                "Zip" => OutArchiveFormat.Zip,
-                "7zip" => OutArchiveFormat.SevenZip,
+                ".zip" => OutArchiveFormat.Zip,
+                ".7z" => OutArchiveFormat.SevenZip,
                 _ => OutArchiveFormat.SevenZip
             };
         }
