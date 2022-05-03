@@ -74,25 +74,26 @@
 				</StackPanel>
 			</Button>
 		</Grid>
-		<!-- Sixth column : Delete button -->
+		<!-- -->
 		<Grid Grid.Column="6">
+			<Button Classes="Manager" Name="CompressButton" Click="Compress">
+				<StackPanel>
+					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Compression.ico"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Sixth column : Delete button -->
+		<Grid Grid.Column="7">
 			<Button Classes="Manager" Name="DeleteButton" Click="Delete">
 				<StackPanel>
 					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Delete.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>
+		
 		<!-- Sort Button-->
-		<Grid Grid.Column="7">
-			<Button Classes="Manager" Name="SortButton" Click="Sort">
-				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Sort.ico"/>
-				</StackPanel>
-			</Button>
-		</Grid>
-		<!-- -->
 		<Grid Grid.Column="9">
-			<Button Classes="Manager" Name="CompressButton" Click="Compress">
+			<Button Classes="Manager" Name="SortButton" Click="Sort">
 				<StackPanel>
 					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Sort.ico"/>
 				</StackPanel>
