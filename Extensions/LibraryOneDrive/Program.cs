@@ -37,6 +37,7 @@ namespace LibraryOneDrive
                 }
                 client.CreateFolder("Soutenance2Folder", folder);
             };
+            
             /*var file = new FileType("C:/Users/forix/Desktop/test.txt");
 
             client.uploadFinished += (sender, success) =>
