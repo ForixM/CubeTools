@@ -62,54 +62,12 @@ public class ClientFtp
                     GroupCollection groups = match.Groups;
                     if (groups[1].Value == "d")
                     {
-                        FtpFolder f = new FtpFolder(groups[^1].Value, folder.Path+"/");
+                        FtpFolder f = new FtpFolder(groups[^1].Value, folder.Path+"/", groups[^3].Value+groups[^2].Value);
                         arbo.Items.Add(f);
                     }
                     else if (groups[1].Value == "-")
                     {
-                        FtpFile file = new FtpFile(groups[^1].Value, Int32.Parse(groups[3].Value), folder.Path+"/");
-                        arbo.Items.Add(file);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                reader.Close();
-                response.Close();
-                return arbo;
-            }
-        } while (true);
-    }
-
-    public FtpArboresence ListRoot()
-    {
-        FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host);
-        request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
-        request.Credentials = new NetworkCredential(_username, _password);
-
-        FtpWebResponse response = (FtpWebResponse) request.GetResponse();
-
-        Stream stream = response.GetResponseStream();
-        StreamReader reader = new StreamReader(stream);
-        FtpArboresence arbo = new FtpArboresence();
-        do
-        {
-            try
-            {
-                Regex regex = new Regex ( @"^([d-])([rwxt-]{3}){3}\s+\d{1,}\s+.*?(\d{1,})\s+(\w+\s+\d{1,2}\s+(?:\d{4})?)(\d{1,2}:\d{2})?\s+(.+?)\s?$",
-                    RegexOptions.Compiled | RegexOptions.Multiline | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace );
-                MatchCollection matches = regex.Matches(reader.ReadLine());
-                foreach (Match match in matches)
-                {
-                    GroupCollection groups = match.Groups;
-                    if (groups[1].Value == "d")
-                    {
-                        FtpFolder folder = new FtpFolder(groups[^1].Value, "/");
-                        arbo.Items.Add(folder);
-                    }
-                    else if (groups[1].Value == "-")
-                    {
-                        FtpFile file = new FtpFile(groups[^1].Value, Int32.Parse(groups[3].Value), "/");
+                        FtpFile file = new FtpFile(groups[^1].Value, Int32.Parse(groups[3].Value), folder.Path+"/", groups[^3].Value+groups[^2].Value);
                         arbo.Items.Add(file);
                     }
                 }
