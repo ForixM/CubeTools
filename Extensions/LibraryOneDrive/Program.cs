@@ -36,6 +36,7 @@ namespace LibraryOneDrive
                 }
                 client.Rename(folder, "Test");
             };
+            
             /*var file = new FileType("C:/Users/forix/Desktop/test.txt");
 
             client.uploadFinished += (sender, success) =>
