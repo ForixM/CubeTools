@@ -2,6 +2,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
+using CubeTools_UI.Views.Settings;
 
 namespace CubeTools_UI.Views
 {
@@ -58,6 +59,9 @@ namespace CubeTools_UI.Views
                      case Key.H:
                      case Key.R :
                          Model.ModelNavigationBar.View.SyncClick(sender, e);
+                         break;
+                     case Key.I :
+                         new SettingsWindow().Show();
                          break;
                  }
              }

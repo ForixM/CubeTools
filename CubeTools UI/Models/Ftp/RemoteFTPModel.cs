@@ -21,7 +21,7 @@ namespace CubeTools_UI.Models.Ftp
         {
             Selected = new List<RemotePointer>();
             Copied = new List<RemotePointer>();
-            Cut = new List<RemotePointer>(); 
+            Cut = new List<RemotePointer>();
             ParentModel = main;
             _view = view;
             try

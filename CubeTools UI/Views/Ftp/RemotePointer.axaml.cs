@@ -118,7 +118,7 @@ namespace CubeTools_UI.Views.Ftp
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
             RemoteModel.Selected.Clear();
-            RemoteModel.ParentModel.View.AccessPathRemote(Pointer.Path, Pointer.IsDir);
+            RemoteModel.ParentModel.View.AccessPathRemote(Pointer, Pointer.IsDir);
         }
 
         /// <summary>

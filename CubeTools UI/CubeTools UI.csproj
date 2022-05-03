@@ -143,6 +143,10 @@
         <DependentUpon>RemoteActions.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Settings\SettingsWindow.axaml.cs">
+        <DependentUpon>Settingsok.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="ViewModels" />

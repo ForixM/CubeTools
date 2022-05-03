@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models.Ftp;
+using Library.Pointers;
 using LibraryFTP;
 
 namespace CubeTools_UI.Views.Ftp
@@ -64,6 +65,16 @@ namespace CubeTools_UI.Views.Ftp
 
         public void AccessPathLocal(string path, bool isdir)
         {
+            if (isdir)
+            {
+                Local.FtpModel.LocalDirectory = new DirectoryType(path);
+                ReloadPathLocal();
+            }
+            else
+            {
+                // TODO Open the file
+            }
+            
         }
 
         #endregion
@@ -78,9 +89,19 @@ namespace CubeTools_UI.Views.Ftp
             Remote.ReloadPath(Remote.FtpModel.Children.Items);
         }
 
-        public void AccessPathRemote(string path, bool isdir)
+        public void AccessPathRemote(IFtpItem item, bool isdir)
         {
-            
+            if (isdir)
+            {
+                Remote.FtpModel.RemoteDirectory = (FtpFolder)item;
+                //Remote.FtpModel.Children = Model.Client.ListDirectory((FtpFolder)item);
+                ReloadPathRemote();
+            }
+            else
+            {
+                Model.Client.DownloadFile((FtpFile)item, Local.FtpModel.LocalDirectory.Path);
+                ReloadPathLocal();
+            }
         }
 
         #endregion
