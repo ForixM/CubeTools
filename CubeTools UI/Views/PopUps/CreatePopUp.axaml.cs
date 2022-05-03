@@ -21,7 +21,7 @@ namespace CubeTools_UI.Views.PopUps
         public CreatePopUp()
         {
             InitializeComponent();
-            _textEntered = this.FindControl<TextBox>("_textEntered");
+            _textEntered = this.FindControl<TextBox>("TextEntered");
             _model = null;
         }
         public CreatePopUp(MainWindowModel vm) : this()
