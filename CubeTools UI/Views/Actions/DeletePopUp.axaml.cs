@@ -5,12 +5,13 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
+using CubeTools_UI.Views.PopUps;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
 using Library.Pointers;
 
-namespace CubeTools_UI.Views.PopUps
+namespace CubeTools_UI.Views.Actions
 {
     public class DeletePopUp : Window
     {

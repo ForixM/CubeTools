@@ -1,4 +1,6 @@
 ﻿// System
+
+using Library.ManagerReader;
 using Library.Pointers;
 // External libraries
 using SevenZip;
@@ -71,13 +73,15 @@ namespace LibraryCompression
             if (!_initialized)
                 throw new SystemException("Compression haven't been initialized");
             // Initialization of compressor
-            var compressor = new SevenZipCompressor();
+            var compressor = new SevenZipCompressor()
+            {
+                ArchiveFormat = archiveFormat,
+                ScanOnlyWritable = true
+            };
             // Adding parameters
             if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
             if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent);
-            compressor.ArchiveFormat = archiveFormat;
             compressor.CustomParameters.Add("mt", "on");
-            compressor.ScanOnlyWritable = true;
             // Return compressor
             return compressor.CompressDirectoryAsync(directory.Path, dest);
         }
@@ -140,6 +144,8 @@ namespace LibraryCompression
             while (dest[dest.Length - 1] != '.') dest = dest.Remove(dest.Length - 1, 1);
             dest = dest.Remove(dest.Length - 1, 1);
             dest = dest.Replace("/", @"\");
+            if (Directory.Exists(dest) || File.Exists(dest))
+                dest = ManagerReader.GenerateNameForModification(dest);
             return Extract(archive, dest, compressingEvent, finishedEvent);
         }
 
@@ -158,7 +164,6 @@ namespace LibraryCompression
             var extractor = new SevenZipExtractor(archive.Path);
             if (compressingEvent != null) extractor.Extracting += new EventHandler<ProgressEventArgs>(compressingEvent);
             if (finishedEvent != null) extractor.ExtractionFinished += new EventHandler<EventArgs>(finishedEvent);
-            Console.WriteLine(destination);
             return extractor.ExtractArchiveAsync(destination);
         }
     }

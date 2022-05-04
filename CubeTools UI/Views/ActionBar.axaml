@@ -76,7 +76,7 @@
 		</Grid>
 		<!-- -->
 		<Grid Grid.Column="6">
-			<Button Classes="Manager" Name="CompressButton" Click="Compress">
+			<Button Classes="Manager" Name="CompressButton" Click="Compression">
 				<StackPanel>
 					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Compression.ico"/>
 				</StackPanel>

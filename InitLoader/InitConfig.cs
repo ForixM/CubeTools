@@ -38,7 +38,7 @@
                 StreamWriter sr = new StreamWriter(stream);
                 const string text = "{" +
                                     "\"AssetsPath\" : \"Assets\"," +
-                                    "\"AppPath\" : ," +
+                                    "\"AppPath\" : \".\"," +
                                     "\"Styles\" : { \"themes\" : \"white\" , \"pack\" : \"Assets/default\"}," +
                                     "\"OneDrive\" : { \"account\" :{ }, \"registered\" : [] }," +
                                     "\"GoogleDrive\" : {\"account\" : {}, \"registered\" : [] }, " +

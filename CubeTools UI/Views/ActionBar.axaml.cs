@@ -5,6 +5,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
+using CubeTools_UI.Views.Actions;
+using CubeTools_UI.Views.Compression;
 using CubeTools_UI.Views.PopUps;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
@@ -156,23 +158,21 @@ namespace CubeTools_UI.Views
         }
 
         /// <summary>
-        /// Compress selected files adn folders by displaying folder and files popup for compression
+        /// Compression selected files and folders by displaying folder and files popup for compression
         /// </summary>
-        private void Compress(object? sender, RoutedEventArgs e)
+        private void Compression(object? sender, RoutedEventArgs e)
         {
             if (Model.SelectedXaml.Count == 0) return;
-            
-            var folder = Model.SelectedXaml.Where(ft => ft.Pointer.IsDir).Select(item => item.Pointer);
-            var files = Model.SelectedXaml.Where(ft => !ft.Pointer.IsDir).Select(item => item.Pointer);
 
-            var fileTypes = files.ToList();
-            if (fileTypes.Any())
-                new CompressPopUp(Model.ParentModel, fileTypes).Show();
-            
-            var folderTypes = folder.ToList();
-            if (folderTypes.Any())
-                foreach (var dir in folderTypes) 
-                    new CompressFolderPopUp(Model.ParentModel, dir).Show();   
+            var archives = Model.SelectedXaml.Where(ft =>  ft.Pointer.Type is "zip" or "7z" || ft.Pointer.Archived || ft.Pointer.Compressed).Select(item => item.Pointer);
+            var others = Model.SelectedXaml.Where(ft =>  ft.Pointer.Type is not "zip" && ft.Pointer.Type is not "7z" || ft.Pointer.Archived || ft.Pointer.Compressed).Select(item => item.Pointer);
+
+            // Opening extract for archives
+            var archiveTypes = archives.ToList();
+            if (archiveTypes.Any()) new ExtractPopUp(Model.ParentModel, archiveTypes).Show();
+
+            var allTypes = others.ToList();
+            if (allTypes.Any()) new CompressPopUp(Model.ParentModel, allTypes).Show();
         }
         
         #endregion

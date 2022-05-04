@@ -6,10 +6,10 @@
         Width="300" Height="100"
         MinHeight="100" MinWidth="200"
         CanResize="False"
-        x:Class="CubeTools_UI.Views.PopUps.SearchPopUp"
-        Title="Search"
-        Icon="../../Assets/OLD/search.ico" KeyDown="OnKeyPressed"
-        >
+        x:Class="CubeTools_UI.Views.Actions.CreatePopUp"
+        Title="Create a File"
+        Icon="../../Assets/OLD/file.ico"
+        KeyDown="OnKeyPressedWindow">
         
         <Grid>
                 <Grid.ColumnDefinitions>
@@ -18,13 +18,17 @@
                 </Grid.ColumnDefinitions>
                 
                 <Grid Grid.Column="0">
-                        <Image Source="../../Assets/CubeToolsIcons/Search.ico" Margin="10"/>
+                        <Image Source="../../Assets/CubeToolsIcons/Create.ico" Margin="10"/>
                 </Grid>
                 
                 <Grid Grid.Column="1">
                         <StackPanel Margin="10">
-                                <TextBox KeyDown="SearchEnter" Watermark="*.txt" Name="TextEntered"/>
-                                <Button HorizontalAlignment="Center" Margin="0 10 0 0" Content="Search" Click="SearchClick"/>
+                                <TextBox Name="TextEntered" Watermark="Enter a file name" Text="New File" KeyDown="OnEnterPressed"/>
+                                <WrapPanel>
+                                        <Button Click="OnPressed" HorizontalAlignment="Center" Margin="0 10 0 0" Content="Create"/>
+                                        <Button Click="OnCancelPressed" HorizontalAlignment="Center" Margin="0 10 0 0" Content="Cancel"/>
+                                </WrapPanel>
+                                
                         </StackPanel>
                 </Grid>
                

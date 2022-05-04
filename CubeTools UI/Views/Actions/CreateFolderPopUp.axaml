@@ -6,7 +6,7 @@
         Width="300" Height="100"
         MinHeight="100" MinWidth="200"
         CanResize="False"
-        x:Class="CubeTools_UI.Views.PopUps.CreateFolderPopUp"
+        x:Class="CubeTools_UI.Views.Actions.CreateFolderPopUp"
         Title="Create a Folder"
         Icon="../../Assets/OLD/add-folder.ico"
         KeyDown="OnKeyPressedWindow">

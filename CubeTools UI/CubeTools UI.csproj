@@ -52,10 +52,6 @@
       <Compile Update="Views\NavigationBar.axaml.cs">
         <DependentUpon>NavigationBar.axaml</DependentUpon>
       </Compile>
-      <Compile Update="Views\PopUps\SearchPopUp.axaml.cs">
-        <DependentUpon>SearchPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\PopUps\PropertiesPopUp.axaml.cs">
         <DependentUpon>PropertiesPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
@@ -68,24 +64,12 @@
         <DependentUpon>LoadingPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\PopUps\SortPopUp.axaml.cs">
-        <DependentUpon>SortPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\PointerItem.axaml.cs">
         <DependentUpon>PointerItem.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\PopUps\CreatePopUp.axaml.cs">
         <DependentUpon>CreatePopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\PopUps\CreateFolderPopUp.axaml.cs">
-        <DependentUpon>CreateFolderPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\PopUps\DeletePopUp.axaml.cs">
-        <DependentUpon>DeletePopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\Ftp\LoginFTP.axaml.cs">
@@ -102,14 +86,6 @@
       </Compile>
       <Compile Update="Views\Ftp\LocalPointer.axaml.cs">
         <DependentUpon>LocalPointer.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\PopUps\CompressPopUp.axaml.cs">
-        <DependentUpon>CompressPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\PopUps\CompressFolderPopUp.axaml.cs">
-        <DependentUpon>CompressFolderPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\Ftp\RemoteFTP.axaml.cs">
@@ -132,8 +108,45 @@
         <DependentUpon>Settingsok.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Actions\CreateFolderPopUp.axaml.cs">
+        <DependentUpon>CreateFolderPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\CreatePopUp.axaml.cs">
+        <DependentUpon>CreatePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\DeletePopUp.axaml.cs">
+        <DependentUpon>DeletePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\RenamePopUp.axaml.cs">
+        <DependentUpon>RenamePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\SearchPopUp.axaml.cs">
+        <DependentUpon>SearchPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\SortPopUp.axaml.cs">
+        <DependentUpon>SortPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Compression\CompressPopUp.axaml.cs">
+        <DependentUpon>CompressFolderPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Compression\ExtractPopUp.axaml.cs">
+        <DependentUpon>ExtractPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Remove="Views\PopUps\CreateFolderPopUp.axaml.cs" />
+      <Compile Remove="Views\PopUps\DeletePopUp.axaml.cs" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="ViewModels" />
+    </ItemGroup>
+    <ItemGroup>
+      <AvaloniaXaml Remove="Views\PopUps\DeletePopUp.axaml" />
     </ItemGroup>
 </Project>

@@ -10,7 +10,7 @@ using Library.ManagerReader;
 using Library.ManagerWriter;
 using Library.Pointers;
 
-namespace CubeTools_UI.Views.PopUps
+namespace CubeTools_UI.Views.Actions
 {
     public class RenamePopUp : Window
     {

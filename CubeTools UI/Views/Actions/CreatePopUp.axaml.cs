@@ -9,7 +9,7 @@ using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
 
-namespace CubeTools_UI.Views.PopUps
+namespace CubeTools_UI.Views.Actions
 {
     public class CreatePopUp : Window
     {

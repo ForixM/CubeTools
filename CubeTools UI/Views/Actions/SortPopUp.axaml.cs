@@ -5,7 +5,7 @@ using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
 using Library.ManagerReader;
 
-namespace CubeTools_UI.Views.PopUps
+namespace CubeTools_UI.Views.Actions
 {
     public class SortPopUp : Window
     {
