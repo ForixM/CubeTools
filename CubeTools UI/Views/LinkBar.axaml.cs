@@ -5,6 +5,7 @@ using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 using Library.Pointers;
+using Syroot.Windows.IO;
 
 namespace CubeTools_UI.Views
 {
@@ -52,7 +53,7 @@ namespace CubeTools_UI.Views
 
         private void OpenDownloads(object? sender, RoutedEventArgs e)
         {
-            Model.ParentModel.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.MyComputer));;
+            Model.ParentModel.AccessPath(KnownFolders.Downloads.Path);;
         }
 
         private void OpenMusic(object? sender, RoutedEventArgs e)
