@@ -31,5 +31,9 @@
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Delete.ico"/>
 		</Button>
 		
+		<Button Name="ParentButton" Click="Parent">
+			<Image Source="../../Assets/CubeToolsIconsCompressed/Delete.ico"/>
+		</Button>
+		
 	</WrapPanel>
 </UserControl>

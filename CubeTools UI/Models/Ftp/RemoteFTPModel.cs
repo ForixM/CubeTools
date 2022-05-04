@@ -26,7 +26,7 @@ namespace CubeTools_UI.Models.Ftp
             _view = view;
             try
             {
-                RemoteDirectory = new FtpFolder(path);
+                RemoteDirectory = FtpFolder.ROOT;
                 Children = main.Client.ListDirectory(RemoteDirectory);
             }
             catch (Exception e)

@@ -17,4 +17,8 @@
       <Folder Include="Assets\light" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Syroot.Windows.IO.KnownFolders" Version="1.3.0" />
+    </ItemGroup>
+
 </Project>

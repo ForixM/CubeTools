@@ -287,7 +287,7 @@ namespace CubeTools_UI.Views.Ftp
         {
             ParentView.Local.FtpModel.LocalDirectory =
                 new DirectoryType(ManagerReader.GetParent(ParentView.Local.FtpModel.LocalDirectory.Path));
-            ParentView.Local.ReloadPath(ParentView.Local.FtpModel.LocalDirectory.ChildrenFiles);
+            ParentView.ReloadPathLocal();
         }
     }
 }

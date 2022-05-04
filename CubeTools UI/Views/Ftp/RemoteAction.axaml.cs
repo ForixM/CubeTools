@@ -67,6 +67,7 @@ namespace CubeTools_UI.Views.Ftp
         public void CreatDir(object? sender, RoutedEventArgs e)
         {
             ParentView.Client!.MakeDirectory(ParentView.Remote.FtpModel.RemoteDirectory, "New Folder");
+            ParentView.ReloadPathRemote();
         }
 
         /// <summary>
@@ -78,6 +79,7 @@ namespace CubeTools_UI.Views.Ftp
             ParentView.Remote.FtpModel.Cut.Clear();
             foreach (var item in ParentView.Remote.FtpModel.Selected)
                 ParentView.Remote.FtpModel.Copied.Add(item);
+            ParentView.ReloadPathRemote();
         }
 
         /// <summary>
@@ -92,6 +94,7 @@ namespace CubeTools_UI.Views.Ftp
                 ParentView.Remote.FtpModel.Copied.Add(item);
                 ParentView.Remote.FtpModel.Cut.Add(item);
             }
+            ParentView.ReloadPathRemote();
         }
 
         /// <summary>
@@ -106,6 +109,7 @@ namespace CubeTools_UI.Views.Ftp
             // 2) Destroy Cut
             foreach (var item in ParentView.Remote.FtpModel.Cut)
                 DeletePointer(item.Pointer);
+            ParentView.ReloadPathRemote();
         }
 
         /// <summary>
@@ -121,6 +125,7 @@ namespace CubeTools_UI.Views.Ftp
             else
                 new ErrorPopUp.ErrorPopUp(Model.ParentModel, new ManagerException("Unable to rename multiple data")).Show();
             */
+            ParentView.ReloadPathRemote();
         }
 
         /// <summary>
@@ -130,6 +135,7 @@ namespace CubeTools_UI.Views.Ftp
         {
             foreach (var item in ParentView.Remote.FtpModel.Selected)
                 DeletePointer(item.Pointer);
+            ParentView.ReloadPathRemote();
         }
 
         /// <summary>
@@ -139,6 +145,7 @@ namespace CubeTools_UI.Views.Ftp
         {
             //var searchPopup = new SearchPopUp(Model);
             //searchPopup.Show();
+            ParentView.ReloadPathRemote();
         }
 
         /// <summary>
@@ -148,6 +155,7 @@ namespace CubeTools_UI.Views.Ftp
         {
             //var popup = new SortPopUp(Model.ParentModel);
             //popup.Show();
+            ParentView.ReloadPathRemote();
         }
         
         
@@ -171,5 +179,12 @@ namespace CubeTools_UI.Views.Ftp
         }
 
         #endregion
+
+        private void Parent(object? sender, RoutedEventArgs e)
+        {
+            ParentView.Remote.FtpModel.RemoteDirectory =
+                new FtpFolder(ManagerReader.GetParent(ParentView.Local.FtpModel.LocalDirectory.Path));
+            ParentView.ReloadPathRemote();
+        }
     }
 }

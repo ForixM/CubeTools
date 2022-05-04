@@ -129,6 +129,25 @@ namespace LibraryCompression
             return compressor.CompressFilesAsync(dest, filePaths);
         }
 
+        public static Task CompressDirectories(DirectoryType[] directories, string dest, OutArchiveFormat archiveFormat,
+            Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
+        {
+            if (!_initialized)
+                throw new SystemException("Compression haven't been initialized");
+            // Initialized compressor
+            var compressor = new SevenZipCompressor();
+            // Adding parameters
+            if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
+            if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent);
+            compressor.ArchiveFormat = archiveFormat;
+            compressor.CustomParameters.Add("mt", "on");
+            compressor.ScanOnlyWritable = true;
+            // Adding files path
+            var directoriesPath = new string[directories.Length];
+            for (var i = 0; i < directories.Length; i++) directoriesPath[i] = directories[i].Path;
+            return compressor.CompressFilesAsync(dest, directoriesPath);
+        }
+
         /// <summary>
         ///     Extract all the content of the given archive to a directory with the same name of the archive in the same
         ///     path.
@@ -141,7 +160,7 @@ namespace LibraryCompression
             Action<object, EventArgs> finishedEvent = null)
         {
             var dest = archive.Path;
-            while (dest[dest.Length - 1] != '.') dest = dest.Remove(dest.Length - 1, 1);
+            while (dest[^1] != '.') dest = dest.Remove(dest.Length - 1, 1);
             dest = dest.Remove(dest.Length - 1, 1);
             dest = dest.Replace("/", @"\");
             if (Directory.Exists(dest) || File.Exists(dest))
