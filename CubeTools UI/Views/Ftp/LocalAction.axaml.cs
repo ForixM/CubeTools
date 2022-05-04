@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.VisualTree;
 using CubeTools_UI.Views.PopUps;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
@@ -15,7 +16,7 @@ namespace CubeTools_UI.Views.Ftp
 {
     public class LocalAction : UserControl
     {
-        public MainWindowFTP ParentView;
+        public MainWindowFTP ParentView { get; set; }
         
         #region Init
 
@@ -279,6 +280,12 @@ namespace CubeTools_UI.Views.Ftp
 
         #endregion
 
-        
+
+        private void Parent(object? sender, RoutedEventArgs e)
+        {
+            ParentView.Local.FtpModel.LocalDirectory =
+                new DirectoryType(ManagerReader.GetParent(ParentView.Local.FtpModel.LocalDirectory.Path));
+            ParentView.Local.ReloadPath(ParentView.Local.FtpModel.LocalDirectory.ChildrenFiles);
+        }
     }
 }

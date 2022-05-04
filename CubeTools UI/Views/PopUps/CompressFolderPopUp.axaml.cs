@@ -118,6 +118,7 @@ namespace CubeTools_UI.Views.PopUps
             {
                 ".zip" => OutArchiveFormat.Zip,
                 ".7z" => OutArchiveFormat.SevenZip,
+                ".tar" => OutArchiveFormat.Tar,
                 _ => OutArchiveFormat.SevenZip
             };
         }

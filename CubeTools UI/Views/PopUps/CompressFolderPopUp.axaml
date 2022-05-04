@@ -24,7 +24,7 @@
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Width="75">
                     <ComboBox Name="SelectedMode" SelectionChanged="OnCompressModeChanged">
                         <TextBlock Text=".7z"/>
-                        <TextBlock Text=".zip "/>
+                        <TextBlock Text=".zip"/>
                     </ComboBox>
                 </StackPanel>
             </Grid>

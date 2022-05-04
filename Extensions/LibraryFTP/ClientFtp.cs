@@ -87,6 +87,7 @@ public class ClientFtp
         request.Method = WebRequestMethods.Ftp.DownloadFile;
         request.Credentials = new NetworkCredential(_username, _password);
 
+        destination += "/" + file.Name;
         FtpWebResponse response = (FtpWebResponse) request.GetResponse();
         using (Stream ftpStream = response.GetResponseStream())
         using (Stream fileStream = File.Create(destination))
