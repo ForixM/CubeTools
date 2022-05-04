@@ -31,7 +31,7 @@
 		<Grid Grid.Column="0">
 			<Button Classes="Manager" Name="AddFileButton" Click="CreateFile">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Create.ico"/>
+					<Image Classes="Manager" Source="/Assets/CubeToolsIconsCompressed/Create.ico"/>
 				</StackPanel>
 			</Button>
 		</Grid>

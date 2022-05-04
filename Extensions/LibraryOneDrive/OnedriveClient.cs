@@ -15,6 +15,7 @@ using LibraryOneDrive;
 using MimeTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using JsonException = System.Text.Json.JsonException;
 
 namespace Onedrive
 {
@@ -86,16 +87,13 @@ namespace Onedrive
                 client.GetStringAsync(_api + path + ":/children?access_token=" + token.access_token +
                                       "&select=name,size,folder,file,parentReference,id");
             responseString.Wait();
-            Console.WriteLine("test");
-            Console.WriteLine(responseString.Result);
             try
             {
-                Console.WriteLine("ok");
                 return JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
             }
-            catch (Exception e)
+            catch (JsonException e)
             {
-                Console.WriteLine(e.Message);
+                LogErrors.LogErrors.LogWrite("Unable to read arboresence for OneDrive",e);
                 return null;
             }
         }

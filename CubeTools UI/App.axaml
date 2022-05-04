@@ -4,7 +4,7 @@
              x:Class="CubeTools_UI.App">
     
     <Application.DataTemplates>
-        <local:ViewLocator />
+        <local:ViewLocator/>
     </Application.DataTemplates>
     
     <Application.Styles>

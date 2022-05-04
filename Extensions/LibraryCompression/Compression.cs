@@ -14,8 +14,12 @@ namespace LibraryCompression
         /// </summary>
         public static void Init()
         {
-            var path = "7z.dll";
-            SevenZipBase.SetLibraryPath(path);
+            if (ConfigLoader.ConfigLoader.Settings.AppPath == "")
+                SevenZipBase.SetLibraryPath("7z.dll");
+            else if (ConfigLoader.ConfigLoader.Settings.AppPath![^1] == '/')
+                SevenZipBase.SetLibraryPath(ConfigLoader.ConfigLoader.Settings.AppPath + "7z.dll");
+            else 
+                SevenZipBase.SetLibraryPath(ConfigLoader.ConfigLoader.Settings.AppPath + "/7z.dll");
 
             Console.WriteLine(SevenZipBase.CurrentLibraryFeatures);
             _initialized = true;

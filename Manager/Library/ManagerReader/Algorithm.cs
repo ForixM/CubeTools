@@ -773,12 +773,15 @@ namespace Library.ManagerReader
             var recommended = RecommendedPrograms(GetOs(), extension, path);
             if (recommended.Count != 0)
                 LaunchAppProcess(recommended[0], path);
+            // TODO Edit for preferences
+            /*
             else
             {
                 string? app = ConfigLoader.ConfigLoader.AppSettings.Get(extension);
                 if (app is null) return;
                 LaunchAppProcess(app, path);
             }
+            */
         }
         
         /// <summary>

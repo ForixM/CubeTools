@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ConfigLoader\ConfigLoader.csproj" />
+      <ProjectReference Include="..\Extensions\LibraryCompression\LibraryCompression.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Assets\dark" />
+      <Folder Include="Assets\default" />
+      <Folder Include="Assets\light" />
+    </ItemGroup>
+
+</Project>

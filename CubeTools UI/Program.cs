@@ -1,13 +1,6 @@
-// System's imports
-
 using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
-using LibraryCompression;
-using LibraryFTP;
-
-// CubeTools UI's imports
-
 
 namespace CubeTools_UI
 {
@@ -19,22 +12,13 @@ namespace CubeTools_UI
         [STAThread]
         public static void Main(string[] args)
         {
-            // Initialization of Libraries
-            Compression.Init();
-            // Initialization of global paramters
-            //
-            
-            BuildAvaloniaApp()
-                .StartWithClassicDesktopLifetime(args);
+            // Initialization
+            InitLoader.InitLoader.Start();
+            // Initialization of views and Avalonia process
+            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.
-        public static AppBuilder BuildAvaloniaApp()
-        {
-            return AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .LogToTrace()
-                .UseReactiveUI();
-        }
+        public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>().UsePlatformDetect().LogToTrace().UseReactiveUI();
     }
 }

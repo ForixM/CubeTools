@@ -7,12 +7,21 @@
 	</Window.Styles>
 	 
 	 <Grid>
-		 <StackPanel>
-			 <ComboBox>
-				 <TextBlock Name="Theme1" Text="Light"/>
-				 <TextBlock Name="Theme2" Text="Dark"/>
-			 </ComboBox>
-			 <ButtonSpinner AllowSpin="True"/>
-		 </StackPanel>
+		 <TextBlock Text="Styles"/>
+		 <Expander ExpandDirection="Down">
+			 <StackPanel>
+				 <TextBlock Text = "Hey"/>
+				 <TextBlock Text = "Hello"/>
+			 </StackPanel>
+		 </Expander>
+		 
+		 <TextBlock Text="Styles"/>
+		 <Expander ExpandDirection="Down">
+			 <StackPanel>
+				 <TextBlock Text = "Hey"/>
+				 <TextBlock Text = "Hello"/>
+			 </StackPanel>
+		 </Expander>
+		 
 	 </Grid>
 </Window>

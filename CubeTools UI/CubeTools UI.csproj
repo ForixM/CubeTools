@@ -19,19 +19,8 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.10" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
         <PackageReference Include="MessageBox.Avalonia" Version="1.7.1" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0-preview.2.22152.2" />
     </ItemGroup>
-    <ItemGroup>
-        <AvaloniaResource Update="Assets\cubetools.ico">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </AvaloniaResource>
-        <AvaloniaResource Update="Assets\home.ico">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </AvaloniaResource>
-        <AvaloniaResource Update="Assets\sync.ico">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </AvaloniaResource>
-    </ItemGroup>
+    
     <ItemGroup>
         <None Update="Fonts\Lato-Bold.ttf">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -42,16 +31,12 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\CubeTools CLI\CubeTools CLI.csproj" />
-        <ProjectReference Include="..\Extensions\Default SandBox\Default SandBox.csproj" />
         <ProjectReference Include="..\Extensions\LibraryCompression\LibraryCompression.csproj" />
         <ProjectReference Include="..\Extensions\LibraryFTP\LibraryFTP.csproj" />
         <ProjectReference Include="..\Extensions\LibraryGoogleDrive\LibraryGoogleDrive.csproj" />
         <ProjectReference Include="..\Extensions\LibraryOneDrive\LibraryOnedrive.csproj" />
-        <ProjectReference Include="..\Extensions\TestFTP\TestFTP.csproj" />
-        <ProjectReference Include="..\Extensions\TestGoogleDrive\TestGoogleDrive.csproj" />
-        <ProjectReference Include="..\Extensions\TestOneDrive\TestOneDrive.csproj" />
+        <ProjectReference Include="..\InitLoader\InitLoader.csproj" />
         <ProjectReference Include="..\Manager\Library\Library.csproj" />
-        <ProjectReference Include="..\Manager\Tests\Tests.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Views\ActionBar.axaml.cs">
