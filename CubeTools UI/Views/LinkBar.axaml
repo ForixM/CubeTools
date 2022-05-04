@@ -45,7 +45,7 @@
 
 					</LinearGradientBrush>
 				</ListBox.Background>
-				
+				<!--
 				<ListBoxItem Height="57">
 					<Button Classes="DirectoryList" Name="MyComputerButton" Click="OpenMyComputer">
 						<StackPanel VerticalAlignment="Center">
@@ -53,12 +53,12 @@
 							<TextBlock Classes="DirectoryList" Text="Favorites"/>
 						</StackPanel>
 					</Button>
-				</ListBoxItem>
+				</ListBoxItem> -->
 				<ListBoxItem Height="57">
 					<Button Classes="DirectoryList" Name="UserButton" Click="OpenUser">
 						<StackPanel VerticalAlignment="Center">
-							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Favorites.ico"/>
-							<TextBlock Classes="DirectoryList" Text="Favorites"/>
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Users.ico"/>
+							<TextBlock Classes="DirectoryList" Text="User"/>
 						</StackPanel>
 					</Button>
 				</ListBoxItem>
