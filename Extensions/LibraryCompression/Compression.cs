@@ -39,7 +39,7 @@ namespace LibraryCompression
         {
             if (!_initialized)
                 throw new SystemException("Compression haven't been initialized");
-            var dest = directory.Path[directory.Path.Length - 1] == '/'
+            var dest = directory.Path[^1] == '/'
                 ? directory.Path.Remove(directory.Path.Length - 1, 1)
                 : directory.Path;
             switch (archiveFormat)

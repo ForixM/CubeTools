@@ -47,86 +47,94 @@
 				</ListBox.Background>
 				
 				<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="FavoritesButton" Click="AccessError">
-				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Favorites.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Favorites"/>
-				</StackPanel>
-			</Button>
-		</ListBoxItem>
-		<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="DesktopButton" Click="AccessError">
-				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Desktop.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Desktop"/>
-				</StackPanel>
-			</Button>
-		</ListBoxItem>
-		<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="DocumentsButton" Click="AccessError">
-				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Documents.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Documents"/>
-				</StackPanel>
-			</Button>
-		</ListBoxItem>
-		<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="ImagesButton" Click="AccessError">
-				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Images.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Images"/>
-				</StackPanel>
-			</Button>
-		</ListBoxItem>
-		<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="DownloadsBtton" Click="AccessError">
-				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Downloads.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Downloads"/>
-				</StackPanel>
-			</Button>
-		</ListBoxItem>
-		<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="MusicButton" Click="AccessError">
-				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Music.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Music"/>
-				</StackPanel>
-			</Button>
-		</ListBoxItem>
-		<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="Videos" Click="AccessError">
-				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Video.ico"/>
-					<TextBlock Classes="DirectoryList" Text="Videos"/>
-				</StackPanel>
-			</Button>
-		</ListBoxItem>
-				<ListBoxItem Height="57">
-			<Button Classes="DirectoryList" Name="Ftp" Click="FTP">
-				<StackPanel VerticalAlignment="Center">
-					<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/FTP.ico"/>
-					<TextBlock Classes="DirectoryList" Text="FTP Server"/>
-				</StackPanel>
-			</Button>
-		</ListBoxItem>
-				<ListBoxItem Height="57">
-					<Button Classes="DirectoryList" Name="OneDrive" Click="AccessError">
+					<Button Classes="DirectoryList" Name="MyComputerButton" Click="OpenMyComputer">
 						<StackPanel VerticalAlignment="Center">
-							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/OneDrive.ico"/>
-							<TextBlock Classes="DirectoryList" Text="OneDrive"/>
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Favorites.ico"/>
+							<TextBlock Classes="DirectoryList" Text="Favorites"/>
 						</StackPanel>
 					</Button>
 				</ListBoxItem>
 				<ListBoxItem Height="57">
-					<Button Classes="DirectoryList" Name="GoogleDrive" Click="AccessError">
+					<Button Classes="DirectoryList" Name="UserButton" Click="OpenUser">
 						<StackPanel VerticalAlignment="Center">
-							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/GoogleDrive.ico"/>
-							<TextBlock Classes="DirectoryList" Text="GoogleDrive"/>
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Favorites.ico"/>
+							<TextBlock Classes="DirectoryList" Text="Favorites"/>
 						</StackPanel>
 					</Button>
 				</ListBoxItem>
-	</ListBox>
+				<ListBoxItem Height="57">
+					<Button Classes="DirectoryList" Name="DesktopButton" Click="OpenDesktop">
+						<StackPanel VerticalAlignment="Center">
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Desktop.ico"/>
+							<TextBlock Classes="DirectoryList" Text="Desktop"/>
+						</StackPanel>
+					</Button>
+				</ListBoxItem>
+				<ListBoxItem Height="57">
+					<Button Classes="DirectoryList" Name="DocumentsButton" Click="OpenDocuments">
+						<StackPanel VerticalAlignment="Center">
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Documents.ico"/>
+							<TextBlock Classes="DirectoryList" Text="Documents"/>
+						</StackPanel>
+					</Button>
+				</ListBoxItem>
+				<ListBoxItem Height="57">
+					<Button Classes="DirectoryList" Name="ImagesButton" Click="OpenImages">
+						<StackPanel VerticalAlignment="Center">
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Images.ico"/>
+							<TextBlock Classes="DirectoryList" Text="Images"/>
+						</StackPanel>
+					</Button>
+				</ListBoxItem>
+				<ListBoxItem Height="57">
+					<Button Classes="DirectoryList" Name="DownloadsBtton" Click="OpenDownloads">
+						<StackPanel VerticalAlignment="Center">
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Downloads.ico"/>
+							<TextBlock Classes="DirectoryList" Text="Downloads"/>
+						</StackPanel>
+					</Button>
+				</ListBoxItem>
+				<ListBoxItem Height="57">
+					<Button Classes="DirectoryList" Name="MusicButton" Click="OpenMusic">
+						<StackPanel VerticalAlignment="Center">
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Music.ico"/>
+							<TextBlock Classes="DirectoryList" Text="Music"/>
+						</StackPanel>
+					</Button>
+				</ListBoxItem>
+				<ListBoxItem Height="57">
+					<Button Classes="DirectoryList" Name="Videos" Click="OpenVideos">
+						<StackPanel VerticalAlignment="Center">
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/Video.ico"/>
+							<TextBlock Classes="DirectoryList" Text="Videos"/>
+						</StackPanel>
+					</Button>
+				</ListBoxItem>
+						<ListBoxItem Height="57">
+					<Button Classes="DirectoryList" Name="Ftp" Click="FTP">
+						<StackPanel VerticalAlignment="Center">
+							<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/FTP.ico"/>
+							<TextBlock Classes="DirectoryList" Text="FTP Server"/>
+						</StackPanel>
+					</Button>
+				</ListBoxItem>
+						<ListBoxItem Height="57">
+							<Button Classes="DirectoryList" Name="OneDrive" Click="AccessError">
+								<StackPanel VerticalAlignment="Center">
+									<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/OneDrive.ico"/>
+									<TextBlock Classes="DirectoryList" Text="OneDrive"/>
+								</StackPanel>
+							</Button>
+						</ListBoxItem>
+						<ListBoxItem Height="57">
+							<Button Classes="DirectoryList" Name="GoogleDrive" Click="AccessError">
+								<StackPanel VerticalAlignment="Center">
+									<Image Classes="DirectoryList" Source="../../Assets/CubeToolsIconsCompressed/GoogleDrive.ico"/>
+									<TextBlock Classes="DirectoryList" Text="GoogleDrive"/>
+								</StackPanel>
+							</Button>
+						</ListBoxItem>
+				</ListBox>
 		</Grid>
 	</Grid>
 	

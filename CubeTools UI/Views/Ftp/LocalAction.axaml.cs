@@ -17,6 +17,8 @@ namespace CubeTools_UI.Views.Ftp
     public class LocalAction : UserControl
     {
         public MainWindowFTP ParentView { get; set; }
+
+        public string Effectivement { get; set; }
         
         #region Init
 
