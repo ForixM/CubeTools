@@ -14,7 +14,7 @@ namespace LibraryCompression
         /// </summary>
         public static void Init()
         {
-            if (ConfigLoader.ConfigLoader.Settings.AppPath == "")
+            if (ConfigLoader.ConfigLoader.Settings.AppPath is "" or ".")
                 SevenZipBase.SetLibraryPath("7z.dll");
             else if (ConfigLoader.ConfigLoader.Settings.AppPath![^1] == '/')
                 SevenZipBase.SetLibraryPath(ConfigLoader.ConfigLoader.Settings.AppPath + "7z.dll");
@@ -70,22 +70,15 @@ namespace LibraryCompression
         {
             if (!_initialized)
                 throw new SystemException("Compression haven't been initialized");
-            dest += archiveFormat switch
-            {
-                OutArchiveFormat.Zip => ".zip",
-                OutArchiveFormat.SevenZip => ".7z",
-                OutArchiveFormat.Tar => ".tar",
-                _ => ".7z"
-            };
-
+            // Initialization of compressor
             var compressor = new SevenZipCompressor();
-            if (compressingEvent != null)
-                compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
-            if (finishedEvent != null)
-                compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent);
+            // Adding parameters
+            if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
+            if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent);
             compressor.ArchiveFormat = archiveFormat;
             compressor.CustomParameters.Add("mt", "on");
             compressor.ScanOnlyWritable = true;
+            // Return compressor
             return compressor.CompressDirectoryAsync(directory.Path, dest);
         }
 
@@ -101,18 +94,6 @@ namespace LibraryCompression
         public static Task CompressFiles(FileType[] files, OutArchiveFormat archiveFormat,
             Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
         {
-            switch (archiveFormat)
-            {
-                case OutArchiveFormat.SevenZip:
-                    files[0].Path += ".7z";
-                    break;
-                case OutArchiveFormat.Zip:
-                    files[0].Path += ".zip";
-                    break;
-                default:
-                    throw new ArgumentException("Archive format not supported: " + archiveFormat);
-            }
-
             return CompressFiles(files, files[0].Path, archiveFormat, compressingEvent, finishedEvent);
         }
 
@@ -130,14 +111,15 @@ namespace LibraryCompression
         {
             if (!_initialized)
                 throw new SystemException("Compression haven't been initialized");
+            // Initialized compressor
             var compressor = new SevenZipCompressor();
-            if (compressingEvent != null)
-                compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
-            if (finishedEvent != null)
-                compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent);
+            // Adding parameters
+            if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
+            if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent);
             compressor.ArchiveFormat = archiveFormat;
             compressor.CustomParameters.Add("mt", "on");
             compressor.ScanOnlyWritable = true;
+            // Adding files path
             var filePaths = new string[files.Length];
             for (var i = 0; i < files.Length; i++) filePaths[i] = files[i].Path;
             return compressor.CompressFilesAsync(dest, filePaths);
