@@ -29,6 +29,8 @@ namespace CubeTools_UI.Views.Ftp
             Title = "CubeTools FTP -";
             Local = this.FindControl<LocalFTP>("LocalFtp");
             Remote = this.FindControl<RemoteFTP>("RemoteFtp");
+            this.FindControl<LocalAction>("LocalAction").ParentView = this;
+            this.FindControl<RemoteAction>("RemoteAction").ParentView = this;
         }
 
         public MainWindowFTP(ClientFtp client) : this()

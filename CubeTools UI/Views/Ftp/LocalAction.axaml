@@ -36,7 +36,7 @@
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Delete.ico"/>
 		</Button>
 		
-		<Button Name="Parent" Click="Parent">
+		<Button Name="ParentButton" Click="Parent">
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Up.ico"/>
 		</Button>
 		

@@ -148,7 +148,7 @@ public class ClientFtp
 
     public void MakeDirectory(FtpFolder parent, string name)
     {
-        FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + parent.Path + name);
+        FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + parent.Path + "/" + name);
         request.Method = WebRequestMethods.Ftp.MakeDirectory;
         request.Credentials = new NetworkCredential(_username, _password);
         FtpWebResponse response = (FtpWebResponse) request.GetResponse();
