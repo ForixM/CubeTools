@@ -2,41 +2,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="CubeTools_UI.Views.Ftp.LocalAction"
              DataContext="CubeTools_UI.Views.Ftp.LocalAction">
+	
+	<UserControl.Styles>
+		<StyleInclude Source="/Styles/Styles.axaml"/>
+	</UserControl.Styles>
+	
 	<WrapPanel>
 		
-		<Button Name="AddFileButton" Click="CreateFile">
+		<Button Classes="Manager" Name="AddFileButton" Click="CreateFile">
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Create.ico"/>
 		</Button>
 		
-		<Button Name="AddDirButton" Click="CreatDir">
+		<Button Classes="Manager" Name="AddDirButton" Click="CreatDir">
 			<Image Source="../../Assets/CubeToolsIconsCompressed/CreateFolder.ico"/>
 		</Button>
 		
-		<Button Name="UploadButton" Click="Upload">
-			<Image Source="../../Assets/CubeToolsIcons/Downloads.ico"/>
+		<Button Classes="Manager" Name="UploadButton" Click="Upload">
+			<Image Source="../../Assets/CubeToolsIconsCompressed/Downloads.ico"/>
 		</Button>
 		
-		<Button Name="CopyButton" Click="Copy">
+		<Button Classes="Manager" Name="CopyButton" Click="Copy">
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Copy.ico"/>
 		</Button>
 		
-		<Button Name="CutButton" Click="Cut">
+		<Button Classes="Manager" Name="CutButton" Click="Cut">
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Cut.ico"/>
 		</Button>
 		
-		<Button Name="PasteButton" Click="Paste">
+		<Button Classes="Manager" Name="PasteButton" Click="Paste">
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Paste.ico"/>
 		</Button>
 		
-		<Button Name="RenameButton" Click="Rename">
+		<Button Classes="Manager" Name="RenameButton" Click="Rename">
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Rename.ico"/>
 		</Button>
 		
-		<Button Name="DeleteButton" Click="Delete">
+		<Button Classes="Manager" Name="DeleteButton" Click="Delete">
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Delete.ico"/>
 		</Button>
 		
-		<Button Name="ParentButton" Click="Parent">
+		<Button Classes="Manager" Name="ParentButton" Click="Parent">
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Up.ico"/>
 		</Button>
 		

@@ -151,20 +151,12 @@
         <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\ErrorPopUp\AccessDeniedPopUp.axaml.cs">
-        <DependentUpon>AccessDenied.axaml</DependentUpon>
+      <Compile Update="Views\Ftp\LocalFTPNavigationBar.axaml.cs">
+        <DependentUpon>NavigationBar.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\ErrorPopUp\PathNotFoundPopUp.axaml.cs">
-        <DependentUpon>PathNotFoundPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\ErrorPopUp\DiskNotReadyPopUp.axaml.cs">
-        <DependentUpon>DiskNotReadyPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\ErrorPopUp\SystemErrorPopUp.axaml.cs">
-        <DependentUpon>SystemErrorPopUp.axaml</DependentUpon>
+      <Compile Update="Views\Ftp\RemoteFTPNavigationBar.axaml.cs">
+        <DependentUpon>RemoteFTPNavigationBar.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

@@ -13,19 +13,37 @@
         x:Class="CubeTools_UI.Views.Ftp.MainWindowFTP"
         Title="CubeTools FTP">
         
-        <Grid RowDefinitions="20, Auto">
+        <Grid RowDefinitions="35, 100, Auto">
                 
-                <Grid Row="0">
-                        
+                <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+			
+                        <Grid Grid.Column="0">
+                                <Image Source="../../Assets/CubeToolsIconsCompressed/CubeTools.ico" Margin="25 0 0 0" Width="70"/>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                                <Image Source="../../Assets/CubeToolsIconsCompressed/CubeToolsName.ico" Margin="0 0 25 0" Width="125"/>
+                        </Grid>
+                        <Grid Grid.Column="2">
+                                <Image Source="../../Assets/CubeToolsIconsCompressed/FTP.ico" Height="75" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 0 25 0"/>
+                        </Grid>
                 </Grid>
-                <Grid Row="1" ColumnDefinitions="50*,50*">
+                
+                <Grid Row="2" ColumnDefinitions="50*,50*">
                          
                         <!--Local Files-->
-                        <Grid Column="0" RowDefinitions="40, Auto">
+                        <Grid Column="0" RowDefinitions="65, 40, Auto">
                                 <Grid Row="0">
-                                        <views:LocalAction Name="LocalAction"/>
+                                        <views:LocalFtpNavigationBar Name="NavigationBar"/>
                                 </Grid>
                                 <Grid Row="1">
+                                        <views:LocalAction Name="LocalAction"/>
+                                </Grid>
+                                <Grid Row="2">
                                         <ScrollViewer>
                                                 <views:LocalFTP Name="LocalFtp"/> 
                                         </ScrollViewer>
@@ -33,11 +51,14 @@
                         </Grid>
                         
                         <!--Remote Files-->
-                        <Grid Column="1"  RowDefinitions="40, Auto">
+                        <Grid Column="1" RowDefinitions="65, 40, Auto">
                                 <Grid Row="0">
-                                        <views:RemoteAction Name="RemoteAction"/>
+                                        <views:RemoteFtpNavigationBar Name="RemoteNavigationBar"/>
                                 </Grid>
                                 <Grid Row="1">
+                                        <views:RemoteAction Name="RemoteAction"/>
+                                </Grid>
+                                <Grid Row="2">
                                         <ScrollViewer>
                                                 <views:RemoteFTP Name="RemoteFtp"/>
                                         </ScrollViewer>
