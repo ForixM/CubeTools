@@ -8,7 +8,7 @@ namespace LibraryFTP
         // public string ParentPath => _parentPath;
         // public string Path => _parentPath + _name;
 
-        public static FtpFolder ROOT = new FtpFolder("", "/", "");
+        public static FtpFolder ROOT = new FtpFolder("", "", "");
     
         public FtpFolder(string name, string parentPath, string lastmodified)
         {

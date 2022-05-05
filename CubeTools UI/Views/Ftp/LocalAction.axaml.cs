@@ -130,12 +130,12 @@ namespace CubeTools_UI.Views.Ftp
         {
             if (ParentView.Local.FtpModel.Selected.Count < 1) return;
             
-            /*
-            if (ParentView.Local.FtpModel.Selected.Count == 1)
-                //new RenamePopUp(ParentView.Local.FtpModel.Selected[0].Pointer, ParentView.Local.FtpModel.LocalDirectory.ChildrenFiles, ParentView.Model).Show();
-            else
-                new ErrorPopUp.ErrorPopUp(Model.ParentModel, new ManagerException("Unable to rename multiple data")).Show();
-            */
+            
+            // if (ParentView.Local.FtpModel.Selected.Count == 1)
+            //     new RenamePopUp(ParentView.Local.FtpModel.Selected[0].Pointer, ParentView.Local.FtpModel.LocalDirectory.ChildrenFiles, ParentView.Model).Show();
+            // else
+            //     new ErrorPopUp.ErrorPopUp(Model.ParentModel, new ManagerException("Unable to rename multiple data")).Show();
+            
         }
 
         /// <summary>
@@ -162,6 +162,7 @@ namespace CubeTools_UI.Views.Ftp
                 ParentView.Client!.UploadFile(item.Pointer, ParentView.Remote.FtpModel.RemoteDirectory);
             foreach (var item in ParentView.Local.FtpModel.Selected.Where(item => item.Pointer.IsDir))
                 ParentView.Client!.UploadFolder(item.Pointer, ParentView.Remote.FtpModel.RemoteDirectory);
+            ParentView.ReloadPathRemote();
         }
         
         
