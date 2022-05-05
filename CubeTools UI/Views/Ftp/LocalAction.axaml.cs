@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -193,13 +194,9 @@ namespace CubeTools_UI.Views.Ftp
                 {
                     // Run async task
                     task.Start();
-                    // Display loading box
-                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(source), source);
-                    loadingPopUp.Show();
                     // Close display
                     task.GetAwaiter().OnCompleted(() =>
                     {
-                        loadingPopUp.Close();
                         try
                         {
                             ParentView.Local.FtpModel.LocalDirectory.AddChild(task.Result);
@@ -252,13 +249,9 @@ namespace CubeTools_UI.Views.Ftp
                 {
                     // Run async task
                     task.Start();
-                    // Display loading box
-                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(pointer), pointer,true);
-                    loadingPopUp.Show();
                     // Close display
                     task.GetAwaiter().OnCompleted(() =>
                     {
-                        loadingPopUp.Close();
                         ParentView.ReloadPathLocal();
                     });
                 }
@@ -271,13 +264,14 @@ namespace CubeTools_UI.Views.Ftp
             }
             catch (Exception exception)
             {
-                /*
                 if (exception is ManagerException @managerException)
                 {
+                    /*
                     @managerException.Errorstd = $"Unable to delete {pointer.Name}";
                     new Views.ErrorPopUp.ErrorPopUp(Model!, @managerException).Show();
+                    */
                 }
-                */
+                
             }
         }
 

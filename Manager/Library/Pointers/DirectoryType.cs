@@ -120,7 +120,7 @@ namespace Library.Pointers
                     Date = ManagerReader.ManagerReader.GetFileCreationDate(path);
                     LastDate = ManagerReader.ManagerReader.GetFileLastEdition(path);
                     AccessDate = ManagerReader.ManagerReader.GetFileAccessDate(path);
-                    Size = ManagerReader.ManagerReader.GetFileSize(path);
+                    Size = 0;
                     Hidden = ManagerReader.ManagerReader.IsFileHidden(path);
                     ReadOnly = ManagerReader.ManagerReader.IsReadOnly(path);
                     // Set Sub-Files/Folder

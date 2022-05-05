@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using CubeTools_UI.Views.PopUps;
 using Library.ManagerReader;
@@ -15,67 +19,58 @@ namespace CubeTools_UI.Models.PopUps
         
         #region Process Variables
         
-        private double _progress;
+        private IProgress<int> _progress;
         private double _max;
         private bool _destroy;
-        private FileType _modified;
-        
-    
-        public double Progress
-        {
-            get => _progress;
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _progress, value);
-                _progressBar.Value = _progress;
-            }
-        }
-    
+        private List<FileType> _modified;
+
         #endregion
     
         public LoadingPopUpModel()
         {
-            _modified = FileType.NullPointer;
-            _main = null;
+            _modified = new List<FileType>();
             _max = 100;
-            
         }
-        public LoadingPopUpModel(LoadingPopUp main, FileType modified, double max, bool destroy, ProgressBar progressBar)
+        public LoadingPopUpModel(LoadingPopUp main, List<FileType> modified, double max, bool destroy, ProgressBar progressBar)
         {
             _main = main;
             _modified = modified;
-            _progress = 0;
             _max = max;
             _destroy = destroy;
             _progressBar = progressBar;
+            _progress = new Progress<int>(percent =>
+            {
+                _progressBar.Value = percent;
+            });
+            StartUpdating();
+        }
+
+        private void StartUpdating()
+        {
+            Task.Run(() =>
+            {
+                while (Math.Abs(_max - 100) > 2 && _main.IsActive)
+                    ReloadProgress().Start();
+            });
         }
         
-        public void ReloadProgress()
+        private Task ReloadProgress()
         {
-            if (_destroy)
+            return new Task(() =>
             {
-                while (!_main.ProcessFinished)
+                if (_destroy)
                 {
-                    try
-                    {
-                        Progress = (_max - ManagerReader.FastReaderFiles(_modified.Path)) / _max * 100;
-                    }
-                    catch (Exception) { }
-                    Thread.Sleep(250);
+                    long sum = _modified.Sum(ft => ManagerReader.FastReaderFiles(ft.Path));
+                    _progress.Report((int)((_max - sum) / _max * 100));
+                    Thread.Sleep(500);
                 }
-            }
-            else
-            {
-                while (!_main.ProcessFinished)
+                else
                 {
-                    try
-                    {
-                        Progress = ManagerReader.FastReaderFiles(_modified.Path) / _max * 100;
-                    }
-                    catch (Exception) { }
-                    Thread.Sleep(250);
+                    long sum = _modified.Sum(ft => ManagerReader.FastReaderFiles(ft.Path));
+                    _progress.Report((int) (sum / _max * 100));
+                    Thread.Sleep(500);
                 }
-            }
+            });
         }
     }
 }

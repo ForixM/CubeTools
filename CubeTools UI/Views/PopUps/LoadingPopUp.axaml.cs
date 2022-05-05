@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -24,25 +25,18 @@ namespace CubeTools_UI.Views.PopUps
             _viewModel = null;
             ProcessFinished = false;
         }
-        public LoadingPopUp(int nbFiles, FileType modified, bool destroy=false) : this()
+        public LoadingPopUp(int nbFiles, List<FileType> modified, bool destroy=false) : this()
         {
-            if (destroy)
-                _operationType.Text = "Deleting ";
-            else
-                _operationType.Text = "Copying ";
+            if (destroy) _operationType.Text = "Deleting ";
+            else _operationType.Text = "Copying ";
+            
             _operationType.Text += nbFiles + " files";
             _viewModel = new LoadingPopUpModel(this, modified, nbFiles, destroy, _progressBar);
-            DataContext = _viewModel;
-            Task.Run(_viewModel.ReloadProgress);
         }
         
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
-        
 
         private void OnClosing(object? sender, CancelEventArgs e)
         {

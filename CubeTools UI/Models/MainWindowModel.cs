@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Avalonia.Controls;
 // CubeTools UIs Imports
 using CubeTools_UI.Views;
 // Libraries Imports
@@ -96,11 +97,7 @@ namespace CubeTools_UI.Models
                 }
                 catch (Exception e)
                 {
-                    if (e is ManagerException @managerException)
-                    {
-                        var popup = new Views.ErrorPopUp.ErrorPopUp(this, managerException);
-                        popup.Show();
-                    }
+                    if (e is ManagerException @managerException) View.SelectErrorPopUp(@managerException);
                 }
             }
             else
@@ -111,16 +108,8 @@ namespace CubeTools_UI.Models
                 }
                 catch (Exception e)
                 {
-                    if (e is ManagerException @managerException)
-                    {
-                        var popup = new Views.ErrorPopUp.ErrorPopUp(this, @managerException);
-                        popup.Show();
-                    }
-                    else
-                    {
-                        var popup = new Views.ErrorPopUp.ErrorPopUp(this, new SystemErrorException("Critical error occured while loading the directory"));
-                        popup.Show();
-                    }
+                    if (e is ManagerException @managerException) View.SelectErrorPopUp(@managerException);
+                    else View.SelectErrorPopUp(new SystemErrorException("Critical error occured while loading the folder"));
                 }
                 // Setting up the Path for UI
                 ModelNavigationBar.View.CurrentPathXaml.Text = ModelNavigationBar.DirectoryPointer.Path;
@@ -148,11 +137,7 @@ namespace CubeTools_UI.Models
             }
             catch (Exception e)
             {
-                if (e is ManagerException @managerException)
-                {
-                    var popup = new Views.ErrorPopUp.ErrorPopUp(this, @managerException);
-                    popup.Show();
-                }
+                if (e is ManagerException @managerException) View.SelectErrorPopUp(@managerException);
             }
             ModelPathsBar.ReloadPath(ModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -86,13 +87,9 @@ namespace CubeTools_UI.Views.Actions
                 {
                     // Run async task
                     task.Start();
-                    // Display loading box
-                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(_pointer), _pointer,true);
-                    loadingPopUp.Show();
                     // Close display
                     task.GetAwaiter().OnCompleted(() =>
                     {
-                        loadingPopUp.Close();
                         _model?.ReloadPath();
                     });
                 }

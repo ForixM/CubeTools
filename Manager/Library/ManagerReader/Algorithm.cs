@@ -196,13 +196,14 @@ namespace Library.ManagerReader
         /// <returns>Returns string for display</returns>
         public static string ByteToPowByte(long size)
         {
-            if (size < 1024)
-                return $"{size} B";
-            if (size < 1048576)
-                return $"{size / 1024} KB";
-            if (size < 1073741824)
-                return $"{size / 1048576} MB";
-            return $"{size / 1073741824} GB";
+            return size switch
+            {
+                0 => "",
+                < 1024 => $"{size} B",
+                < 1048576 => $"{size / 1024} KB",
+                < 1073741824 => $"{size / 1048576} MB",
+                _ => $"{size / 1073741824} GB"
+            };
         }
 
         /// <summary>

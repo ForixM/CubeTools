@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -205,17 +206,13 @@ namespace CubeTools_UI.Views
             // Run Tasks Async
             try
             {
-                if (source.Size > 1000000)
+                if (source.IsDir)
                 {
                     // Run async task
                     task.Start();
-                    // Display loading box
-                    var loadingPopUp = new LoadingPopUp((int) ManagerReader.GetFileSize(source), source);
-                    loadingPopUp.Show();
                     // Close display
                     task.GetAwaiter().OnCompleted(() =>
                     {
-                        loadingPopUp.Close();
                         try
                         {
                             Model.ParentModel.ModelNavigationBar.DirectoryPointer.AddChild(task.Result);

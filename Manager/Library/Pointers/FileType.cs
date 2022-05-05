@@ -30,12 +30,25 @@ namespace Library.Pointers
         private bool _archived;
 
         private bool _isDir;
+        
+        // Others
+        private bool _isSizeLoaded;
 
         // Basics
         public string Path { get => _path; set => _path = value; }
         public string Name{ get => _name; set => _name = value; }
         public string Type { get => _type; set => _type = value; }
-        public long Size { get => _size; set => _size = value; }
+
+        public long Size
+        {
+            get
+            {
+                if (_isSizeLoaded) Task.Run(() => _size = ManagerReader.ManagerReader.GetFileSize(this));;
+                return _size;
+            }
+            set => _size = value;
+        }
+
         public string SizeXaml => ManagerReader.ManagerReader.ByteToPowByte(Size);
         // Date
         public string Date { get => _date; set => _date = value; }
@@ -97,9 +110,12 @@ namespace Library.Pointers
             _name = ManagerReader.ManagerReader.GetPathToName(_path);
             _size = 0;
             if (!_isDir)
+            {
                 _size = ManagerReader.ManagerReader.GetFileSize(_path);
-            else
-                Task.Run(() => _size = ManagerReader.ManagerReader.GetFileSize(_path));
+                _isSizeLoaded = true;
+            }
+            else _isSizeLoaded = false;
+            
             _type = ManagerReader.ManagerReader.GetFileExtension(_path);
             try
             {
@@ -118,6 +134,8 @@ namespace Library.Pointers
         }
 
         // Initializers
+
+        public void LoadSize() => _isSizeLoaded = true;
 
         #endregion
 

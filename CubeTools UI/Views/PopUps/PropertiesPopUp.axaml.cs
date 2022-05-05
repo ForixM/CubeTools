@@ -56,6 +56,8 @@ namespace CubeTools_UI.Views.PopUps
         public PropertiesPopUp(FileType ft, MainWindowModel main) : this()
         {
             _pointer = ft;
+            _pointer.LoadSize();
+            
             _fileName.Text = ft.Name;
             _type.Text = ft.Type;
             _description.Text = ft.Name;
@@ -66,14 +68,12 @@ namespace CubeTools_UI.Views.PopUps
             _accessed.Text = ft.AccessDate;
             _readOnly.IsChecked = ft.ReadOnly;
             _hidden.IsChecked = ft.Hidden;
-
+            
             _parentModel = main;
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
+        
 
         private string SpacedLong(long value)
         {
