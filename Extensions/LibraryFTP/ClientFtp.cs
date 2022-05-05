@@ -62,12 +62,12 @@ public class ClientFtp
                     GroupCollection groups = match.Groups;
                     if (groups[1].Value == "d")
                     {
-                        FtpFolder f = new FtpFolder(groups[^1].Value, folder.Path, groups[^3].Value+groups[^2].Value);
+                        FtpFolder f = new FtpFolder(groups[^1].Value, folder, groups[^3].Value+groups[^2].Value);
                         arbo.Items.Add(f);
                     }
                     else if (groups[1].Value == "-")
                     {
-                        FtpFile file = new FtpFile(groups[^1].Value, Int32.Parse(groups[3].Value), folder.Path, groups[^3].Value+groups[^2].Value);
+                        FtpFile file = new FtpFile(groups[^1].Value, Int32.Parse(groups[3].Value), folder, groups[^3].Value+groups[^2].Value);
                         arbo.Items.Add(file);
                     }
                 }
@@ -185,10 +185,12 @@ public class ClientFtp
 
     public void Rename(IFtpItem item, string newName) //TODO Implement
     {
-        FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + item.Path);
+        string path = item.Path;
+        path = path.Remove(path.Length - 1);
+        FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + path);
         request.Method = WebRequestMethods.Ftp.Rename;
         request.Credentials = new NetworkCredential(_username, _password);
-        request.RenameTo = Uri.UnescapeDataString((item.ParentPath == "/" ? "": item.ParentPath)+"/"+newName);
+        request.RenameTo = newName;
         FtpWebResponse response = (FtpWebResponse) request.GetResponse();
     }
 

@@ -17,6 +17,14 @@ namespace LibraryFTP
             this._parentPath = parentPath;
             this._lastmodified = lastmodified;
         }
+    
+        public FtpFile(string name, int size, IFtpItem parent, string lastmodified)
+        {
+            this._name = name;
+            this._size = size;
+            this._parent = parent;
+            this._lastmodified = lastmodified;
+        }
 
         public override string ToString()
         {

@@ -6,6 +6,7 @@ namespace LibraryFTP
     
     public abstract class IFtpItem
     {
+        protected IFtpItem _parent;
         protected string _parentPath;
         protected string _name;
         protected long _size;
@@ -19,7 +20,8 @@ namespace LibraryFTP
         public string Name => _name;
         public string Type => _type;
         public string ParentPath => _parentPath;
-        public string Path => _parentPath + _name + (IsDir ? "/" : "");
+        public IFtpItem Parent => _parent ?? new FtpFolder(_parentPath);
+        public string Path => _parentPath == "/" && _name == "" ? _parentPath : (_parent == null ? _parentPath : _parent.Path) + _name + (IsDir ? "/" : "");
 
         public string LastModified => _lastmodified;
     }

@@ -16,6 +16,7 @@ namespace CubeTools_UI.Views.Ftp
         public MainWindowFTPModel Model;
         public LocalFTP Local;
         public RemoteFTP Remote;
+        public RemoteFtpNavigationBar NavigationBar;
 
         #endregion
 
@@ -31,6 +32,8 @@ namespace CubeTools_UI.Views.Ftp
             Remote = this.FindControl<RemoteFTP>("RemoteFtp");
             this.FindControl<LocalAction>("LocalAction").ParentView = this;
             this.FindControl<RemoteAction>("RemoteAction").ParentView = this;
+            NavigationBar = this.FindControl<RemoteFtpNavigationBar>("RemoteNavigationBar");
+            NavigationBar.ParentView = this;
         }
 
         public MainWindowFTP(ClientFtp client) : this()
@@ -89,6 +92,7 @@ namespace CubeTools_UI.Views.Ftp
             Remote.FtpModel.Children = Client!.ListDirectory(Remote.FtpModel.RemoteDirectory);
             // Reload Graphic
             Remote.ReloadPath(Remote.FtpModel.Children.Items);
+            NavigationBar.CurrentPathXaml.Text = Remote.FtpModel.RemoteDirectory.Path;
         }
 
         public void AccessPathRemote(IFtpItem item, bool isdir)

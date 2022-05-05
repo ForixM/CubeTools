@@ -180,12 +180,5 @@ namespace CubeTools_UI.Views.Ftp
         }
 
         #endregion
-
-        private void Parent(object? sender, RoutedEventArgs e)
-        {
-            ParentView.Remote.FtpModel.RemoteDirectory =
-                new FtpFolder(ParentView.Remote.FtpModel.RemoteDirectory.ParentPath);
-            ParentView.ReloadPathRemote();
-        }
     }
 }

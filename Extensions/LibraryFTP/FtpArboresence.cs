@@ -8,7 +8,7 @@ namespace LibraryFTP
     {
         private List<IFtpItem> _items;
 
-        public string ParentFolder; // TODO Implement
+        // public string ParentFolder; // TODO Implement
         public List<IFtpItem> Items => _items;
 
         public FtpArboresence()

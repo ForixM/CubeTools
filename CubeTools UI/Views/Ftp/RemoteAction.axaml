@@ -24,9 +24,5 @@
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Delete.ico"/>
 		</Button>
 		
-		<Button Classes="Manager" Name="ParentButton" Click="Parent">
-			<Image Source="../../Assets/CubeToolsIconsCompressed/Up.ico"/>
-		</Button>
-		
 	</WrapPanel>
 </UserControl>

@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
+using LibraryFTP;
 
 namespace CubeTools_UI.Views.Ftp
 {
@@ -13,6 +14,7 @@ namespace CubeTools_UI.Views.Ftp
     {
         public static NavigationBarModel Model;
         public TextBox CurrentPathXaml;
+        public MainWindowFTP ParentView;
         
         #region Init
         public RemoteFtpNavigationBar()
@@ -34,7 +36,10 @@ namespace CubeTools_UI.Views.Ftp
         private void EditCurrentPath(object? sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            Model.ParentModel?.AccessPath(((TextBox) sender!).Text);
+            FtpFolder folder = new FtpFolder(((TextBox) sender!).Text);
+            ParentView.Remote.FtpModel.RemoteDirectory = folder;
+            ParentView.ReloadPathRemote();
+            // Model.ParentModel?.AccessPath(((TextBox) sender!).Text);
         }
 
         /// <summary>
@@ -93,35 +98,12 @@ namespace CubeTools_UI.Views.Ftp
         /// </summary>
         private void UpArrowClick(object? sender, RoutedEventArgs e)
         {
-            string parent = "";
-            try
+            if (ParentView.Remote.FtpModel.RemoteDirectory != FtpFolder.ROOT)
             {
-                if (ManagerReader.GetRootPath(Model.DirectoryPointer.Path) == Model.DirectoryPointer.Path)
-                    parent = Model.DirectoryPointer.Path;
-                else 
-                    parent = ManagerReader.GetParent(Model.DirectoryPointer.Path);
-            }
-            catch (Exception exception)
-            {
-                if (exception is ManagerException @managerException)
-                {
-                    @managerException.Errorstd = "Unable to get the parent file";
-                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
-                }
-            }
-            Model.QueuePointers.Add(parent);
-            Model.QueueIndex = Model.QueuePointers.Count-1;
-            try
-            {
-                Model.ParentModel?.AccessPath(Model.QueuePointers[Model.QueueIndex]);
-            }
-            catch (Exception exception)
-            {
-                if (exception is ManagerException @managerException)
-                {
-                    @managerException.Errorstd = "Unable to get the parent file";
-                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
-                }
+                ParentView.Remote.FtpModel.RemoteDirectory =
+                    (FtpFolder) ParentView.Remote.FtpModel.RemoteDirectory.Parent;
+                // ParentView.Remote.FtpModel.Children = ParentView.Model.Client.ListDirectory((FtpFolder) ParentView.Remote.FtpModel.RemoteDirectory.Parent);
+                ParentView.ReloadPathRemote();
             }
         }
 
