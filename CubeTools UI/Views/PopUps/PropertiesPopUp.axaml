@@ -8,6 +8,7 @@
         Topmost="True"
         Closing="OnClose"
         Icon="../../Assets/OLD/info.ico"
+        WindowStartupLocation="CenterScreen"
         x:Class="CubeTools_UI.Views.PopUps.PropertiesPopUp"
         Title="Properties"
         KeyDown="OnEscapePressed">

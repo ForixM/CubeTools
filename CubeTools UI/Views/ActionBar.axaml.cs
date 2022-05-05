@@ -108,9 +108,17 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void Delete(object? sender, RoutedEventArgs e)
         {
-            foreach (var item in Model.SelectedXaml)
-                new DeletePopUp(Model.ParentModel, item.Pointer).Show();
-            Model.ParentModel.ReloadPath();
+            switch (Model.SelectedXaml.Count)
+            {
+                case 0:
+                    return;
+                case 1:
+                    new DeletePopUp(Model.ParentModel, Model.SelectedXaml[0].Pointer).Show();
+                    break;
+                default:
+                    new DeleteMultiplePopUp(Model.ParentModel, Model.SelectedXaml.Select(pointer => pointer.Pointer).ToList()).Show();
+                    break;
+            }
         }
 
         /// <summary>

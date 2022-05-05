@@ -143,6 +143,14 @@
       </Compile>
       <Compile Remove="Views\PopUps\CreateFolderPopUp.axaml.cs" />
       <Compile Remove="Views\PopUps\DeletePopUp.axaml.cs" />
+      <Compile Update="Views\Actions\DeleteMultiplePopUp.axaml.cs">
+        <DependentUpon>DeleteMultiplePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="ViewModels" />

@@ -4,6 +4,7 @@
         CanResize="False"
         x:Class="CubeTools_UI.Views.Compression.CompressPopUp"
         Icon="../../Assets/CubeToolsIcons/Compression.ico"
+        WindowStartupLocation="CenterScreen"
         Title="Compression"
         KeyDown="OnKeyPressedWindow">
     
@@ -14,7 +15,7 @@
                 
         <Grid Grid.Column="1" RowDefinitions="50, 50">
             
-            <Grid Grid.Row="0" >
+            <Grid Grid.Row="0">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Width="125">
                     <TextBox KeyDown="OnEnterPressed" Name="NameArchive" Watermark="File Name" Text="New File" />
                 </StackPanel>

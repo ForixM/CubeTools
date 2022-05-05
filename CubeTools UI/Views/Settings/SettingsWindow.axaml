@@ -1,6 +1,7 @@
  <Window xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="CubeTools_UI.Views.Settings.SettingsWindow">
+             x:Class="CubeTools_UI.Views.Settings.SettingsWindow"
+             WindowStartupLocation="CenterScreen">
 	
 	<Window.Styles>
 		<StyleInclude Source="/Styles/Styles.axaml"/>

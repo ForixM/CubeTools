@@ -9,6 +9,7 @@
         x:Class="CubeTools_UI.Views.Actions.DeletePopUp"
         Title="Delete"
         Icon="../../Assets/OLD/delete.ico"
+        WindowStartupLocation="CenterScreen"
         KeyDown="OnKeyPressedWindow">
         
         <Grid>

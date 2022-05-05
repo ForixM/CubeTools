@@ -22,15 +22,11 @@
 		<StyleInclude Source="/Styles/Styles.axaml"/>
     </Window.Styles>
 
-    <!-- Line structure of the grid-->
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
-        <!-- Second row : Top bar for path research-->
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -43,29 +39,25 @@
             </Grid>
             
             <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="65" />
-                        <RowDefinition Height="45" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                
-                    <!-- First Row : Actions buttons-->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="65" />
+                    <RowDefinition Height="45" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
 				
-                    <Grid Grid.Row="0">
-                        <views:NavigationBar/>
-                    </Grid>
-                    
-                    <Grid Grid.Row="1">
-                        <views:ActionBar/>
-                    </Grid>
-                
-                    <!-- Second row : files and directories list -->
-                    
-                    <Grid Grid.Row="2">
-                        <views:PathsBar/>
-                    </Grid>
-                
+                <Grid Grid.Row="0">
+                    <views:NavigationBar/>
                 </Grid>
+                    
+                <Grid Grid.Row="1">
+                    <views:ActionBar/>
+                </Grid>
+                    
+                <Grid Grid.Row="2">
+                    <views:PathsBar/>
+                </Grid>
+                
+            </Grid>
             
         </Grid>
         
