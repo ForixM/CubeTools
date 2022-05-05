@@ -60,7 +60,7 @@ namespace CubeTools_UI.Views.PopUps
             _type.Text = ft.Type;
             _description.Text = ft.Name;
             _path.Text = ft.Path;
-            _size.Text = ft.SizeXaml;
+            _size.Text = ft.SizeXaml + $" ({SpacedLong(ft.Size)} B)";
             _created.Text = ft.Date;
             _modified.Text = ft.LastDate;
             _accessed.Text = ft.AccessDate;
@@ -73,6 +73,25 @@ namespace CubeTools_UI.Views.PopUps
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+        }
+
+        private string SpacedLong(long value)
+        {
+            string str = "";
+            int compteur = 0;
+            while (value > 0)
+            {
+                str = value % 10+str;
+                value /= 10;
+                compteur++;
+                if (compteur == 3)
+                {
+                    str = " " + str;
+                    compteur = 0;
+                }
+            }
+
+            return str;
         }
         #endregion
 
