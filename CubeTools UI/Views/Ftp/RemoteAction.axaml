@@ -11,18 +11,6 @@
 			<Image Source="../../Assets/CubeToolsIconsCompressed/CreateFolder.ico"/>
 		</Button>
 		
-		<Button Name="CopyButton" Click="Copy">
-			<Image Source="../../Assets/CubeToolsIconsCompressed/Copy.ico"/>
-		</Button>
-		
-		<Button Name="CutButton" Click="Cut">
-			<Image Source="../../Assets/CubeToolsIconsCompressed/Cut.ico"/>
-		</Button>
-		
-		<Button Name="PasteButton" Click="Paste">
-			<Image Source="../../Assets/CubeToolsIconsCompressed/Paste.ico"/>
-		</Button>
-		
 		<Button Name="RenameButton" Click="Rename">
 			<Image Source="../../Assets/CubeToolsIconsCompressed/Rename.ico"/>
 		</Button>
@@ -32,7 +20,7 @@
 		</Button>
 		
 		<Button Name="ParentButton" Click="Parent">
-			<Image Source="../../Assets/CubeToolsIconsCompressed/Delete.ico"/>
+			<Image Source="../../Assets/CubeToolsIconsCompressed/Up.ico"/>
 		</Button>
 		
 	</WrapPanel>

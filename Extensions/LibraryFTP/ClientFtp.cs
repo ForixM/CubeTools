@@ -62,12 +62,12 @@ public class ClientFtp
                     GroupCollection groups = match.Groups;
                     if (groups[1].Value == "d")
                     {
-                        FtpFolder f = new FtpFolder(groups[^1].Value, folder.Path+"/", groups[^3].Value+groups[^2].Value);
+                        FtpFolder f = new FtpFolder(groups[^1].Value, folder.Path, groups[^3].Value+groups[^2].Value);
                         arbo.Items.Add(f);
                     }
                     else if (groups[1].Value == "-")
                     {
-                        FtpFile file = new FtpFile(groups[^1].Value, Int32.Parse(groups[3].Value), folder.Path+"/", groups[^3].Value+groups[^2].Value);
+                        FtpFile file = new FtpFile(groups[^1].Value, Int32.Parse(groups[3].Value), folder.Path, groups[^3].Value+groups[^2].Value);
                         arbo.Items.Add(file);
                     }
                 }
@@ -190,6 +190,11 @@ public class ClientFtp
         request.Credentials = new NetworkCredential(_username, _password);
         request.RenameTo = Uri.UnescapeDataString((item.ParentPath == "/" ? "": item.ParentPath)+"/"+newName);
         FtpWebResponse response = (FtpWebResponse) request.GetResponse();
+    }
+
+    public void CreateFile(FtpFolder destination, string fileName)
+    {
+        
     }
 }
 }

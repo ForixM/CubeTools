@@ -118,6 +118,7 @@ namespace CubeTools_UI.Views.Ftp
         public void Rename(object? sender, RoutedEventArgs e)
         {
             if (ParentView.Remote.FtpModel.Selected.Count < 1) return;
+            ParentView.Model.Client.Rename(ParentView.Remote.FtpModel.Selected[^1].Pointer, "cheh.txt");
             
             /*
             if (ParentView.Local.FtpModel.Selected.Count == 1)
@@ -183,7 +184,7 @@ namespace CubeTools_UI.Views.Ftp
         private void Parent(object? sender, RoutedEventArgs e)
         {
             ParentView.Remote.FtpModel.RemoteDirectory =
-                new FtpFolder(ManagerReader.GetParent(ParentView.Local.FtpModel.LocalDirectory.Path));
+                new FtpFolder(ParentView.Remote.FtpModel.RemoteDirectory.ParentPath);
             ParentView.ReloadPathRemote();
         }
     }
