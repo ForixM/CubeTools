@@ -85,8 +85,7 @@ namespace CubeTools_UI.Views.Actions
                 }
                 catch (ManagerException exception)
                 {
-                    var popup = new ErrorPopUp.ErrorPopUp(_main, exception);
-                    popup.Show();
+                    _main.View.SelectErrorPopUp(exception);
                 }
                 _main.ReloadPath();
                 Close();

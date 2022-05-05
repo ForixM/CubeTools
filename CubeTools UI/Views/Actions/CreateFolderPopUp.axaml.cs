@@ -67,7 +67,7 @@ namespace CubeTools_UI.Views.Actions
         private void CreateDir(string name)
         {
             if (!ManagerReader.IsPathCorrect(name))
-                new Views.ErrorPopUp.ErrorPopUp(_model, new PathFormatException("Format is invalid !")).Show();
+                TextEntered.Text = "Invalid Text !";
             else if (Directory.Exists(name))
                 new Views.ErrorPopUp.ErrorPopUp(_model, new ReplaceException("File already exists !")).Show();
             else
@@ -85,7 +85,7 @@ namespace CubeTools_UI.Views.Actions
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to create a new folder";
-                        new Views.ErrorPopUp.ErrorPopUp(_model, @managerException).Show();
+                        _model.View.SelectErrorPopUp(@managerException);
                     }
                 }
             }

@@ -2,7 +2,9 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
+using CubeTools_UI.Views.ErrorPopUp;
 using CubeTools_UI.Views.Settings;
+using Library.ManagerExceptions;
 
 namespace CubeTools_UI.Views
 {
@@ -100,6 +102,33 @@ namespace CubeTools_UI.Views
         {
             if (e.Key is Key.LeftCtrl or Key.RightCtrl)
                 Model.IsCtrlPressed = false;
+        }
+
+
+        public void SelectErrorPopUp(ManagerException exception)
+        {
+            switch (exception)
+            {
+                case PathNotFoundException @pathNotFoundException:
+                    new PathNotFoundPopUp(Model, @pathNotFoundException).Show();
+                    Close();
+                    break;
+                case AccessException @accessException:
+                    new AccessDeniedPopUp(Model, @accessException).Show();
+                    Close();
+                    break;
+                case DiskNotReadyException @diskNotReadyException:
+                    new DiskNotReadyPopUp(Model, @diskNotReadyException).Show();
+                    Close();
+                    break;
+                case SystemErrorException @systemErrorException:
+                    new SystemErrorPopUp(Model, @systemErrorException).Show();
+                    Close();
+                    break;
+                default:
+                    new ErrorPopUp.ErrorPopUp(Model, exception).Show();
+                    break;
+            }
         }
     }
 }

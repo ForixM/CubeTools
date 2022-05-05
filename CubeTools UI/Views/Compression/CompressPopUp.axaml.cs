@@ -105,6 +105,8 @@ namespace CubeTools_UI.Views.Compression
             }
             catch (ManagerException e)
             {
+                e.Errorstd = "Unable to compress the archive";
+                _model!.View.SelectErrorPopUp(e);
             }
             
             var task = LibraryCompression.Compression.CompressDirectory(ft, data, _archiveFormat);

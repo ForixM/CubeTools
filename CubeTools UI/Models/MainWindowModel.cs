@@ -52,12 +52,10 @@ namespace CubeTools_UI.Models
                 if (e is ManagerException @managerException)
                 {
                     var popup = new Views.ErrorPopUp.ErrorPopUp(this, @managerException);
-                    popup.Show();
                 }
                 else
                 {
-                    var popup = new Views.ErrorPopUp.ErrorPopUp(this, new SystemErrorException("Critical error occured while loading the directory"));
-                    popup.Show();
+                    var popup = new Views.ErrorPopUp.SystemErrorPopUp(this, new SystemErrorException("Critical error occured while loading the directory"));
                 }
             }
             // Referencing THIS

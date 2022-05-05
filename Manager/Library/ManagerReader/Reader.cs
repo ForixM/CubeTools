@@ -301,7 +301,7 @@ namespace Library.ManagerReader
                 }
                 catch (Exception e)
                 {
-                    if (e is SecurityException)
+                    if (e is SecurityException or UnauthorizedAccessException)
                         throw new AccessException(path + " cannot be read", "GetFileSize");
                     throw new ManagerException("Reader error", "Medium", "Impossible to enumerate files",
                         path + " and their children could not be read", "GetFileSize");

@@ -81,7 +81,7 @@ namespace CubeTools_UI.Views.Actions
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to create a new file";
-                        new Views.ErrorPopUp.ErrorPopUp(_model!, @managerException).Show();
+                        _model.View.SelectErrorPopUp(@managerException);
                     }
                 }
             }

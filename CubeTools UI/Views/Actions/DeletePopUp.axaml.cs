@@ -15,7 +15,7 @@ namespace CubeTools_UI.Views.Actions
 {
     public class DeletePopUp : Window
     {
-        private MainWindowModel? Model;
+        private MainWindowModel? _model;
         private FileType _pointer;
 
         #region Init
@@ -23,12 +23,12 @@ namespace CubeTools_UI.Views.Actions
         public DeletePopUp()
         {
             InitializeComponent();
-            Model = null;
+            _model = null;
             _pointer = FileType.NullPointer;
         }
         public DeletePopUp(MainWindowModel vm, FileType pointer) : this()
         {
-            Model = vm;
+            _model = vm;
             _pointer = pointer;
         }
 
@@ -78,7 +78,7 @@ namespace CubeTools_UI.Views.Actions
                     ManagerWriter.Delete(_pointer);
             });
             // Remove reference from Directory Pointer
-            Model?.ModelNavigationBar.DirectoryPointer.Remove(_pointer);
+            _model?.ModelNavigationBar.DirectoryPointer.Remove(_pointer);
             // Run Tasks Async
             try
             {
@@ -93,14 +93,14 @@ namespace CubeTools_UI.Views.Actions
                     task.GetAwaiter().OnCompleted(() =>
                     {
                         loadingPopUp.Close();
-                        Model?.ReloadPath();
+                        _model?.ReloadPath();
                     });
                 }
                 // Run task sync
                 else
                 {
                     task.RunSynchronously();
-                    Model?.ReloadPath();
+                    _model?.ReloadPath();
                 }
             }
             catch (Exception exception)
@@ -108,7 +108,7 @@ namespace CubeTools_UI.Views.Actions
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = $"Unable to delete {_pointer.Name}";
-                    new Views.ErrorPopUp.ErrorPopUp(Model!, @managerException).Show();
+                    _model.View.SelectErrorPopUp(@managerException);
                 }
             }
         }

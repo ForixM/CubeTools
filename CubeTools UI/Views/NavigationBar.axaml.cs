@@ -54,7 +54,7 @@ namespace CubeTools_UI.Views
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to get the next file";
-                        new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                        new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException);
                     }
                     Model.QueueIndex--;
                 }

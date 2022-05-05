@@ -16,7 +16,7 @@ namespace CubeTools_UI.Views.Actions
 {
     public class DeleteMultiplePopUp : Window
     {
-        private MainWindowModel? Model;
+        private MainWindowModel? _model;
         public StackPanel GeneratorDisplay;
 
         public List<DeleteMultipleSelector> Selected;
@@ -34,7 +34,7 @@ namespace CubeTools_UI.Views.Actions
         }
         public DeleteMultiplePopUp(MainWindowModel vm, List<FileType> pointer) : this()
         {
-            Model = vm;
+            _model = vm;
             _pointers = pointer;
             // Init display
             foreach (var ft in _pointers)
@@ -79,7 +79,7 @@ namespace CubeTools_UI.Views.Actions
         
         private void OnCancelClicked(object? sender, RoutedEventArgs e) => Close();
         
-        private void OnClosing(object? sender, CancelEventArgs e) => Model!.ReloadPath();
+        private void OnClosing(object? sender, CancelEventArgs e) => _model!.ReloadPath();
 
         #endregion
         
@@ -93,7 +93,7 @@ namespace CubeTools_UI.Views.Actions
                 {
                     if (ft.IsDir) ManagerWriter.DeleteDir(ft);
                     else ManagerWriter.Delete(ft);
-                    Model?.ModelNavigationBar.DirectoryPointer.Remove(ft);
+                    _model?.ModelNavigationBar.DirectoryPointer.Remove(ft);
                 });
                 tasks.Add(task);
             }
@@ -106,7 +106,7 @@ namespace CubeTools_UI.Views.Actions
                 }
                 catch (ManagerException e)
                 {
-                    new ErrorPopUp.ErrorPopUp(Model!, e).Show();
+                    _model.View.SelectErrorPopUp(e);
                 }
             }
         }

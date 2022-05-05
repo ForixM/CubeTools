@@ -198,8 +198,7 @@ namespace CubeTools_UI.Views
             {
                 if (Model.ParentModel.ModelNavigationBar.DirectoryPointer.Path == ManagerReader.GetParent(source.Path).Replace('\\','/'))
                     return ManagerWriter.Copy(source.Path);
-                return ManagerWriter.Copy(source.Path,
-                        Model.ParentModel.ModelNavigationBar.DirectoryPointer.Path + "/" + source.Name);
+                return ManagerWriter.Copy(source.Path, Model.ParentModel.ModelNavigationBar.DirectoryPointer.Path + "/" + source.Name);
             });
             // Remove reference from Directory Pointer
             Model.ParentModel.ModelNavigationBar.DirectoryPointer.Remove(source);
@@ -224,7 +223,7 @@ namespace CubeTools_UI.Views
                         catch (Exception e)
                         {
                             if (e is ManagerException @managerException)
-                                new ErrorPopUp.ErrorPopUp(Model.ParentModel, managerException).Show();
+                                Model.ParentModel.View.SelectErrorPopUp(@managerException);
                         }
                         Model.ParentModel.ReloadPath();
                     });
@@ -241,7 +240,7 @@ namespace CubeTools_UI.Views
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = $"Unable to copy {source.Name}";
-                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel, @managerException).Show();
+                    Model.ParentModel.View.SelectErrorPopUp(@managerException);
                 }
             }
         }

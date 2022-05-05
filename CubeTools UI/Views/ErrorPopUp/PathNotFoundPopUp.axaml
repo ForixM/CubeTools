@@ -1,10 +1,11 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="CubeTools_UI.Views.ErrorPopUp.ErrorPopUp"
+        x:Class="CubeTools_UI.Views.ErrorPopUp.PathNotFoundPopUp"
         Width="400" Height="200"
+        MinWidth="350" MinHeight="135"
         CanResize="False"
         Topmost="True"
-        Title="An error occured"
+        Title="Path not found"
         KeyDown="OnEscapePressed">
         
         <Grid>
@@ -14,7 +15,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <Grid Grid.Column="0">
-                        <Image Name="ImageError" Source="../../Assets/CubeToolsIcons/CriticalError.ico" Height="100"/>
+                        <Image Name="ImageError" Source="../../Assets/CubeToolsIcons/Error.ico" Height="100"/>
                 </Grid>
                 
                 <Grid Grid.Column="1">
@@ -25,15 +26,22 @@
                         </Grid.RowDefinitions>
                         
                         <Grid Grid.Row="0">
-                                <TextBlock Text="ERROR" VerticalAlignment="Center" TextAlignment="Center" Foreground="#A56C00" FontSize="20"/>
+                                <TextBlock TextWrapping="Wrap" MaxLines="2" Text="Path could not be identified in your system" VerticalAlignment="Center" TextAlignment="Center" FontSize="14"/>
                         </Grid>
                         
                         <Grid Grid.Row="1">
-                                <TextBlock TextWrapping="Wrap" MaxLines="2" Text="A critical error occured" VerticalAlignment="Center" TextAlignment="Center" FontSize="14"/>
+                                <TextBlock TextWrapping="Wrap" MaxLines="3" Name="ContentError" VerticalAlignment="Center" TextAlignment="Center" FontSize="12" Foreground="#251A00"/>
                         </Grid>
                         
-                        <Grid Grid.Row="2">
-                                <TextBlock TextWrapping="Wrap" MaxLines="3" Name="ContentError" VerticalAlignment="Center" TextAlignment="Center" FontSize="12" Foreground="#251A00"/>
+                        <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto">
+            
+                                <Grid Grid.Column="0">
+                                        <Button Click="ButtonQuitClicked" Name="ButtonQuit" Content="Quit"/>
+                                </Grid>
+                        
+                                <Grid Grid.Column="1">
+                                        <Button Click="ButtonReloadClicked" Name="ButtonReload" Content="Reload"/>
+                                </Grid>
                         </Grid>
                 </Grid>
         </Grid>
