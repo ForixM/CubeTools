@@ -18,7 +18,7 @@
 		</Button>
 		
 		<Button Classes="Manager" Name="UploadButton" Click="Upload">
-			<Image Source="../../Assets/CubeToolsIconsCompressed/Downloads.ico"/>
+			<Image Source="../../Assets/CubeToolsIconsCompressed/Upload.ico"/>
 		</Button>
 		
 		<Button Classes="Manager" Name="CopyButton" Click="Copy">
