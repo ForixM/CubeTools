@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CubeTools_UI.Views;
+using CubeTools_UI.Views.Ftp;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.Pointers;

@@ -151,6 +151,14 @@
         <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Ftp\LocalFTPNavigationBar.axaml.cs">
+        <DependentUpon>NavigationBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Ftp\RemoteFTPNavigationBar.axaml.cs">
+        <DependentUpon>RemoteFTPNavigationBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="ViewModels" />
