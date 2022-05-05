@@ -53,7 +53,7 @@
 				<!-- Fifth column : Path bar-->
 				<Grid Grid.Column="4">
 					<Border CornerRadius="4" Background="White" Margin="0 1" >
-						<TextBox Name="CurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" />
+						<TextBox Name="LocalCurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" />
 					</Border>
 				</Grid>
 			</Grid>

@@ -51,7 +51,7 @@
                         </Grid>
                         
                         <!--Remote Files-->
-                        <Grid Column="1" RowDefinitions="65, 40, Auto">
+                        <Grid Column="1" RowDefinitions="65, 45, Auto">
                                 <Grid Row="0">
                                         <views:RemoteFtpNavigationBar Name="RemoteNavigationBar"/>
                                 </Grid>

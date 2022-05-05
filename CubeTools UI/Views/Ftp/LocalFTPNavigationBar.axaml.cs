@@ -18,7 +18,7 @@ namespace CubeTools_UI.Views.Ftp
         public LocalFtpNavigationBar()
         {
             InitializeComponent();
-            CurrentPathXaml = this.FindControl<TextBox>("CurrentPath");
+            CurrentPathXaml = this.FindControl<TextBox>("LocalCurrentPath");
             //Model = new NavigationBarModel(this);
             //DataContext = Model;
         }

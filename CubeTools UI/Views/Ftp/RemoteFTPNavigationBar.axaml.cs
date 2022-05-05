@@ -18,7 +18,7 @@ namespace CubeTools_UI.Views.Ftp
         public RemoteFtpNavigationBar()
         {
             InitializeComponent();
-            CurrentPathXaml = this.FindControl<TextBox>("CurrentPath");
+            CurrentPathXaml = this.FindControl<TextBox>("RemoteCurrentPath");
             //Model = new NavigationBarModel(this);
             //DataContext = Model;
         }
