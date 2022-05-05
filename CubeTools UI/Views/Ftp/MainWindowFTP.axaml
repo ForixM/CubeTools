@@ -11,7 +11,8 @@
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="-1"
         x:Class="CubeTools_UI.Views.Ftp.MainWindowFTP"
-        Title="CubeTools FTP">
+        Title="CubeTools FTP"
+        Icon="../../Assets/CubeToolsIconsCompressed/FTP.ico">
         
         <Grid RowDefinitions="35, 100, Auto">
                 
