@@ -9,7 +9,7 @@ namespace CubeTools_UI.Models
         #region References
         
         public PathsBar View;
-        public MainWindowModel? ParentModel;
+        public LocalModel? ParentModel;
         
         #endregion
         

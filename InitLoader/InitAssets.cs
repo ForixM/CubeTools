@@ -1,4 +1,5 @@
-﻿using Library.ManagerReader;
+﻿using Library.ManagerExceptions;
+using Library.ManagerReader;
 using Library.ManagerWriter;
 
 namespace InitLoader
@@ -11,7 +12,7 @@ namespace InitLoader
         private static void InitAssets()
         {
             // Get pack of assets
-            /*
+            
             if (!Directory.Exists("Assets") || !Directory.Exists("Assets/default"))
                 throw new ManagerException("Critical Error while loading assets", "Crash", "Assets not found","Assets could not be find in the given env");
             if (ConfigLoader.ConfigLoader.Settings.AssetsPath != "Assets/default")
@@ -21,7 +22,7 @@ namespace InitLoader
                 else
                     ConfigLoader.ConfigLoader.Settings.AssetsPath = "Assets/default";
             }
-            */
+            
             // 
         }
 

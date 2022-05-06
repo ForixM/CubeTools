@@ -13,26 +13,22 @@ namespace CubeTools_UI.Views.Actions
 {
     public class CreateFolderPopUp : Window
     {
-        private MainWindowModel _model;
-        private TextBox TextEntered;
+        private readonly LocalModel _model;
+        private readonly TextBox _textEntered;
 
         #region Init
         
         public CreateFolderPopUp()
         {
             InitializeComponent();
-            TextEntered = this.FindControl<TextBox>("TextEntered");
-            _model = null;
+            _textEntered = this.FindControl<TextBox>("TextEntered");
         }
-        public CreateFolderPopUp(MainWindowModel vm) : this()
+        public CreateFolderPopUp(LocalModel vm) : this()
         {
             _model = vm;
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
 
@@ -41,23 +37,24 @@ namespace CubeTools_UI.Views.Actions
         private void OnEnterPressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Enter)
-                CreateDir(TextEntered.Text);
+                CreateDir(_textEntered.Text);
         }
 
-        private void OnPressed(object? sender, RoutedEventArgs e)
-        {
-            CreateDir(TextEntered.Text);
-        }
+        private void OnPressed(object? sender, RoutedEventArgs e) => CreateDir(_textEntered.Text);
         
-        private void OnCancelPressed(object? sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        private void OnCancelPressed(object? sender, RoutedEventArgs e) => Close(true);
         
         private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
         {
-            if (e.Key is Key.Escape) Close();
-            if (e.Key is Key.Enter) CreateDir(TextEntered.Text);
+            switch (e.Key)
+            {
+                case Key.Escape:
+                    Close();
+                    break;
+                case Key.Enter:
+                    CreateDir(_textEntered.Text);
+                    break;
+            }
         }
         
         #endregion
@@ -67,9 +64,9 @@ namespace CubeTools_UI.Views.Actions
         private void CreateDir(string name)
         {
             if (!ManagerReader.IsPathCorrect(name))
-                TextEntered.Text = "Invalid Text !";
+                _textEntered.Text = "Invalid Text !";
             else if (Directory.Exists(name))
-                new Views.ErrorPopUp.ErrorPopUp(_model, new ReplaceException("File already exists !")).Show();
+                _model.SelectErrorPopUp(new ReplaceException("File already exists !"));
             else
             {
                 try
@@ -85,7 +82,7 @@ namespace CubeTools_UI.Views.Actions
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to create a new folder";
-                        _model.View.SelectErrorPopUp(@managerException);
+                        _model.SelectErrorPopUp(@managerException);
                     }
                 }
             }

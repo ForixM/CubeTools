@@ -15,21 +15,13 @@ namespace CubeTools_UI.Views.Compression
 {
     public class CompressPopUp : Window
     {
-        private readonly MainWindowModel? _model;
-
-        #region Visual References
+        private readonly LocalModel? _model;
         
-        private TextBox _archiveNameVisual;
-        private ComboBox _archiveFormatVisual;
+        private readonly TextBox _archiveNameVisual;
+        private readonly ComboBox _archiveFormatVisual;
         
-        #endregion
-        
-        #region Variables
-
         private OutArchiveFormat _archiveFormat;
         private List<FileType> _datas;
-        
-        #endregion
 
         #region Init
         
@@ -43,7 +35,7 @@ namespace CubeTools_UI.Views.Compression
             _model = null;
             _datas = new List<FileType>();
         }
-        public CompressPopUp(MainWindowModel vm, List<FileType> datasIn) : this()
+        public CompressPopUp(LocalModel vm, List<FileType> datasIn) : this()
         {
             _model = vm;
             _datas = datasIn;
@@ -51,10 +43,7 @@ namespace CubeTools_UI.Views.Compression
             _archiveNameVisual.Text = ManagerReader.GetPathToName(parent);
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
 
@@ -106,7 +95,7 @@ namespace CubeTools_UI.Views.Compression
             catch (ManagerException e)
             {
                 e.Errorstd = "Unable to compress the archive";
-                _model!.View.SelectErrorPopUp(e);
+                _model!.SelectErrorPopUp(e);
             }
             
             var task = LibraryCompression.Compression.CompressDirectory(ft, data, _archiveFormat);

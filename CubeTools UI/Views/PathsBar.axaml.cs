@@ -9,7 +9,8 @@ namespace CubeTools_UI.Views
 {
     public class PathsBar : UserControl
     {
-        public static PathsBarModel Model;
+        public readonly PathsBarModel Model;
+        public static PathsBarModel? LastModel;
         public StackPanel Generator;
 
         public PathsBar()
@@ -17,17 +18,16 @@ namespace CubeTools_UI.Views
             InitializeComponent();
             Generator = this.FindControl<StackPanel>("Generator");
             Model = new PathsBarModel(this);
+            LastModel = Model;
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         public void ReloadPath(List<FileType> ftList)
         {
             Generator.Children.Clear();
             int size = ftList.Count;
+            //double height = 0;
             for (int i = 0; i < size; i++)
             {
                 var pi = new PointerItem(ftList[i], Model.ParentModel);
@@ -38,6 +38,7 @@ namespace CubeTools_UI.Views
                 Generator.Children.Add(pi);
                 size = ftList.Count;
             }
+            //((ScrollViewer)Generator.Parent!).Height = height;
         }
     }
 }

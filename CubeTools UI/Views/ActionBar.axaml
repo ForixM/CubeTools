@@ -3,7 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="CubeTools_UI.Views.ActionBar">
+             x:Class="CubeTools_UI.Views.ActionBar"
+             xmlns:resource="clr-namespace:ConfigLoader.Settings;assembly=ConfigLoader">
 	
 	<UserControl.Styles>
 		<StyleInclude Source="/Styles/Styles.axaml"/>
@@ -31,7 +32,7 @@
 		<Grid Grid.Column="0">
 			<Button Classes="Manager" Name="AddFileButton" Click="CreateFile">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets/CubeToolsIconsCompressed/Create.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:AssetsResource.CreateIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>

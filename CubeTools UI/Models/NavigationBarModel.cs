@@ -43,7 +43,7 @@ namespace CubeTools_UI.Models
         #region References
         
         public NavigationBar View;
-        public MainWindowModel? ParentModel;
+        public LocalModel? ParentModel;
         
         #endregion
 

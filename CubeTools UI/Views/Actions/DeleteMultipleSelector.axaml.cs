@@ -1,26 +1,20 @@
-using System.IO;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using CubeTools_UI.Models;
-using CubeTools_UI.Views.PopUps;
 using Library.Pointers;
 
 namespace CubeTools_UI.Views.Actions
 {
     public class DeleteMultipleSelector : UserControl
     {
-        private DeleteMultiplePopUp _main;
+        private readonly DeleteMultiplePopUp _main;
         
         #region Variables
         
-        public FileType Pointer;
+        public readonly FileType Pointer;
 
-        private CheckBox _checkBox;
-        private TextBlock _name;
+        private readonly CheckBox _checkBox;
+        private readonly TextBlock _name;
         
         #endregion
         

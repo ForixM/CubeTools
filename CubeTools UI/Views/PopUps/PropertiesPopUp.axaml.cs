@@ -31,7 +31,7 @@ namespace CubeTools_UI.Views.PopUps
         private bool _userActivation;
 
         private readonly FileType _pointer;
-        private readonly MainWindowModel? _parentModel;
+        private readonly LocalModel? _parentModel;
         
         #region Init
         public PropertiesPopUp()
@@ -53,7 +53,7 @@ namespace CubeTools_UI.Views.PopUps
             _userActivation = false;
             _parentModel = null;
         }
-        public PropertiesPopUp(FileType ft, MainWindowModel main) : this()
+        public PropertiesPopUp(FileType ft, LocalModel main) : this()
         {
             _pointer = ft;
             _pointer.LoadSize();
@@ -111,8 +111,7 @@ namespace CubeTools_UI.Views.PopUps
             }
             catch (ManagerException exception)
             {
-                var popup = new ErrorPopUp.ErrorPopUp(_parentModel!, exception);
-                popup.Show();
+                _parentModel?.SelectErrorPopUp(exception);
                 _userActivation = true;
                 _readOnly.IsChecked = !_readOnly.IsChecked;
             }
@@ -132,8 +131,7 @@ namespace CubeTools_UI.Views.PopUps
             }
             catch (ManagerException exception)
             {
-                var popup = new ErrorPopUp.ErrorPopUp(_parentModel!, exception);
-                popup.Show();
+                _parentModel?.SelectErrorPopUp(exception);
                 _userActivation = true;
                 _readOnly.IsChecked = !_readOnly.IsChecked;
             }
@@ -153,8 +151,7 @@ namespace CubeTools_UI.Views.PopUps
             }
             catch (ManagerException exception)
             {
-                var popup = new ErrorPopUp.ErrorPopUp(_parentModel!, exception);
-                popup.Show();
+                _parentModel?.SelectErrorPopUp(exception);
                 _userActivation = true;
                 _hidden.IsChecked = !_hidden.IsChecked;
             }
@@ -174,8 +171,7 @@ namespace CubeTools_UI.Views.PopUps
             }
             catch (ManagerException exception)
             {
-                new ErrorPopUp.ErrorPopUp(_parentModel!, exception).Show();
-                _userActivation = true;
+                _parentModel?.SelectErrorPopUp(exception);
                 _hidden.IsChecked = !_hidden.IsChecked;
             }
         }

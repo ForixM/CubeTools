@@ -9,7 +9,7 @@ namespace CubeTools_UI.Views.Actions
 {
     public class SortPopUp : Window
     {
-        private readonly MainWindowModel? _main;
+        private readonly LocalModel? _main;
 
         #region Init
         
@@ -19,15 +19,12 @@ namespace CubeTools_UI.Views.Actions
             _main = null;
         }
         
-        public SortPopUp(MainWindowModel main) : this()
+        public SortPopUp(LocalModel main) : this()
         {
             _main = main;
         }
         
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
 

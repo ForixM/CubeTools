@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
+using CubeTools_UI.Views.Settings;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 
@@ -11,7 +12,8 @@ namespace CubeTools_UI.Views
 {
     public class NavigationBar : UserControl
     {
-        public static NavigationBarModel Model;
+        public readonly NavigationBarModel Model;
+        public static NavigationBarModel? LastModel;
         public TextBox CurrentPathXaml;
         
         #region Init
@@ -20,7 +22,7 @@ namespace CubeTools_UI.Views
             InitializeComponent();
             CurrentPathXaml = this.FindControl<TextBox>("CurrentPath");
             Model = new NavigationBarModel(this);
-            DataContext = Model;
+            LastModel = Model;
         }
 
         private void InitializeComponent()
@@ -42,7 +44,7 @@ namespace CubeTools_UI.Views
         /// </summary>
         private void LeftArrowClick(object? sender, RoutedEventArgs e)
         {
-            if (Model.QueueIndex < Model.QueuePointers.Count - 1)
+            if (Model.QueueIndex < Model.QueuePointers.Count - 1 && Model.ParentModel != null)
             {
                 Model.QueueIndex++;
                 try
@@ -54,7 +56,7 @@ namespace CubeTools_UI.Views
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to get the next file";
-                        new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException);
+                        Model.ParentModel!.SelectErrorPopUp(@managerException);
                     }
                     Model.QueueIndex--;
                 }
@@ -67,7 +69,7 @@ namespace CubeTools_UI.Views
         private void RightArrowClick(object? sender, RoutedEventArgs e)
         {
             // End of the queue
-            if (Model.QueueIndex > 0)
+            if (Model.QueueIndex > 0 && Model.ParentModel != null)
             {
                 // Get the index before
                 Model.QueueIndex--;
@@ -81,7 +83,7 @@ namespace CubeTools_UI.Views
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to get the last file";
-                        new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                        Model.ParentModel!.SelectErrorPopUp(@managerException);
                     }
                     Model.QueueIndex--;
                 }
@@ -106,7 +108,7 @@ namespace CubeTools_UI.Views
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = "Unable to get the parent file";
-                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                    Model.ParentModel!.SelectErrorPopUp(@managerException);
                 }
             }
             Model.QueuePointers.Add(parent);
@@ -119,8 +121,8 @@ namespace CubeTools_UI.Views
             {
                 if (exception is ManagerException @managerException)
                 {
-                    @managerException.Errorstd = "Unable to get the parent file";
-                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                    @managerException.Errorstd = "Unable to get the parent";
+                    Model.ParentModel!.SelectErrorPopUp(@managerException);
                 }
             }
         }
@@ -139,8 +141,8 @@ namespace CubeTools_UI.Views
             {
                 if (exception is ManagerException @managerException)
                 {
-                    @managerException.Errorstd = "Unable to reload file";
-                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                    @managerException.Errorstd = "Unable to reload files and folders";
+                    Model.ParentModel!.SelectErrorPopUp(@managerException);
                 }
             }
         }
@@ -148,10 +150,7 @@ namespace CubeTools_UI.Views
         /// <summary>
         /// The settings is opened
         /// </summary>
-        private void SettingsClick(object? sender, RoutedEventArgs e)
-        {
-            // TODO Implement a settings Window
-        }
+        private void SettingsClick(object? sender, RoutedEventArgs e) => new SettingsWindow().Show();
         
         #endregion
     }

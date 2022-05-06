@@ -34,6 +34,7 @@
                         
                         <Grid Grid.Row="2">
                                 <Button Click="ButtonReloadClicked" Name="ButtonReload" Content="Reload"/>
+                                <Button Click="ButtonCancelClicked" Name="ButtonCancel" Content="Cancel"/>
                         </Grid>
                 </Grid>
         </Grid>

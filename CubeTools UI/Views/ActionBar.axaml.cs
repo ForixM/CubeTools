@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -8,7 +7,6 @@ using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
 using CubeTools_UI.Views.Actions;
 using CubeTools_UI.Views.Compression;
-using CubeTools_UI.Views.PopUps;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
@@ -18,19 +16,18 @@ namespace CubeTools_UI.Views
 {
     public class ActionBar : UserControl
     {
-        public static ActionBarModel Model;
+        public static ActionBarModel? LastModel;
+        public readonly ActionBarModel Model;
 
         #region Init
+        
         public ActionBar()
         {
             InitializeComponent();
             Model = new ActionBarModel(this);
+            LastModel = Model;
         }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
 
@@ -41,7 +38,13 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void CreateFile(object? sender, RoutedEventArgs e)
         {
-            new CreatePopUp(Model.ParentModel).Show();
+            
+            var popup = new CreatePopUp(Model.ParentModel);
+            if (Model.ParentModel.ParentModel != null)
+            {
+                Task task = popup.ShowDialog(Model.ParentModel.ParentModel.View);
+                task.GetAwaiter().OnCompleted(Model.ParentModel.ReloadPath);
+            }
         }
 
         /// <summary>
@@ -49,7 +52,12 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void CreatDir(object? sender, RoutedEventArgs e)
         {
-            new CreateFolderPopUp(Model.ParentModel).Show();
+            var popup = new CreateFolderPopUp(Model.ParentModel);
+            if (Model.ParentModel.ParentModel != null)
+            {
+                Task task = popup.ShowDialog(Model.ParentModel.ParentModel.View);
+                task.GetAwaiter().OnCompleted(Model.ParentModel.ReloadPath);
+            }
         }
 
         /// <summary>
@@ -86,9 +94,28 @@ namespace CubeTools_UI.Views
             foreach (var item in Model.CopiedXaml)
                 CopyPointer(item.Pointer);
 
-            // 2) Destroy Cut
-            foreach (var item in Model.CutXaml)
-                new DeletePopUp(Model.ParentModel, item.Pointer).Show();
+            switch (Model.CutXaml.Count)
+            {
+                // 2) Destroy Cut
+                case 0:
+                    return;
+                case 1:
+                    var popupDeleteSingle = new DeletePopUp(Model.ParentModel, Model.CutXaml[0].Pointer);
+                    if (Model.ParentModel.ParentModel != null)
+                    {
+                        Task task = popupDeleteSingle.ShowDialog(Model.ParentModel.ParentModel.View);
+                        task.GetAwaiter().OnCompleted(Model.ParentModel.ReloadPath);
+                    }
+                    break;
+                default:
+                    var popupDeleteMultiple = new DeleteMultiplePopUp(Model.ParentModel, Model.CutXaml.Select(pointer => pointer.Pointer).ToList());
+                    if (Model.ParentModel.ParentModel != null)
+                    {
+                        Task task = popupDeleteMultiple.ShowDialog(Model.ParentModel.ParentModel.View);
+                        task.GetAwaiter().OnCompleted(Model.ParentModel.ReloadPath);
+                    }
+                    break;
+            }
         }
 
         /// <summary>
@@ -98,10 +125,8 @@ namespace CubeTools_UI.Views
         {
             if (Model.SelectedXaml.Count < 1) return;
             
-            if (Model.SelectedXaml.Count == 1)
-                new RenamePopUp(Model.SelectedXaml[0].Pointer, Model.ParentModel.ModelNavigationBar.DirectoryPointer.ChildrenFiles, Model.ParentModel).Show();
-            else
-                new ErrorPopUp.ErrorPopUp(Model.ParentModel, new ManagerException("Unable to rename multiple data")).Show();
+            if (Model.SelectedXaml.Count == 1) new RenamePopUp(Model.SelectedXaml[0].Pointer, Model.ParentModel.ModelNavigationBar.DirectoryPointer.ChildrenFiles, Model.ParentModel).Show();
+            else Model.ParentModel.SelectErrorPopUp(new ManagerException("Unable to rename multiple data"));
         }
 
         /// <summary>
@@ -127,8 +152,12 @@ namespace CubeTools_UI.Views
         /// </summary>
         public void Search(object? sender, RoutedEventArgs e)
         {
-            var searchPopup = new SearchPopUp(Model);
-            searchPopup.Show();
+            var popup = new SearchPopUp(Model);
+            if (Model.ParentModel.ParentModel != null)
+            {
+                Task task = popup.ShowDialog(Model.ParentModel.ParentModel.View);
+                task.GetAwaiter().OnCompleted(Model.ParentModel.ReloadPath);
+            }
         }
 
         /// <summary>
@@ -137,7 +166,11 @@ namespace CubeTools_UI.Views
         public void Sort(object? sender, RoutedEventArgs e)
         {
             var popup = new SortPopUp(Model.ParentModel);
-            popup.Show();
+            if (Model.ParentModel.ParentModel != null)
+            {
+                Task task = popup.ShowDialog(Model.ParentModel.ParentModel.View);
+                task.GetAwaiter().OnCompleted(Model.ParentModel.ReloadPath);
+            }
         }
         
         /// <summary>
@@ -178,10 +211,26 @@ namespace CubeTools_UI.Views
 
             // Opening extract for archives
             var archiveTypes = archives.ToList();
-            if (archiveTypes.Any()) new ExtractPopUp(Model.ParentModel, archiveTypes).Show();
+            if (archiveTypes.Any())
+            {
+                var popup = new ExtractPopUp(Model.ParentModel, archiveTypes);
+                if (Model.ParentModel.ParentModel != null)
+                {
+                    Task task = popup.ShowDialog(Model.ParentModel.ParentModel.View);
+                    task.GetAwaiter().OnCompleted(Model.ParentModel.ReloadPath);
+                }
+            }
 
             var allTypes = others.ToList();
-            if (allTypes.Any()) new CompressPopUp(Model.ParentModel, allTypes).Show();
+            if (allTypes.Any())
+            {
+                var popup = new CompressPopUp(Model.ParentModel, allTypes);
+                if (Model.ParentModel.ParentModel != null)
+                {
+                    Task task = popup.ShowDialog(Model.ParentModel.ParentModel.View);
+                    task.GetAwaiter().OnCompleted(Model.ParentModel.ReloadPath);
+                }
+            }
         }
         
         #endregion
@@ -220,7 +269,7 @@ namespace CubeTools_UI.Views
                         catch (Exception e)
                         {
                             if (e is ManagerException @managerException)
-                                Model.ParentModel.View.SelectErrorPopUp(@managerException);
+                                Model.ParentModel.SelectErrorPopUp(@managerException);
                         }
                         Model.ParentModel.ReloadPath();
                     });
@@ -237,7 +286,7 @@ namespace CubeTools_UI.Views
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = $"Unable to copy {source.Name}";
-                    Model.ParentModel.View.SelectErrorPopUp(@managerException);
+                    Model.ParentModel.SelectErrorPopUp(@managerException);
                 }
             }
         }

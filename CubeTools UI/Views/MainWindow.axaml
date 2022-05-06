@@ -39,24 +39,7 @@
             </Grid>
             
             <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="65" />
-                    <RowDefinition Height="45" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-				
-                <Grid Grid.Row="0">
-                    <views:NavigationBar/>
-                </Grid>
-                    
-                <Grid Grid.Row="1">
-                    <views:ActionBar/>
-                </Grid>
-                    
-                <Grid Grid.Row="2">
-                    <views:PathsBar/>
-                </Grid>
-                
+                <views:Local/>
             </Grid>
             
         </Grid>

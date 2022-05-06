@@ -1,14 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:viewModels="clr-namespace:CubeTools_UI.Models"
              x:Class="CubeTools_UI.Views.PathsBar">
 	
-	<!-- Link between DataContext and ViewModel -->
-	<Design.DataContext>
-		<viewModels:PathsBarModel/>
-	</Design.DataContext>
-	<ScrollViewer>
-		<StackPanel Name="Generator">
-		</StackPanel>
+	<ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden">
+		<StackPanel Name="Generator"/>
 	</ScrollViewer>
 </UserControl>

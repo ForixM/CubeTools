@@ -7,8 +7,7 @@
         x:Class="CubeTools_UI.Views.Actions.DeleteMultiplePopUp"
         Title="Delete multiple"
         Icon="../../Assets/OLD/delete.ico"
-        KeyDown="OnKeyPressedWindow"
-        Closing="OnClosing">
+        KeyDown="OnKeyPressedWindow">
         
         <Grid>
                 <Grid.ColumnDefinitions>

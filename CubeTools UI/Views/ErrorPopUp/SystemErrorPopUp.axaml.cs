@@ -10,47 +10,30 @@ namespace CubeTools_UI.Views.ErrorPopUp
     public class SystemErrorPopUp : Window
     {
         
-        #region Attached Components
-        
         public readonly TextBlock ContentError;
-        private readonly Button ButtonQuit;
-        private readonly Button ButtonReload;
+        private readonly Button _buttonQuit;
+        private readonly Button _buttonReload;
         
-        #endregion
-
-        public readonly MainWindowModel? ParentModel;
-
         public SystemErrorPopUp()
         {
             InitializeComponent();
             ContentError = this.FindControl<TextBlock>("ContentError");
-            ButtonQuit = this.FindControl<Button>("ButtonQuit");
-            ButtonReload = this.FindControl<Button>("ButtonReload");
+            _buttonQuit = this.FindControl<Button>("ButtonQuit");
+            _buttonReload = this.FindControl<Button>("ButtonReload");
         }
-        public SystemErrorPopUp(MainWindowModel parent) : this()
-        {
-            ParentModel = parent;
-        }
-        public SystemErrorPopUp(MainWindowModel parent,SystemErrorException exception) : this(parent)
+        public SystemErrorPopUp(SystemErrorException exception) : this()
         {
             ContentError.Text = exception.ErrorMessage;
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
 
         // EVENTS
 
         private void ButtonQuitClicked(object? sender, RoutedEventArgs e) => Close();
 
-        private void ButtonReloadClicked(object? sender, RoutedEventArgs e)
-        {
-            ParentModel!.ReloadPath();
-            Close();
-        }
+        private void ButtonReloadClicked(object? sender, RoutedEventArgs e) => Close();
 
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {

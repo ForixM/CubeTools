@@ -1,31 +1,19 @@
-// System's imports
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Avalonia.Controls;
 // CubeTools UIs Imports
 using CubeTools_UI.Views;
-// Libraries Imports
-using Library.ManagerExceptions;
-using Library.ManagerReader;
-using Library.Pointers;
 
 namespace CubeTools_UI.Models
 {
-    public class MainWindowModel : BaseModel
+    public class MainWindowModel
     {
-
         public MainWindow View;
         public static string CubeToolsPath;
 
         public bool IsCtrlPressed;
         
         #region Children ViewModels
-        
-        public readonly ActionBarModel ModelActionBar;
+
+        public readonly LocalModel ModelLocal;
         public readonly LinkBarModel ModelLinkBar;
-        public readonly NavigationBarModel ModelNavigationBar;
-        public readonly PathsBarModel ModelPathsBar;
 
         #endregion
 
@@ -34,43 +22,13 @@ namespace CubeTools_UI.Models
         public MainWindowModel()
         {
             IsCtrlPressed = false;
-            CubeToolsPath = Directory.GetCurrentDirectory();
-            // ActionBar : Setting up ModelXaml
-            ModelActionBar = ActionBar.Model;
-            // LinkBar
-            ModelLinkBar = LinkBar.Model;
             // NavigationBar
-            ModelNavigationBar = NavigationBar.Model;
+            ModelLinkBar = LinkBar.LastModel;
             // PathsBar
-            ModelPathsBar = PathsBar.Model;
-            try
-            {
-                // Setting up loaded directory
-                ModelNavigationBar.DirectoryPointer = new DirectoryType(Directory.GetCurrentDirectory());
-            }
-            catch (Exception e)
-            {
-                if (e is ManagerException @managerException)
-                {
-                    var popup = new Views.ErrorPopUp.ErrorPopUp(this, @managerException);
-                }
-                else
-                {
-                    var popup = new Views.ErrorPopUp.SystemErrorPopUp(this, new SystemErrorException("Critical error occured while loading the directory"));
-                }
-            }
+            ModelLocal = Local.LastModel;
             // Referencing THIS
-            ModelNavigationBar.ParentModel = this;
-            ModelPathsBar.ParentModel = this;
+            ModelLocal.ParentModel = this;
             ModelLinkBar.ParentModel = this;
-            ModelActionBar.ParentModel = this;
-            // Setting up current path
-            ModelNavigationBar.View.CurrentPathXaml.Text = ModelNavigationBar.DirectoryPointer.Path;
-            // Setting up Queue
-            ModelNavigationBar.QueuePointers = new List<string>(){ModelNavigationBar.DirectoryPointer.Path};
-            ModelNavigationBar.QueueIndex = 0;
-            // Setting up Items
-            ModelPathsBar.ReloadPath(ModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
 
         public MainWindowModel(MainWindow view) : this()
@@ -78,69 +36,6 @@ namespace CubeTools_UI.Models
             View = view;
         }
 
-        #endregion
-
-        #region Process
-        
-        /// <summary>
-        /// Access the given path by reloading the current directory or accessing a file
-        /// </summary>
-        /// <param name="path">The given path to access (Either a file or a directory)</param>
-        /// <param name="isdir">Whether it is a directory or not</param>
-        public void AccessPath(string path, bool isdir=true)
-        {
-            if (!isdir)
-            {
-                try
-                {
-                    ManagerReader.AutoLaunchAppProcess(path);
-                }
-                catch (Exception e)
-                {
-                    if (e is ManagerException @managerException) View.SelectErrorPopUp(@managerException);
-                }
-            }
-            else
-            {
-                try
-                {
-                    ModelNavigationBar.DirectoryPointer.ChangeDirectory(path);
-                }
-                catch (Exception e)
-                {
-                    if (e is ManagerException @managerException) View.SelectErrorPopUp(@managerException);
-                    else View.SelectErrorPopUp(new SystemErrorException("Critical error occured while loading the folder"));
-                }
-                // Setting up the Path for UI
-                ModelNavigationBar.View.CurrentPathXaml.Text = ModelNavigationBar.DirectoryPointer.Path;
-                // Modified ListBox associated
-                ModelPathsBar.ReloadPath(ModelNavigationBar.DirectoryPointer.ChildrenFiles);
-                // Adding path to queue
-                ModelNavigationBar.QueuePointers.Add(path);
-                if (ModelNavigationBar.QueuePointers.Count >= 9)
-                {
-                    ModelNavigationBar.QueuePointers.RemoveAt(0);
-                    ModelNavigationBar.QueueIndex--;
-                }
-            }
-            ModelActionBar.SelectedXaml = new List<PointerItem>();
-        }
-
-        /// <summary>
-        /// Reload the current directory
-        /// </summary>
-        public void ReloadPath()
-        {
-            try
-            {
-                ModelNavigationBar.DirectoryPointer.SetChildrenFiles();
-            }
-            catch (Exception e)
-            {
-                if (e is ManagerException @managerException) View.SelectErrorPopUp(@managerException);
-            }
-            ModelPathsBar.ReloadPath(ModelNavigationBar.DirectoryPointer.ChildrenFiles);
-        }
         #endregion
     }
 }

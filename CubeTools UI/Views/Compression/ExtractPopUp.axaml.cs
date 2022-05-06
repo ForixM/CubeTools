@@ -11,7 +11,7 @@ namespace CubeTools_UI.Views.Compression
 {
     public class ExtractPopUp : Window
     {
-        private MainWindowModel? _model;
+        private LocalModel? _model;
 
         private StackPanel _archiveInfo;
         private List<FileType> _data;
@@ -26,7 +26,7 @@ namespace CubeTools_UI.Views.Compression
             _model = null;
             _data = new List<FileType>();
         }
-        public ExtractPopUp(MainWindowModel vm, List<FileType> dataIn) : this()
+        public ExtractPopUp(LocalModel vm, List<FileType> dataIn) : this()
         {
             _model = vm;
             _data = dataIn;
@@ -34,10 +34,7 @@ namespace CubeTools_UI.Views.Compression
             foreach (var ft in _data) _archiveInfo.Children.Add(new TextBlock { Text = ft.Name});
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
 

@@ -12,13 +12,13 @@ namespace CubeTools_UI.Views.Ftp
     public class LocalFtpNavigationBar : UserControl
     {
         public static NavigationBarModel Model;
-        public TextBox CurrentPathXaml;
+        public TextBox LocalCurrentPath;
         
         #region Init
         public LocalFtpNavigationBar()
         {
             InitializeComponent();
-            CurrentPathXaml = this.FindControl<TextBox>("LocalCurrentPath");
+            LocalCurrentPath = this.FindControl<TextBox>("LocalCurrentPath");
             //Model = new NavigationBarModel(this);
             //DataContext = Model;
         }
@@ -54,7 +54,7 @@ namespace CubeTools_UI.Views.Ftp
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to get the next file";
-                        new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                        new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
                     }
                     Model.QueueIndex--;
                 }
@@ -81,7 +81,7 @@ namespace CubeTools_UI.Views.Ftp
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to get the last file";
-                        new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                        new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
                     }
                     Model.QueueIndex--;
                 }
@@ -106,7 +106,7 @@ namespace CubeTools_UI.Views.Ftp
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = "Unable to get the parent file";
-                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                    new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
                 }
             }
             Model.QueuePointers.Add(parent);
@@ -120,7 +120,7 @@ namespace CubeTools_UI.Views.Ftp
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = "Unable to get the parent file";
-                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                    new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
                 }
             }
         }
@@ -140,7 +140,7 @@ namespace CubeTools_UI.Views.Ftp
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = "Unable to reload file";
-                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                    new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
                 }
             }
         }

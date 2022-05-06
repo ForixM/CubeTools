@@ -6,19 +6,11 @@ namespace CubeTools_UI.Models
 {
     public class LinkBarModel
     {
-        #region Models Variables
-
         // MODELS VARIABLE 
         public Dictionary<string, string> StaticPaths;
 
-        #endregion
-
-        #region References
-        
         public MainWindowModel? ParentModel;
         public LinkBar View;
-        
-        #endregion
         
         public LinkBarModel(LinkBar view)
         {

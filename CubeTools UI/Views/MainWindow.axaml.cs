@@ -2,19 +2,18 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
-using CubeTools_UI.Views.ErrorPopUp;
 using CubeTools_UI.Views.Settings;
-using Library.ManagerExceptions;
 
 namespace CubeTools_UI.Views
 {
     public class MainWindow : Window
     {
         public MainWindowModel Model;
+        
         public MainWindow()
         {
             InitializeComponent();
-            Model = new MainWindowModel();
+            Model = new MainWindowModel(this);
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -28,14 +27,14 @@ namespace CubeTools_UI.Views
                     Model.IsCtrlPressed = true;
                     break;
                 case Key.Delete :
-                    Model.ModelActionBar.View.Delete(sender, e);
+                    Model.ModelLocal.ModelActionBar.View.Delete(sender, e);
                     break;
                 case Key.Enter :
-                    if (Model.ModelActionBar.SelectedXaml.Count != 0) 
-                        Model.AccessPath(Model.ModelActionBar.SelectedXaml[0].Pointer.Path);
+                    if (Model.ModelLocal.ModelActionBar.SelectedXaml.Count != 0) 
+                        Model.ModelLocal.AccessPath(Model.ModelLocal.ModelActionBar.SelectedXaml[0].Pointer.Path);
                     break;
                 case Key.F2 :
-                    Model.ModelActionBar.View.Rename(sender, e);
+                    Model.ModelLocal.ModelActionBar.View.Rename(sender, e);
                     break;
                 default:
                     if (Model.IsCtrlPressed)
@@ -49,45 +48,45 @@ namespace CubeTools_UI.Views
                                 new MainWindow().Show();
                                 break;
                             case Key.C:
-                                Model.ModelActionBar.View.Copy(sender, e);
+                                Model.ModelLocal.ModelActionBar.View.Copy(sender, e);
                                 break;
                             case Key.X:
-                                Model.ModelActionBar.View.Cut(sender, e);
+                                Model.ModelLocal.ModelActionBar.View.Cut(sender, e);
                                 break;
                             case Key.V:
-                                Model.ModelActionBar.View.Paste(sender, e);
+                                Model.ModelLocal.ModelActionBar.View.Paste(sender, e);
                                 break;
                             case Key.A:
                                 // All items are selected
-                                if (Model.ModelActionBar.SelectedXaml.Count ==
-                                    Model.ModelPathsBar.View.Generator.Children.Count)
+                                if (Model.ModelLocal.ModelActionBar.SelectedXaml.Count ==
+                                    Model.ModelLocal.ModelPathsBar.View.Generator.Children.Count)
                                 {
-                                    Model.ModelActionBar.SelectedXaml.Clear();
-                                    int size = Model.ModelPathsBar.View.Generator.Children.Count;
+                                    Model.ModelLocal.ModelActionBar.SelectedXaml.Clear();
+                                    int size = Model.ModelLocal.ModelPathsBar.View.Generator.Children.Count;
                                     for (int i = 0; i < size; i++)
                                     {
-                                        Model.ModelActionBar.SelectedXaml.Add((PointerItem) Model.ModelPathsBar.View.Generator.Children[i]);
-                                        size = Model.ModelPathsBar.View.Generator.Children.Count;
+                                        Model.ModelLocal.ModelActionBar.SelectedXaml.Add((PointerItem) Model.ModelLocal.ModelPathsBar.View.Generator.Children[i]);
+                                        size = Model.ModelLocal.ModelPathsBar.View.Generator.Children.Count;
                                     }
                                 }
                                 else
                                 {
-                                    int size = Model.ModelPathsBar.View.Generator.Children.Count;
+                                    int size = Model.ModelLocal.ModelPathsBar.View.Generator.Children.Count;
                                     for (int i = 0; i < size; i++)
                                     {
-                                        if (!Model.ModelActionBar.SelectedXaml.Contains((PointerItem)Model.ModelPathsBar.View.Generator.Children[i]))
-                                            Model.ModelActionBar.SelectedXaml.Add((PointerItem) Model.ModelPathsBar.View.Generator.Children[i]);
-                                        size = Model.ModelPathsBar.View.Generator.Children.Count;
+                                        if (!Model.ModelLocal.ModelActionBar.SelectedXaml.Contains((PointerItem)Model.ModelLocal.ModelPathsBar.View.Generator.Children[i]))
+                                            Model.ModelLocal.ModelActionBar.SelectedXaml.Add((PointerItem) Model.ModelLocal.ModelPathsBar.View.Generator.Children[i]);
+                                        size = Model.ModelLocal.ModelPathsBar.View.Generator.Children.Count;
                                     }
                                 }
-                                Model.ReloadPath();
+                                Model.ModelLocal.ReloadPath();
                                 break;
                             case Key.F:
-                                Model.ModelActionBar.View.Search(sender, e);
+                                Model.ModelLocal.ModelActionBar.View.Search(sender, e);
                                 break;
                             case Key.H:
                             case Key.R:
-                                Model.ModelNavigationBar.View.SyncClick(sender, e);
+                                Model.ModelLocal.ModelNavigationBar.View.SyncClick(sender, e);
                                 break;
                             case Key.I:
                                 new SettingsWindow().Show();
@@ -103,32 +102,6 @@ namespace CubeTools_UI.Views
             if (e.Key is Key.LeftCtrl or Key.RightCtrl)
                 Model.IsCtrlPressed = false;
         }
-
-
-        public void SelectErrorPopUp(ManagerException exception)
-        {
-            switch (exception)
-            {
-                case PathNotFoundException @pathNotFoundException:
-                    new PathNotFoundPopUp(Model, @pathNotFoundException).Show();
-                    Close();
-                    break;
-                case AccessException @accessException:
-                    new AccessDeniedPopUp(Model, @accessException).Show();
-                    Close();
-                    break;
-                case DiskNotReadyException @diskNotReadyException:
-                    new DiskNotReadyPopUp(Model, @diskNotReadyException).Show();
-                    Close();
-                    break;
-                case SystemErrorException @systemErrorException:
-                    new SystemErrorPopUp(Model, @systemErrorException).Show();
-                    Close();
-                    break;
-                default:
-                    new ErrorPopUp.ErrorPopUp(Model, exception).Show();
-                    break;
-            }
-        }
+        
     }
 }

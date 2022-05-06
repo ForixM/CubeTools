@@ -15,7 +15,7 @@ namespace CubeTools_UI.Models
         
         #region References
         
-        public MainWindowModel ParentModel;
+        public LocalModel ParentModel;
         public ActionBar View;
         
         #endregion

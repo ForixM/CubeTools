@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,8 +15,8 @@ namespace CubeTools_UI.Views.Actions
 {
     public class DeleteMultiplePopUp : Window
     {
-        private MainWindowModel? _model;
-        public StackPanel GeneratorDisplay;
+        private readonly LocalModel? _model;
+        public readonly StackPanel GeneratorDisplay;
 
         public List<DeleteMultipleSelector> Selected;
         private List<FileType> _pointers;
@@ -32,7 +31,7 @@ namespace CubeTools_UI.Views.Actions
             Selected = new List<DeleteMultipleSelector>();
             _pointers = new List<FileType>();
         }
-        public DeleteMultiplePopUp(MainWindowModel vm, List<FileType> pointer) : this()
+        public DeleteMultiplePopUp(LocalModel vm, List<FileType> pointer) : this()
         {
             _model = vm;
             _pointers = pointer;
@@ -49,15 +48,21 @@ namespace CubeTools_UI.Views.Actions
 
         private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
         {
-            if (e.Key is Key.Escape) Close();
-            if (e.Key is Key.Enter)
+            switch (e.Key)
             {
-                Selected.Clear();
-                foreach (DeleteMultipleSelector selector in GeneratorDisplay.Children.Where(control => control is DeleteMultipleSelector @selector &&
-                             (File.Exists(selector.Pointer.Path) || Directory.Exists(selector.Pointer.Path))))
-                    Selected.Add(selector);
-                DeletePointers();
-                Close();
+                case Key.Escape:
+                    Close();
+                    break;
+                case Key.Enter:
+                {
+                    Selected.Clear();
+                    foreach (DeleteMultipleSelector selector in GeneratorDisplay.Children.Where(control => control is DeleteMultipleSelector @selector &&
+                                 (File.Exists(selector.Pointer.Path) || Directory.Exists(selector.Pointer.Path))))
+                        Selected.Add(selector);
+                    DeletePointers();
+                    Close();
+                    break;
+                }
             }
         }
         
@@ -78,8 +83,6 @@ namespace CubeTools_UI.Views.Actions
         }
         
         private void OnCancelClicked(object? sender, RoutedEventArgs e) => Close();
-        
-        private void OnClosing(object? sender, CancelEventArgs e) => _model!.ReloadPath();
 
         #endregion
         
@@ -106,7 +109,7 @@ namespace CubeTools_UI.Views.Actions
                 }
                 catch (ManagerException e)
                 {
-                    _model.View.SelectErrorPopUp(e);
+                    _model?.SelectErrorPopUp(e);
                 }
             }
         }

@@ -16,8 +16,8 @@ namespace CubeTools_UI.Views.Actions
     {
         private readonly TextBox _renameBox;
         private readonly FileType _modifiedPointer;
-        private List<FileType> _itemsReference;
-        private MainWindowModel _main;
+        private readonly List<FileType> _itemsReference;
+        private readonly LocalModel _main;
 
         #region Init
         public RenamePopUp()
@@ -28,7 +28,7 @@ namespace CubeTools_UI.Views.Actions
             _itemsReference = new List<FileType>();
             _main = null;
         }
-        public RenamePopUp(FileType ft, List<FileType> items, MainWindowModel main) : this()
+        public RenamePopUp(FileType ft, List<FileType> items, LocalModel main) : this()
         {
             _modifiedPointer = ft;
             _itemsReference = items;
@@ -85,7 +85,7 @@ namespace CubeTools_UI.Views.Actions
                 }
                 catch (ManagerException exception)
                 {
-                    _main.View.SelectErrorPopUp(exception);
+                    _main.SelectErrorPopUp(exception);
                 }
                 _main.ReloadPath();
                 Close();

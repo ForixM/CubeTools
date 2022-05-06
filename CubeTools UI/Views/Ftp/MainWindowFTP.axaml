@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:views="clr-namespace:CubeTools_UI.Views.Ftp"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:cubeToolsUi="clr-namespace:CubeTools_UI"
+        xmlns:views1="clr-namespace:CubeTools_UI.Views"
         mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="100"
         Width="1000" Height="750"
         MinWidth="800" MinHeight="450" 
@@ -37,18 +37,8 @@
                 <Grid Row="2" ColumnDefinitions="50*,50*">
                          
                         <!--Local Files-->
-                        <Grid Column="0" RowDefinitions="65, 40, Auto">
-                                <Grid Row="0">
-                                        <views:LocalFtpNavigationBar Name="NavigationBar"/>
-                                </Grid>
-                                <Grid Row="1">
-                                        <views:LocalAction Name="LocalAction"/>
-                                </Grid>
-                                <Grid Row="2">
-                                        <ScrollViewer>
-                                                <views:LocalFTP Name="LocalFtp"/> 
-                                        </ScrollViewer>
-                                </Grid>
+                        <Grid Column="0">
+                                <views1:Local/>
                         </Grid>
                         
                         <!--Remote Files-->

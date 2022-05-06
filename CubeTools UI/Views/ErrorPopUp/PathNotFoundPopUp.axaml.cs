@@ -10,47 +10,29 @@ namespace CubeTools_UI.Views.ErrorPopUp
     public class PathNotFoundPopUp : Window
     {
         
-        #region Attached Components
-        
         public readonly TextBlock ContentError;
-        private readonly Button ButtonQuit;
-        private readonly Button ButtonReload;
-        
-        #endregion
-
-        public readonly MainWindowModel? ParentModel;
+        private readonly Button _buttonQuit;
+        private readonly Button _buttonReload;
 
         public PathNotFoundPopUp()
         {
             InitializeComponent();
             ContentError = this.FindControl<TextBlock>("ContentError");
-            ButtonQuit = this.FindControl<Button>("ButtonQuit");
-            ButtonReload = this.FindControl<Button>("ButtonReload");
+            _buttonQuit = this.FindControl<Button>("ButtonQuit");
+            _buttonReload = this.FindControl<Button>("ButtonReload");
         }
-        public PathNotFoundPopUp(MainWindowModel parent) : this()
-        {
-            ParentModel = parent;
-        }
-        public PathNotFoundPopUp(MainWindowModel parent,PathNotFoundException exception) : this(parent)
+        public PathNotFoundPopUp(ManagerException exception) : this()
         {
             ContentError.Text = exception.ErrorMessage;
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
 
         // EVENTS
 
         private void ButtonQuitClicked(object? sender, RoutedEventArgs e) => Close();
-
-        private void ButtonReloadClicked(object? sender, RoutedEventArgs e)
-        {
-            ParentModel!.ReloadPath();
-            Close();
-        }
+        private void ButtonReloadClicked(object? sender, RoutedEventArgs e) => Close();
 
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {

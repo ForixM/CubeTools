@@ -4,33 +4,28 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
-using CubeTools_UI.Models;
 using Library.ManagerReader;
 
 namespace CubeTools_UI.Views.Actions
 {
     public class SearchPopUp : Window
     {
-        private readonly ActionBarModel? Model;
-        private readonly TextBox TextEntered;
+        private readonly ActionBarModel? _model;
+        private readonly TextBox _textEntered;
 
         #region Init
         
         public SearchPopUp()
         {
             InitializeComponent();
-            TextEntered = this.FindControl<TextBox>("TextEntered");
-            Model = null;
+            _textEntered = this.FindControl<TextBox>("TextEntered");
         }
         public SearchPopUp(ActionBarModel vm) : this()
         {
-            Model = vm;
+            _model = vm;
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
 
@@ -38,14 +33,14 @@ namespace CubeTools_UI.Views.Actions
         
         private void SearchClick(object? sender, RoutedEventArgs e)
         {
-            if (sender is Button && Model?.ParentModel != null)
+            if (sender is Button && _model?.ParentModel != null)
                 SearchList();
             Close();
         }
 
         private void SearchEnter(object? sender, KeyEventArgs e)
         {
-            if (e.Key is Key.Enter && Model?.ParentModel != null)
+            if (e.Key is Key.Enter && _model?.ParentModel != null)
             {
                 SearchList();
                 Close();
@@ -54,7 +49,7 @@ namespace CubeTools_UI.Views.Actions
         
         private void OnKeyPressed(object? sender, KeyEventArgs e)
         {
-            if (e.Key is Key.Enter && Model?.ParentModel != null)
+            if (e.Key is Key.Enter && _model?.ParentModel != null)
             {
                 SearchList();
                 Close();
@@ -67,8 +62,8 @@ namespace CubeTools_UI.Views.Actions
 
         private void SearchList()
         {
-            Model!.ParentModel.ModelPathsBar.ReloadPath(ManagerReader.FastSearchByName(Model.ParentModel.ModelNavigationBar.DirectoryPointer.Path,
-                TextEntered.Text, 100).ToList());
+            _model!.ParentModel.ModelPathsBar.ReloadPath(ManagerReader.FastSearchByName(_model.ParentModel.ModelNavigationBar.DirectoryPointer.Path,
+                _textEntered.Text, 100).ToList());
         }
         
     }

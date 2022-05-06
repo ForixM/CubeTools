@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models.Ftp;
@@ -13,8 +12,11 @@ namespace CubeTools_UI.Views.Ftp
         #region Variables
         
         public ClientFtp? Client;
+        
         public MainWindowFTPModel Model;
-        public LocalFTP Local;
+        
+        public Local Local;
+        
         public RemoteFTP Remote;
         public RemoteFtpNavigationBar NavigationBar;
 
@@ -28,9 +30,8 @@ namespace CubeTools_UI.Views.Ftp
             // Global
             Model = null;
             Title = "CubeTools FTP -";
-            Local = this.FindControl<LocalFTP>("LocalFtp");
+            Local = this.FindControl<Local>("Local");
             Remote = this.FindControl<RemoteFTP>("RemoteFtp");
-            this.FindControl<LocalAction>("LocalAction").ParentView = this;
             this.FindControl<RemoteAction>("RemoteAction").ParentView = this;
             NavigationBar = this.FindControl<RemoteFtpNavigationBar>("RemoteNavigationBar");
             NavigationBar.ParentView = this;
@@ -42,19 +43,13 @@ namespace CubeTools_UI.Views.Ftp
             Model = new MainWindowFTPModel(this, Client);
             Title += client.Host;
             // Local
-            Local.FtpModel = new LocalFTPModel(Model, Local, Directory.GetCurrentDirectory());
             ReloadPathLocal();
             // Remote
             Remote.FtpModel = new RemoteFTPModel(Model, Remote, "/");
             ReloadPathRemote();
-            // Debug
-            this.AttachDevTools();
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
 
@@ -63,21 +58,21 @@ namespace CubeTools_UI.Views.Ftp
         public void ReloadPathLocal()
         {
             // Reload Pointers
-            Local.FtpModel.LocalDirectory.SetChildrenFiles();
+            Local.Model.ModelNavigationBar.DirectoryPointer.SetChildrenFiles();
             // Reload Graphic
-            Local.ReloadPath(Local.FtpModel.LocalDirectory.ChildrenFiles);
+            Local.Model.ReloadPath();
         }
 
         public void AccessPathLocal(string path, bool isdir)
         {
             if (isdir)
             {
-                Local.FtpModel.LocalDirectory = new DirectoryType(path);
+                Local.Model.ModelNavigationBar.DirectoryPointer = new DirectoryType(path);
                 ReloadPathLocal();
             }
             else
             {
-                // TODO Open the file
+                Local.Model.AccessPath(path, isdir);
             }
             
         }
@@ -105,7 +100,7 @@ namespace CubeTools_UI.Views.Ftp
             }
             else
             {
-                Model.Client.DownloadFile((FtpFile)item, Local.FtpModel.LocalDirectory.Path);
+                Model.Client.DownloadFile((FtpFile)item, Local.Model.ModelNavigationBar.DirectoryPointer.Path);
                 ReloadPathLocal();
             }
         }

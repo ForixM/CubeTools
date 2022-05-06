@@ -4,7 +4,7 @@
         Width="400" Height="200"
         CanResize="False"
         Topmost="True"
-        Title="Access id denied"
+        Title="Access is denied"
         KeyDown="OnEscapePressed">
         
         <Grid>

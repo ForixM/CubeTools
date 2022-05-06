@@ -5,7 +5,6 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
 using Library.ManagerExceptions;
-using Library.ManagerReader;
 using LibraryFTP;
 
 namespace CubeTools_UI.Views.Ftp
@@ -59,7 +58,7 @@ namespace CubeTools_UI.Views.Ftp
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to get the next file";
-                        new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                        new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
                     }
                     Model.QueueIndex--;
                 }
@@ -86,7 +85,7 @@ namespace CubeTools_UI.Views.Ftp
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to get the last file";
-                        new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                        new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
                     }
                     Model.QueueIndex--;
                 }
@@ -122,7 +121,7 @@ namespace CubeTools_UI.Views.Ftp
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = "Unable to reload file";
-                    new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
+                    new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
                 }
             }
         }

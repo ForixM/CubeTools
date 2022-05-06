@@ -7,32 +7,26 @@ using Library.ManagerExceptions;
 
 namespace CubeTools_UI.Views.ErrorPopUp
 {
-    public class AccessDeniedPopUp : Window
+    public class NormalErrorPopUp : Window
     {
         public readonly TextBlock ContentError;
-        private readonly Button _buttonYes;
-        private readonly Button _buttonNo;
+        private readonly Button ButtonOk;
         
-        public AccessDeniedPopUp()
+        public NormalErrorPopUp()
         {
             InitializeComponent();
             ContentError = this.FindControl<TextBlock>("ContentError");
-            _buttonYes = this.FindControl<Button>("ButtonYes");
-            _buttonNo = this.FindControl<Button>("ButtonNo");
+            ButtonOk = this.FindControl<Button>("ButtonOk");
         }
-        public AccessDeniedPopUp(ManagerException exception) : this()
+        public NormalErrorPopUp(ManagerException exception) : this()
         {
             ContentError.Text = exception.ErrorMessage;
+            Title = exception.Errorstd;
         }
-
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
-        
+
         // EVENTS
-        private void ButtonYesClicked(object? sender, RoutedEventArgs e)
-        {
-            // TODO Edit Yes button for admin action
-        }
-        private void ButtonNoClicked(object? sender, RoutedEventArgs e) => Close();
+        private void ButtonOkClicked(object? sender, RoutedEventArgs e) => Close();
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Escape) Close();

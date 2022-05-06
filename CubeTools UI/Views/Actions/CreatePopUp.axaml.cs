@@ -13,7 +13,7 @@ namespace CubeTools_UI.Views.Actions
 {
     public class CreatePopUp : Window
     {
-        private readonly MainWindowModel? _model;
+        private readonly LocalModel? _model;
         private readonly TextBox _textEntered;
 
         #region Init
@@ -24,15 +24,12 @@ namespace CubeTools_UI.Views.Actions
             _textEntered = this.FindControl<TextBox>("TextEntered");
             _model = null;
         }
-        public CreatePopUp(MainWindowModel vm) : this()
+        public CreatePopUp(LocalModel vm) : this()
         {
             _model = vm;
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
         
@@ -40,32 +37,36 @@ namespace CubeTools_UI.Views.Actions
 
         private void OnEnterPressed(object? sender, KeyEventArgs e)
         {
+            if (e.Key is Key.Enter) CreateFile(_textEntered.Text);
+        }
+        private void OnPressed(object? sender, RoutedEventArgs e) => CreateFile(_textEntered.Text);
+        private void OnCancelPressed(object? sender, RoutedEventArgs e) => Close();
+        
+        private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Escape)
+                Close();
             if (e.Key is Key.Enter)
-            {
                 CreateFile(_textEntered.Text);
-            }
-        }
-
-        private void OnPressed(object? sender, RoutedEventArgs e)
-        {
-            CreateFile(_textEntered.Text);
-        }
-
-        private void OnCancelPressed(object? sender, RoutedEventArgs e)
-        {
-            Close();
         }
         
         #endregion
 
         #region Process
 
+        /// <summary>
+        /// Create a file with a given name
+        /// </summary>
+        /// <param name="name">The given name</param>
         private void CreateFile(string name)
         {
+            if (_model == null) return;
+            
+            
             if (!ManagerReader.IsPathCorrect(name))
-                new Views.ErrorPopUp.ErrorPopUp(_model!, new PathFormatException("Format is invalid !")).Show();
+                _model.SelectErrorPopUp(new PathFormatException("Format is invalid !"));
             else if (File.Exists(name))
-                new Views.ErrorPopUp.ErrorPopUp(_model!, new ReplaceException("File already exists !")).Show();
+                _model.SelectErrorPopUp(new ReplaceException("File already exists !"));
             else
             {
                 try
@@ -81,20 +82,12 @@ namespace CubeTools_UI.Views.Actions
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to create a new file";
-                        _model.View.SelectErrorPopUp(@managerException);
+                        _model.SelectErrorPopUp(@managerException);
                     }
                 }
             }
         }
 
         #endregion
-
-        private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
-        {
-            if (e.Key is Key.Escape)
-                Close();
-            if (e.Key is Key.Enter)
-                CreateFile(_textEntered.Text);
-        }
     }
 }
