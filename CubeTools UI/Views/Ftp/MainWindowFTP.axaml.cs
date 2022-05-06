@@ -1,7 +1,9 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models.Ftp;
+using Library.ManagerExceptions;
 using Library.Pointers;
 using LibraryFTP;
 
@@ -46,8 +48,11 @@ namespace CubeTools_UI.Views.Ftp
             ReloadPathLocal();
             // Remote
             Remote.FtpModel = new RemoteFTPModel(Model, Remote, "/");
-            ReloadPathRemote();
-            NavigationBar.Model.Add(Remote.FtpModel.RemoteDirectory);
+            if (ReloadPathRemote())
+            {
+                NavigationBar.Model.Add(Remote.FtpModel.RemoteDirectory);
+                Show();
+            }
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -82,13 +87,23 @@ namespace CubeTools_UI.Views.Ftp
 
         #region Children
 
-        public void ReloadPathRemote()
+        public bool ReloadPathRemote()
         {
-            // Reload Pointers
-            Remote.FtpModel.Children = Client!.ListDirectory(Remote.FtpModel.RemoteDirectory);
-            // Reload Graphic
-            Remote.ReloadPath(Remote.FtpModel.Children.Items);
-            NavigationBar.CurrentPathXaml.Text = Remote.FtpModel.RemoteDirectory.Path;
+            try
+            {
+                // Reload Pointers
+                Remote.FtpModel.Children = Client!.ListDirectory(Remote.FtpModel.RemoteDirectory);
+                // Reload Graphic
+                Remote.ReloadPath(Remote.FtpModel.Children.Items);
+                NavigationBar.CurrentPathXaml.Text = Remote.FtpModel.RemoteDirectory.Path;
+                return true;
+            }
+            catch (Exception e)
+            {
+                if (e is ManagerException @managerException)
+                    new Views.ErrorPopUp.ErrorPopUp();
+                return false;
+            }
         }
 
         public void AccessPathRemote(IFtpItem item, bool isdir)

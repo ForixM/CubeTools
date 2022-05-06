@@ -77,6 +77,8 @@ namespace CubeTools_UI.Views.Ftp
             {
                 ParentView.Remote.FtpModel.RemoteDirectory =
                     (FtpFolder) ParentView.Remote.FtpModel.RemoteDirectory.Parent;
+                if (ParentView.Remote.FtpModel.RemoteDirectory is { } folder)
+                    ParentView.Model.View.NavigationBar.Model.Add(folder);
                 // ParentView.Remote.FtpModel.Children = ParentView.Model.Client.ListDirectory((FtpFolder) ParentView.Remote.FtpModel.RemoteDirectory.Parent);
                 ParentView.ReloadPathRemote();
             }

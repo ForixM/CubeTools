@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using CubeTools_UI.Views.ErrorPopUp;
 using CubeTools_UI.Views.Ftp;
+using Library.ManagerExceptions;
 using LibraryFTP;
 
 namespace CubeTools_UI.Models.Ftp
@@ -31,8 +33,7 @@ namespace CubeTools_UI.Models.Ftp
             }
             catch (Exception e)
             {
-                //if (e is ManagerException @managerException)
-                //new Views.ErrorPopUp.ErrorPopUp()
+                new NormalErrorPopUp(new ManagerException("Invalid Credentials", "Low-Critical", "CubeTools crashed", "Username or Password are incorrect")).Show();
             }
         }
     }

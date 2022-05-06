@@ -3,6 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using CubeTools_UI.Views.ErrorPopUp;
+using Library.ManagerExceptions;
 using LibraryFTP;
 
 namespace CubeTools_UI.Views.Ftp
@@ -62,8 +64,14 @@ namespace CubeTools_UI.Views.Ftp
             }
             else
             {
-                new MainWindowFTP(new ClientFtp(_ip.Text+":"+_port.Text, _user.Text, _mdp.Text)).Show();
-                Close();
+                MainWindowFTP windowFtp = new MainWindowFTP(new ClientFtp(_ip.Text+":"+_port.Text, _user.Text, _mdp.Text));
+                // windowFtp.Show();
+                if (windowFtp.IsVisible)
+                    Close();
+                else
+                {
+                    new NormalErrorPopUp(new ManagerException("Invalid Credentials", "Low-Critical", "CubeTools crashed", "Username or Password are incorrect")).Show();
+                }
             }
         }
     }
