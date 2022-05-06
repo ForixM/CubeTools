@@ -62,6 +62,8 @@ namespace CubeTools_UI.Views.Ftp
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
             RemoteModel.Selected.Clear();
+            if (Pointer is FtpFolder folder)
+                RemoteModel.ParentModel.View.NavigationBar.Model.Add(folder);
             RemoteModel.ParentModel.View.AccessPathRemote(Pointer, Pointer.IsDir);
         }
 

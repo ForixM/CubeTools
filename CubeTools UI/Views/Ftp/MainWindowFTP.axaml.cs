@@ -47,6 +47,7 @@ namespace CubeTools_UI.Views.Ftp
             // Remote
             Remote.FtpModel = new RemoteFTPModel(Model, Remote, "/");
             ReloadPathRemote();
+            NavigationBar.Model.Add(Remote.FtpModel.RemoteDirectory);
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

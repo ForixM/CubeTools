@@ -12,7 +12,8 @@ namespace CubeTools_UI.Views.Ftp
 {
     public class RemoteFtpNavigationBar : UserControl
     {
-        public static NavigationBarModel Model;
+        // public static NavigationBarModel Model;
+        public FTPNavigationBarModel Model;
         public TextBox CurrentPathXaml;
         public MainWindowFTP ParentView;
         
@@ -21,6 +22,7 @@ namespace CubeTools_UI.Views.Ftp
         {
             InitializeComponent();
             CurrentPathXaml = this.FindControl<TextBox>("RemoteCurrentPath");
+            Model = new FTPNavigationBarModel();
             //Model = new NavigationBarModel(this);
             //DataContext = Model;
         }
@@ -47,22 +49,10 @@ namespace CubeTools_UI.Views.Ftp
         /// </summary>
         private void LeftArrowClick(object? sender, RoutedEventArgs e)
         {
-            if (Model.QueueIndex < Model.QueuePointers.Count - 1)
+            if (Model.Index > 0)
             {
-                Model.QueueIndex++;
-                try
-                {
-                    Model.ParentModel?.AccessPath(Model.QueuePointers[Model.QueueIndex]);
-                }
-                catch (Exception exception)
-                {
-                    if (exception is ManagerException @managerException)
-                    {
-                        @managerException.Errorstd = "Unable to get the next file";
-                        // new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
-                    }
-                    Model.QueueIndex--;
-                }
+                Model.Index--;
+                ParentView.AccessPathRemote(Model.Queue[Model.Index], true);
             }
         }
 
@@ -71,25 +61,10 @@ namespace CubeTools_UI.Views.Ftp
         /// </summary>
         private void RightArrowClick(object? sender, RoutedEventArgs e)
         {
-            // End of the queue
-            if (Model.QueueIndex > 0)
+            if (Model.Index < Model.Queue.Count - 1)
             {
-                // Get the index before
-                Model.QueueIndex--;
-                try
-                {
-                    string path = Model.QueuePointers[Model.QueueIndex];
-                    Model.ParentModel?.AccessPath(path);
-                }
-                catch (Exception exception)
-                {
-                    if (exception is ManagerException @managerException)
-                    {
-                        @managerException.Errorstd = "Unable to get the last file";
-                        // new Views.ErrorPopUp.ErrorPopUp(Model.ParentModel!, @managerException).Show();
-                    }
-                    Model.QueueIndex--;
-                }
+                Model.Index++;
+                ParentView.AccessPathRemote(Model.Queue[Model.Index], true);
             }
         }
 
@@ -114,8 +89,8 @@ namespace CubeTools_UI.Views.Ftp
         {
             try
             {
-                Model.DirectoryPointer.SetChildrenFiles();
-                Model.ParentModel!.ReloadPath();
+                // Model.DirectoryPointer.SetChildrenFiles();
+                // Model.ParentModel!.ReloadPath();
             }
             catch (Exception exception)
             {
