@@ -5,11 +5,11 @@ namespace ResourcesLoader
 {
     public static class ResourcesConverter
     {
-        public static IImage TypeToIcon(FileType pointer)
+        public static IImage TypeToIcon(string type, bool isdir)
         {
-            if (pointer.IsDir)
+            if (isdir)
                 return ResourcesIcons.FolderIcon;
-            switch (pointer.Type)
+            switch (type)
             {
                 case "jpg":
                 case "jpeg":

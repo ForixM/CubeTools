@@ -46,7 +46,7 @@ namespace CubeTools_UI.Views
             _main = main;
             _name.Text = pointer.Name;
             _size.Text = pointer.SizeXaml;
-            _icon.Source = ResourcesConverter.TypeToIcon(pointer);
+            _icon.Source = ResourcesConverter.TypeToIcon(pointer.Type, pointer.IsDir);
         }
 
         private void InitializeComponent()

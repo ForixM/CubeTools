@@ -38,7 +38,7 @@
                          
                         <!--Local Files-->
                         <Grid Column="0">
-                                <views1:Local/>
+                                <views1:Local Name="Local"/>
                         </Grid>
                         
                         <!--Remote Files-->

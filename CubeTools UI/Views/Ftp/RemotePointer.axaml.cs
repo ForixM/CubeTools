@@ -8,6 +8,7 @@ using Avalonia.Media.Imaging;
 using CubeTools_UI.Models;
 using CubeTools_UI.Models.Ftp;
 using LibraryFTP;
+using ResourcesLoader;
 
 namespace CubeTools_UI.Views.Ftp
 {
@@ -23,63 +24,6 @@ namespace CubeTools_UI.Views.Ftp
         private TextBlock _name;
         private TextBlock _size;
         public Button button;
-
-        public Bitmap TypeToIcon(string type)
-        {
-            if (Pointer.IsDir)
-                return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsIconsCompressed/Folder.ico");
-            switch (type)
-            {
-                case "jpg":
-                case "jpeg":
-                case "png" :
-                case "ico":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/jpg.ico");
-                case "txt":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsIconsCompressed/File.ico");
-                case "exe":
-                case "iso":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/exe.ico");
-                case "docx":
-                case "odt":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/docx.ico");
-                case "pdf":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/pdf.ico");
-                case "py":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/py.ico");
-                case "cs":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/csharp.ico");
-                case "c++":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/c++.ico");
-                case "java":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/java.ico");
-                case "html":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/html.ico");
-                case "pptx":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/pptx.ico");
-                case "xlsx":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/xsls.ico");
-                case "gitignore":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/gitignore.ico");
-                case "zip":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/zip.ico");
-                case "rar":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/rar.ico");
-                case "key":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/key.ico");
-                case "mp3":
-                case "alac":
-                case "flac":    
-                case "wav":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/mp3.ico");
-                case "mp4":
-                case "mov":
-                case "mpeg":
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/mp4.ico");
-                default:
-                    return new Bitmap(MainWindowModel.CubeToolsPath + "/../../../Assets/CubeToolsAppsExtensionsCompressed/None.ico");
-            }
-        }
 
         #endregion
 
@@ -100,7 +44,7 @@ namespace CubeTools_UI.Views.Ftp
             Pointer = pointer;
             _name.Text = pointer.Name;
             _size.Text = pointer.SizeXaml;
-            _icon.Source = TypeToIcon(pointer.Type);
+            _icon.Source = ResourcesConverter.TypeToIcon(pointer.Type, pointer.IsDir);
         }
 
         private void InitializeComponent()

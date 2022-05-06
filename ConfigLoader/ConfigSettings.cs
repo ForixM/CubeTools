@@ -8,7 +8,7 @@ namespace ConfigLoader
     {
         // Global
         [DataMember(Name="AssetsPath")] public string? AssetsPath { get; set; }
-        [DataMember(Name="AppPath")] public string? AppPath { get; set; }
+        public string AppPath { get; set; }
         // Sections
         [DataMember(Name = "Application")] public ApplicationSettings? Application { get; set; }
         [DataMember(Name="Styles")] public StylesSettings? Styles { get; set; }
@@ -18,5 +18,10 @@ namespace ConfigLoader
         [DataMember(Name = "Shortcuts")] public ShortcutsSettings? Shortcuts { get; set; }
 
         public string ResourcePath => AppPath + "/" + (Styles != null ? Styles.Pack : "Assets/default") + "/";
+
+        public ConfigSettings()
+        {
+            AppPath = Directory.GetCurrentDirectory();
+        }
     }
 }

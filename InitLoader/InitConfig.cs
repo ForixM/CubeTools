@@ -50,6 +50,7 @@
                 sr.Close();
                 // Generate configuration
                 ConfigLoader.ConfigLoader.LoadConfiguration("Config.default.json");
+                ConfigLoader.ConfigLoader.Settings.AppPath = Directory.GetCurrentDirectory();
             }
         }
     }
