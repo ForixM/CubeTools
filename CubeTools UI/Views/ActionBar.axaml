@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CubeTools_UI.Views.ActionBar"
-             xmlns:resource="clr-namespace:ConfigLoader.Settings;assembly=ConfigLoader">
+             xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader">
 	
 	<UserControl.Styles>
 		<StyleInclude Source="/Styles/Styles.axaml"/>
@@ -12,34 +12,34 @@
 	 
 	 <Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="45" />
-			<ColumnDefinition Width="45" />
-			<ColumnDefinition Width="45" />
-			<ColumnDefinition Width="45" />
-			<ColumnDefinition Width="45" />
-			<ColumnDefinition Width="45" />
-			<ColumnDefinition Width="45"/>
-			<ColumnDefinition Width="45"/>
-			<ColumnDefinition />
-			<ColumnDefinition Width="45"/>
-			<ColumnDefinition Width="45"/>
-			<ColumnDefinition Width="45"/>
-			<ColumnDefinition Width="45"/>
-			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="1*"/>
+			<ColumnDefinition Width="1*" />
 		</Grid.ColumnDefinitions>
 
 		<!-- First column : Creation-->
 		<Grid Grid.Column="0">
 			<Button Classes="Manager" Name="AddFileButton" Click="CreateFile">
 				<StackPanel>
-					<Image Classes="Manager" Source="{x:Static resource:AssetsResource.CreateIcon}"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.CreateIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
 		<Grid Grid.Column="1">
 			<Button Classes="Manager" Name="AddDirButton" Click="CreatDir">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/CreateFolder.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.CreateFolderIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -47,7 +47,7 @@
 		<Grid Grid.Column="2">
 			<Button Classes="Manager" Name="CopyButton" Click="Copy">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Copy.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.CopyIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -55,7 +55,7 @@
 		<Grid Grid.Column="3">
 			<Button Classes="Manager" Name="CutButton" Click="Cut">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Cut.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.CutIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -63,7 +63,7 @@
 		<Grid Grid.Column="4">
 			<Button Classes="Manager" Name="PasteButton" Click="Paste">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Paste.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.PasteIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -71,7 +71,7 @@
 		<Grid Grid.Column="5">
 			<Button Classes="Manager" Name="RenameButton" Click="Rename">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Rename.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.RenameIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -79,7 +79,7 @@
 		<Grid Grid.Column="6">
 			<Button Classes="Manager" Name="CompressButton" Click="Compression">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Compression.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.CompressionIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -87,7 +87,7 @@
 		<Grid Grid.Column="7">
 			<Button Classes="Manager" Name="DeleteButton" Click="Delete">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Delete.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.DeleteIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -96,7 +96,7 @@
 		<Grid Grid.Column="9">
 			<Button Classes="Manager" Name="SortButton" Click="Sort">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Sort.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.SortIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -104,7 +104,7 @@
 		<Grid Grid.Column="10">
 			<Button Classes="Manager" Name="SearchButton" Click="Search">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Search.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.SearchIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -112,7 +112,7 @@
 		<Grid Grid.Column="11">
 			<Button Classes="Manager" Name="SnapdropButton" Click="Snap">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Snapdrop.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.SnapDropIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -120,7 +120,7 @@
 		<Grid Grid.Column="12">
 			<Button Classes="Manager" Name="SmashButton" Click="Smash">
 				<StackPanel>
-					<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Smash.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.SmashIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>
@@ -128,7 +128,7 @@
 		<Grid Grid.Column="13">
 			<Button Classes="Manager" Name="NearBySendButton">
 				<StackPanel>
-					<Image Classes="Manager" Source="/Assets/CubeToolsIcons/nearbysend.ico"/>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.NearbysendIcon}"/>
 				</StackPanel>
 			</Button>
 		</Grid>

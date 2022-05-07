@@ -61,13 +61,13 @@ namespace CubeTools_UI.Models.PopUps
                 if (_destroy)
                 {
                     long sum = _modified.Sum(ft => ManagerReader.FastReaderFiles(ft.Path));
-                    _progress.Report((int)((_max - sum) / _max * 100));
+                    _progressBar.Value = ((int)((_max - sum) / _max * 100));
                     Thread.Sleep(500);
                 }
                 else
                 {
                     long sum = _modified.Sum(ft => ManagerReader.FastReaderFiles(ft.Path));
-                    _progress.Report((int) (sum / _max * 100));
+                    _progressBar.Value = ((int) (sum / _max * 100));
                     Thread.Sleep(500);
                 }
             });

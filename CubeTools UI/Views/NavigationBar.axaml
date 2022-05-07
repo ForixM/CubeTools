@@ -1,11 +1,8 @@
 <UserControl 
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	
-	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="50"
-    x:Class="CubeTools_UI.Views.NavigationBar">
+	xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+	x:Class="CubeTools_UI.Views.NavigationBar">
 	
 	<!--Import for style-->
 	<UserControl.Styles>
@@ -29,25 +26,25 @@
 				<!-- First column : Left Button -->
 				<Grid Grid.Column="0">
 					<Button Classes="TopBar" Name="LeftButton" Click="LeftArrowClick">
-						<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Undo.ico"/>
+						<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.UndoIcon}"/>
 					</Button>
 				</Grid>
 				<!--Second column : Right Button-->
 				<Grid Grid.Column="1">
 					<Button Classes="TopBar" Name="RightButton" Click="RightArrowClick">
-						<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Redo.ico"/>
+						<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.RedoIcon}"/>
 					</Button>
 				</Grid>
 				<!--Third column : Up Button-->
 				<Grid Grid.Column="2">
 					<Button Classes="TopBar" Name="UpButton" Click="UpArrowClick">
-						<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Up.ico"/>
+						<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.UpIcon}"/>
 					</Button>
 				</Grid>
 				<!--Fourth column : Refresh button-->
 				<Grid Grid.Column="3">
 					<Button Classes="TopBar" Name="SyncButton" Click="SyncClick">
-						<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Refresh.ico"/>
+						<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.RefreshIcon}"/>
 					</Button>
 				</Grid>
 				<!-- Fifth column : Path bar-->
@@ -58,7 +55,7 @@
 				</Grid>
 				<Grid Grid.Column="5">
 					<Button Classes="TopBar" Name="SettingButton" Click="SettingsClick">
-						<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Settings.ico"/>
+						<Image Classes="Manager" Source="{x:Static resource:ResourcesIcons.SettingsIcon}"/>
 					</Button>
 				</Grid>
 			</Grid>

@@ -15,6 +15,7 @@ namespace CubeTools_UI.Views.PopUps
     {
         #region Children Components
 
+        private Image _imageExtension;
         private TextBlock _fileName;
         private TextBlock _type;
         private TextBlock _description;
@@ -39,6 +40,7 @@ namespace CubeTools_UI.Views.PopUps
             InitializeComponent();
             _pointer = FileType.NullPointer;
 
+            _imageExtension = this.FindControl<Image>("ImageExtension");
             _fileName = this.FindControl<TextBlock>("FileName");
             _type = this.FindControl<TextBlock>("Type");
             _description = this.FindControl<TextBlock>("Description");
@@ -57,12 +59,13 @@ namespace CubeTools_UI.Views.PopUps
         {
             _pointer = ft;
             _pointer.LoadSize();
-            
+
+            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(ft.Type, ft.IsDir);
             _fileName.Text = ft.Name;
-            _type.Text = ft.Type;
+            _type.Text = ft.IsDir ? "folder" : ft.Type;
             _description.Text = ft.Name;
             _path.Text = ft.Path;
-            _size.Text = ft.SizeXaml + $" ({SpacedLong(ft.Size)} B)";
+            _size.Text = ft.SizeXaml;
             _created.Text = ft.Date;
             _modified.Text = ft.LastDate;
             _accessed.Text = ft.AccessDate;
@@ -74,25 +77,6 @@ namespace CubeTools_UI.Views.PopUps
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
-
-        private string SpacedLong(long value)
-        {
-            string str = "";
-            int compteur = 0;
-            while (value > 0)
-            {
-                str = value % 10+str;
-                value /= 10;
-                compteur++;
-                if (compteur == 3)
-                {
-                    str = " " + str;
-                    compteur = 0;
-                }
-            }
-
-            return str;
-        }
         #endregion
 
         #region Events
