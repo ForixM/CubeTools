@@ -37,7 +37,7 @@
         <ProjectReference Include="..\Extensions\LibraryGoogleDrive\LibraryGoogleDrive.csproj" />
         <ProjectReference Include="..\Extensions\LibraryOneDrive\LibraryOnedrive.csproj" />
         <ProjectReference Include="..\InitLoader\InitLoader.csproj" />
-        <ProjectReference Include="..\ResourcesLoader\ResourcesLoader.csproj"/>
+        <ProjectReference Include="..\ResourcesLoader\ResourcesLoader.csproj" />
         <ProjectReference Include="..\Manager\Library\Library.csproj" />
     </ItemGroup>
     <ItemGroup>
@@ -158,6 +158,18 @@
       </Compile>
       <Compile Update="Views\Local.axaml.cs">
         <DependentUpon>Local.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Settings\Generators\PackGenerator.axaml.cs">
+        <DependentUpon>PackGenerator.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Settings\Generators\FtpGenerator.axaml.cs">
+        <DependentUpon>FtpGenerator.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Settings\Generators\SingleObject\FtpServerObject.axaml.cs">
+        <DependentUpon>FtpServerObject.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

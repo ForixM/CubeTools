@@ -31,6 +31,7 @@ namespace ConfigLoader
                 }
 
                 Settings = (ConfigSettings) JsonConvert.DeserializeObject(content, typeof(ConfigSettings));
+                Settings.LoadedJson = Path.GetFileName(path);
             }
             catch (Exception e)
             {

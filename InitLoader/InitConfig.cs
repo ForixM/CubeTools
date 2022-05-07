@@ -39,7 +39,7 @@
                 const string text = "{" +
                                     "\"AssetsPath\" : \"Assets\"," +
                                     "\"AppPath\" : \".\"," +
-                                    "\"Styles\" : { \"themes\" : \"white\" , \"pack\" : \"Assets/default\"}," +
+                                    "\"Styles\" : { \"themes\" : \"default\" , \"pack\" : \"Assets/default\"}," +
                                     "\"OneDrive\" : { \"account\" :{ }, \"registered\" : [] }," +
                                     "\"GoogleDrive\" : {\"account\" : {}, \"registered\" : [] }, " +
                                     "\"FTP\" : { \"servers\" : [] }," +

@@ -18,10 +18,11 @@ namespace ConfigLoader
         [DataMember(Name = "Shortcuts")] public ShortcutsSettings? Shortcuts { get; set; }
 
         public string ResourcePath => AppPath + "/" + (Styles != null ? Styles.Pack : "Assets/default") + "/";
-
+        public string LoadedJson;
         public ConfigSettings()
         {
-            AppPath = Directory.GetCurrentDirectory();
+            AppPath = Directory.GetCurrentDirectory().Replace('\\','/');
+            LoadedJson = AppPath + "/" + "Config.json";
         }
     }
 }

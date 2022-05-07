@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models.PopUps;
-using Library.Pointers;
 
 namespace CubeTools_UI.Views.PopUps
 {
     public class LoadingPopUp : Window
     {
-        public bool ProcessFinished;
+        private operationType _type;
+        private double max;
+        
         private ProgressBar _progressBar;
         private TextBlock _operationType;
         private LoadingPopUpModel _viewModel;
@@ -22,25 +20,45 @@ namespace CubeTools_UI.Views.PopUps
             InitializeComponent();
             _progressBar = this.FindControl<ProgressBar>("ProgressBar");
             _operationType = this.FindControl<TextBlock>("OperationType");
-            _viewModel = null;
-            ProcessFinished = false;
+            SelectMessage(operationType.None);
+            max = 100;
         }
-        public LoadingPopUp(int nbFiles, List<FileType> modified, bool destroy=false) : this()
+        public LoadingPopUp(ref int current, int max, operationType type) : this()
         {
-            if (destroy) _operationType.Text = "Deleting ";
-            else _operationType.Text = "Copying ";
-            
-            _operationType.Text += nbFiles + " files";
-            _viewModel = new LoadingPopUpModel(this, modified, nbFiles, destroy, _progressBar);
+            _type = type;
+            SelectMessage(type);
+            this.max = max;
         }
         
+        public enum operationType
+        {
+            None,
+            Copy,
+            Delete
+        }
+
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
+        
+        #region Process
 
-        private void OnClosing(object? sender, CancelEventArgs e)
+        private void SelectMessage(operationType type)
         {
-            ProcessFinished = true;
+            switch (type)
+            {
+                case operationType.Copy :
+                    _operationType.Text = "Copying ";
+                    break;
+                case operationType.Delete :
+                    _operationType.Text = "Deleting ";
+                    break;
+                default:
+                    _operationType.Text = "Loading ...";
+                    break;
+            }
         }
+        
+        #endregion
     }
 }
