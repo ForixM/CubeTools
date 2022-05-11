@@ -129,23 +129,49 @@ namespace LibraryCompression
             return compressor.CompressFilesAsync(dest, filePaths);
         }
 
-        public static Task CompressDirectories(DirectoryType[] directories, string dest, OutArchiveFormat archiveFormat,
+        public static Task CompressItems(List<FileType> directories, string dest, OutArchiveFormat archiveFormat,
             Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
         {
             if (!_initialized)
                 throw new SystemException("Compression haven't been initialized");
             // Initialized compressor
-            var compressor = new SevenZipCompressor();
+            var compressor = new SevenZipCompressor()
+            {
+                ArchiveFormat = archiveFormat,
+                ScanOnlyWritable = true,
+                DirectoryStructure = true,
+                PreserveDirectoryRoot = false
+            };
             // Adding parameters
             if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
             if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent);
-            compressor.ArchiveFormat = archiveFormat;
             compressor.CustomParameters.Add("mt", "on");
-            compressor.ScanOnlyWritable = true;
             // Adding files path
-            var directoriesPath = new string[directories.Length];
-            for (var i = 0; i < directories.Length; i++) directoriesPath[i] = directories[i].Path;
-            return compressor.CompressFilesAsync(dest, directoriesPath);
+            Dictionary<string, string> files = new Dictionary<string, string>();
+            foreach (FileType item in directories)
+            {
+                if (item.IsDir)
+                {
+                    DictionarizeFolder(files, item.Path, ManagerReader.GetParent(item.Path));
+                }
+                else
+                    files.Add(item.Name, item.Path);
+            }
+
+            return new Task(() => compressor.CompressFileDictionary(files, dest));
+        }
+        
+        private static void DictionarizeFolder(Dictionary<string,string> files, string dir, string supremeDir)
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(dir);
+            foreach (FileInfo file in dirInfo.GetFiles())
+            {
+                files.Add(file.FullName.Replace(supremeDir.Replace("/", "\\")+"\\", ""),file.FullName);
+            }
+            foreach (DirectoryInfo directory in dirInfo.GetDirectories())
+            {
+                DictionarizeFolder(files, directory.FullName, supremeDir);
+            }
         }
 
         /// <summary>

@@ -31,6 +31,7 @@ namespace CubeTools_UI.Views.Compression
 
             _archiveNameVisual = this.FindControl<TextBox>("NameArchive");
             _archiveFormatVisual = this.FindControl<ComboBox>("SelectedMode");
+            _archiveFormat = OutArchiveFormat.Zip;
             
             _model = null;
             _datas = new List<FileType>();
@@ -78,27 +79,9 @@ namespace CubeTools_UI.Views.Compression
         private void Compress()
         {
             string data = _archiveNameVisual.Text;
-
-            if (Directory.Exists(data) || File.Exists(data))
-                data = ManagerReader.GenerateNameForModification(data) + SelectStringbyArchive(_archiveFormat);
-            else
-                data += SelectStringbyArchive(_archiveFormat);
-            
-            FileType ft = FileType.NullPointer;
-            
-            try
-            {
-                ft = ManagerWriter.CreateDir(data);
-                foreach (var pointer in _datas)
-                    ManagerWriter.Rename(pointer.Path, ManagerReader.GetParent(pointer) + "/" + ft.Name + "/" +pointer.Name);
-            }
-            catch (ManagerException e)
-            {
-                e.Errorstd = "Unable to compress the archive";
-                _model!.SelectErrorPopUp(e);
-            }
-            
-            var task = LibraryCompression.Compression.CompressDirectory(ft, data, _archiveFormat);
+            data += SelectStringbyArchive(_archiveFormat);
+            var task = LibraryCompression.Compression.CompressItems(_datas, data, _archiveFormat);
+            task.Start();
             task.GetAwaiter().OnCompleted(() =>
             {
                 _model!.ReloadPath();
