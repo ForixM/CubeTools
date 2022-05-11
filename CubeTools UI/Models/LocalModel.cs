@@ -49,8 +49,7 @@ namespace CubeTools_UI.Models
             // Setting up current path
             ModelNavigationBar.View.CurrentPathXaml.Text = ModelNavigationBar.DirectoryPointer.Path;
             // Setting up Queue
-            ModelNavigationBar.QueuePointers = new List<string>(){ModelNavigationBar.DirectoryPointer.Path};
-            ModelNavigationBar.QueueIndex = 0;
+            ModelNavigationBar.Add(new DirectoryType(ModelNavigationBar.DirectoryPointer.Path));
             // Setting up Items
             ModelPathsBar.ReloadPath(ModelNavigationBar.DirectoryPointer.ChildrenFiles);
         }
@@ -99,12 +98,6 @@ namespace CubeTools_UI.Models
                 // Modified ListBox associated
                 ModelPathsBar.ReloadPath(ModelNavigationBar.DirectoryPointer.ChildrenFiles);
                 // Adding path to queue
-                ModelNavigationBar.QueuePointers.Add(path);
-                if (ModelNavigationBar.QueuePointers.Count >= 9)
-                {
-                    ModelNavigationBar.QueuePointers.RemoveAt(0);
-                    ModelNavigationBar.QueueIndex--;
-                }
             }
             ModelActionBar.SelectedXaml = new List<PointerItem>();
         }

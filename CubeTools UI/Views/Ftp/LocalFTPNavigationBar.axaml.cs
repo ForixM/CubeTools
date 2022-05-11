@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using CubeTools_UI.Models;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
+using Library.Pointers;
 
 namespace CubeTools_UI.Views.Ftp
 {
@@ -42,22 +43,10 @@ namespace CubeTools_UI.Views.Ftp
         /// </summary>
         private void LeftArrowClick(object? sender, RoutedEventArgs e)
         {
-            if (Model.QueueIndex < Model.QueuePointers.Count - 1)
+            if (Model.QueueIndex > 0)
             {
-                Model.QueueIndex++;
-                try
-                {
-                    Model.ParentModel?.AccessPath(Model.QueuePointers[Model.QueueIndex]);
-                }
-                catch (Exception exception)
-                {
-                    if (exception is ManagerException @managerException)
-                    {
-                        @managerException.Errorstd = "Unable to get the next file";
-                        new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
-                    }
-                    Model.QueueIndex--;
-                }
+                Model.QueueIndex--;
+                Model.ParentModel?.AccessPath(Model.QueuePointers[Model.QueueIndex].Path, true);
             }
         }
 
@@ -66,25 +55,10 @@ namespace CubeTools_UI.Views.Ftp
         /// </summary>
         private void RightArrowClick(object? sender, RoutedEventArgs e)
         {
-            // End of the queue
-            if (Model.QueueIndex > 0)
+            if (Model.QueueIndex < Model.QueuePointers.Count - 1)
             {
-                // Get the index before
-                Model.QueueIndex--;
-                try
-                {
-                    string path = Model.QueuePointers[Model.QueueIndex];
-                    Model.ParentModel?.AccessPath(path);
-                }
-                catch (Exception exception)
-                {
-                    if (exception is ManagerException @managerException)
-                    {
-                        @managerException.Errorstd = "Unable to get the last file";
-                        new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
-                    }
-                    Model.QueueIndex--;
-                }
+                Model.QueueIndex++;
+                Model.ParentModel?.AccessPath(Model.QueuePointers[Model.QueueIndex].Path, true);
             }
         }
 
@@ -93,35 +67,11 @@ namespace CubeTools_UI.Views.Ftp
         /// </summary>
         private void UpArrowClick(object? sender, RoutedEventArgs e)
         {
-            string parent = "";
-            try
+            if (Model.ParentModel.ModelActionBar.SelectedXaml[0].Pointer.Path != ManagerReader.GetRootPath(Model.ParentModel.ModelActionBar.SelectedXaml[0].Pointer.Path))
             {
-                if (ManagerReader.GetRootPath(Model.DirectoryPointer.Path) == Model.DirectoryPointer.Path)
-                    parent = Model.DirectoryPointer.Path;
-                else 
-                    parent = ManagerReader.GetParent(Model.DirectoryPointer.Path);
-            }
-            catch (Exception exception)
-            {
-                if (exception is ManagerException @managerException)
-                {
-                    @managerException.Errorstd = "Unable to get the parent file";
-                    new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
-                }
-            }
-            Model.QueuePointers.Add(parent);
-            Model.QueueIndex = Model.QueuePointers.Count-1;
-            try
-            {
-                Model.ParentModel?.AccessPath(Model.QueuePointers[Model.QueueIndex]);
-            }
-            catch (Exception exception)
-            {
-                if (exception is ManagerException @managerException)
-                {
-                    @managerException.Errorstd = "Unable to get the parent file";
-                    new Views.ErrorPopUp.ErrorPopUp(@managerException).Show();
-                }
+                string path = Model.DirectoryPointer.Path;
+                Model.ParentModel?.AccessPath(ManagerReader.GetParent(Model.QueuePointers[Model.QueueIndex].Path), true);
+                Model.Add(new DirectoryType(path));
             }
         }
 

@@ -23,8 +23,8 @@ namespace CubeTools_UI.Models
         }
         
         // Queue Pointers : Pointers registered in a queue
-        private List<string> _queuePointers;
-        public List<string> QueuePointers
+        private List<DirectoryType> _queuePointers;
+        public List<DirectoryType> QueuePointers
         {
             get => _queuePointers;
             set => _queuePointers = value;
@@ -46,6 +46,21 @@ namespace CubeTools_UI.Models
         public LocalModel? ParentModel;
         
         #endregion
+        
+        public void Add(DirectoryType folder)
+        {
+            if (_queuePointers.Count - 1 == _queueIndex || _queueIndex < 0)
+            {
+                _queuePointers.Add(folder);
+            }
+            else if (_queuePointers.Count > _queueIndex + 1 && folder != _queuePointers[_queueIndex + 1])
+            {
+                _queuePointers.RemoveRange(_queueIndex + 1, _queuePointers.Count - _queueIndex - 1);
+                _queuePointers.Add(folder);
+            }
+
+            _queueIndex++;
+        }
 
         // CTOR
         public NavigationBarModel(NavigationBar view)
@@ -53,7 +68,7 @@ namespace CubeTools_UI.Models
             View = view;
             
             _directoryPointer = new DirectoryType();
-            _queuePointers = new List<string>();
+            _queuePointers = new List<DirectoryType>();
             _queueIndex = -1;
         }
         

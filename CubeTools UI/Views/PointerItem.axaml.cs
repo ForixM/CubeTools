@@ -64,6 +64,7 @@ namespace CubeTools_UI.Views
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
             _main.ModelActionBar.SelectedXaml.Clear();
+            _main.ModelNavigationBar.Add(new DirectoryType(Pointer.Path));
             _main.AccessPath(Pointer.Path, Pointer.IsDir);
         }
 
