@@ -1,0 +1,134 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
+        Width="500" Height="650"
+        CanResize="False"
+        Topmost="True"
+        Closing="OnClose"
+        Icon="../../Assets/OLD/info.ico"
+        WindowStartupLocation="CenterScreen"
+        x:Class="Ui.Views.PopUps.PropertiesPopUp"
+        Title="Properties"
+        KeyDown="OnEscapePressed">
+    
+    <Grid RowDefinitions="100,25,50,50,25,50,50,25,50,50,30,25,60,*">
+        <!-- First Row : Image and FullName-->
+        <Grid Row="0" ColumnDefinitions="150,*">
+            
+            <Grid Column="0">
+                <Image Height="75" Name="ImageExtension"/>
+            </Grid>
+            
+            <Grid Column="1">
+                <StackPanel>
+                    <Border Background="#FFFFFF">
+                        <TextBlock Margin="0 40 0 0" Name="FileName"/>
+                    </Border>
+                </StackPanel>
+            </Grid>
+            
+        </Grid>
+        <!--Second Row : Line -->
+        <Grid Row="1">
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 0" Width="350"/>
+        </Grid>
+        <!--Third Row : Type of file-->
+        <Grid Row="2" Margin="25 5" ColumnDefinitions="100,*">
+            <Grid Column="0">
+                <TextBlock FontWeight="Bold" Text="Type of file :"/>
+            </Grid>
+            <Grid Column="1">
+                <TextBlock Name="Type"/>
+            </Grid>
+        </Grid>
+        <!--Fourth Row : Description -->
+        <Grid Row="3" Margin="25 5" ColumnDefinitions="100,*">
+            <Grid Column="0">
+                <TextBlock FontWeight="Bold" Text="Description :"/>
+            </Grid>
+            <Grid Column="1">
+                <TextBlock Name="Description"/>
+            </Grid>
+        </Grid>
+        <!--Fifth Row : Line -->
+        <Grid Row="4">
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 0" Width="350"/>
+        </Grid>
+        <!--Sixth Row : Path -->
+        <Grid Row="5" Margin="25 5" ColumnDefinitions="100,*">
+            <Grid Column="0">
+                <TextBlock FontWeight="Bold" Text="Location :"/>
+            </Grid>
+            <Grid Column="1">
+                <TextBlock TextWrapping="Wrap" MaxLines="3" MaxHeight="50" Name="Path"/>
+            </Grid>
+        </Grid>
+        <!--Seventh Row : Size -->
+        <Grid Row="6" Margin="25 5" ColumnDefinitions="100,*">
+            <Grid Column="0">
+                <TextBlock FontWeight="Bold" Text="Size :"/>
+            </Grid>
+            <Grid Column="1">
+                <TextBlock Name="Size"/>
+            </Grid>
+        </Grid>
+        <!--Eight Row : Line -->
+        <Grid Row="7">
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 0" Width="350"/>
+        </Grid>
+        <!--Ninth Row : Creation Date -->
+        <Grid Row="8" Margin="25 5" ColumnDefinitions="100,*">
+            <Grid Column="0">
+                <TextBlock FontWeight="Bold" Text="Created :"/>
+            </Grid>
+            <Grid Column="1">
+                <TextBlock Name="Created"/>
+            </Grid>
+        </Grid>
+        <!--Tenth Row : Modified Date -->
+        <Grid Row="9" Margin="25 5" ColumnDefinitions="100,*">
+            <Grid Column="0">
+                <TextBlock FontWeight="Bold" Text="Modified :"/>
+            </Grid>
+            <Grid Column="1">
+                <TextBlock Name="Modified"/>
+            </Grid>
+        </Grid>
+        <!--Eleventh Row : Accessed Date -->
+        <Grid Row="10" Margin="25 5" ColumnDefinitions="100,*">
+            <Grid Column="0">
+                <TextBlock FontWeight="Bold" Text="Accessed :"/>
+            </Grid>
+            <Grid Column="1">
+                <TextBlock Name="Accessed"/>
+            </Grid>
+        </Grid>
+        <!--Twelve Row : Line -->
+        <Grid Row="11">
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 0" Width="350"/>
+        </Grid>
+        <!--Thirteenth Row : Attributes -->
+        <Grid Row="12" Margin="25 5" ColumnDefinitions="100,100,100,*">
+            <Grid Column="0">
+                <TextBlock FontWeight="Bold" Text="Attributes :"/>
+            </Grid>
+            <Grid Column="1">
+                <TextBlock Text="Read-Only"/>
+                <CheckBox Unchecked="ReadOnlyUnchecked" Margin="25 10 0 0" Checked="ReadOnlyChecked" Name="Read-Only"/>
+            </Grid>
+            <Grid Column="2">
+                <TextBlock Text="Hidden"/>
+                <CheckBox Unchecked="HiddenUnchecked" Margin="15 10 0 0" Checked="HiddenChecked" Name="Hidden"/>
+            </Grid>
+        </Grid>
+        <!--Fourteenth Row : Button-->
+        <Grid Row="13">
+            <Button Click="OnClick" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100">
+                    <TextBlock Text="OK" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

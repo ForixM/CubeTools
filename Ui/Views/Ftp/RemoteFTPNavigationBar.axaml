@@ -1,0 +1,62 @@
+<UserControl 
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:vm="using:Ui.Models"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	
+	mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="50"
+    x:Class="Ui.Views.Ftp.RemoteFtpNavigationBar">
+	
+	<!--Import for style-->
+	<UserControl.Styles>
+		<StyleInclude Source="/Styles/Styles.axaml"/>
+	</UserControl.Styles>
+	
+	<Border CornerRadius="8" BorderThickness="3" Height="47">
+
+		<StackPanel VerticalAlignment="Center">
+			<!-- Adding columns definitions -->
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="50" />
+					<ColumnDefinition Width="50" />
+					<ColumnDefinition Width="50" />
+					<ColumnDefinition Width="50" />
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+
+				<!-- First column : Left Button -->
+				<Grid Grid.Column="0">
+					<Button Classes="TopBar" Name="LeftButton" Click="LeftArrowClick">
+						<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Undo.ico"/>
+					</Button>
+				</Grid>
+				<!--Second column : Right Button-->
+				<Grid Grid.Column="1">
+					<Button Classes="TopBar" Name="RightButton" Click="RightArrowClick">
+						<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Redo.ico"/>
+					</Button>
+				</Grid>
+				<!--Third column : Up Button-->
+				<Grid Grid.Column="2">
+					<Button Classes="TopBar" Name="UpButton" Click="UpArrowClick">
+						<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Up.ico"/>
+					</Button>
+				</Grid>
+				<!--Fourth column : Refresh button-->
+				<Grid Grid.Column="3">
+					<Button Classes="TopBar" Name="SyncButton" Click="SyncClick">
+						<Image Classes="Manager" Source="../../Assets/CubeToolsIconsCompressed/Refresh.ico"/>
+					</Button>
+				</Grid>
+				<!-- Fifth column : Path bar-->
+				<Grid Grid.Column="4">
+					<Border CornerRadius="4" Background="White" Margin="0 1" >
+						<TextBox Name="RemoteCurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" />
+					</Border>
+				</Grid>
+			</Grid>
+		</StackPanel>
+	</Border>
+</UserControl>

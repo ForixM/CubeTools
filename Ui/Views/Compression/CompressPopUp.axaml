@@ -1,0 +1,37 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        MinWidth="300" MinHeight="100"
+        CanResize="False"
+        x:Class="Ui.Views.Compression.CompressPopUp"
+        Icon="../../Assets/CubeToolsIcons/Compression.ico"
+        WindowStartupLocation="CenterScreen"
+        Title="Compression"
+        KeyDown="OnKeyPressedWindow">
+    
+    <Grid ColumnDefinitions="100,200">
+        <Grid Grid.Column="0">
+            <Image Source="../../Assets/CubeToolsIcons/Compression.ico" Margin="10"/>
+        </Grid>
+                
+        <Grid Grid.Column="1" RowDefinitions="50, 50">
+            
+            <Grid Grid.Row="0">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Width="125">
+                    <TextBox KeyDown="OnEnterPressed" Name="NameArchive" Watermark="File Name" Text="New File" />
+                </StackPanel>
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Width="75">
+                    <ComboBox PlaceholderText=".zip" Name="SelectedMode" SelectionChanged="OnCompressModeChanged">
+                        <TextBlock Text=".7z"/>
+                        <TextBlock Text=".zip"/>
+                    </ComboBox>
+                </StackPanel>
+            </Grid>
+                        
+            <WrapPanel Grid.Row="1">
+                <Button Click="OnCompressionPressed" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 10 0 0" Content="Compression Folder"/>
+                <Button Click="OnCancelPressed" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 10 0 0" Content="Cancel"/>
+            </WrapPanel>
+        </Grid>
+               
+    </Grid>
+</Window>
