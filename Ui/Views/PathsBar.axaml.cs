@@ -23,22 +23,19 @@ namespace Ui.Views
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        public void ReloadPath(List<FilePointer> ftList)
+        public void ReloadPath(List<Pointer> ftList)
         {
             Generator.Children.Clear();
             int size = ftList.Count;
-            //double height = 0;
             for (int i = 0; i < size; i++)
             {
                 var pi = new PointerItem(ftList[i], Model.ParentModel);
-                if (Model.ParentModel.ModelActionBar.SelectedXaml.Contains(pi))
-                    pi.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
-                else
-                    pi.button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
+                pi.button.Background = (Model.ParentModel.ModelActionBar.SelectedXaml.Contains(pi))
+                    ? new SolidColorBrush(new Color(255, 255, 224, 130))
+                    : new SolidColorBrush(new Color(255, 255, 255, 255));;
                 Generator.Children.Add(pi);
                 size = ftList.Count;
             }
-            //((ScrollViewer)Generator.Parent!).Height = height;
         }
     }
 }

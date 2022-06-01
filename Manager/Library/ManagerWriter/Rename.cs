@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Security;
 using Library.ManagerExceptions;
-using Library.Pointers;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Library.ManagerWriter
 {
@@ -13,12 +10,13 @@ namespace Library.ManagerWriter
 
         /// <summary>
         ///     - Type : Low Level <br></br>
-        ///     - Action : Rename a file or dir with a dest. Generate a copy by default =>/><br></br>
-        ///     - Specification : dest should not exist to avoid merging directories
-        ///     - Implementation : Check
+        ///     - Action : Rename any type of data (file or folder) <br></br>
+        ///     - Specification : dest should not exist to avoid merging directories <br></br>
+        ///     - Implementation : CHECK
         /// </summary>
         /// <param name="source">the source path</param>
         /// <param name="dest">the destination path</param>
+        /// <param name="overwrite">whether the source can be overwrite</param>
         /// <returns>The success of the rename function</returns>
         /// <exception cref="PathNotFoundException">The given path does not exist</exception>
         /// <exception cref="InUseException">the source is being used by an external program</exception>
@@ -26,233 +24,173 @@ namespace Library.ManagerWriter
         /// <exception cref="PathFormatException">the source format is incorrect</exception>
         /// <exception cref="ReplaceException">dest already exist, cannot overwrite</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static async void Rename(string source, string dest)
+        public static void Rename(string source, string dest, bool overwrite = false)
         {
             // Source does not exist
-            if (!File.Exists(source) && !Directory.Exists(source))
-                throw new PathNotFoundException("Impossible to rename data", "Rename");
+            if (!File.Exists(source) && !Directory.Exists(source)) throw new PathNotFoundException("Impossible to rename data", "Rename");
+            
             // Source and dest are the same
-            if (source == dest)
-                return;
+            if (source == dest) return;
+            
             // Source or dest have an incorrect format
-            if (!ManagerReader.ManagerReader.IsPathCorrect(source) || !ManagerReader.ManagerReader.IsPathCorrect(dest))
-                throw new PathFormatException(source + " : format of path is incorrect", "Rename");
-            // The given source exists
-            if (Directory.Exists(source))
-            {
-                // dest already exists => replace exceptions launched
-                if (Directory.Exists(dest))
-                    throw new ReplaceException(dest + " already exist, cannot merge directories",
-                        "Rename"); // TODO Add Asking for changes by user
-                try
-                {
-                    Directory.Move(source, dest);
-                    return;
-                }
-                catch (Exception e)
-                {
-                    if (e is IOException)
-                        throw new InUseException(
-                            source + " is already used by an external program or is contained in another volume",
-                            "Rename");
-                    if (e is UnauthorizedAccessException)
-                        throw new AccessException(source + " could not be renamed", "Rename");
-                    throw new ManagerException("", "", "", "", ""); // TODO Edit exception
-                }
-            }
-
-            // The given source is a file : basic algorithm => just rename the file
-            if (File.Exists(source))
-            {
-                // file dest already exists
-                if (File.Exists(dest))
-                    throw new ReplaceException(dest + " already exist, cannot merge overwrite files",
-                        "Rename"); // TODO Ask for the user : REPLACE
-                try
-                {
-                    File.Move(source, dest);
-                }
-                catch (Exception e)
-                {
-                    if (e is UnauthorizedAccessException)
-                        throw new AccessException(source + " could not be renamed", "Rename");
-                    throw new ManagerException("", "", "", "", ""); // TODO EDIT EXCEPTION
-                }
-            }
+            if (!ManagerReader.ManagerReader.IsPathCorrect(source) || !ManagerReader.ManagerReader.IsPathCorrect(dest)) throw new PathFormatException(source + " : format of path is incorrect", "Rename");
+            
+            // Rename whether it is a file or a folder
+            if (Directory.Exists(source)) RenameDirectory(source, dest, overwrite);
+            else RenameFile(source, dest, overwrite);
         }
 
         /// <summary>
         ///     - Type : Low Level <br></br>
-        ///     - Action : Rename a file or dir with a dest. Generate a copy by default => /><br></br>
+        ///     - Action : Rename dir with a dest.<br></br>
         ///     - Specification : dest should not exist to avoid merging directories
-        ///     - Implementation : Check
+        ///     - Implementation : CHECK
         /// </summary>
         /// <param name="source">the source path</param>
         /// <param name="dest">the destination path</param>
+        /// <param name="overwrite">whether the folder has to overwrite its content</param>
         /// <exception cref="PathNotFoundException">The given path does not exist</exception>
         /// <exception cref="InUseException">the source is being used by an external program</exception>
         /// <exception cref="AccessException">the source cannot be accessed</exception>
         /// <exception cref="PathFormatException">the source format is incorrect</exception>
         /// <exception cref="ReplaceException">dest already exist, cannot overwrite</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static void RenameMerge(string source, string dest) // TODO Recursive method
+        public static void RenameDirectory(string source, string dest, bool overwrite = false)
         {
-            if (Directory.Exists(source) && !Directory.Exists(dest))
-                Rename(source, dest);
-            if (!Directory.Exists(source) && !File.Exists(source))
-                throw new PathNotFoundException($"{source} could not be found, rename aborted", "RenameMerge");
-
+            // Source does not exist
+            if (!Directory.Exists(source) && !File.Exists(source)) throw new PathNotFoundException($"{source} could not be found, rename aborted", "RenameMerge");
             // Source and dest are the same
-            if (source == dest)
-                return;
-            //int percentage = 0;
-            //int amount = ManagerReader.ManagerReader.FastReaderFiles(source);
-            var status = new List<Tuple<bool, string>>();
+            if (source == dest) return;
+            
+            // Trying to get the directory info attached to the source path and Create a new One
+            DirectoryInfo? sourceDirectoryInfo;
+            DirectoryInfo? destDirectoryInfo;
             try
             {
-                var di = new DirectoryInfo(source);
-                _RenameMerge(status, di, dest);
-                /* // TODO SYSTEM OF MESSAGES BOX COULD BE ADDED
-                foreach (var item in status)
+                sourceDirectoryInfo = new DirectoryInfo(source);
+                if (overwrite)
                 {
-                    if (!item.Item1)
-                        
-                }*/
-            }
-            catch (SecurityException e)
-            {
-                throw new AccessException("", ""); // TODO EDIT EXCEPTION
-            }
-        }
-
-        /// <summary>
-        ///     - Action : Main algorithm, it uses recursion
-        ///     * Generate subdirs and browse and rename all subfiles.
-        ///     * Generate a copy by default
-        ///     - Specification : The used of a Tuple status keeps a stack trace of errors.
-        ///     - Implementation : NOT CHECK
-        /// </summary>
-        /// <param name="status"></param>
-        /// <param name="workingDir"></param>
-        /// <param name="modifiedDirPath"></param>
-        private static void _RenameMerge(List<Tuple<bool, string>> status, DirectoryInfo workingDir,
-            string modifiedDirPath)
-        {
-            // CREATE THE WORKING DIRECTORY IF NOT CREATED
-            if (!Directory.Exists(modifiedDirPath))
-                CreateDir(modifiedDirPath);
-
-            // BROWSE SUB FILES OF WORKING DIRS
-            foreach (var fi in workingDir.GetFiles())
-            {
-                // GENERATE THE NEW PATH
-                var fiPath = modifiedDirPath + '/' + fi.Name;
-                // If the path already exists, generate a copy
-                if (File.Exists(fiPath))
-                {
-                    Copy(fi.FullName.Replace('\\', '/'),
-                        ManagerReader.ManagerReader.GenerateNameForModification(fiPath).Replace('\\', '/'));
-                    Delete(fi.FullName);
-                    status.Add(Tuple.Create(false, fi.FullName));
+                    DeleteDir(dest);
+                    destDirectoryInfo = CreateDir(dest).DirectoryInfo;
                 }
-                // Otherwise, simply move the file to the new directory
-                else
-                {
-                    SimpleRenameFile(fi.FullName.Replace('\\', '/'), fiPath);
-                    status.Add(Tuple.Create(true, fiPath));
-                }
-            }
-
-            // BROWSE SUB DIRECTORIES OF WORKING DIRECTORIES
-            var CanBeDeleted = true; // Useful to check if all sub-dirs of the working directories can be treated
-            foreach (var di in workingDir.EnumerateDirectories())
-            {
-                // di => each DI of the working directory | di.Name => path of the data to rename
-                // diPath => the 
-                var diPath = modifiedDirPath + '/' + di.Name;
-                Console.WriteLine(diPath);
-                if (!Directory.Exists(diPath))
-                    CreateDir(diPath);
-                try
-                {
-                    _RenameMerge(status, new DirectoryInfo(workingDir.FullName + '/' + di.Name), diPath);
-                    status.Add(Tuple.Create(true, diPath));
-                }
-                catch (Exception)
-                {
-                    CanBeDeleted = false;
-                }
-            }
-
-            if (CanBeDeleted)
-            {
-                DeleteDir(workingDir.FullName);
-                status.Add(Tuple.Create(true, modifiedDirPath));
-            }
-            else
-            {
-                status.Add(Tuple.Create(false, workingDir.FullName));
-            }
-        }
-
-        /// <summary>
-        ///     // TODO Add descriptions
-        /// </summary>
-        /// <param name="source">The source file</param>
-        /// <param name="dest">The new path to give</param>
-        /// <exception cref="AccessException">The given </exception>
-        /// <exception cref="ManagerException"></exception>
-        /// <exception cref="PathNotFoundException"></exception>
-        private static void SimpleRenameFile(string source, string dest)
-        {
-            if (!File.Exists(source))
-                throw new PathNotFoundException($"{source} does not exist", "SimpleRenameFile");
-            try
-            {
-                File.Move(source, dest);
+                else destDirectoryInfo = Directory.Exists(dest) ? new DirectoryInfo(dest) : CreateDir(dest).DirectoryInfo;
             }
             catch (Exception e)
             {
-                if (e is UnauthorizedAccessException)
-                    throw new AccessException("", "SimpleRenameFile"); // TODO EDIT EXCEPTION
-                throw new ManagerException("", "", "", "", ""); // TODO EDIT EXCEPTION
+                if (e is ManagerException) throw;
+                throw e switch
+                {
+                    SecurityException => new AccessException($"Access to {source} is denied", "RenameDirectory"),
+                    ArgumentNullException or PathTooLongException or ArgumentException => new PathFormatException($"{source} has an invalid format", "RenameDirectory"),
+                    _ => new ManagerException("Unable to rename a folder", "High", "Writer error", $"Unable to rename {source} to {dest}", "RenameDirectory")
+                };
+            }
+            
+            // DirectoryInfo is supposed to be not null (and so loaded)
+            if (destDirectoryInfo is null || sourceDirectoryInfo is null)
+                throw new AccessException($"Access to {source} or {dest} is impossible", "RenameDirectory");
+            
+            // Rename files
+            foreach (var fi in sourceDirectoryInfo.EnumerateFiles())
+            {
+                var newPath = destDirectoryInfo.FullName.Replace("\\", "/") + "/" + fi.Name;
+                try
+                {
+                    RenameFile(fi.FullName.Replace("\\","/"), newPath, overwrite);
+                }
+                catch (Exception)
+                {
+                    
+                }
+            }
+            // Rename folders
+            foreach (var di in sourceDirectoryInfo.EnumerateDirectories())
+            {
+                var newPath = destDirectoryInfo.FullName.Replace("\\", "/") + "/" + di.Name;
+                try
+                {
+                    RenameDirectory(di.FullName.Replace("\\","/"), newPath, overwrite);
+                }
+                catch (Exception)
+                {
+                    
+                }
             }
         }
 
         /// <summary>
-        ///     => CubeTools UI Implementation <br></br>
-        ///     - Type : High Level : Try to rename a FileType using a newPath <br></br>
-        ///     - Action : Rename a FileType class path and its associated file using a string path <br></br>
-        ///     - Specification : Can be used for the CubeTools UI implementation thanks to the list of
-        ///     <see cref="DirectoryType" /> class <br></br>
-        ///     - Implementation : NOT Check
+        ///     - Type : High Level <br></br>
+        ///     - Action : Rename a dir thanks to its pointer.<br></br>
+        ///     - Specification : dest should not exist to avoid merging directories
+        ///     - Implementation : CHECK
         /// </summary>
-        /// <param name="ft">the source file linked to FileType Class</param>
-        /// <param name="dest">the destination file name or dir path</param>
-        /// <param name="merge">if true, merge directories and generate copy for files</param>
+        /// <param name="pointer">the pointer associated to the source path</param>
+        /// <param name="dest">the destination path</param>
+        /// <param name="overwrite">whether the folder has to overwrite its content</param>
         /// <exception cref="PathNotFoundException">The given path does not exist</exception>
         /// <exception cref="InUseException">the source is being used by an external program</exception>
         /// <exception cref="AccessException">the source cannot be accessed</exception>
         /// <exception cref="PathFormatException">the source format is incorrect</exception>
         /// <exception cref="ReplaceException">dest already exist, cannot overwrite</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static void Rename(string source, string dest, bool merge = false)
+        public static void RenameDirectory(DirectoryPointer.DirectoryPointer pointer, string dest, bool overwrite = false) =>
+            RenameDirectory(pointer.Path, dest, overwrite);
+
+        /// <summary>
+        ///     - Type : Low Level <br></br>
+        ///     - Action : A Simple rename of a file given by its path source <br></br>
+        ///     - Implementation : CHECK
+        /// </summary>
+        /// <param name="source">The source file</param>
+        /// <param name="dest">The new path</param>
+        /// <param name="overwrite">Whether the file has to be overwrite or not</param>
+        /// <exception cref="AccessException">Unable to access source because of an access denied</exception>
+        /// <exception cref="PathFormatException">The given source or the given dest has an invalid format</exception>
+        /// <exception cref="PathNotFoundException">The source could not be found in the client's system</exception>
+        /// <exception cref="ManagerException">An error occured while trying to rename a file</exception>
+        public static void RenameFile(string source, string dest, bool overwrite = false)
         {
-            if (merge)
-                RenameMerge(source, dest);
-            else
-                Rename(source, dest);
+            if (!File.Exists(source)) throw new PathNotFoundException($"{source} does not exist", "RenameFile");
+            if (File.Exists(dest) && !overwrite) throw new ReplaceException($"{dest} already exists, rename aborted", "RenameFile");
+            try
+            {
+                if (overwrite && File.Exists(dest)) DeleteFile(dest);
+                FileSystem.MoveFile(source, dest, UIOption.AllDialogs, UICancelOption.ThrowException);
+            }
+            catch (Exception e)
+            {
+                throw e switch
+                {
+                    ArgumentException or ArgumentNullException or NotSupportedException or PathTooLongException => new PathFormatException($"{source} has an invalid format", "RenameFile"),
+                    FileNotFoundException => new PathNotFoundException($"{source} could not be found in the client's system", "RenameFile"),
+                    IOException => new DiskNotReadyException($"The disk is not ready to rename {dest}", "RenameFile"),
+                    SecurityException or UnauthorizedAccessException => new AccessException($"Access to {source} is denied", "RenameFile"),
+                    _ => new ManagerException("Unable to rename a file", "High", "Writer error", $"Unable to rename {source} to {dest}", "RenameFile")
+                };
+            }
         }
 
         /// <summary>
-        ///     => CubeTools UI Implementation <br></br>
-        ///     - Type : High Level : Try to rename a FileType using a newPath <br></br>
-        ///     - Action : Rename a FileType class path and its associated file using a string path <br></br>
-        ///     - Specification : Can be used for the CubeTools UI implementation thanks to the list of
-        ///     <see cref="DirectoryType" /> class <br></br>
-        ///     - Implementation : NOT Check
+        ///     - Type : High Level <br></br>
+        ///     - Action : A Simple rename of a file given by its pointer <br></br>
+        ///     - Implementation : CHECK
         /// </summary>
-        /// <param name="ft">the source file linked to FileType Class</param>
+        /// <param name="pointer">The pointer associated to the source</param>
+        /// <param name="dest">The new path</param>
+        /// <param name="overwrite">Whether the file has to be overwrite or not</param>
+        /// <exception cref="AccessException">Unable to access source because of an access denied</exception>
+        /// <exception cref="PathFormatException">The given source or the given dest has an invalid format</exception>
+        /// <exception cref="PathNotFoundException">The source could not be found in the client's system</exception>
+        /// <exception cref="ManagerException">An error occured while trying to rename a file</exception>
+        public static void RenameFile(FilePointer.FilePointer pointer, string dest, bool overwrite = false) => RenameFile(pointer.Path, dest, overwrite);
+        
+        /// <summary>
+        ///     => CubeTools UI Implementation <br></br>
+        ///     - Type : High Level <br></br>
+        ///     - Action : Rename a file using its associated Pointer <br></br>
+        ///     - Implementation : CHECK
+        /// </summary>
+        /// <param name="pointer">the source file linked to FilePointer Class</param>
         /// <param name="dest">the destination file name or dir path</param>
         /// <param name="merge">if true, merge directories and generate copy for files</param>
         /// <exception cref="PathNotFoundException">The given path does not exist</exception>
@@ -261,12 +199,6 @@ namespace Library.ManagerWriter
         /// <exception cref="PathFormatException">the source format is incorrect</exception>
         /// <exception cref="ReplaceException">dest already exist, cannot overwrite</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static void Rename(FileType ft, string dest, bool merge = false)
-        {
-            if (merge)
-                RenameMerge(ft.Path, dest);
-            else
-                Rename(ft.Path, dest);
-        }
+        public static void Rename(Pointer pointer, string dest, bool merge = false) => Rename(pointer.Path, dest, merge);
     }
 }

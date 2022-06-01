@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -62,19 +63,32 @@ namespace Ui.Views.Actions
         {
             if (_model == null) return;
             
-            
             if (!ManagerReader.IsPathCorrect(name))
                 _model.SelectErrorPopUp(new PathFormatException("Format is invalid !"));
-            else if (File.Exists(name))
+            else if (File.Exists(_model.ModelNavigationBar.FolderPointer.Path + "/"+name))
                 _model.SelectErrorPopUp(new ReplaceException("File already exists !"));
             else
             {
                 try
                 {
-                    var ft = ManagerWriter.Create(name);
-                    _model!.ModelNavigationBar.FolderPointer.ChildrenFiles.Add(ft);
-                    _model.ModelPathsBar.ReloadPath(_model.ModelNavigationBar.FolderPointer
-                        .ChildrenFiles);
+                    string[] split = name.Split(".");
+                    switch (split.Length)
+                    {
+                        case 0:
+                            _model.ModelNavigationBar.FolderPointer.AddFile("New File", "txt");
+                            break;
+                        case 1:
+                            _model.ModelNavigationBar.FolderPointer.AddFile(name, "");
+                            break;
+                        default:
+                        {
+                            string nameNoExtension = "";
+                            for (int i = 0; i < split.Length - 1; i++) nameNoExtension += split[i];
+                            _model.ModelNavigationBar.FolderPointer.AddFile(nameNoExtension, split[-1]);
+                            break;
+                        }
+                    }
+                    _model.ModelPathsBar.ReloadPath(_model.ModelNavigationBar.FolderPointer.ChildrenFiles);
                     Close();
                 }
                 catch (Exception exception)

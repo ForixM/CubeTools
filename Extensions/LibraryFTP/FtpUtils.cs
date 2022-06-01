@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 //Libraries
-using Library.Pointers;
+using Library;
 // External Libraries
 using FluentFTP;
 
@@ -188,7 +188,7 @@ namespace LibraryFTP
         /// <param name="source">The local file that will be uploaded</param>
         /// <param name="progressionEvent">Optional function parameter to track upload progression</param>
         /// <returns>The async task of the upload</returns>
-        public Task<FtpStatus> UploadFile(string remoteDestination, FileType source,
+        public Task<FtpStatus> UploadFile(string remoteDestination, Pointer source,
             Action<object, FtpProgress> progressionEvent = null)
         {
             Progress<FtpProgress> progress = null;

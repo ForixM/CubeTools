@@ -1,9 +1,9 @@
 using System.Security;
 using Library.ManagerExceptions;
 
-namespace Library
+namespace Library.FilePointer
 {
-    public abstract partial class Pointer
+    public partial class FilePointer : Pointer
     {
         // This region contains every functions that give information of a pointer (BASICS)
 
@@ -13,12 +13,8 @@ namespace Library
         /// <summary>
         /// Simply determine whenever the instance exist and is referred to an existing item
         /// </summary>
-        public bool Exist() => _isDir && Directory.Exists(_path) || !_isDir && File.Exists(_path);
-
-        /// <summary>
-        /// Simply determine whenever the instance has a valid path (Length, character ...)
-        /// </summary>
-        public bool IsValid() => Exist() && ManagerReader.ManagerReader.IsPathCorrect(Path);
+        public override bool Exist() => !IsDir && File.Exists(_path);
+        
 
         /// <summary>
         ///     - Type : High Level Method <br></br>
@@ -29,49 +25,20 @@ namespace Library
         /// <exception cref="AccessException">the path cannot be accessed</exception>
         /// <exception cref="PathNotFoundException">the file / folder does not exist</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public string GetParent()
+        public override string GetParent()
         {
-            switch (this)
+            try
             {
-                case FilePointer.FilePointer filePointer:
-                    try
-                    {
-                        return filePointer.FileInfo!.DirectoryName!;
-                    }
-                    catch (Exception e)
-                    {
-                        if (e is UnauthorizedAccessException or SecurityException or NullReferenceException)
-                            throw new AccessException(filePointer.Path + " access denied", "GetParent");
-                        throw new ManagerException("Access to parent", "High", "Parent not found",
-                            "Error while trying to get the Directory of " + filePointer.Path, "GetParent");
-                    }
-                case DirectoryPointer.DirectoryPointer directoryPointer:
-                    try
-                    {
-                        return directoryPointer.DirectoryInfo is not null
-                            ? ""
-                            : directoryPointer.DirectoryInfo!.FullName;
-                    }
-                    catch (Exception e)
-                    {
-                        if (e is UnauthorizedAccessException or SecurityException)
-                            throw new AccessException(directoryPointer.Path + " access denied", "GetParent");
-                        throw new ManagerException("Access to parent", "High", "Parent not found",
-                            "Error while trying to get the Directory of " + directoryPointer.Path, "GetParent");
-                    }
-                default:
-                    return "";
+                return FileInfo!.DirectoryName!;
+            }
+            catch (Exception e)
+            {
+                if (e is UnauthorizedAccessException or SecurityException or NullReferenceException)
+                    throw new AccessException(Path + " access denied", "GetParent");
+                throw new ManagerException("Access to parent", "High", "Parent not found",
+                    "Error while trying to get the Directory of " + Path, "GetParent");
             }
         }
-
-        /// <summary>
-        ///     - Type : High Level Method <br></br>
-        ///     - Action : using Path class, it generates the root's path of the instance <br></br>
-        ///     - Implementation : CHECK <br></br>
-        ///     - No Catching on Format Exception because of the safety ensured by the pointer class
-        /// </summary>
-        /// <returns>Returns the root's path of the given path</returns>
-        public string GetRootPath() => System.IO.Path.GetPathRoot(Path)!;
 
         /// <summary>
         ///     - Type : High Level Method <br></br>
@@ -84,84 +51,25 @@ namespace Library
         /// <exception cref="DiskNotReadyException">the disk is refreshing</exception>
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public long GetPointerSize()
-        {
-            switch (this)
-            {
-                case DirectoryPointer.DirectoryPointer directoryPointer:
-                    try
-                    {
-                        return directoryPointer.DirectoryInfo!.EnumerateFiles("*.*", SearchOption.AllDirectories)
-                            .Sum(fi => fi.Length);
-                    }
-                    catch (Exception e)
-                    {
-                        if (e is SecurityException or UnauthorizedAccessException or NullReferenceException)
-                            throw new AccessException(Path + " cannot be read", "GetFileSize");
-                        throw new ManagerException("Reader error", "Medium", "Impossible to enumerate files",
-                            Path + " and their children could not be read", "GetFileSize");
-                    }
-                case FilePointer.FilePointer filePointer:
-                    try
-                    {
-                        return filePointer.FileInfo!.Length;
-                    }
-                    catch (Exception e)
-                    {
-                        throw e switch
-                        {
-                            SecurityException or UnauthorizedAccessException or NullReferenceException =>
-                                new AccessException(Path + " cannot be read", "GetFileSize"),
-                            IOException => new DiskNotReadyException(Path + " cannot be read", "GetFileSize"),
-                            _ => new ManagerException("Reader error", "Medium", "Impossible to enumerate files",
-                                Path + " and their children could not be read", "GetFileSize")
-                        };
-                    }
-            }
-
-            throw new PathNotFoundException(Path + " does not exist", "GetFileAccessDate");
-        }
-
-        /// <summary>
-        ///     - Type : High Level Method <br></br>
-        ///     - Action : Reformat an absolute path to the name of the file or dir <br></br>
-        ///     - Implementation : CHECK <br></br>
-        ///     - No Catching on Format Exception because of the safety ensured by the pointer class
-        /// </summary>
-        /// <returns>A string that represents the name of an absolute path</returns>
-        public string GetPathToName() => System.IO.Path.GetFileName(Path);
-
-        /// <summary>
-        ///     - Type : High Level Method <br></br>
-        ///     - Action : Same as GetPathToName but does not give the extension of the file <br></br>
-        ///     - Implementation : CHECK <br></br>
-        ///     - No Catching on Format Exception because of the safety ensured by the pointer class
-        /// </summary>
-        /// <returns>A string that represents the name of the file without its extension</returns>
-        public string GetPathToNameNoExtension() => System.IO.Path.GetFileNameWithoutExtension(Path);
-
-        /// <summary>
-        ///     - Type : High Level Method <br></br>
-        ///     - Action : Reformat a name to the absolute path if the given name and current directory are correct <br></br>
-        ///     - Implementation : CHECK
-        /// </summary>
-        /// <returns>The full path of a file or directory</returns>
-        /// <exception cref="AccessException">The instance cannot be read</exception>
-        /// <exception cref="ManagerException">An error occured</exception>
-        public string GetNameToPath()
+        public override long GetPointerSize()
         {
             try
             {
-                return System.IO.Path.GetFullPath(Name).Replace("\\", "/");
+                return FileInfo!.Length;
             }
             catch (Exception e)
             {
-                if (e is SecurityException or UnauthorizedAccessException)
-                    throw new AccessException(Name + " cannot be read", "GetNameToPath");
-                throw new ManagerException("Reader error", "Medium", "Transform absolute path to name",
-                    Name + " could not be read", "GetNameToPath");
+                throw e switch
+                {
+                    SecurityException or UnauthorizedAccessException or NullReferenceException =>
+                        new AccessException(Path + " cannot be read", "GetFileSize"),
+                    IOException => new DiskNotReadyException(Path + " cannot be read", "GetFileSize"),
+                    _ => new ManagerException("Reader error", "Medium", "Impossible to enumerate files",
+                        Path + " and their children could not be read", "GetFileSize")
+                };
             }
         }
+        
 
         /// <summary>
         ///     - Type : High Level Method <br></br>
@@ -169,7 +77,7 @@ namespace Library
         ///     - Implementation : Check
         /// </summary>
         /// <returns>Extension of a pointer</returns>
-        public string GetFileExtension()
+        public override string GetFileExtension()
         {
             string extension = System.IO.Path.GetExtension(Path);
             return extension.Length == 0 ? "" : extension.Remove(0, 1);
@@ -184,10 +92,9 @@ namespace Library
         /// <exception cref="PathNotFoundException">the path does not exist</exception>
         /// <exception cref="PathFormatException">the format of the path is incorrect</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public string GetContent()
+        public override string GetContent()
         {
             if (!Exist()) throw new CorruptedPointerException(Path + " does exist anymore", "GetContent");
-            if (_isDir) return "";
             try
             {
                 var sr = new StreamReader(Path);

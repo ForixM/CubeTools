@@ -10,14 +10,14 @@ namespace Tests
 {
     public class ReaderTests
     {
-        private DirectoryType env;
+        private DirectoryPointer env;
 
         [OneTimeSetUp]
         public void SetUp() // Setup environment for better test implementation
         {
             ManagerWriter.CreateDir(
                 "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/Tests/Tests/ReaderTests");
-            env = new DirectoryType(
+            env = new DirectoryPointer(
                 "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/Tests/Tests/ReaderTests");
             env.AddFile("accessDate", "txt");
             env.AddFile("lastEditionDate", "txt");
@@ -299,7 +299,7 @@ namespace Tests
         public void SortByName()
         {
             /*
-        List<FileType> ft = ManagerReader.SortByName(env.ChildrenFiles);
+        List<FilePointer> ft = ManagerReader.SortByName(env.ChildrenFiles);
         List<string> ls = new List<string>();
         foreach (var fte in ft)
         {
@@ -320,7 +320,7 @@ namespace Tests
         {
             /*
         env.SetChildrenFiles();
-        List<FileType> ft = ManagerReader.SortBySize(env.ChildrenFiles);
+        List<FilePointer> ft = ManagerReader.SortBySize(env.ChildrenFiles);
         List<long> ls = new List<long>();
         foreach (var fte in ft)
         {

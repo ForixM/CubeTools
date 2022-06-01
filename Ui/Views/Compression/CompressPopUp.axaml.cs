@@ -7,6 +7,7 @@ using Library.ManagerReader;
 using Library;
 using SevenZip;
 using Ui.Models;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Compression
 {
@@ -18,7 +19,7 @@ namespace Ui.Views.Compression
         private readonly ComboBox _archiveFormatVisual;
         
         private OutArchiveFormat _archiveFormat;
-        private List<FilePointer> _datas;
+        private List<Pointer> _datas;
 
         #region Init
         
@@ -31,9 +32,9 @@ namespace Ui.Views.Compression
             _archiveFormat = OutArchiveFormat.Zip;
             
             _model = null;
-            _datas = new List<FilePointer>();
+            _datas = new List<Pointer>();
         }
-        public CompressPopUp(LocalModel vm, List<FilePointer> datasIn) : this()
+        public CompressPopUp(LocalModel vm, List<Pointer> datasIn) : this()
         {
             _model = vm;
             _datas = datasIn;

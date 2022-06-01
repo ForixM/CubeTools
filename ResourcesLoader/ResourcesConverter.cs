@@ -1,11 +1,10 @@
 ﻿using Avalonia.Media;
-using Library.Pointers;
 
 namespace ResourcesLoader
 {
     public static class ResourcesConverter
     {
-        public static IImage TypeToIcon(string type, bool isdir)
+        public static IImage TypeToIcon(string type, bool isdir = false)
         {
             if (isdir)
                 return ResourcesIcons.FolderIcon;
@@ -15,51 +14,51 @@ namespace ResourcesLoader
                 case "jpeg":
                 case "png" :
                 case "ico":
-                    return ResourcesExtensions.ImageExtension;
+                    return ResourcesExtensionsCompressed.ImageExtensionCompressed;
                 case "txt":
-                    return ResourcesExtensions.TextExtension;
+                    return ResourcesExtensionsCompressed.TextExtensionCompressed;
                 case "exe":
                 case "iso":
-                    return ResourcesExtensions.ExeExtension;
+                    return ResourcesExtensionsCompressed.ExeExtensionCompressed;
                 case "docx":
                 case "odt":
-                    return ResourcesExtensions.DocxExtension;
+                    return ResourcesExtensionsCompressed.DocxExtensionCompressed;
                 case "pdf":
-                    return ResourcesExtensions.PdfExtension;
+                    return ResourcesExtensionsCompressed.PdfExtensionCompressed;
                 case "py":
-                    return ResourcesExtensions.PyExtension;
+                    return ResourcesExtensionsCompressed.PyExtensionCompressed;
                 case "cs":
-                    return ResourcesExtensions.CsExtension;
+                    return ResourcesExtensionsCompressed.CsExtensionCompressed;
                 case "c++":
-                    return ResourcesExtensions.CPlusPlusExtension;
+                    return ResourcesExtensionsCompressed.CPlusPlusExtensionCompressed;
                 case "java":
-                    return ResourcesExtensions.JavaExtension;
+                    return ResourcesExtensionsCompressed.JavaExtensionCompressed;
                 case "html":
-                    return ResourcesExtensions.HtmlExtension;
+                    return ResourcesExtensionsCompressed.HtmlExtensionCompressed;
                 case "pptx":
-                    return ResourcesExtensions.PptxExtension;
+                    return ResourcesExtensionsCompressed.PptxExtensionCompressed;
                 case "xlsx":
-                    return ResourcesExtensions.XslsExtension;
+                    return ResourcesExtensionsCompressed.XlsxExtensionCompressed;
                 case "gitignore":
-                    return ResourcesExtensions.GitIgnoreExtension;
+                    return ResourcesExtensionsCompressed.GitIgnoreExtensionCompressed;
                 case "7z":
                 case "zip":
-                    return ResourcesExtensions.CompressExtension;
+                    return ResourcesExtensionsCompressed.CompressExtensionCompressed;
                 case "rar":
-                    return ResourcesExtensions.ArchiveExtension;
+                    return ResourcesExtensionsCompressed.ArchiveExtensionCompressed;
                 case "key":
-                    return ResourcesExtensions.KeyExtension;
+                    return ResourcesExtensionsCompressed.KeyExtensionCompressed;
                 case "mp3":
                 case "alac":
                 case "flac": 
                 case "wav":
-                    return ResourcesExtensions.MusicExtension;
+                    return ResourcesExtensionsCompressed.MusicExtensionCompressed;
                 case "mp4":
                 case "mov":
                 case "mpeg":
-                    return ResourcesExtensions.VideoExtension;
+                    return ResourcesExtensionsCompressed.VideoExtensionCompressed;
                 default:
-                    return ResourcesExtensions.DefaultExtension;
+                    return ResourcesExtensionsCompressed.DefaultExtensionCompressed;
             }
         }
     }

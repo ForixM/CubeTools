@@ -10,6 +10,7 @@ using Library.ManagerExceptions;
 using Library.ManagerWriter;
 using Library;
 using Ui.Models;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Actions
 {
@@ -19,7 +20,7 @@ namespace Ui.Views.Actions
         public readonly StackPanel GeneratorDisplay;
 
         public List<DeleteMultipleSelector> Selected;
-        private List<FilePointer> _pointers;
+        private List<Pointer> _pointers;
 
         #region Init
         
@@ -29,9 +30,9 @@ namespace Ui.Views.Actions
             
             GeneratorDisplay = this.FindControl<StackPanel>("GeneratorDisplay");
             Selected = new List<DeleteMultipleSelector>();
-            _pointers = new List<FilePointer>();
+            _pointers = new List<Pointer>();
         }
-        public DeleteMultiplePopUp(LocalModel vm, List<FilePointer> pointer) : this()
+        public DeleteMultiplePopUp(LocalModel vm, List<Pointer> pointer) : this()
         {
             _model = vm;
             _pointers = pointer;
@@ -94,8 +95,7 @@ namespace Ui.Views.Actions
             {
                 var task = new Task(() =>
                 {
-                    if (ft.IsDir) ManagerWriter.DeleteDir(ft);
-                    else ManagerWriter.Delete(ft);
+                    ft.Delete();
                     _model?.ModelNavigationBar.FolderPointer.Remove(ft);
                 });
                 tasks.Add(task);

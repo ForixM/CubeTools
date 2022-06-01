@@ -6,76 +6,76 @@ namespace ResourcesLoader
     public static class ResourcesIcons
     {
         public static readonly IImage  CopyIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Copy.ico");
+                                                           "Icons/Copy.ico");
         public static readonly IImage CompressionIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Compression.ico");
+                                                           "Icons/Compression.ico");
         public static readonly IImage CreateIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Create.ico");
+                                                           "Icons/Create.ico");
         public static readonly IImage CreateFolderIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/CreateFolder.ico");
+                                                           "Icons/CreateFolder.ico");
         public static readonly IImage CubeToolsIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/CubeTools.ico");
+                                                           "Icons/CubeTools.ico");
         public static readonly IImage CubeToolsNameIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/CubeToolsName.ico");
+                                                           "Icons/CubeToolsName.ico");
         public static readonly IImage CutIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Cut.ico");
+                                                           "Icons/Cut.ico");
         public static readonly IImage DeleteIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Delete.ico");
+                                                           "Icons/Delete.ico");
         public static readonly IImage DesktopIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Desktop.ico");
+                                                           "Icons/Desktop.ico");
         public static readonly IImage DownloadsIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Downloads.ico");
+                                                           "Icons/Downloads.ico");
         public static readonly IImage FavoritesIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Favorites.ico");
+                                                           "Icons/Favorites.ico");
         public static readonly IImage FileIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/File.ico");
+                                                           "Icons/File.ico");
         public static readonly IImage FolderIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                     "CubeToolsIconsCompressed/Folder.ico");
+                                                     "Icons/Folder.ico");
         public static readonly IImage FtpIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/FTP.ico");
+                                                           "Icons/FTP.ico");
         public static readonly IImage GoogleDriveIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/GoogleDrive.ico");
+                                                           "Icons/GoogleDrive.ico");
         public static readonly IImage ImagesIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Images.ico");
+                                                           "Icons/Images.ico");
         public static readonly IImage MusicIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Music.ico");
+                                                           "Icons/Music.ico");
         public static readonly IImage NoneIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/None.ico");
+                                                           "Icons/None.ico");
         public static readonly IImage NoneFolderIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/NoneFolder.ico");
+                                                           "Icons/NoneFolder.ico");
         public static readonly IImage OneDriveIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/OneDrive.ico");
+                                                           "Icons/OneDrive.ico");
         public static readonly IImage PasteIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Paste.ico");
+                                                           "Icons/Paste.ico");
         public static readonly IImage RedoIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Redo.ico");
+                                                           "Icons/Redo.ico");
         public static readonly IImage RefreshIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Refresh.ico");
+                                                           "Icons/Refresh.ico");
         public static readonly IImage RenameIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Rename.ico");
+                                                           "Icons/Rename.ico");
         public static readonly IImage SearchIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Search.ico");
+                                                           "Icons/Search.ico");
         public static readonly IImage SettingsIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Settings.ico");
+                                                           "Icons/Settings.ico");
         public static readonly IImage SmashIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Smash.ico");
+                                                           "Icons/Smash.ico");
         public static readonly IImage SnapDropIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Snapdrop.ico");
+                                                           "Icons/Snapdrop.ico");
         public static readonly IImage NearbysendIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                  "CubeToolsIcons/nearbysend.ico");
+                                                                  "Icons/nearbysend.ico");
         public static readonly IImage SortIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Sort.ico");
+                                                           "Icons/Sort.ico");
         public static readonly IImage UndoIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Undo.ico");
+                                                           "Icons/Undo.ico");
         public static readonly IImage UpIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "CubeToolsIconsCompressed/Up.ico");
+                                                           "Icons/Up.ico");
         public static readonly IImage VideoIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath + 
-                                                             "CubeToolsIconsCompressed/Video.ico");
+                                                             "Icons/Video.ico");
         public static readonly IImage UsersIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                            "CubeToolsIconsCompressed/Users.ico");
+                                                            "Icons/Users.ico");
         public static readonly IImage DocumentsIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                 "CubeToolsIconsCompressed/Documents.ico");
+                                                                 "Icons/Documents.ico");
         public static readonly IImage InfoIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                            "CubeToolsIcons/Info.ico");
+                                                            "Icons/Info.ico");
     }
 }

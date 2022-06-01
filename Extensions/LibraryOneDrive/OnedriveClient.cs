@@ -10,7 +10,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using Library.Pointers;
+using Library;
+using Library.FilePointer;
 using LibraryOneDrive;
 using MimeTypes;
 using Newtonsoft.Json;
@@ -144,7 +145,7 @@ namespace Onedrive
         }
 
 
-        public async Task<bool> UploadFile(FileType file)
+        public async Task<bool> UploadFile(FilePointer file)
         {
             HttpResponseMessage response = await _client.PutAsync(
                 _api + path + "/" + Path.GetFileName(file.Path) + ":/content?access_token=" + token.access_token,
@@ -154,7 +155,7 @@ namespace Onedrive
             return (int) response.StatusCode == 201;
         }
 
-        public async Task<bool> UploadFile(FileType file, OneItem destination)
+        public async Task<bool> UploadFile(Pointer file, OneItem destination)
         {
             if (destination.Type != OneItemType.FOLDER) return false;
             HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_api + destination.path + "/" +
@@ -186,7 +187,7 @@ namespace Onedrive
             return (int) response.StatusCode == 201;
         }
 
-        public FileType DownloadFile(string dest, OneItem item)
+        public FilePointer DownloadFile(string dest, OneItem item)
         {
             HttpWebRequest request =
                 (HttpWebRequest) HttpWebRequest.Create(
@@ -219,10 +220,10 @@ namespace Onedrive
             // resStr.Wait();
             // File.WriteAllBytes(dest, resStr.Result);
             // downloadFinished?.Invoke(this, true); //TODO handle success bool value
-            return new FileType(dest);
+            return new FilePointer(dest);
         }
         
-        public FileType DownloadFile(string dest, string path)
+        public FilePointer DownloadFile(string dest, string path)
         {
             if (path.StartsWith("./"))
             {
@@ -245,7 +246,7 @@ namespace Onedrive
             resStr.Wait();
             File.WriteAllBytes(dest, resStr.Result);
             uploadFinished?.Invoke(this, true); //TODO handle success bool value
-            return new FileType(dest);
+            return new FilePointer(dest);
         }
 
         public bool DeleteItem(OneItem item)

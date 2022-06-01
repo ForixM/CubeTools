@@ -1,4 +1,4 @@
-﻿using Avalonia.Media;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 
 namespace ResourcesLoader
@@ -62,7 +62,7 @@ namespace ResourcesLoader
         public static readonly IImage SnapDropCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Snapdrop.ico");
         public static readonly IImage NearbysendCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                  "IconsCompressed/nearbysend.ico");
+                                                                  "Icons/nearbysend.ico");
         public static readonly IImage SortCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Sort.ico");
         public static readonly IImage UndoCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
@@ -75,5 +75,7 @@ namespace ResourcesLoader
                                                             "IconsCompressed/Users.ico");
         public static readonly IImage DocumentsCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                  "IconsCompressed/Documents.ico");
+        public static readonly IImage InfoCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                            "Icons/Info.ico");
     }
 }

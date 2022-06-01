@@ -19,10 +19,7 @@ namespace Ui.Models
             View = view;
         }
 
-        public void ReloadPath(List<FilePointer> list)
-        {
-            View.ReloadPath(list);
-        }
+        public void ReloadPath(List<Pointer> list) => View.ReloadPath(list);
 
     }
 }

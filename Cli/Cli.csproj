@@ -9,15 +9,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Extensions\Default SandBox\Default SandBox.csproj" />
         <ProjectReference Include="..\Extensions\LibraryFTP\LibraryFTP.csproj" />
         <ProjectReference Include="..\Extensions\LibraryGoogleDrive\LibraryGoogleDrive.csproj" />
-        <ProjectReference Include="..\Extensions\TestFTP\TestFTP.csproj" />
-        <ProjectReference Include="..\Extensions\TestGoogleDrive\TestGoogleDrive.csproj" />
-        <ProjectReference Include="..\Extensions\TestOneDrive\TestOneDrive.csproj" />
         <ProjectReference Include="..\Manager\Library\Library.csproj" />
         <ProjectReference Include="..\Extensions\LibraryOnedrive\LibraryOnedrive.csproj" />
-        <ProjectReference Include="..\Manager\Tests\Tests.csproj" />
     </ItemGroup>
 
     <ItemGroup>

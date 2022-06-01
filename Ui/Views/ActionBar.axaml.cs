@@ -241,10 +241,10 @@ namespace Ui.Views
         /// Copy the given pointer
         /// </summary>
         /// <param name="source">The pointer that we want to make a copy</param>
-        private void CopyPointer(FilePointer source)
+        private void CopyPointer(Pointer source)
         {
             // Create a new task to delete the pointer
-            var task = new Task<FilePointer>(() =>
+            var task = new Task<Pointer>(() =>
             {
                 if (Model.ParentModel.ModelNavigationBar.FolderPointer.Path == ManagerReader.GetParent(source.Path).Replace('\\','/'))
                     return ManagerWriter.Copy(source.Path);

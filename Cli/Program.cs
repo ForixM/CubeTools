@@ -1,5 +1,2 @@
-﻿using System.IO;
-using Cli;
-
-var cl = new CLI(Directory.GetCurrentDirectory());
+﻿var cl = new Cli.Cli(Directory.GetCurrentDirectory());
 cl.Process();

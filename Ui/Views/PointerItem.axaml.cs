@@ -5,10 +5,12 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Library;
+using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Library.ManagerExceptions;
 using ResourcesLoader;
 using Ui.Models;
 using Ui.Views.PopUps;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views
 {
@@ -18,7 +20,7 @@ namespace Ui.Views
         
         #region Variables
         
-        public FilePointer Pointer;
+        public Pointer Pointer;
         
         private Image _icon;
         private TextBlock _name;
@@ -38,7 +40,7 @@ namespace Ui.Views
             button = this.FindControl<Button>("Button");
         }
 
-        public PointerItem(FilePointer pointer, LocalModel main) : this()
+        public PointerItem(Pointer pointer, LocalModel main) : this()
         {
             Pointer = pointer;
             _main = main;
@@ -62,7 +64,7 @@ namespace Ui.Views
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
             _main.ModelActionBar.SelectedXaml.Clear();
-            _main.ModelNavigationBar.Add(new DirectoryPointer(Pointer.Path));
+            if (Directory.Exists(Pointer.Path)) _main.ModelNavigationBar.Add(new DirectoryPointerLoaded(Pointer.Path));
             _main.AccessPath(Pointer.Path, Pointer.IsDir);
         }
 

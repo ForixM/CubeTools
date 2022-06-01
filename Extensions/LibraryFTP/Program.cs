@@ -1,8 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Threading.Tasks;
 using FluentFTP;
-using Library.Pointers;
 using SevenZip;
 
 namespace LibraryFTP
@@ -13,12 +10,6 @@ namespace LibraryFTP
 
         private static void Main(string[] args)
         {
-            // Console.WriteLine(Environment.GetFolderPath(Environment.SpecialFolder.MyComputer));
-            // ClientFtp ftp = new ClientFtp("127.0.0.1","forix", "lolmdr");
-            // FtpArboresence arbo = ftp.ListDirectory(FtpFolder.ROOT);
-            // Console.WriteLine(arbo.ToString());
-            // arbo = ftp.ListDirectory(FtpFolder.ROOT);
-            // Console.WriteLine(arbo.ToString());
         }
         private static void Progress(object sender, ProgressEventArgs progress)
         {

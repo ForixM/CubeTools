@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library;
+using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Ui.Models;
 using Ui.Views.Settings;
 
@@ -70,11 +71,8 @@ namespace Ui.Views
         /// </summary>
         private void UpArrowClick(object? sender, RoutedEventArgs e)
         {
-            // if (Model.ParentModel.ModelActionBar.SelectedXaml[0].Pointer.Path != ManagerReader.GetRootPath(Model.ParentModel.ModelActionBar.SelectedXaml[0].Pointer.Path))
-            // {
-            string path = Model.FolderPointer.Path;
-            Model.ParentModel?.AccessPath(ManagerReader.GetParent(Model.FolderPointer.Path), true);
-            Model.Add(new DirectoryPointer(Model.FolderPointer.Path));
+            Model.ParentModel?.AccessPath(ManagerReader.GetParent(Model.FolderPointer.Path));
+            Model.Add(new DirectoryPointerLoaded(Model.FolderPointer.Path));
         }
 
         /// <summary>

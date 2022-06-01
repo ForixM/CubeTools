@@ -2,9 +2,9 @@
 using Library.ManagerExceptions;
 using Microsoft.VisualBasic.FileIO;
 
-namespace Library.FilePointer
+namespace Library.DirectoryPointer
 {
-    public partial class FilePointer : Pointer
+    public partial class DirectoryPointer : Pointer
     {
         // This region contains elementary actions
         // Purpose : transform static library functions into methods of the class FilePointer
@@ -17,7 +17,7 @@ namespace Library.FilePointer
         public override void Update()
         {
             base.Update();
-            _fileInfo = new FileInfo(_path);
+            _directoryInfo = new DirectoryInfo(_path);
         }
 
         #endregion
@@ -26,7 +26,7 @@ namespace Library.FilePointer
 
         /// <summary>
         ///     - High Level Method : Rename the pointer<br></br>
-        ///     - Action : Copy file pointer and create a new one (or replace it) to dest given <br></br>
+        ///     - Action : Copy file pointer and create a new one (or recursive it) to dest given <br></br>
         ///     - Implementation : CHECK
         /// </summary>
         /// <param name="dest">the destination name</param>
@@ -51,23 +51,21 @@ namespace Library.FilePointer
                 if (File.Exists(dest)) ManagerWriter.ManagerWriter.DeleteFile(dest);
                 else if (Directory.Exists(dest)) ManagerWriter.ManagerWriter.DeleteDir(dest);
             }
-            
-            // Try to Rename
-            if (!File.Exists(Path)) throw new PathNotFoundException($"{Path} does not exist", "RenameFile");
-            if (File.Exists(dest) && !overwrite) throw new ReplaceException($"{dest} already exists, rename aborted", "RenameFile");
+            // Try to Rename (move the directory)
             try
             {
-                File.Move(Path, dest, overwrite);
+                FileSystem.MoveDirectory(_path, dest, UIOption.AllDialogs, UICancelOption.ThrowException);
             }
             catch (Exception e)
             {
                 throw e switch
                 {
-                    ArgumentException or ArgumentNullException or NotSupportedException or PathTooLongException => new PathFormatException($"{Path} has an invalid format", "RenameFile"),
-                    FileNotFoundException => new PathNotFoundException($"{Path} could not be found in the client's system", "RenameFile"),
-                    IOException => new DiskNotReadyException($"The disk is not ready to rename {dest}", "RenameFile"),
-                    SecurityException or UnauthorizedAccessException => new AccessException($"Access to {Path} is denied", "RenameFile"),
-                    _ => new ManagerException("Unable to rename a file", "High", "Writer error", $"Unable to rename {Path} to {dest}", "RenameFile")
+                    SecurityException or UnauthorizedAccessException => new AccessException(
+                        $"{_path} cannot be renamed, access denied", "Rename"),
+                    ArgumentException or ArgumentNullException or PathTooLongException or NotSupportedException =>
+                        new PathFormatException($"{_path} has an invalid format", "Rename"),
+                    DirectoryNotFoundException => new PathNotFoundException($"{_path} cannot be found in the client's system", "Rename"),
+                    _ => new ManagerException("", "", "", "", "Rename")
                 };
             }
             
@@ -80,44 +78,59 @@ namespace Library.FilePointer
 
         #region Copy
 
+        /*
         /// <summary>
         ///     - High Level Method : Copy the content in the source file or folder into the dest file or folder <br></br>
-        ///     - Action : Copy file pointer and create a new one (or replace it) to dest given <br></br>
+        ///     - Action : Copy file pointer and create a new one (or recursive it) to dest given <br></br>
         ///     - Implementation : CHECK
         /// </summary>
         /// <param name="dest">the dest file or folder</param>
-        /// <param name="replace">Replace a file or not : USE WITH PRECAUTION</param>
+        /// <param name="replace"></param>
         /// <returns>Returns the new file created, empty for errors</returns>
         /// <exception cref="PathFormatException">The format of the path is incorrect</exception>
         /// <exception cref="PathNotFoundException">The given path could not be found</exception>
         /// <exception cref="AccessException">The given path could not be accessed</exception>
         /// <exception cref="InUseException">The given path is already used in another process</exception>
         /// <exception cref="ManagerException">An error occured while copying</exception>
-        public override FilePointer Copy(string dest, bool replace = false)
+        public override DirectoryPointer Copy(string dest, bool replace = false)
         {
             // Source does not exist
             if (!Exist()) throw new PathNotFoundException($"{_path} not found", "Copy");
             // Source or dest have an incorrect format
             if (!IsValid() || !ManagerReader.ManagerReader.IsPathCorrect(dest)) throw new PathFormatException(_path + " : format of path is incorrect", "Copy");
 
-            // Dest already exists : destroy it
-            if (replace) ManagerWriter.ManagerWriter.Delete(dest, true);
-
             // Then finally Copy
             try
             {
-                File.Copy(Path, dest, replace);
-                return new FilePointer(dest);
+                // Create the destination directory if it does not exist
+                if (!Directory.Exists(dest)) ManagerWriter.ManagerWriter.CreateDir(dest);
+                // Copy all sub files
+                foreach (var file in _directoryInfo!.EnumerateFiles())
+                {
+                    if (replace && File.Exists(dest)) ManagerWriter.ManagerWriter.DeleteFile(dest);
+                    file.CopyTo(System.IO.Path.Combine(dest, file.Name));
+                }
+                // Copy all sub folders
+                foreach (var subDir in _directoryInfo.EnumerateDirectories())
+                {
+                    var newDestinationDir = System.IO.Path.Combine(dest, subDir.Name);
+                    ManagerWriter.ManagerWriter.CopyDirectory(subDir.FullName, newDestinationDir, true);
+                }
+                // Return the new DirectoryPointer
+                return new DirectoryPointer(dest);
             }
             catch (Exception e)
             {
                 if (e is ManagerException) throw;
                 throw e switch
                 {
-                    ArgumentException or ArgumentNullException => new PathFormatException($"{dest} has an invalid format", "Copy"),
-                    UnauthorizedAccessException or SecurityException => new AccessException(Path + " could not be accessed", "Copy"),
-                    IOException => new SystemErrorException("system blocked copy of " + Path + " to " + dest, "Copy"),
-                    _ => new ManagerException("", "", "", "", "Copy")
+                    SecurityException or UnauthorizedAccessException => new AccessException(
+                        _path + " could not be accessed", "CopyDirectory"),
+                    IOException => new SystemErrorException("Copy could not be done", "CopyDirectory"),
+                    PathTooLongException or NotSupportedException => new PathFormatException(
+                        "A file / folder contained a path too large", "CopyDirectory"),
+                    _ => new ManagerException("An error occured", "Medium", "Copy directories",
+                        "Copy sub-dirs and sub-files could not be done", "CopyDirectory")
                 };
             }
         }
@@ -133,7 +146,129 @@ namespace Library.FilePointer
         /// <exception cref="AccessException">The given path could not be accessed</exception>
         /// <exception cref="InUseException">The given path is already used in another process</exception>
         /// <exception cref="ManagerException">An error occured while copying</exception>
-        public override async Task<Pointer> CopyAsync(string dest, bool replace = false) => await Task.Run(() => Copy(dest, replace));
+        public override async Task<Pointer> CopyAsync(string dest, bool replace = false)
+        {
+            // Source does not exist
+            if (!Exist()) throw new PathNotFoundException($"{_path} not found", "Copy");
+            // Source or dest have an incorrect format
+            if (!IsValid() || !ManagerReader.ManagerReader.IsPathCorrect(dest)) throw new PathFormatException(_path + " : format of path is incorrect", "Copy");
+
+            return await new Task<Pointer>(() =>
+            {
+               // Then finally Copy
+            try
+            {
+                // Create the destination directory if it does not exist
+                if (!Directory.Exists(dest)) ManagerWriter.ManagerWriter.CreateDir(dest);
+                
+                // COPY OF FILES
+                // Create tasks to copy all sub files
+                foreach (var file in _directoryInfo!.EnumerateFiles())
+                {
+                    Thread thread = new(() =>
+                    {
+                        string newPath = System.IO.Path.Combine(dest, file.Name);
+                        try
+                        {
+                            if (replace && File.Exists(dest)) ManagerWriter.ManagerWriter.DeleteFile(dest);
+                            file.CopyTo(newPath);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    });
+                    thread.Priority = ThreadPriority.AboveNormal;
+                    thread.Start();
+                }
+
+                // COPY OF FOLDERS
+                // Copy all sub folders
+                foreach (var subDir in _directoryInfo.EnumerateDirectories())
+                {
+                    Thread thread = new(() => ManagerWriter.ManagerWriter.CopyDirectory(subDir.FullName,
+                            System.IO.Path.Combine(dest, subDir.Name), true))
+                    {
+                        Priority = ThreadPriority.AboveNormal
+                    };
+                    thread.Start();
+                    thread.Join();
+                }
+                // Return the new DirectoryPointer
+                return new DirectoryPointer(dest);
+            }
+            catch (Exception e)
+            {
+                if (e is ManagerException) throw;
+                throw e switch
+                {
+                    SecurityException or UnauthorizedAccessException => new AccessException(
+                        _path + " could not be accessed", "CopyDirectory"),
+                    IOException => new SystemErrorException("Copy could not be done", "CopyDirectory"),
+                    PathTooLongException or NotSupportedException => new PathFormatException(
+                        "A file / folder contained a path too large", "CopyDirectory"),
+                    _ => new ManagerException("An error occured", "Medium", "Copy directories",
+                        "Copy sub-dirs and sub-files could not be done", "CopyDirectory")
+                };
+            } 
+            });
+        }
+        */
+
+        /// <summary>
+        ///     - High Level Method : Copy the content in the source file or folder into the dest file or folder <br></br>
+        ///     - Action : Copy file pointer and create a new one (or recursive it) to dest given <br></br>
+        ///     - Implementation : CHECK
+        /// </summary>
+        /// <param name="dest">the dest file or folder</param>
+        /// <param name="replace"></param>
+        /// <returns>Returns the new file created, empty for errors</returns>
+        /// <exception cref="PathFormatException">The format of the path is incorrect</exception>
+        /// <exception cref="PathNotFoundException">The given path could not be found</exception>
+        /// <exception cref="AccessException">The given path could not be accessed</exception>
+        /// <exception cref="InUseException">The given path is already used in another process</exception>
+        /// <exception cref="ManagerException">An error occured while copying, the user could have cancel for instance</exception>
+        public override Pointer Copy(string dest, bool replace = false)
+        {
+            // Source does not exist
+            if (!Exist()) throw new PathNotFoundException($"{_path} not found", "Copy");
+            // Source or dest have an incorrect format
+            if (!IsValid() || !ManagerReader.ManagerReader.IsPathCorrect(dest)) throw new PathFormatException(_path + " : format of path is incorrect", "Copy");
+
+            // Then finally Copy
+            try
+            {
+                FileSystem.CopyDirectory(_path, dest, UIOption.AllDialogs, UICancelOption.ThrowException);
+            }
+            catch (Exception e)
+            {
+                if (e is ManagerException) throw;
+                throw e switch
+                {
+                    SecurityException or UnauthorizedAccessException => new AccessException(
+                        _path + " could not be accessed", "CopyDirectory"),
+                    IOException => new SystemErrorException("Copy could not be done", "CopyDirectory"),
+                    PathTooLongException or NotSupportedException => new PathFormatException(
+                        "A file / folder contained a path too large", "CopyDirectory"),
+                    _ => new ManagerException("An error occured", "Medium", "Copy directories",
+                        "Copy sub-dirs and sub-files could not be done", "CopyDirectory")
+                };
+            }
+
+            return new DirectoryPointer(dest);
+        }
+
+        /// <summary>
+        ///     - High Level Method : <see cref="Copy"/>
+        /// </summary>
+        /// <param name="dest">the dest file or folder</param>
+        /// <param name="replace">Replace a file or not : USE WITH PRECAUTION</param>
+        /// <returns>Returns the new file created, empty for errors</returns>
+        /// <exception cref="PathFormatException">The format of the path is incorrect</exception>
+        /// <exception cref="PathNotFoundException">The given path could not be found</exception>
+        /// <exception cref="AccessException">The given path could not be accessed</exception>
+        /// <exception cref="InUseException">The given path is already used in another process</exception>
+        /// <exception cref="ManagerException">An error occured while copying</exception>
+        public override async Task<Pointer> CopyAsync(string dest, bool replace = false) => await new Task<Pointer>(() => Copy(dest, replace));
 
         #endregion
         
@@ -153,7 +288,7 @@ namespace Library.FilePointer
             if (!Exist()) throw new PathNotFoundException(_path + " does not exist", "Delete");
             try
             {
-                FileSystem.DeleteFile(_path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
+                FileSystem.DeleteDirectory(_path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
             }
             catch (Exception e)
             {
@@ -175,8 +310,7 @@ namespace Library.FilePointer
         /// <exception cref="AccessException">The given path could not be accessed</exception>
         /// <exception cref="ManagerException">An Error occurred</exception>
         /// <exception cref="PathNotFoundException">The given path does not exist</exception>
-        public override async Task DeleteAsync() => await Task.Run(Delete);
-        
+        public override async Task DeleteAsync() => await new Task(Delete);
         
         #endregion
         
@@ -184,7 +318,7 @@ namespace Library.FilePointer
 
         /// <summary>
         ///     - Type : High Level Method <br></br>
-        ///     - Action : Add an attribute to a file pointer <br></br>
+        ///     - Action : Add an attribute to a directory pointer <br></br>
         ///     - Implementation : Check
         /// </summary>
         /// <param name="attributes">attributes to add </param>
@@ -196,7 +330,7 @@ namespace Library.FilePointer
         {
             try
             {
-                _fileInfo!.Attributes |= attributes;
+                _directoryInfo!.Attributes |= attributes;
             }
             catch (Exception e)
             {
@@ -214,8 +348,9 @@ namespace Library.FilePointer
         }
 
         /// <summary>
-        ///     - Action : Remove a directory attributes  <br></br>
-        ///     - Implementation : Check
+        ///     - High Level Method <br></br>
+        ///     - Action : Remove an attribute to a directory pointer <br></br>
+        ///     - Implementation : CHECK
         /// </summary>
         /// <param name="attributesToRemove">the attribute to remove</param>
         /// <exception cref="AccessException">the given path cannot be accessed</exception>
@@ -226,7 +361,7 @@ namespace Library.FilePointer
         {
             try
             {
-                _fileInfo!.Attributes &= ~attributesToRemove;
+                _directoryInfo!.Attributes &= ~attributesToRemove;
             }
             catch (Exception e)
             {

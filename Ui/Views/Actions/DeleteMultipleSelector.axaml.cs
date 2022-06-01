@@ -11,7 +11,7 @@ namespace Ui.Views.Actions
         
         #region Variables
         
-        public readonly FilePointer Pointer;
+        public readonly Pointer Pointer;
 
         private readonly CheckBox _checkBox;
         private readonly TextBlock _name;
@@ -25,10 +25,10 @@ namespace Ui.Views.Actions
             InitializeComponent();
             _name = this.FindControl<TextBlock>("Name");
             _checkBox = this.FindControl<CheckBox>("CheckBox");
-            Pointer = FilePointer.NullPointer;
+            Pointer = Pointer.NullPointer;
         }
 
-        public DeleteMultipleSelector(FilePointer pointer, DeleteMultiplePopUp main) : this()
+        public DeleteMultipleSelector(Pointer pointer, DeleteMultiplePopUp main) : this()
         {
             Pointer = pointer;
             _main = main;

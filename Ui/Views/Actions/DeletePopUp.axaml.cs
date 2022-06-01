@@ -8,13 +8,14 @@ using Library.ManagerExceptions;
 using Library.ManagerWriter;
 using Library;
 using Ui.Models;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Actions
 {
     public class DeletePopUp : Window
     {
         private readonly LocalModel? _model;
-        private readonly FilePointer _pointer;
+        private readonly Pointer _pointer;
 
         #region Init
         
@@ -22,9 +23,9 @@ namespace Ui.Views.Actions
         {
             InitializeComponent();
             _model = null;
-            _pointer = FilePointer.NullPointer;
+            _pointer = Pointer.NullPointer;
         }
-        public DeletePopUp(LocalModel vm, FilePointer pointer) : this()
+        public DeletePopUp(LocalModel vm, Pointer pointer) : this()
         {
             _model = vm;
             _pointer = pointer;
@@ -52,10 +53,7 @@ namespace Ui.Views.Actions
             Close();
         }
         
-        private void OnCancelClicked(object? sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        private void OnCancelClicked(object? sender, RoutedEventArgs e) => Close();
         
 
         #endregion
@@ -63,23 +61,15 @@ namespace Ui.Views.Actions
         
         private void DeletePointer()
         {
-            // Create a new task to delete the pointer
-            var task = new Task(() =>
-            {
-                if (_pointer.IsDir) ManagerWriter.DeleteDir(_pointer);
-                else ManagerWriter.Delete(_pointer);
-            });
             // Remove reference from Directory Pointer
             _model?.ModelNavigationBar.FolderPointer.Remove(_pointer);
             // Run Tasks Async
             try
             {
-                if (_pointer.Size > 1000000 || _pointer.IsDir)
+                if (_pointer.Size > 1000000)
                 {
-                    // Run async task
-                    task.Start();
                     // Close display
-                    task.GetAwaiter().OnCompleted(() =>
+                    _pointer.DeleteAsync().GetAwaiter().OnCompleted(() =>
                     {
                         _model?.ReloadPath();
                     });
@@ -87,7 +77,7 @@ namespace Ui.Views.Actions
                 // Run task sync
                 else
                 {
-                    task.RunSynchronously();
+                    _pointer.Delete();
                     _model?.ReloadPath();
                 }
             }

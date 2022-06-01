@@ -1,8 +1,5 @@
-using System;
-using System.IO;
 using System.Security;
 using Library.ManagerExceptions;
-using Library.Pointers;
 
 namespace Library.ManagerReader
 {
@@ -21,10 +18,7 @@ namespace Library.ManagerReader
         /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="ManagerException">Error could not be identified</exception>
-        public static bool IsFileHidden(string path)
-        {
-            return HasAttribute(FileAttributes.Hidden, path);
-        }
+        public static bool IsFileHidden(string path) => HasAttribute(FileAttributes.Hidden, path);
 
         /// <summary>
         ///     - Type : High Level  <br></br>
@@ -37,7 +31,7 @@ namespace Library.ManagerReader
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="CorruptedPointerException">The pointer is corrupted</exception>
         /// <exception cref="ManagerException">Error could not be identified</exception>
-        public static bool IsFileHidden(FileType ft)
+        public static bool IsFileHidden(Pointer ft)
         {
             if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
                 throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
@@ -57,10 +51,7 @@ namespace Library.ManagerReader
         /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="ManagerException">Error could not be identified</exception>
-        public static bool IsFileCompressed(string path)
-        {
-            return HasAttribute(FileAttributes.Compressed, path);
-        }
+        public static bool IsFileCompressed(string path) => HasAttribute(FileAttributes.Compressed, path);
 
         /// <summary>
         ///     _ Type : High Level  <br></br>
@@ -73,7 +64,7 @@ namespace Library.ManagerReader
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="CorruptedPointerException">The pointer is corrupted</exception>
         /// <exception cref="ManagerException">Error could not be identified</exception>
-        public static bool IsFileCompressed(FileType ft)
+        public static bool IsFileCompressed(Pointer ft)
         {
             if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
                 throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
@@ -92,10 +83,7 @@ namespace Library.ManagerReader
         /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="ManagerException">Error could not be identified</exception>
-        public static bool IsFileArchived(string path)
-        {
-            return HasAttribute(FileAttributes.Archive, path);
-        }
+        public static bool IsFileArchived(string path) => HasAttribute(FileAttributes.Archive, path);
 
         /// <summary>
         ///     - Type : High Level <br></br>
@@ -108,7 +96,7 @@ namespace Library.ManagerReader
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="CorruptedPointerException">The pointer is corrupted</exception>
         /// <exception cref="ManagerException">Error could not be identified</exception>
-        public static bool IsFileArchived(FileType ft)
+        public static bool IsFileArchived(Pointer ft)
         {
             if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
                 throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
@@ -127,10 +115,7 @@ namespace Library.ManagerReader
         /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="ManagerException">Error could not be identified</exception>
-        public static bool IsASystemFile(string path)
-        {
-            return HasAttribute(FileAttributes.System, path);
-        }
+        public static bool IsASystemFile(string path) => HasAttribute(FileAttributes.System, path);
 
         /// <summary>
         ///     - Type : High Level  <br></br>
@@ -143,7 +128,7 @@ namespace Library.ManagerReader
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="CorruptedPointerException">The pointer is corrupted</exception>
         /// <exception cref="ManagerException">Error could not be identified</exception>
-        public static bool IsASystemFile(FileType ft)
+        public static bool IsASystemFile(Pointer ft)
         {
             if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
                 throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
@@ -162,10 +147,7 @@ namespace Library.ManagerReader
         /// <exception cref="AccessException">The given path cannot be read because application does not have rights</exception>
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="ManagerException">Error could not be identified</exception>
-        public static bool IsReadOnly(string path)
-        {
-            return HasAttribute(FileAttributes.ReadOnly, path);
-        }
+        public static bool IsReadOnly(string path) => HasAttribute(FileAttributes.ReadOnly, path);
 
         /// <summary>
         ///     - Type : High Level  <br></br>
@@ -178,7 +160,7 @@ namespace Library.ManagerReader
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="CorruptedPointerException">The pointer is corrupted</exception>
         /// <exception cref="ManagerException">Error could not be identified</exception>
-        public static bool IsReadOnly(FileType ft)
+        public static bool IsReadOnly(Pointer ft)
         {
             if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
                 throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",

@@ -1,5 +1,4 @@
 ﻿using System;
-using Library.Pointers;
 using Onedrive;
 
 namespace LibraryOneDrive
@@ -38,7 +37,7 @@ namespace LibraryOneDrive
                 client.CreateFolder("Soutenance2Folder", folder);
             };
             
-            /*var file = new FileType("C:/Users/forix/Desktop/test.txt");
+            /*var file = new FilePointer("C:/Users/forix/Desktop/test.txt");
 
             client.uploadFinished += (sender, success) =>
                 Console.WriteLine(success ? "Upload finished" : "Error in upload");
@@ -60,7 +59,7 @@ namespace LibraryOneDrive
                     if (f1 != null && file != null) break;
                 }
 
-                Console.WriteLine(client.UploadFile(new FileType("C:/Users/forix/Desktop/wow.txt"), f1));
+                Console.WriteLine(client.UploadFile(new FilePointer("C:/Users/forix/Desktop/wow.txt"), f1));
                 // Console.WriteLine(client.Copy(file, f1));
             };*/
         }

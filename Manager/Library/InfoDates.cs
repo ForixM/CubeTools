@@ -20,13 +20,13 @@ namespace Library
         {
             if (!Exist())
             {
-                if (!_isDir) throw new CorruptedPointerException("Pointer of the file " + _path + " is corrupted", "GetFileCreationDate"); // TODO Edit exception for file
+                if (!IsDir) throw new CorruptedPointerException("Pointer of the file " + _path + " is corrupted", "GetFileCreationDate"); // TODO Edit exception for file
                 throw new CorruptedDirectoryException("Pointer of the folder " + _path + " is corrupted", "GetPointerCreationDate");
             }
 
             try
             {
-                return _isDir 
+                return IsDir 
                     ? Directory.GetCreationTime(_path).ToString(CultureInfo.CurrentCulture)
                     : File.GetCreationTime(_path).ToString(CultureInfo.CurrentCulture);
             }
@@ -57,13 +57,13 @@ namespace Library
         {
             if (!Exist())
             {
-                if (!_isDir) throw new CorruptedPointerException("Pointer of the file " + _path + " is corrupted", "GetPointerLastEdition"); // TODO Edit exception for file
+                if (!IsDir) throw new CorruptedPointerException("Pointer of the file " + _path + " is corrupted", "GetPointerLastEdition"); // TODO Edit exception for file
                 throw new CorruptedDirectoryException("Pointer of the folder " + _path + " is corrupted", "GetPointerLastEdition");
             }
 
             try
             {
-                return _isDir 
+                return IsDir 
                     ? Directory.GetLastWriteTime(_path).ToString(CultureInfo.CurrentCulture)
                     : File.GetLastWriteTime(_path).ToString(CultureInfo.CurrentCulture);
             }
@@ -95,13 +95,13 @@ namespace Library
         {
             if (!Exist())
             {
-                if (!_isDir) throw new CorruptedPointerException("Pointer of the file " + _path + " is corrupted", "GetPointerAccessDate"); // TODO Edit exception for file
+                if (!IsDir) throw new CorruptedPointerException("Pointer of the file " + _path + " is corrupted", "GetPointerAccessDate"); // TODO Edit exception for file
                 throw new CorruptedDirectoryException("Pointer of the folder " + _path + " is corrupted", "GetPointerAccessDate");
             }
 
             try
             {
-                return _isDir 
+                return IsDir 
                     ? Directory.GetLastAccessTime(_path).ToString(CultureInfo.CurrentCulture)
                     : File.GetLastAccessTime(_path).ToString(CultureInfo.CurrentCulture);
             }

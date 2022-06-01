@@ -21,16 +21,16 @@ namespace Ui.Models.PopUps
         private IProgress<int> _progress;
         private double _max;
         private bool _destroy;
-        private List<FilePointer> _modified;
+        private List<Pointer> _modified;
 
         #endregion
     
         public LoadingPopUpModel()
         {
-            _modified = new List<FilePointer>();
+            _modified = new List<Pointer>();
             _max = 100;
         }
-        public LoadingPopUpModel(LoadingPopUp main, List<FilePointer> modified, double max, bool destroy, ProgressBar progressBar)
+        public LoadingPopUpModel(LoadingPopUp main, List<Pointer> modified, double max, bool destroy, ProgressBar progressBar)
         {
             _main = main;
             _modified = modified;

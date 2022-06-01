@@ -8,6 +8,7 @@ using Library.ManagerExceptions;
 using Library.ManagerWriter;
 using Library;
 using Ui.Models;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.PopUps
 {
@@ -31,14 +32,14 @@ namespace Ui.Views.PopUps
 
         private bool _userActivation;
 
-        private readonly FilePointer _pointer;
+        private readonly Pointer _pointer;
         private readonly LocalModel? _parentModel;
         
         #region Init
         public PropertiesPopUp()
         {
             InitializeComponent();
-            _pointer = FilePointer.NullPointer;
+            _pointer = Pointer.NullPointer;
 
             _imageExtension = this.FindControl<Image>("ImageExtension");
             _fileName = this.FindControl<TextBlock>("FileName");
@@ -55,22 +56,22 @@ namespace Ui.Views.PopUps
             _userActivation = false;
             _parentModel = null;
         }
-        public PropertiesPopUp(FilePointer ft, LocalModel main) : this()
+        public PropertiesPopUp(Pointer pointer, LocalModel main) : this()
         {
-            _pointer = ft;
-            _pointer.LoadSize();
+            _pointer = pointer;
+            // TODO _pointer.LoadSize();
 
-            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(ft.Type, ft.IsDir);
-            _fileName.Text = ft.Name;
-            _type.Text = ft.IsDir ? "folder" : ft.Type;
-            _description.Text = ft.Name;
-            _path.Text = ft.Path;
-            _size.Text = ft.SizeXaml;
-            _created.Text = ft.Date;
-            _modified.Text = ft.LastDate;
-            _accessed.Text = ft.AccessDate;
-            _readOnly.IsChecked = ft.ReadOnly;
-            _hidden.IsChecked = ft.Hidden;
+            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(pointer.Type, pointer.IsDir);
+            _fileName.Text = pointer.Name;
+            _type.Text = pointer.IsDir ? "folder" : pointer.Type;
+            _description.Text = pointer.Name;
+            _path.Text = pointer.Path;
+            _size.Text = pointer.SizeXaml;
+            _created.Text = pointer.Date;
+            _modified.Text = pointer.LastDate;
+            _accessed.Text = pointer.AccessDate;
+            _readOnly.IsChecked = pointer.ReadOnly;
+            _hidden.IsChecked = pointer.Hidden;
             
             _parentModel = main;
         }
@@ -90,7 +91,7 @@ namespace Ui.Views.PopUps
             }
             try
             {
-                ManagerWriter.SetAttributes(_pointer, false, FileAttributes.ReadOnly);
+                _pointer.SetAttributes(false, FileAttributes.ReadOnly);
                 _parentModel!.ReloadPath();
             }
             catch (ManagerException exception)

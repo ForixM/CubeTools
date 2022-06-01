@@ -7,6 +7,8 @@ using System.IO;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library;
+using Library.DirectoryPointer;
+using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Ui.Views;
 using Ui.Views.ErrorPopUp;
 
@@ -40,7 +42,7 @@ namespace Ui.Models
             // setting up Directory
             try
             {
-                ModelNavigationBar.FolderPointer = new DirectoryPointer(Directory.GetCurrentDirectory());
+                ModelNavigationBar.FolderPointer = new DirectoryPointerLoaded(Directory.GetCurrentDirectory());
             }
             catch (ManagerException e)
             {
@@ -49,7 +51,7 @@ namespace Ui.Models
             // Setting up current path
             ModelNavigationBar.View.CurrentPathXaml.Text = ModelNavigationBar.FolderPointer.Path;
             // Setting up Queue
-            ModelNavigationBar.Add(new DirectoryPointer(ModelNavigationBar.FolderPointer.Path));
+            ModelNavigationBar.Add(new DirectoryPointerLoaded(ModelNavigationBar.FolderPointer.Path));
             // Setting up Items
             ModelPathsBar.ReloadPath(ModelNavigationBar.FolderPointer.ChildrenFiles);
         }

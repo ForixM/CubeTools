@@ -9,14 +9,15 @@ using Library.ManagerReader;
 using Library.ManagerWriter;
 using Library;
 using Ui.Models;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Actions
 {
     public class RenamePopUp : Window
     {
         private readonly TextBox _renameBox;
-        private readonly FilePointer _modifiedPointer;
-        private readonly List<FilePointer> _itemsReference;
+        private readonly Pointer _modifiedPointer;
+        private readonly List<Pointer> _itemsReference;
         private readonly LocalModel _main;
 
         #region Init
@@ -24,11 +25,11 @@ namespace Ui.Views.Actions
         {
             InitializeComponent();
             _renameBox = this.FindControl<TextBox>("Rename");
-            _modifiedPointer = FilePointer.NullPointer;
-            _itemsReference = new List<FilePointer>();
+            _modifiedPointer = Pointer.NullPointer;
+            _itemsReference = new List<Pointer>();
             _main = null;
         }
-        public RenamePopUp(FilePointer ft, List<FilePointer> items, LocalModel main) : this()
+        public RenamePopUp(Pointer ft, List<Pointer> items, LocalModel main) : this()
         {
             _modifiedPointer = ft;
             _itemsReference = items;

@@ -1,21 +1,26 @@
 ﻿using System.Security;
 // Project's Library
 using Library.ManagerExceptions;
-using Timer = System.Threading.Timer;
 
-namespace Library.DirectoryPointer
+namespace Library.DirectoryPointer.DirectoryPointerLoaded
 {
     /// <summary>
     ///     This class represents a pointer to a loaded directory
     ///     It will managed our file tree and will use actions to modify files efficiently
     /// </summary>
-    public class DirectoryPointerLoaded : DirectoryPointer
+    public partial class DirectoryPointerLoaded : DirectoryPointer
     {
         #region Variables
 
         private List<Pointer> _childrenFiles;
-        public List<Pointer> ChildrenFiles => _childrenFiles;
 
+        public List<Pointer> ChildrenFiles { get => _childrenFiles; set => _childrenFiles = value; }
+
+        protected FileSystemWatcher? _watcher;
+        
+        // Watcher for raising events 
+        public FileSystemWatcher? Watcher => _watcher;
+        
         #endregion
 
         #region Init
@@ -43,8 +48,7 @@ namespace Library.DirectoryPointer
         /// <exception cref="ManagerException">An error occured</exception>
         public DirectoryPointerLoaded(string path) : base(path)
         {
-            if (!Directory.Exists(path) || string.IsNullOrEmpty(path))
-                throw new PathNotFoundException(path + " could not be identified", "Directory Constructor");
+            if (!Directory.Exists(path)) throw new PathNotFoundException(path + " could not be identified", "Directory Constructor");
 
             try
             {
@@ -69,46 +73,21 @@ namespace Library.DirectoryPointer
             {
                 if (e is ManagerException) Console.WriteLine("# ManagerException occured");
             }
+            // Watcher
+            _watcher = new FileSystemWatcher(path);
+            _watcher.Changed += OnChanged;
+            _watcher.Created += OnCreated;
+            _watcher.Deleted += OnDeleted;
+            _watcher.Renamed += OnRenamed;
+            _watcher.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName | NotifyFilters.FileName
+                                    | NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.Security | NotifyFilters.Size;
+            _watcher.Filter = "*";
+            _watcher.IncludeSubdirectories = true;
+            _watcher.EnableRaisingEvents = true;
         }
 
         #endregion
-
-        #region Raising Events
-
-        protected override void OnChanged(object sender, FileSystemEventArgs e)
-        {
-            ReloadPointer(e.FullPath);
-        }
-
-        /// <summary>
-        ///     Raising event when a creation 
-        /// </summary>
-        protected override void OnCreated(object sender, FileSystemEventArgs e)
-        {
-            string created = e.FullPath.Replace("\\", "/");
-            if (ManagerReader.ManagerReader.GetParent(created) == Path)
-            {
-                if (File.Exists(created)) _childrenFiles.Add(new FilePointer.FilePointer(created));
-                else _childrenFiles.Add(new DirectoryPointer(created));
-            }
-        }
-
-        protected override void OnDeleted(object sender, FileSystemEventArgs e)
-        {
-            Remove(e.FullPath.Replace('\\','/'));
-        }
-
-        protected override void OnRenamed(object sender, RenamedEventArgs e)
-        {
-            var save = GetChild(e.OldFullPath);
-            Remove(e.OldFullPath);
-            save.Path = e.FullPath.Replace('\\','/');
-            ChildrenFiles.Add(save);
-            ReloadPointer(save.Path);
-        }
-
-        #endregion
-
+        
         #region Children
 
         // This region contains every functions that can have access to children through directoryTypeLoaded
@@ -139,10 +118,36 @@ namespace Library.DirectoryPointer
             foreach (var pointer in ChildrenFiles) pointer.Dispose();
             ChildrenFiles.Clear();
             
-            foreach (var dir in Directory.GetDirectories(Path))
-                ChildrenFiles.Add(new DirectoryPointer(dir.Replace('\\', '/')));
-            foreach (var file in Directory.GetFiles(Path)) 
-                ChildrenFiles.Add(new FilePointer.FilePointer(file.Replace('\\', '/')));
+            // Check assignment of DirectoryInfo
+            try
+            {
+                if (_directoryInfo!.FullName.Replace("\\","/") != _path)
+                    _directoryInfo = new DirectoryInfo(_path);
+            }
+            catch (Exception)
+            {
+                return;
+            }
+
+            // Add all sub directories
+            foreach (var dir in _directoryInfo!.EnumerateDirectories())
+            {
+                try
+                {
+                    ChildrenFiles.Add(new DirectoryPointer(dir.FullName.Replace('\\', '/')));
+                }
+                catch (Exception) {}
+            }
+
+            // Add all sub files
+            foreach (var file in _directoryInfo.EnumerateFiles())
+            {
+                try
+                {
+                    ChildrenFiles.Add(new FilePointer.FilePointer(file.FullName.Replace('\\', '/')));
+                }
+                catch (Exception) {}
+            }
         }
 
         /// <summary>
@@ -159,8 +164,7 @@ namespace Library.DirectoryPointer
         /// <param name="pointer">The pointer to add</param>
         public void AddChild(Pointer pointer)
         {
-            if (HasChild(pointer.Path)) return;
-            ChildrenFiles.Add(pointer);
+            if (!HasChild(pointer.Path)) ChildrenFiles.Add(pointer);
         }
         
         /// <summary>
@@ -202,7 +206,7 @@ namespace Library.DirectoryPointer
 
         /// <summary>
         ///     - Type : High Level Method <br></br>
-        ///     - Action : Remove a file given with a path in the list of _childrenFiles
+        ///     - Action : Try to remove a file given with a path in the list of _childrenFiles
         ///     - Implementation : NOT Check
         /// </summary>
         /// <param name="path">the given path</param>
@@ -210,28 +214,21 @@ namespace Library.DirectoryPointer
         {
             for (var i = 0; i < ChildrenFiles.Count; i++)
             {
-                if (ChildrenFiles[i].Path != path) continue;
-                
-                ChildrenFiles[i].Dispose();
-                ChildrenFiles.RemoveAt(i);
-                return;
-            }
-        }
-        /// <summary>
-        ///     - Action : Remove a file given with a path in the list of _childrenFiles
-        ///     - Implementation : NOT Check
-        /// </summary>
-        /// <param name="ft">the given pointer</param>
-        public void Remove(Pointer ft)
-        {
-            for (var i = 0; i < ChildrenFiles.Count; i++)
-                if (ChildrenFiles[i].Path == ft.Path)
+                if (ChildrenFiles[i].Path == path)
                 {
                     ChildrenFiles[i].Dispose();
                     ChildrenFiles.RemoveAt(i);
                     return;
                 }
+            }
         }
+
+        /// <summary>
+        ///     - Action : Remove a file given with a path in the list of _childrenFiles
+        ///     - Implementation : NOT Check
+        /// </summary>
+        /// <param name="pointer">the given pointer</param>
+        public void Remove(Pointer pointer) => Remove(pointer.Path);
 
         /// <summary>
         ///     - Action : Reload One single pointer given in path. <br></br>
@@ -245,16 +242,8 @@ namespace Library.DirectoryPointer
             for (var i = 0; i < ChildrenFiles.Count; i++)
                 if (ChildrenFiles[i].Path == path)
                 {
-                    if (File.Exists(path))
-                    {
-                        ChildrenFiles[i].Dispose();
-                        ChildrenFiles[i] = new FilePointer.FilePointer(path);
-                    }
-                    else
-                    {
-                        ChildrenFiles[i].Dispose();
-                        ChildrenFiles[i] = new DirectoryPointer(path);
-                    }
+                    ChildrenFiles[i].Dispose();
+                    ChildrenFiles[i] = File.Exists(path)? new FilePointer.FilePointer(path) : new DirectoryPointer(path);
                     return;
                 }
         }
@@ -264,7 +253,7 @@ namespace Library.DirectoryPointer
         #region Delete
 
         /// <summary>
-        ///     -Action : Change the current directory and remove children files <br></br>
+        ///     - Action : Change the current directory and remove children files <br></br>
         ///     - Implementation : NOT Check <br></br>
         /// </summary>
         /// <param name="dest">the destination file</param>
@@ -277,10 +266,11 @@ namespace Library.DirectoryPointer
             {
                 var newPath = ManagerReader.ManagerReader.GetNameToPath(dest);
                 _watcher = new FileSystemWatcher(newPath);
+                
                 // Erase last directory
                 foreach (var ft in ChildrenFiles) ft.Dispose();
-
                 ChildrenFiles.Clear();
+                
                 // Replace
                 try
                 {
@@ -288,14 +278,21 @@ namespace Library.DirectoryPointer
                     Path = newPath;
                     SetChildrenFiles();
                 }
-                catch (IOException)
+                catch (Exception e)
                 {
-                    throw new SystemErrorException("system blocked " + newPath, "ChangeDirectory");
+                    if (e is ManagerException) throw;
+                    throw e switch
+                    {
+                        ArgumentException or ArgumentNullException or PathTooLongException or FileNotFoundException
+                            or DirectoryNotFoundException
+                            => new PathNotFoundException("", ""),
+                        IOException => new SystemErrorException("system blocked " + newPath, "ChangeDirectory"),
+                        SecurityException or UnauthorizedAccessException => new AccessException(
+                            newPath + " could not be accessed", "ChangeDirectory"),
+                        _ => new ManagerException("", "", "", "", "")
+                    };
                 }
-                catch (SecurityException)
-                {
-                    throw new AccessException(newPath + " could not be accessed", "ChangeDirectory");
-                }
+
                 return;
             }
 
@@ -303,21 +300,7 @@ namespace Library.DirectoryPointer
         }
 
         /// <summary>
-        ///     Delete function : delete the directory, its associated files in a high context level
-        ///     Implementation : Not Check
-        /// </summary>
-        public override void Delete()
-        {
-            // Delete all files
-            foreach (var pointer in ChildrenFiles) pointer.Delete();
-            _childrenFiles = new List<Pointer>();
-            // Delete directory
-            ManagerWriter.ManagerWriter.DeleteDir(Path);
-            Dispose();
-        }
-
-        /// <summary>
-        ///     Dispose the directoryType to
+        ///     Dispose the directory pointer
         /// </summary>
         public override void Dispose()
         {

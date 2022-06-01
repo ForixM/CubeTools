@@ -7,60 +7,60 @@ namespace ResourcesLoader
     {
 
         public static readonly IImage ImageExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                  "CubeToolsAppsExtensionsCompressed/jpg.ico");
+                                                                  "Extensions/jpg.ico");
 
         public static readonly IImage TextExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                 "CubeToolsAppsExtensionsCompressed/pages.ico");
+                                                                 "Extensions/pages.ico");
 
         public static readonly IImage ExeExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                "CubeToolsAppsExtensionsCompressed/exe.ico");
+                                                                "Extensions/exe.ico");
 
         public static readonly IImage DocxExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                 "CubeToolsAppsExtensionsCompressed/docx.ico");
+                                                                 "Extensions/docx.ico");
 
         public static readonly IImage PdfExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                "CubeToolsAppsExtensionsCompressed/pdf.ico");
+                                                                "Extensions/pdf.ico");
 
         public static readonly IImage PptxExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                 "CubeToolsAppsExtensionsCompressed/pptx.ico");
+                                                                 "Extensions/pptx.ico");
 
         public static readonly IImage PyExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                               "CubeToolsAppsExtensionsCompressed/py.ico");
+                                                               "Extensions/py.ico");
 
         public static readonly IImage CsExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                               "CubeToolsAppsExtensionsCompressed/csharp.ico");
+                                                               "Extensions/csharp.ico");
 
         public static readonly IImage CPlusPlusExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                      "CubeToolsAppsExtensionsCompressed/c++.ico");
+                                                                      "Extensions/c++.ico");
 
         public static readonly IImage JavaExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                 "CubeToolsAppsExtensionsCompressed/java.ico");
+                                                                 "Extensions/java.ico");
 
         public static readonly IImage HtmlExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                 "CubeToolsAppsExtensionsCompressed/html.ico");
+                                                                 "Extensions/html.ico");
 
         public static readonly IImage XslsExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                 "CubeToolsAppsExtensionsCompressed/xsls.ico");
+                                                                 "Extensions/xlsx.ico");
 
         public static readonly IImage GitIgnoreExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                      "CubeToolsAppsExtensionsCompressed/gitignore.ico");
+                                                                      "Extensions/gitignore.ico");
 
         public static readonly IImage CompressExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                     "CubeToolsAppsExtensionsCompressed/zip.ico");
+                                                                     "Extensions/zip.ico");
 
         public static readonly IImage ArchiveExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                    "CubeToolsAppsExtensionsCompressed/rar.ico");
+                                                                    "Extensions/rar.ico");
 
         public static readonly IImage KeyExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                "CubeToolsAppsExtensionsCompressed/key.ico");
+                                                                "Extensions/key.ico");
 
         public static readonly IImage MusicExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                  "CubeToolsAppsExtensionsCompressed/mp3.ico");
+                                                                  "Extensions/mp3.ico");
 
         public static readonly IImage VideoExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                  "CubeToolsAppsExtensionsCompressed/mp4.ico");
+                                                                  "Extensions/mp4.ico");
 
         public static readonly IImage DefaultExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                    "CubeToolsAppsExtensionsCompressed/None.ico");
+                                                                    "Extensions/None.ico");
     }
 }

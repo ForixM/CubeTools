@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Library;
+using Library.DirectoryPointer;
+using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Ui.Views;
 
 namespace Ui.Models
@@ -10,8 +12,8 @@ namespace Ui.Models
         #region Models variables
         
         // A pointer to the current loaded Directory
-        private DirectoryPointer _folderPointer;
-        public DirectoryPointer FolderPointer
+        private DirectoryPointerLoaded _folderPointer;
+        public DirectoryPointerLoaded FolderPointer
         {
             get => _folderPointer;
             set => _folderPointer = value;
@@ -62,7 +64,7 @@ namespace Ui.Models
         {
             View = view;
             
-            _folderPointer = new DirectoryPointer();
+            _folderPointer = new DirectoryPointerLoaded();
             _queuePointers = new List<DirectoryPointer>();
             _queueIndex = -1;
         }

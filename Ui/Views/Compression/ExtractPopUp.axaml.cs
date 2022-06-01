@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Library;
 using SevenZip;
 using Ui.Models;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Compression
 {
@@ -14,7 +15,7 @@ namespace Ui.Views.Compression
         private LocalModel? _model;
 
         private StackPanel _archiveInfo;
-        private List<FilePointer> _data;
+        private List<Pointer> _data;
 
         #region Init
         
@@ -24,9 +25,9 @@ namespace Ui.Views.Compression
 
             _archiveInfo = this.FindControl<StackPanel>("ArchiveInformation");
             _model = null;
-            _data = new List<FilePointer>();
+            _data = new List<Pointer>();
         }
-        public ExtractPopUp(LocalModel vm, List<FilePointer> dataIn) : this()
+        public ExtractPopUp(LocalModel vm, List<Pointer> dataIn) : this()
         {
             _model = vm;
             _data = dataIn;

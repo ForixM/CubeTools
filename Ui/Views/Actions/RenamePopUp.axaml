@@ -25,7 +25,6 @@
                 <Button HorizontalAlignment="Center" Margin="0 10 0 0" Click="OnClickRename" Content="Rename"/>
             </StackPanel>
         </Grid>
-               
     </Grid>
     
 </Window>

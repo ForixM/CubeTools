@@ -1,16 +1,18 @@
 ﻿using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
-using Library;
+using Library.DirectoryPointer;
+using Library.DirectoryPointer.DirectoryPointerLoaded;
+using Library.FilePointer;
 
 namespace Cli
 {
-    internal class CLI
+    internal class Cli
     {
         #region Variables
 
         // Attributes
-        private static DirectoryPointer _directoryPointer;
+        private static DirectoryPointerLoaded _directoryPointer;
         private static string _promptLine;
 
         #endregion
@@ -18,17 +20,17 @@ namespace Cli
         #region Init
 
         // Constructor : OK
-        public CLI()
+        public Cli()
         {
-            _directoryPointer = new DirectoryPointer();
+            _directoryPointer = new DirectoryPointerLoaded();
             _promptLine = ">> ";
         }
 
         // Constructor : OK
-        public CLI(string path)
+        public Cli(string path)
         {
             path = path.Replace('\\', '/');
-            _directoryPointer = new DirectoryPointer(path);
+            _directoryPointer = new DirectoryPointerLoaded(path);
             _promptLine = ">> ";
         }
 
@@ -39,18 +41,23 @@ namespace Cli
         // This function deals with the process of the command line
         public void Process()
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine(@"
             ░▒█▀▀▄░█░▒█░█▀▀▄░█▀▀░░░▀▀█▀▀░▄▀▀▄░▄▀▀▄░█░░█▀▀
             ░▒█░░░░█░▒█░█▀▀▄░█▀▀░░░░▒█░░░█░░█░█░░█░█░░▀▀▄
             ░▒█▄▄▀░░▀▀▀░▀▀▀▀░▀▀▀░░░░▒█░░░░▀▀░░░▀▀░░▀▀░▀▀▀
             ");
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("CubeTools command line project");
             Console.WriteLine("Type help to get any information about the available commands");
             Console.Write("\n");
+            Console.ForegroundColor = ConsoleColor.White;
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.Write(_directoryPointer.Path);
                 Console.Write(_promptLine + " ");
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 ReadCommand();
             }
         }
@@ -89,9 +96,6 @@ namespace Cli
                         break;
                     case "help":
                         Help();
-                        break;
-                    case "debug":
-                        _directoryPointer.PrintInformation();
                         break;
                     case "cat":
                         foreach (var name in parameters) Cat(name);
@@ -138,7 +142,7 @@ namespace Cli
 
         private string GetCommand(List<string> command)
         {
-            if (command.Count >= 1 && command[0] != null)
+            if (command.Count >= 1)
             {
                 var res = command[0];
                 command.Remove(command[0]);
@@ -184,6 +188,7 @@ namespace Cli
         private void ReadCommand()
         {
             var command = Console.ReadLine();
+            Console.ForegroundColor = ConsoleColor.White;
             if (command != null)
             {
                 var read = command.Split(' ').ToList();
@@ -248,16 +253,15 @@ namespace Cli
         /// </summary>
         private static void Ls()
         {
-            _directoryPointer.DisplayChildren();
+            Console.WriteLine("Children");
+            Console.WriteLine("__________");
+            foreach (var pointer in _directoryPointer.ChildrenFiles) Console.WriteLine(pointer.Path);
         }
 
         /// <summary>
         ///     Clear the console
         /// </summary>
-        private static void Clear()
-        {
-            Console.Clear();
-        }
+        private static void Clear() => Console.Clear();
 
         /// <summary>
         ///     Display the content
@@ -271,7 +275,7 @@ namespace Cli
                 name = ManagerReader.GetNameToPath(name);
                 res = ManagerReader.GetContent(name);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.Error.WriteLine("# Cat aborted");
             }
@@ -285,57 +289,70 @@ namespace Cli
             }
         }
 
-
+        /// <summary>
+        ///     Create a directory
+        /// </summary>
+        /// <param name="name"></param>
         private static void Mkdir(string name)
         {
             try
             {
                 name = ManagerReader.GetNameToPath(name);
                 ManagerWriter.CreateDir(name);
-                _directoryPointer.ChildrenFiles.Add(ManagerReader.ReadFileType(name));
+                _directoryPointer.ChildrenFiles.Add(new FilePointer(name));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.Error.WriteLine("# Mkdir aborted");
             }
         }
 
+        /// <summary>
+        ///     Destroy a directory
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="rec"></param>
         private static void Rmdir(string name, bool rec = false)
         {
             try
             {
-                name = ManagerReader.GetNameToPath(name);
-                ManagerWriter.DeleteDir(name, rec);
+                ManagerWriter.Delete(name, rec);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.Error.WriteLine("# Rmdir aborted");
             }
         }
 
+        /// <summary>
+        ///     Rename a file or folder
+        /// </summary>
+        /// <param name="name">the relative path of the file or folder</param>
+        /// <param name="dest">the destination path</param>
+        /// <param name="rep">whether it as to replace the value</param>
         private static void Mv(string name, string dest, bool rep = false)
         {
             try
             {
                 name = ManagerReader.GetNameToPath(name);
                 dest = ManagerReader.GetNameToPath(dest);
-                if (!rep)
-                    ManagerWriter.Rename(name, dest);
-                else
-                    ManagerWriter.RenameMerge(name, dest);
+                ManagerWriter.Rename(name, dest, rep);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.Error.WriteLine("# Mv aborted");
             }
         }
 
+        /// <summary>
+        ///     Destroy a file
+        /// </summary>
+        /// <param name="name">the name of the file (its relative path)</param>
         private static void Rm(string name)
         {
             try
             {
-                name = ManagerReader.GetNameToPath(name);
-                ManagerWriter.Delete(name);
+                ManagerWriter.DeleteFile(name);
             }
             catch (Exception)
             {
@@ -343,37 +360,44 @@ namespace Cli
             }
         }
 
+        /// <summary>
+        ///     Create an empty file
+        /// </summary>
+        /// <param name="name">the name of the file to create</param>
         private static void Touch(string name)
         {
             try
             {
-                var path = ManagerReader.GetNameToPath(name);
-                ManagerWriter.Create(name, ManagerReader.GetFileExtension(name));
-                _directoryPointer.ChildrenFiles.Add(new FilePointer(path));
+                _directoryPointer.ChildrenFiles.Add(
+                    ManagerWriter.Create(name, ManagerReader.GetFileExtension(name)));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.Error.WriteLine("# touch aborted");
             }
         }
 
+        /// <summary>
+        ///     Change the current folder to the new one given with a string 'dest'
+        /// </summary>
+        /// <param name="dest">the destination</param>
         private static void Cd(string dest)
         {
             try
             {
-                var path = ManagerReader.GetNameToPath(dest);
-                _directoryPointer = new DirectoryPointer(path);
+                Directory.SetCurrentDirectory(dest);
+                _directoryPointer = new DirectoryPointerLoaded(Directory.GetCurrentDirectory());
             }
             catch (ManagerException e)
             {
-                if (e is AccessException)
-                    Console.Error.WriteLine("# Access impossible, Cd aborted");
-                else
-                    Console.WriteLine(e.Errorstd);
-                    //Console.Error.WriteLine("# Cd aborted");
+                if (e is AccessException) Console.Error.WriteLine("# Access impossible, Cd aborted");
+                else Console.WriteLine(e.Errorstd);
             }
         }
 
+        /// <summary>
+        ///     Display the current loaded folder
+        /// </summary>
         private static void Pwd()
         {
             Console.WriteLine();
@@ -383,6 +407,10 @@ namespace Cli
             Console.WriteLine();
         }
 
+        /// <summary>
+        ///     Copy the source
+        /// </summary>
+        /// <param name="source"></param>
         private static void Cp(string source)
         {
             try
@@ -391,17 +419,15 @@ namespace Cli
             }
             catch (Exception e)
             {
-                if (e is AccessException)
-                    Console.Error.WriteLine("# Access not possible, copy aborted");
-                else
-                    Console.Error.WriteLine("# Copy aborted");
+                Console.Error.WriteLine(e is AccessException
+                    ? "# Access not possible, copy aborted"
+                    : "# Copy aborted");
                 return;
             }
 
             try
             {
-                ManagerWriter.Copy(source);
-                _directoryPointer.ChildrenFiles.Add(ManagerReader.ReadFileType(source));
+                _directoryPointer.ChildrenFiles.Add(ManagerWriter.Copy(source));
             }
             catch (Exception e)
             {
@@ -409,6 +435,11 @@ namespace Cli
             }
         }
 
+        /// <summary>
+        ///     Copy the source and change its name to the 'dest' one
+        /// </summary>
+        /// <param name="source">the source file/folder</param>
+        /// <param name="dest">the dest file/folder</param>
         private static void Cp(string source, string dest)
         {
             try
@@ -434,14 +465,18 @@ namespace Cli
             }
         }
 
-        private static void Find(string fileToFind)
+        /// <summary>
+        ///     Try to find the file give in parameter
+        /// </summary>
+        /// <param name="toFind">the file/folder to find</param>
+        private static void Find(string toFind)
         {
             var res = "";
             try
             {
-                res = ManagerReader.SearchByIndeterminedName(_directoryPointer, fileToFind).Path;
+                res = ManagerReader.SearchByIndeterminedName(_directoryPointer, toFind).Path;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.Error.WriteLine("# Find aborted");
                 return;
@@ -451,6 +486,9 @@ namespace Cli
             Console.WriteLine(res);
         }
 
+        /// <summary>
+        ///     Refresh manually the Directory Loaded
+        /// </summary>
         private static void Refresh()
         {
             try
@@ -461,7 +499,6 @@ namespace Cli
             {
                 Console.Error.WriteLine("# Cannot refresh");
             }
-            //Console.WriteLine("refreshing directory : " + _directoryPointer.Path);
         }
 
         #endregion

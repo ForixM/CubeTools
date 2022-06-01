@@ -1,8 +1,8 @@
 ﻿using System;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Library.ManagerExceptions;
-using Library;
 using LibraryFTP;
 using Ui.Models.Ftp;
 
@@ -72,7 +72,7 @@ namespace Ui.Views.Ftp
         {
             if (isdir)
             {
-                Local.Model.ModelNavigationBar.FolderPointer = new DirectoryPointer(path);
+                Local.Model.ModelNavigationBar.FolderPointer = new DirectoryPointerLoaded(path);
                 ReloadPathLocal();
             }
             else

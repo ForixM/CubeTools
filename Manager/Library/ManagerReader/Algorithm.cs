@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using Library.ManagerExceptions;
-using Library.Pointers;
+using Library.DirectoryPointer.DirectoryPointerLoaded;
 
 namespace Library.ManagerReader
 {
@@ -62,15 +62,11 @@ namespace Library.ManagerReader
         public static bool IsPathCorrect(string path)
         {
             var name = GetPathToName(path);
-            if (name.Length > 165 || path.Length > 255)
-                return false;
-            foreach (var c in Path.GetInvalidPathChars().Concat(new []{'*', '/', '\\', '<', '>', '?', ':', '\"'}))
-                if (name.Contains(c))
-                    return false;
-            return true;
+            if (name.Length > 165 || path.Length > 255) return false;
+            return Path.GetInvalidFileNameChars().All(c => !name.Contains(c));
         }
 
-        public static bool IsPathCorrect(FileType ft)
+        public static bool IsPathCorrect(Pointer ft)
         {
             if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
                 throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
@@ -151,15 +147,15 @@ namespace Library.ManagerReader
         }
 
         /// <summary>
-        ///     - Action : Select FileTypes in a FileType list using a minimum size for their names <br></br>
+        ///     - Action : Select FileTypes in a FilePointer list using a minimum size for their names <br></br>
         ///     - Implementation : Check
         /// </summary>
         /// <param name="fileTypes">List of fileType supposed to not be corrupted</param>
         /// <param name="minimumNameSize">the size of name required</param>
         /// <returns>the selected pointers with conditions</returns>
-        private static List<FileType> SelectFileTypeByNameSize(List<FileType> fileTypes, int minimumNameSize)
+        private static List<Pointer> SelectFileTypeByNameSize(List<Pointer> fileTypes, int minimumNameSize)
         {
-            var res = new List<FileType>();
+            var res = new List<Pointer>();
             foreach (var ft in fileTypes)
                 if (ft.Name.Count() >= minimumNameSize)
                     res.Add(ft);
@@ -212,7 +208,7 @@ namespace Library.ManagerReader
         /// </summary>
         /// <returns>Returns string for display</returns>
         /// <exception cref="CorruptedPointerException">the given pointer is corrupteds</exception>
-        public static string ByteToPowByte(FileType ft)
+        public static string ByteToPowByte(Pointer ft)
         {
             if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
                 throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
@@ -246,13 +242,13 @@ namespace Library.ManagerReader
 
         /// <summary>
         ///     Create a new sorted list using merge algorithm
-        ///     This functions takes two FileType list sorted them using their NAMES and returns a new one sorted with all the
+        ///     This functions takes two FilePointer list sorted them using their NAMES and returns a new one sorted with all the
         ///     elements
         ///     Implementation : Check
         /// </summary>
-        private static List<FileType> MergeSortFileTypeByName(List<FileType> ftList1, List<FileType> ftList2)
+        private static List<Pointer> MergeSortFileTypeByName(List<Pointer> ftList1, List<Pointer> ftList2)
         {
-            var ftReturned = new List<FileType>();
+            var ftReturned = new List<Pointer>();
 
             var i = 0;
             var j = 0;
@@ -289,14 +285,14 @@ namespace Library.ManagerReader
 
         /// <summary>
         ///     - Action : Create a new sorted list using merge algorithm <br></br>
-        ///     This functions takes two FileType list sorted them using their SIZES and returns a new one sorted with all the
+        ///     This functions takes two FilePointer list sorted them using their SIZES and returns a new one sorted with all the
         ///     elements <br></br>
         ///     - Implementation : Check <br></br>
         /// </summary>
         /// <returns></returns>
-        private static List<FileType> MergeSortFileTypeBySize(List<FileType> ftList1, List<FileType> ftList2)
+        private static List<Pointer> MergeSortFileTypeBySize(List<Pointer> ftList1, List<Pointer> ftList2)
         {
-            var ftReturned = new List<FileType>();
+            var ftReturned = new List<Pointer>();
 
             var i = 0;
             var j = 0;
@@ -333,14 +329,14 @@ namespace Library.ManagerReader
 
         /// <summary>
         ///     - Action : Create a new sorted list using merge algorithm <br></br>
-        ///     This functions takes two FileType list sorted them using their TYPES and returns a new one sorted with all the
+        ///     This functions takes two FilePointer list sorted them using their TYPES and returns a new one sorted with all the
         ///     elements <br></br>
         ///     - Implementation : Check <br></br>
         /// </summary>
         /// <returns></returns>
-        private static List<FileType> MergeSortFileTypeByType(List<FileType> ftList1, List<FileType> ftList2)
+        private static List<Pointer> MergeSortFileTypeByType(List<Pointer> ftList1, List<Pointer> ftList2)
         {
-            var ftReturned = new List<FileType>();
+            var ftReturned = new List<Pointer>();
 
             var i = 0;
             var j = 0;
@@ -377,13 +373,13 @@ namespace Library.ManagerReader
 
         /// <summary>
         ///     - Action : Create a new sorted list using merge algorithm <br></br>
-        ///     This functions takes two FileType list sorted them using their MODIFIED DATES and returns a new one sorted with all
+        ///     This functions takes two FilePointer list sorted them using their MODIFIED DATES and returns a new one sorted with all
         ///     the elements <br></br>
         ///     Implementation : NOT Check
         /// </summary>
-        private static List<FileType> MergeSortFileTypeByModifiedDate(List<FileType> ftList1, List<FileType> ftList2)
+        private static List<Pointer> MergeSortFileTypeByModifiedDate(List<Pointer> ftList1, List<Pointer> ftList2)
         {
-            var ftReturned = new List<FileType>();
+            var ftReturned = new List<Pointer>();
 
             var i = 0;
             var j = 0;
@@ -426,15 +422,15 @@ namespace Library.ManagerReader
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortByName(List<FileType> ftList)
+        public static List<Pointer> SortByName(List<Pointer> ftList)
         {
-            var dirList = new List<FileType>();
+            var dirList = new List<Pointer>();
             foreach (var ft in ftList.Where(ft => ft.IsDir))
             {
                 dirList.Add(ft);
             }
 
-            var fileList = new List<FileType>();
+            var fileList = new List<Pointer>();
             foreach (var ft in ftList.Where(ft => !ft.IsDir))
             {
                 fileList.Add(ft);
@@ -453,15 +449,15 @@ namespace Library.ManagerReader
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortBySize(List<FileType> ftList)
+        public static List<Pointer> SortBySize(List<Pointer> ftList)
         {
-            var dirList = new List<FileType>();
+            var dirList = new List<Pointer>();
             foreach (var ft in ftList.Where(ft => ft.IsDir))
             {
                 dirList.Add(ft);
             }
 
-            var fileList = new List<FileType>();
+            var fileList = new List<Pointer>();
             foreach (var ft in ftList.Where(ft => !ft.IsDir))
             {
                 fileList.Add(ft);
@@ -478,7 +474,7 @@ namespace Library.ManagerReader
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<FileType> SortByType(List<FileType> ftList)
+        public static List<Pointer> SortByType(List<Pointer> ftList)
         {
             var res =  DivideAndMergeAlgorithm(ftList, "type");
             res.Reverse();
@@ -491,15 +487,15 @@ namespace Library.ManagerReader
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>the sorted list of filetype</returns>
-        public static List<FileType> SortByModifiedDate(List<FileType> ftList)
+        public static List<Pointer> SortByModifiedDate(List<Pointer> ftList)
         {
-            var dirList = new List<FileType>();
+            var dirList = new List<Pointer>();
             foreach (var ft in ftList.Where(ft => ft.IsDir))
             {
                 dirList.Add(ft);
             }
 
-            var fileList = new List<FileType>();
+            var fileList = new List<Pointer>();
             foreach (var ft in ftList.Where(ft => !ft.IsDir))
             {
                 fileList.Add(ft);
@@ -519,14 +515,14 @@ namespace Library.ManagerReader
         ///     - Implementation : Check <br></br>
         /// </summary>
         /// <returns>Returns the sorted pointer list</returns>
-        private static List<FileType> DivideAndMergeAlgorithm(List<FileType> ftList, string argument)
+        private static List<Pointer> DivideAndMergeAlgorithm(List<Pointer> ftList, string argument)
         {
             // If list is empty, returns it
             if (ftList.Count() <= 1) return ftList;
 
             // If not empty divide them and call the function again
-            var ftList1 = new List<FileType>();
-            var ftList2 = new List<FileType>();
+            var ftList1 = new List<Pointer>();
+            var ftList2 = new List<Pointer>();
             for (var i = 0; i < ftList.Count / 2; i++)
                 ftList1.Add(ftList[i]);
             for (var i = ftList.Count / 2; i < ftList.Count(); i++)
@@ -541,21 +537,16 @@ namespace Library.ManagerReader
         ///     - Implementation : Not Check
         /// </summary>
         /// <returns></returns>
-        private static List<FileType> MergeSortFileType(List<FileType> ftList1, List<FileType> ftList2, string argument)
+        private static List<Pointer> MergeSortFileType(List<Pointer> ftList1, List<Pointer> ftList2, string argument)
         {
-            switch (argument)
+            return argument switch
             {
-                case "size":
-                    return MergeSortFileTypeBySize(ftList1, ftList2);
-                case "type":
-                    return MergeSortFileTypeByType(ftList1, ftList2);
-                case "name":
-                    return MergeSortFileTypeByName(ftList1, ftList2);
-                case "date":
-                    return MergeSortFileTypeByModifiedDate(ftList1, ftList2);
-                default:
-                    return null;
-            }
+                "size" => MergeSortFileTypeBySize(ftList1, ftList2),
+                "type" => MergeSortFileTypeByType(ftList1, ftList2),
+                "name" => MergeSortFileTypeByName(ftList1, ftList2),
+                "date" => MergeSortFileTypeByModifiedDate(ftList1, ftList2),
+                _ => new List<Pointer>()
+            };
         }
 
         #endregion
@@ -571,7 +562,7 @@ namespace Library.ManagerReader
         /// <param name="fileTypes"></param>
         /// <param name="fullName"></param>
         /// <returns></returns>
-        public static FileType SearchByFullName(List<FileType> fileTypes, string fullName)
+        public static Pointer SearchByFullName(List<Pointer> fileTypes, string fullName)
         {
             foreach (var ft in fileTypes)
                 if (ft.Name == fullName)
@@ -582,12 +573,12 @@ namespace Library.ManagerReader
 
         /// <summary>
         /// </summary>
-        /// <param name="directoryType"></param>
+        /// <param name="directoryPointer"></param>
         /// <param name="fullName"></param>
         /// <returns></returns>
-        public static FileType SearchByFullName(DirectoryType directoryType, string fullName)
+        public static Pointer SearchByFullName(DirectoryPointerLoaded directoryPointer, string fullName)
         {
-            return SearchByFullName(directoryType.ChildrenFiles, fullName);
+            return SearchByFullName(directoryPointer.ChildrenFiles, fullName);
         }
 
         /// <summary>
@@ -595,35 +586,31 @@ namespace Library.ManagerReader
         ///     Implementation : Check
         /// </summary>
         /// <returns>return the fileType that has to be find</returns>
-        public static FileType SearchByIndeterminedName(List<FileType> fileTypes, string indeterminedName)
+        public static Pointer SearchByIndeterminedName(List<Pointer> pointers, string indeterminedName)
         {
-            if (fileTypes == null)
-                return null;
-            var bestFitft = fileTypes[0];
+            var bestFitft = pointers[0];
             var maxOcc = bestFitft.Name.Length;
-            var list = SelectFileTypeByNameSize(fileTypes, indeterminedName.Length);
-            foreach (var ft in list)
-                if (ft.Name == indeterminedName)
-                {
-                    return ft;
-                }
+            var list = SelectFileTypeByNameSize(pointers, indeterminedName.Length);
+            foreach (var pointer in list)
+                if (pointer.Name == indeterminedName)
+                    return pointer;
                 else
                 {
                     var currentOcc = 0;
                     while (currentOcc < indeterminedName.Length)
-                        if (ft.Name[currentOcc] == indeterminedName[currentOcc])
+                        if (pointer.Name[currentOcc] == indeterminedName[currentOcc])
                             currentOcc++;
                         else
                             break;
 
                     if (currentOcc == indeterminedName.Length)
                     {
-                        return ft;
+                        return pointer;
                     }
 
                     if (currentOcc > maxOcc)
                     {
-                        bestFitft = ft;
+                        bestFitft = pointer;
                         maxOcc = currentOcc;
                     }
                 }
@@ -631,14 +618,12 @@ namespace Library.ManagerReader
             return bestFitft;
         }
 
-        public static FileType SearchByIndeterminedName(DirectoryType directoryType, string indeterminated)
-        {
-            return SearchByIndeterminedName(directoryType.ChildrenFiles, indeterminated);
-        }
+        public static Pointer SearchByIndeterminedName(DirectoryPointerLoaded directoryPointer, string indeterminated) 
+            => SearchByIndeterminedName(directoryPointer.ChildrenFiles, indeterminated);
         
         // FAST READER
 
-        public static IEnumerable<FileType> FastSearchByName(string path, string regex="", int max = 20)
+        public static IEnumerable<Pointer> FastSearchByName(string path, string regex="", int max = 20)
         {
             if (Directory.Exists(path))
             {
@@ -652,24 +637,28 @@ namespace Library.ManagerReader
                 }
                 catch (Exception e)
                 {
-                    if (e is ArgumentException or ArgumentNullException or PathTooLongException)
-                        throw new PathFormatException();// TODO EDIT EXCEPTION
-                    if (e is DirectoryNotFoundException or IOException)
-                        throw new PathNotFoundException(); //TODO EDIT EXCEPTION
+                    switch (e)
+                    {
+                        case ArgumentException or ArgumentNullException or PathTooLongException:
+                            throw new PathFormatException();// TODO EDIT EXCEPTION
+                        case DirectoryNotFoundException or IOException:
+                            throw new PathNotFoundException(); //TODO EDIT EXCEPTION
+                    }
                 }
                 foreach (var file in paths)
                 {
-                    var ft = FileType.NullPointer;
+                    Pointer ft = null;
                     try
                     {
-                        ft = new FileType(file);
+                        if (File.Exists(ft!.Path)) ft = new FilePointer.FilePointer(file);
+                        else ft = new DirectoryPointer.DirectoryPointer(file);
                     }
                     catch (Exception)
                     { 
                         // ignored
                     }
 
-                    if (ft != FileType.NullPointer)
+                    if (ft is not null)
                     {
                         yield return ft;
                         max--;
@@ -677,7 +666,7 @@ namespace Library.ManagerReader
                     if (max <= 0) break;
                 }
             }
-            else throw new PathNotFoundException(path + " could not be identified as a directory", "FastSearchByName"); //
+            else throw new PathNotFoundException(path + " could not be identified as a directory", "FastSearchByName");
         }
         
 
@@ -688,54 +677,6 @@ namespace Library.ManagerReader
         
         [DllImport("shell32.dll")]
         static extern int FindExecutable(string lpFile, string lpDirectory, [Out] StringBuilder lpResult);
-
-        /*
-        public static List<string> RecommendedProgramsWindows(string ext)
-        {
-            
-            var names = new List<string>();
-            var baseKey = @"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\." + ext;
-            string s;
-
-            using (var rk = Registry.CurrentUser.OpenSubKey(baseKey + @"\OpenWithList"))
-            {
-                if (rk != null)
-                {
-                    var mruList = (string) rk.GetValue("MRUList");
-                    if (mruList != null)
-                        foreach (var c in mruList)
-                        {
-                            s = rk.GetValue(c.ToString()).ToString();
-                            if (s.ToLower().Contains(".exe"))
-                                names.Add(s);
-                        }
-                }
-            }
-
-            if (names.Count == 0)
-                return new List<string>();
-
-
-            //Search paths:
-            var paths = new List<string>();
-            baseKey = @"Software\Classes\Applications\{0}\shell\open\command";
-
-            foreach (var name in names)
-                using (var rk = Registry.LocalMachine.OpenSubKey(string.Format(baseKey, name)))
-                {
-                    if (rk != null)
-                    {
-                        //Console.WriteLine(name);
-                        s = rk.GetValue("").ToString();
-                        if (s.Contains("\""))
-                            s = s.Trim('\"'); //remove quotes
-                        paths.Add(s);
-                    }
-                }
-
-            return paths;
-        }
-        */
 
         public static List<string> RecommendedProgramsUnix(string ext)
         {
@@ -774,15 +715,6 @@ namespace Library.ManagerReader
             var recommended = RecommendedPrograms(GetOs(), extension, path);
             if (recommended.Count != 0)
                 LaunchAppProcess(recommended[0], path);
-            // TODO Edit for preferences
-            /*
-            else
-            {
-                string? app = ConfigLoader.ConfigLoader.AppSettings.Get(extension);
-                if (app is null) return;
-                LaunchAppProcess(app, path);
-            }
-            */
         }
         
         /// <summary>

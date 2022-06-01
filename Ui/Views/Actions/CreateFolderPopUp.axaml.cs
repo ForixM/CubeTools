@@ -71,10 +71,8 @@ namespace Ui.Views.Actions
             {
                 try
                 {
-                    var ft = ManagerWriter.CreateDir(name);
-                    _model.ModelNavigationBar.FolderPointer.ChildrenFiles.Add(ft);
-                    _model.ModelPathsBar.ReloadPath(_model.ModelNavigationBar.FolderPointer
-                        .ChildrenFiles);
+                    _model.ModelNavigationBar.FolderPointer.AddDir(name);
+                    _model.ModelPathsBar.ReloadPath(_model.ModelNavigationBar.FolderPointer.ChildrenFiles);
                     Close();
                 }
                 catch (Exception exception)

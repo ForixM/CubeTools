@@ -3,6 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library;
+using Library.DirectoryPointer;
+using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Syroot.Windows.IO;
 using Ui.Models;
 
@@ -29,26 +31,26 @@ namespace Ui.Views
 
         private void OpenDesktop(object? sender, RoutedEventArgs e)
         {
-            Model.ParentModel?.ModelLocal.ModelNavigationBar.Add(new DirectoryPointer(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)));
+            Model.ParentModel?.ModelLocal.ModelNavigationBar.Add(new DirectoryPointerLoaded(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)));
             Model.ParentModel?.ModelLocal.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
         }
 
         private void OpenDocuments(object? sender, RoutedEventArgs e)
         {
-            Model.ParentModel?.ModelLocal.ModelNavigationBar.Add(new DirectoryPointer(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
+            Model.ParentModel?.ModelLocal.ModelNavigationBar.Add(new DirectoryPointerLoaded(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
             Model.ParentModel?.ModelLocal.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
         }
 
         private void OpenImages(object? sender, RoutedEventArgs e)
         {
-            Model.ParentModel?.ModelLocal.ModelNavigationBar.Add(new DirectoryPointer(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)));
+            Model.ParentModel?.ModelLocal.ModelNavigationBar.Add(new DirectoryPointerLoaded(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)));
             Model.ParentModel?.ModelLocal.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
         }
 
         private void OpenDownloads(object? sender, RoutedEventArgs e)
         {
-            Model.ParentModel?.ModelLocal.ModelNavigationBar.Add(new DirectoryPointer(KnownFolders.Downloads.Path));
-            Model.ParentModel?.ModelLocal.AccessPath(KnownFolders.Downloads.Path);;
+            Model.ParentModel?.ModelLocal.ModelNavigationBar.Add(new DirectoryPointerLoaded(KnownFolders.Downloads.Path));
+            Model.ParentModel?.ModelLocal.AccessPath(KnownFolders.Downloads.Path);
         }
 
         private void OpenMusic(object? sender, RoutedEventArgs e)
