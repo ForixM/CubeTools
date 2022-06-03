@@ -33,7 +33,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Cli\Cli.csproj" />
         <ProjectReference Include="..\Extensions\LibraryCompression\LibraryCompression.csproj" />
-        <ProjectReference Include="..\Extensions\LibraryClient\LibraryClient.csproj"/>
+        <ProjectReference Include="..\Extensions\LibraryClient\LibraryClient.csproj" />
         <ProjectReference Include="..\InitLoader\InitLoader.csproj" />
         <ProjectReference Include="..\ResourcesLoader\ResourcesLoader.csproj" />
         <ProjectReference Include="..\Manager\Library\Library.csproj" />
@@ -291,7 +291,6 @@
       </Compile>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Clients" />
       <Folder Include="Models" />
     </ItemGroup>
     <ItemGroup>

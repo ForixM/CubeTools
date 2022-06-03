@@ -16,10 +16,10 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
 
         public List<Pointer> ChildrenFiles { get => _childrenFiles; set => _childrenFiles = value; }
 
-        protected FileSystemWatcher? _watcher;
+        //protected FileSystemWatcher? _watcher;
         
         // Watcher for raising events 
-        public FileSystemWatcher? Watcher => _watcher;
+        //public FileSystemWatcher? Watcher => _watcher;
         
         #endregion
 
@@ -35,7 +35,7 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
         public DirectoryPointerLoaded() : base()
         {
             _childrenFiles = new List<Pointer>();
-            _watcher = null;
+            //_watcher = null;
         }
 
         /// <summary>
@@ -68,16 +68,16 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
 
             
             // Watcher
-            _watcher = new FileSystemWatcher(path);
-            _watcher.Changed += OnChanged;
-            _watcher.Created += OnCreated;
-            _watcher.Deleted += OnDeleted;
-            _watcher.Renamed += OnRenamed;
-            _watcher.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName | NotifyFilters.FileName
-                                    | NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.Security | NotifyFilters.Size;
-            _watcher.Filter = "*";
-            _watcher.IncludeSubdirectories = true;
-            _watcher.EnableRaisingEvents = true;
+            //_watcher = new FileSystemWatcher(path);
+            //_watcher.Changed += OnChanged;
+            //_watcher.Created += OnCreated;
+            //_watcher.Deleted += OnDeleted;
+            //_watcher.Renamed += OnRenamed;
+            //_watcher.NotifyFilter = NotifyFilters.Attributes | NotifyFilters.CreationTime | NotifyFilters.DirectoryName | NotifyFilters.FileName
+              //                      | NotifyFilters.LastAccess | NotifyFilters.LastWrite | NotifyFilters.Security | NotifyFilters.Size;
+            //_watcher.Filter = "*";
+            //_watcher.IncludeSubdirectories = false;
+            //_watcher.EnableRaisingEvents = true;
         }
 
         #endregion
@@ -259,7 +259,7 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
             if (Directory.Exists(dest))
             {
                 var newPath = ManagerReader.ManagerReader.GetNameToPath(dest);
-                _watcher = new FileSystemWatcher(newPath);
+                //_watcher = new FileSystemWatcher(newPath);
                 
                 // Erase last directory
                 foreach (var ft in ChildrenFiles) ft.Dispose();
