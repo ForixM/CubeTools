@@ -25,5 +25,9 @@
 			<Image Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
 		</Button>
 		
+		<Button Classes="Manager" Name="DownloadButton" Click="Download">
+			<Image Source="{x:Static resource:ResourcesIconsCompressed.DownloadCompressed}"/>
+		</Button>
+		
 	</WrapPanel>
 </UserControl>

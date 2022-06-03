@@ -5,7 +5,7 @@
      
      <Button CornerRadius="8"  Background="White" Name="Button"
              HorizontalAlignment="Left" Height="50" Width="2000"
-             PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped" >
+             PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped">
          
          <WrapPanel VerticalAlignment="Center">
              <Image Name="Icon" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>

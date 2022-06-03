@@ -37,8 +37,8 @@ namespace LibraryClient.LibraryGoogleDrive
             }
             else
             {
-                    listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}' and '{Parent}' in parents";
-                }
+                listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}' and '{Parent}' in parents";
+            }
 
             listRequest.Fields = "nextPageToken, files(id, name)";
 

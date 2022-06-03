@@ -152,7 +152,7 @@ namespace LibraryClient.LibraryFtp
                 // Recursive call on sub-dirs for treatment
                 foreach (var item in tmp.ChildrenFiles.Where(item => item.IsDir))
                 {
-                    CreateDirectory(currentFolder, item.Name);
+                    CreateFolder(currentFolder, item.Name);
                     UploadFolder(item, currentFolder);
                 }
             }
@@ -181,7 +181,7 @@ namespace LibraryClient.LibraryFtp
             finish?.Invoke(this,(int) response.StatusCode == 200);
         }
 
-        public FtpFolder CreateDirectory(FtpFolder parent, string name)
+        public FtpFolder CreateFolder(FtpFolder parent, string name)
         {
             FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + parent.Path + "/" + name);
             request.Method = WebRequestMethods.Ftp.MakeDirectory;
@@ -190,7 +190,7 @@ namespace LibraryClient.LibraryFtp
             return (FtpFolder) GetItem(parent, name);
         }
         
-        public void DeleteItem(IFtpItem item)
+        public void Delete(IFtpItem item)
         {
             FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + item.Path);
             if (item is FtpFolder folder)
@@ -199,7 +199,7 @@ namespace LibraryClient.LibraryFtp
                 FtpArboresence arbo = ListDirectory(folder);
                 foreach (IFtpItem arboItem in arbo.Items)
                 {
-                    DeleteItem(arboItem);
+                    Delete(arboItem);
                 }
             }
             if (item is FtpFile)

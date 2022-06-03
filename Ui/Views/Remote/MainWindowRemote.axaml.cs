@@ -46,6 +46,7 @@ namespace Ui.Views.Remote
         public MainWindowRemote(Client client) : this()
         {
             Client = client;
+            ReloadPath();
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -58,8 +59,8 @@ namespace Ui.Views.Remote
         {
             try
             {
-                Client!.Refresh();
-                
+                Client.Refresh();
+                RemotePointersView.ReloadPath();
             }
             catch (Exception e)
             {
@@ -69,18 +70,16 @@ namespace Ui.Views.Remote
 
         public void AccessPath(RemoteItem item, bool isdir)
         {
-            if (Client is null) return;
-            
             if (isdir)
             {
                 Client.AccessPath(item);
+                RemotePointersView.ReloadPath();
             }
             else
             {
                 try
                 {
-                    ManagerReader.AutoLaunchAppProcess(Client.Download(item, Local.NavigationBarView.FolderPointer.Path)
-                        .Path);
+                    ManagerReader.AutoLaunchAppProcess(Client.Download(item, Local.NavigationBarView.FolderPointer.Path).Path);
                 }
                 catch (Exception e)
                 {
@@ -89,6 +88,11 @@ namespace Ui.Views.Remote
             }
         }
         
+        /// <summary>
+        /// Access to the given path (remote)
+        /// </summary>
+        /// <param name="name">the </param>
+        /// <param name="isdir"></param>
         public void AccessPath(string name, bool isdir)
         {
             RemoteItem? item = Client?.GetItem(name);
@@ -173,7 +177,7 @@ namespace Ui.Views.Remote
                     RemoteActionView.Rename(sender, e);
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.ReloadShortcut))
                     ReloadPath();
-                else if (KeysPressed ==ConfigLoader.ConfigLoader.Settings.Shortcuts.SettingsShortcut)
+                else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts.SettingsShortcut)
                     new SettingsWindow().Show();
             }
         }
@@ -185,7 +189,7 @@ namespace Ui.Views.Remote
         
         #endregion
         
-        #region Process
+        #region Appendix
 
         private static bool IsListInListList(List<Key> list, List<List<Key>> listList)
         {

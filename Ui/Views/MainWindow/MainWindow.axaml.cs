@@ -57,7 +57,6 @@ namespace Ui.Views.MainWindow
                     // All items are selected
                     if (LocalView.ActionBarView.SelectedXaml.Count == LocalView.PathsBarView.Generator.Children.Count)
                     {
-                        
                         LocalView.ActionBarView.SelectedXaml.Clear();
                         int size = LocalView.PathsBarView.Generator.Children.Count;
                         for (int i = 0; i < size; i++)

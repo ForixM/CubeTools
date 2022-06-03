@@ -7,7 +7,7 @@
              PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped" >
          
          <WrapPanel VerticalAlignment="Center">
-             <Image Name="Icon" Source="../../Assets/CubeToolsAppsExtensionsCompressed/None.ico" Height="30"/>
+             <Image Name="Icon" Height="30"/>
              <TextBlock Name="Name" Margin="5" VerticalAlignment="Center"/>
              <TextBlock Name="Size" Margin="5" VerticalAlignment="Center"/>
          </WrapPanel>
