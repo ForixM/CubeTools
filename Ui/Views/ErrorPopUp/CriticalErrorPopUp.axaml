@@ -2,6 +2,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="Ui.Views.ErrorPopUp.CriticalErrorPopUp"
         Width="400" Height="200"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+        Icon="{x:Static resource:ResourcesWindowIcons.ErrorWindow}"
         CanResize="False"
         Topmost="True"
         KeyDown="OnEscapePressed">
@@ -13,7 +15,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <Grid Grid.Column="0">
-                        <Image Name="ImageError" Source="../../Assets/CubeToolsIcons/CriticalError.ico" Height="100"/>
+                        <Image Name="ImageError" Source="{x:Static resource:ResourcesIcons.CriticalErrorIcon}" Height="100"/>
                 </Grid>
                 
                 <Grid Grid.Column="1">

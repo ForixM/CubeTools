@@ -1,11 +1,9 @@
-﻿using System;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Library.ManagerExceptions;
-using LibraryFTP;
-using Ui.Views.ErrorPopUp;
+using LibraryClient;
+using Ui.Views.Remote;
 
 namespace Ui.Views.Ftp
 {
@@ -47,7 +45,7 @@ namespace Ui.Views.Ftp
 
         private void OnConnexionClicked(object? sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrEmpty(_ip.Text) || String.IsNullOrEmpty(_user.Text) || string.IsNullOrEmpty(_mdp.Text) ||
+            if (string.IsNullOrEmpty(_ip.Text) || string.IsNullOrEmpty(_user.Text) || string.IsNullOrEmpty(_mdp.Text) ||
                 string.IsNullOrEmpty(_port.Text))
             {
                 if (string.IsNullOrEmpty(_ip.Text)) _ip.Watermark = "Missing information !";
@@ -64,14 +62,8 @@ namespace Ui.Views.Ftp
             }
             else
             {
-                MainWindowFTP windowFtp = new MainWindowFTP(new ClientFtp(_ip.Text+":"+_port.Text, _user.Text, _mdp.Text));
-                // windowFtp.Show();
-                if (windowFtp.IsVisible)
-                    Close();
-                else
-                {
-                    new NormalErrorPopUp(new ManagerException("Invalid Credentials", "Low-Critical", "CubeTools crashed", "Username or Password are incorrect")).Show();
-                }
+                // Initialize the connexion and the window
+                new MainWindowRemote(new ClientTransferProtocol(ClientType.FTP, _ip.Text + ":" + _port.Text, _user.Text, _mdp.Text)).Show();
             }
         }
     }

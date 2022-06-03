@@ -29,7 +29,7 @@ namespace ResourcesLoader
                     return ResourcesExtensionsCompressed.PyExtensionCompressed;
                 case "cs":
                     return ResourcesExtensionsCompressed.CsExtensionCompressed;
-                case "c++":
+                case "cpp":
                     return ResourcesExtensionsCompressed.CPlusPlusExtensionCompressed;
                 case "java":
                     return ResourcesExtensionsCompressed.JavaExtensionCompressed;

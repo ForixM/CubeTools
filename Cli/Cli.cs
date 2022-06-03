@@ -385,8 +385,7 @@ namespace Cli
         {
             try
             {
-                Directory.SetCurrentDirectory(dest);
-                _directoryPointer = new DirectoryPointerLoaded(Directory.GetCurrentDirectory());
+                _directoryPointer = new DirectoryPointerLoaded(Path.GetFullPath(dest).Replace("\\","/"));
             }
             catch (ManagerException e)
             {

@@ -28,6 +28,7 @@ namespace Library
         protected bool _isSizeLoaded;
 
         // Basics
+        public object Client;
         public string Path { get => _path; set => _path = value; }
         public string Name{ get => _name; set => _name = value; }
         public string Type { get => _type; set => _type = value; }

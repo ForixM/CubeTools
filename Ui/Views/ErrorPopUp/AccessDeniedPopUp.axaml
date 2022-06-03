@@ -5,6 +5,8 @@
         CanResize="False"
         Topmost="True"
         Title="Access is denied"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+        Icon="{x:Static resource:ResourcesWindowIcons.ErrorWindow}"
         KeyDown="OnEscapePressed">
         
         <Grid>
@@ -14,7 +16,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <Grid Grid.Column="0">
-                        <Image Name="ImageError" Source="../../Assets/CubeToolsIcons/Error.ico" Height="100"/>
+                        <Image Name="ImageError" Source="{x:Static resource:ResourcesIcons.ErrorIcon}" Height="100"/>
                 </Grid>
                 
                 <Grid Grid.Column="1">

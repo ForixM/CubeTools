@@ -77,5 +77,12 @@ namespace ResourcesLoader
                                                                  "Icons/Documents.ico");
         public static readonly IImage InfoIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                             "Icons/Info.ico");
+        public static readonly IImage CriticalErrorIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                            "Icons/CriticalError.ico");
+        public static readonly IImage ErrorIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                     "Icons/Error.ico");
+        public static readonly IImage WarningIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                             "Icons/Warning.ico");
+
     }
 }

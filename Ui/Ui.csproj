@@ -33,41 +33,14 @@
     <ItemGroup>
         <ProjectReference Include="..\Cli\Cli.csproj" />
         <ProjectReference Include="..\Extensions\LibraryCompression\LibraryCompression.csproj" />
-        <ProjectReference Include="..\Extensions\LibraryFTP\LibraryFTP.csproj" />
-        <ProjectReference Include="..\Extensions\LibraryGoogleDrive\LibraryGoogleDrive.csproj" />
-        <ProjectReference Include="..\Extensions\LibraryOneDrive\LibraryOnedrive.csproj" />
+        <ProjectReference Include="..\Extensions\LibraryClient\LibraryClient.csproj"/>
         <ProjectReference Include="..\InitLoader\InitLoader.csproj" />
         <ProjectReference Include="..\ResourcesLoader\ResourcesLoader.csproj" />
         <ProjectReference Include="..\Manager\Library\Library.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Views\ActionBar.axaml.cs">
-        <DependentUpon>ActionBar.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\PathsBar.axaml.cs">
-        <DependentUpon>PathsBar.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="Views\LinkBar.axaml.cs">
-        <DependentUpon>LinkBar.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="Views\NavigationBar.axaml.cs">
-        <DependentUpon>NavigationBar.axaml</DependentUpon>
-      </Compile>
-      <Compile Update="Views\PopUps\PropertiesPopUp.axaml.cs">
-        <DependentUpon>PropertiesPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\ErrorPopUp\ErrorPopUp.axaml.cs">
         <DependentUpon>ErrorPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\PopUps\LoadingPopUp.axaml.cs">
-        <DependentUpon>LoadingPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\PointerItem.axaml.cs">
-        <DependentUpon>PointerItem.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\PopUps\CreatePopUp.axaml.cs">
@@ -76,26 +49,6 @@
       </Compile>
       <Compile Update="Views\Ftp\LoginFTP.axaml.cs">
         <DependentUpon>LoginFTP.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Ftp\MainWindowFTP.axaml.cs">
-        <DependentUpon>MainWindowFTP.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Ftp\RemoteFTP.axaml.cs">
-        <DependentUpon>RemoteFTP.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Ftp\RemotePointer.axaml.cs">
-        <DependentUpon>RemotePointer.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Ftp\RemoteAction.axaml.cs">
-        <DependentUpon>RemoteActions.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Settings\SettingsWindow.axaml.cs">
-        <DependentUpon>Settingsok.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\Actions\CreateFolderPopUp.axaml.cs">
@@ -122,14 +75,6 @@
         <DependentUpon>SortPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Compression\CompressPopUp.axaml.cs">
-        <DependentUpon>CompressFolderPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Compression\ExtractPopUp.axaml.cs">
-        <DependentUpon>ExtractPopUp.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Remove="Views\PopUps\CreateFolderPopUp.axaml.cs" />
       <Compile Remove="Views\PopUps\DeletePopUp.axaml.cs" />
       <Compile Update="Views\Actions\DeleteMultiplePopUp.axaml.cs">
@@ -144,10 +89,6 @@
         <DependentUpon>NavigationBar.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Ftp\RemoteFTPNavigationBar.axaml.cs">
-        <DependentUpon>RemoteFTPNavigationBar.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\ErrorPopUp\NormalErrorPopUp.axaml.cs">
         <DependentUpon>NormalError.axaml</DependentUpon>
         <SubType>Code</SubType>
@@ -156,25 +97,202 @@
         <DependentUpon>CriticalErrorPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Local.axaml.cs">
+      <Compile Update="Views\Local\Local.axaml.cs">
         <DependentUpon>Local.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Settings\Generators\PackGenerator.axaml.cs">
-        <DependentUpon>PackGenerator.axaml</DependentUpon>
+      <Compile Update="Views\LocalView\LocalActionView.axaml.cs">
+        <DependentUpon>ActionBar.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Settings\Generators\FtpGenerator.axaml.cs">
-        <DependentUpon>FtpGenerator.axaml</DependentUpon>
+      <Compile Update="Views\LocalView\LocalNavigationView.axaml.cs">
+        <DependentUpon>NavigationBar.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Settings\Generators\SingleObject\FtpServerObject.axaml.cs">
-        <DependentUpon>FtpServerObject.axaml</DependentUpon>
+      <Compile Update="Views\LocalView\LocalPointer.axaml.cs">
+        <DependentUpon>PointerItem.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LocalView\LocalPointersView.axaml.cs">
+        <DependentUpon>PathsBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\AbstractActions\CreateFolderPopUp.axaml.cs">
+        <DependentUpon>CreateFolderPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\RemoteView\MainWindowRemote.axaml.cs">
+        <DependentUpon>MainWindowFTP.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\RemoteView\RemoteAction.axaml.cs">
+        <DependentUpon>RemoteAction.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\RemoteView\RemotePointers.axaml.cs">
+        <DependentUpon>RemoteFTP.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\RemoteView\RemoteNavigation.axaml.cs">
+        <DependentUpon>RemoteFTPNavigationBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\RemoteView\RemotePointer.axaml.cs">
+        <DependentUpon>RemotePointer.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\CreateFolderPopUp.axaml.cs">
+        <DependentUpon>CreateFolderPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\CreatePopUp.axaml.cs">
+        <DependentUpon>CreatePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeleteMultiplePopUp.axaml.cs">
+        <DependentUpon>DeleteMultiplePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeletePopUp.axaml.cs">
+        <DependentUpon>DeletePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\RenamePopUp.axaml.cs">
+        <DependentUpon>RenamePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\SearchPopUp.axaml.cs">
+        <DependentUpon>SearchPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\SortPopUp.axaml.cs">
+        <DependentUpon>SortPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\CreateFolderPopUp.axaml.cs">
+        <DependentUpon>CreateFolderPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\CreatePopUp.axaml.cs">
+        <DependentUpon>CreatePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeleteMultiplePopUp.axaml.cs">
+        <DependentUpon>DeleteMultiplePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeletePopUp.axaml.cs">
+        <DependentUpon>DeletePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\RenamePopUp.axaml.cs">
+        <DependentUpon>RenamePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\SearchPopUp.axaml.cs">
+        <DependentUpon>SearchPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\SortPopUp.axaml.cs">
+        <DependentUpon>SortPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\ActionBar.axaml.cs">
+        <DependentUpon>ActionBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\Local.axaml.cs">
+        <DependentUpon>Local.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\NavigationBar.axaml.cs">
+        <DependentUpon>NavigationBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\PathsBar.axaml.cs">
+        <DependentUpon>PathsBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\PointerItem.axaml.cs">
+        <DependentUpon>PointerItem.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\CreateFolderRemote.axaml.cs">
+        <DependentUpon>CreateFolder.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\CreateFileRemote.axaml.cs">
+        <DependentUpon>CreateFile.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\DeleteMultiple.axaml.cs">
+        <DependentUpon>DeleteMultiple.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\DeleteRemote.axaml.cs">
+        <DependentUpon>Delete.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\RenameRemote.axaml.cs">
+        <DependentUpon>Rename.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\CreateFolder.axaml.cs">
+        <DependentUpon>CreateFolder.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\CreateFile.axaml.cs">
+        <DependentUpon>CreateFile.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\DeleteMultiple.axaml.cs">
+        <DependentUpon>DeleteMultiple.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Delete.axaml.cs">
+        <DependentUpon>Delete.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Rename.axaml.cs">
+        <DependentUpon>Rename.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Search.axaml.cs">
+        <DependentUpon>Search.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Sort.axaml.cs">
+        <DependentUpon>Sort.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Compress.axaml.cs">
+        <DependentUpon>Compress.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Extract.axaml.cs">
+        <DependentUpon>Extract.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="ViewModels" />
+      <Folder Include="Clients" />
+      <Folder Include="Models" />
     </ItemGroup>
     <ItemGroup>
       <AvaloniaXaml Remove="Views\PopUps\DeletePopUp.axaml" />
@@ -182,5 +300,18 @@
     <ItemGroup>
       <UpToDateCheckInput Remove="Views\Extensions\OpenFile.axaml" />
       <UpToDateCheckInput Remove="Views\Extensions\SimplePointerItem.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow\Settings\Generators\ExtensionsGenerator.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow\Settings\Generators\FtpGenerator.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow\Settings\Generators\PackGenerator.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow\Settings\Generators\SingleObject\FtpServerObject.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow\Settings\SettingsWindow.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\CreateFolderPopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\CreatePopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\DeleteMultiplePopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\DeleteMultipleSelector.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\DeletePopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\RenamePopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\SearchPopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\SortPopUp.axaml" />
     </ItemGroup>
 </Project>

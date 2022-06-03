@@ -41,9 +41,6 @@ namespace Library.DirectoryPointer
         /// <exception cref="ManagerException">An error occured</exception>
         public DirectoryPointer(string path) : base(path)
         {
-            if (!Directory.Exists(path) || string.IsNullOrEmpty(path))
-                throw new PathNotFoundException(path + " could not be identified", "Directory Constructor");
-
             Type = "";
             try
             {

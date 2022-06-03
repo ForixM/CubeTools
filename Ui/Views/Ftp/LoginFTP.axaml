@@ -2,12 +2,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="200"
         Width="500" Height="200"
         CanResize="False"
         x:Class="Ui.Views.Ftp.LoginFTP"
         Title="Connect to server"
-        Icon="../../Assets/OLD/ftp.ico"
+        Icon="{x:Static resource:ResourcesWindowIcons.ErrorWindow}"
         KeyDown="OnEscapePressed">
         
         <Grid>
@@ -17,7 +18,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <Grid Grid.Column="0">
-                        <Image Source="../../Assets/CubeToolsIcons/Ftp.ico" Height="175" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Image Source="{x:Static resource:ResourcesIcons.FtpIcon}" Height="175" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
                 
                 <Grid Grid.Column="1">
@@ -29,20 +30,20 @@
                         </Grid.RowDefinitions>
                 
                         <Grid Grid.Row="0">
-                                <TextBox Name="Ip" Watermark="Enter IP" Margin="10"/>
+                                <TextBox Name="Ip" Text="127.0.0.1" Watermark="Enter IP" Margin="10"/>
                         </Grid>
                 
                         <Grid Grid.Row="1">
-                                <TextBox Name="User" Watermark="Enter User" Margin="10"/>
+                                <TextBox Name="User" Text="mateo" Watermark="Enter User" Margin="10"/>
                         </Grid>
                 
                         <Grid Grid.Row="2">
-                                <TextBox RevealPassword="False" PasswordChar="*" Name="Mdp" Watermark="Enter Password" Margin="10"/>
+                                <TextBox RevealPassword="False" Text="1234" PasswordChar="*" Name="Mdp" Watermark="Enter Password" Margin="10"/>
                         </Grid>
                 
                         <Grid Grid.Row="3">
                                 <StackPanel Orientation="Horizontal" Margin="10">
-                                        <TextBox Name="Port" Watermark="Port" />
+                                        <TextBox Text="21" Name="Port" Watermark="Port" />
                                         <Button Click="OnConnexionClicked" Content="Connect" Margin="45 0 0 0"/>
                                         <Button Click="OnCancelClick" Content="Cancel"/>
                                 </StackPanel>

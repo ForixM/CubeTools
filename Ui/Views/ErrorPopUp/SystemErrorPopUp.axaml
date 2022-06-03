@@ -1,9 +1,11 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
         x:Class="Ui.Views.ErrorPopUp.SystemErrorPopUp"
         Width="400" Height="200"
         CanResize="False"
         Topmost="True"
+        Icon="{x:Static resource:ResourcesWindowIcons.ErrorWindow}"
         Title="Critical system error"
         KeyDown="OnEscapePressed">
         
@@ -14,7 +16,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <Grid Grid.Column="0">
-                        <Image Name="ImageError" Source="../../Assets/CubeToolsIcons/CriticalError.ico" Height="100"/>
+                        <Image Name="ImageError" Source="{x:Static resource:ResourcesIcons.ErrorIcon}" Height="100"/>
                 </Grid>
                 
                 <Grid Grid.Column="1">

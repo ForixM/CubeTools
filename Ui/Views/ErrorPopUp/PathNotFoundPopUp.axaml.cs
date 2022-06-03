@@ -2,7 +2,6 @@
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Ui.Models;
 using Library.ManagerExceptions;
 
 namespace Ui.Views.ErrorPopUp

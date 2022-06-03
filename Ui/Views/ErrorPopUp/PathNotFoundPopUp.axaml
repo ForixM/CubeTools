@@ -6,6 +6,8 @@
         CanResize="False"
         Topmost="True"
         Title="Path not found"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+        Icon="{x:Static resource:ResourcesWindowIcons.ErrorWindow}"
         KeyDown="OnEscapePressed">
         
         <Grid>
@@ -15,7 +17,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <Grid Grid.Column="0">
-                        <Image Name="ImageError" Source="../../Assets/CubeToolsIcons/Error.ico" Height="100"/>
+                        <Image Source="{x:Static resource:ResourcesIcons.WarningIcon}" Height="100"/>
                 </Grid>
                 
                 <Grid Grid.Column="1">

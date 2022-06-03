@@ -26,11 +26,18 @@ namespace Library
         #region Rename
         
         /// <summary>
-        /// 
+        /// Rename the pointer
         /// </summary>
-        /// <param name="dest"></param>
-        /// <param name="overwrite"></param>
+        /// <param name="dest">the destination path</param>
+        /// <param name="overwrite">Whether it has to overwrite if dest already exists</param>
         public abstract void Rename(string dest, bool overwrite = false);
+
+        /// <summary>
+        /// Async version of <see cref="Rename"/>
+        /// </summary>
+        /// <param name="dest">the destination path</param>
+        /// <param name="overwrite">Whether it has to overwrite if dest already exists</param>
+        public virtual async Task RenameAsync(string dest, bool overwrite = false) => await Task.Run(() => Rename(dest, overwrite));
 
         #endregion
 

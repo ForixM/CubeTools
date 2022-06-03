@@ -1,0 +1,64 @@
+<UserControl 
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+	x:Class="Ui.Views.Local.NavigationBar">
+	
+	<!--Import for style-->
+	<UserControl.Styles>
+		<StyleInclude Source="/Styles/Styles.axaml"/>
+	</UserControl.Styles>
+	
+	<Border CornerRadius="8" BorderThickness="3" Height="47">
+
+		<StackPanel VerticalAlignment="Center">
+			<!-- Adding columns definitions -->
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="50" />
+					<ColumnDefinition Width="50" />
+					<ColumnDefinition Width="50" />
+					<ColumnDefinition Width="50" />
+					<ColumnDefinition/>
+					<ColumnDefinition Width="50" />
+				</Grid.ColumnDefinitions>
+
+				<!-- First column : Left Button -->
+				<Grid Grid.Column="0">
+					<Button Classes="TopBar" Name="LeftButton" Click="LeftArrowClick" ToolTip.Tip="Back">
+						<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.UndoCompressed}"/>
+					</Button>
+				</Grid>
+				<!--Second column : Right Button-->
+				<Grid Grid.Column="1">
+					<Button Classes="TopBar" Name="RightButton" Click="RightArrowClick" ToolTip.Tip="Forward">
+						<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.RedoCompressed}"/>
+					</Button>
+				</Grid>
+				<!--Third column : Up Button-->
+				<Grid Grid.Column="2">
+					<Button Classes="TopBar" Name="UpButton" Click="UpArrowClick" ToolTip.Tip="Up">
+						<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.UpCompressed}"/>
+					</Button>
+				</Grid>
+				<!--Fourth column : Refresh button-->
+				<Grid Grid.Column="3">
+					<Button Classes="TopBar" Name="SyncButton" Click="SyncClick" ToolTip.Tip="Refresh">
+						<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.RefreshCompressed}"/>
+					</Button>
+				</Grid>
+				<!-- Fifth column : Path bar-->
+				<Grid Grid.Column="4">
+					<Border CornerRadius="4" Background="White" Margin="0 1" >
+						<TextBox Name="CurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" />
+					</Border>
+				</Grid>
+				<Grid Grid.Column="5">
+					<Button Classes="TopBar" Name="SettingButton" Click="SettingsClick" ToolTip.Tip="Settings">
+						<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.SettingsCompressed}"/>
+					</Button>
+				</Grid>
+			</Grid>
+		</StackPanel>
+	</Border>
+</UserControl>

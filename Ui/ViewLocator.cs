@@ -1,7 +1,8 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Ui.Models;
+using Ui.Views.MainWindow;
+using Ui.Views.Remote;
 
 namespace Ui
 {
@@ -17,9 +18,6 @@ namespace Ui
             return new TextBlock {Text = "Not Found: " + name};
         }
 
-        public bool Match(object data)
-        {
-            return data is MainWindowModel;
-        }
+        public bool Match(object data) => data is MainWindow;
     }
 }

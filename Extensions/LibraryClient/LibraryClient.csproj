@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Manager\Library\Library.csproj" />
+      <ProjectReference Include="..\LibraryFTP\LibraryFTP.csproj" />
+      <ProjectReference Include="..\LibraryGoogleDrive\LibraryGoogleDrive.csproj" />
+      <ProjectReference Include="..\LibraryOneDrive\LibraryOnedrive.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -48,8 +48,6 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
         /// <exception cref="ManagerException">An error occured</exception>
         public DirectoryPointerLoaded(string path) : base(path)
         {
-            if (!Directory.Exists(path)) throw new PathNotFoundException(path + " could not be identified", "Directory Constructor");
-
             try
             {
                 Directory.SetCurrentDirectory(path);
@@ -64,15 +62,11 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
                         "Generate directory was impossible", "Directory Constructor")
                 };
             }
+            
             _childrenFiles = new List<Pointer>();
-            try
-            {
-                SetChildrenFiles();
-            }
-            catch (Exception e)
-            {
-                if (e is ManagerException) Console.WriteLine("# ManagerException occured");
-            }
+            SetChildrenFiles();
+
+            
             // Watcher
             _watcher = new FileSystemWatcher(path);
             _watcher.Changed += OnChanged;
@@ -106,7 +100,7 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
         }
 
         /// <summary>
-        ///     - Action : Remove every children in ChildrenFiles and set them
+        ///     - Action : Remove every children in ChildrenFiles and set them <br></br>
         ///     - Implementation : NOT Check
         /// </summary>
         /// <exception cref="AccessException">the data cannot be read</exception>
