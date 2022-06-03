@@ -1,0 +1,10 @@
+ <UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Ui.Views.Local.Actions.DeleteMultipleSelector">
+     
+     <WrapPanel VerticalAlignment="Center">
+         <CheckBox Name="CheckBox" Checked="OnCheckBoxChecked" Unchecked="OnCheckBoxUnchecked"/>
+         <TextBlock Name="Name" Margin="5" VerticalAlignment="Center"/>
+     </WrapPanel>
+     
+ </UserControl>

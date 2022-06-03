@@ -9,8 +9,8 @@ namespace Tests
 {
     public class DirectoryTests
     {
-        private static DirectoryType test;
-        private static DirectoryType test2;
+        private static DirectoryPointer test;
+        private static DirectoryPointer test2;
         private string path;
 
         [OneTimeSetUp]
@@ -24,12 +24,12 @@ namespace Tests
             Directory.SetCurrentDirectory(path);
             // Adding dir
             ManagerWriter.CreateDir(path + "test");
-            test = new DirectoryType(path + "test");
+            test = new DirectoryPointer(path + "test");
             test.AddFile("test", "txt"); // ft added
             test.AddFile("test2", "txt");
             // Adding an other dir
             ManagerWriter.CreateDir(path + "test2");
-            test2 = new DirectoryType(path + "test2");
+            test2 = new DirectoryPointer(path + "test2");
             test2.AddDir("test");
         }
 
@@ -43,7 +43,7 @@ namespace Tests
             var newPath = path + name;
             if (Directory.Exists(newPath))
             {
-                DirectoryType dir = new DirectoryType(newPath);
+                DirectoryPointer dir = new DirectoryPointer(newPath);
                 // Are Equal
                 Assert.AreEqual(dir.Name, name);
                 Assert.AreEqual(dir.Size, ManagerReader.GetFileSize(newPath));
@@ -55,7 +55,7 @@ namespace Tests
             }
             else
             {
-                DirectoryType dir = new DirectoryType(newPath);
+                DirectoryPointer dir = new DirectoryPointer(newPath);
                 Assert.AreEqual(null, dir.Path);
             }
         }

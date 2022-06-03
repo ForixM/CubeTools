@@ -1,0 +1,469 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**" />
+        <None Remove=".gitignore" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\c++.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\code.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\csharp.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\css.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\docx.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\exe.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\gitignore.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\html.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\java.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\jpg.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\key.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\mp3.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\mp4.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\None.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\numbers.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\pages.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\pdf.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\pptx.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\py.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\rar.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\txt.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\xlsx.ico" />
+        <None Include="bin\Debug\net6.0\Assets\ExtensionsCompressed\zip.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\c++.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\code.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\csharp.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\css.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\docx.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\exe.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\gitignore.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\html.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\java.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\jpg.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\key.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\mp3.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\mp4.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\None.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\numbers.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\pages.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\pdf.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\pptx.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\py.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\rar.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\txt.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\xslx.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Extensions\zip.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\AppleOS.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Compression.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Copy.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Create.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\CreateFolder.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\CubeTools.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\CubeToolsName.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Cut.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Delete.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Desktop.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Documents.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Download.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Downloads.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Drive.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Favorites.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\File.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Folder.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\FTP.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\GoogleDrive.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Images.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Link.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\LinuxOS.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Music.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\None.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\NoneFolder.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\OneDrive.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\OS.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Paste.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Redo.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Refresh.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Rename.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Search.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Settings.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Smash.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Snapdrop.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Sort.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Thispc.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Undo.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Up.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Upload.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Users.ico" />
+        <None Include="bin\Debug\net6.0\Assets\IconsCompressed\Video.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\AppCrashed.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\AppleOS.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Compression.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Copy.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Create.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\CreateFolder.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\CriticalError.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\CubeTools.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\CubeToolsName.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Cut.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Delete.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Desktop.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Documents.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Download.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Downloads.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Drive.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Error.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Favorites.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\File.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Folder.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\FolderCompressed.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Ftp.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Googledrive (2).ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\GoogleDrive.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Images.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Info.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Link.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\LinuxOS.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Music.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\nearbysend.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\None.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\NoneFolder.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\OneDrive.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\OS.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Paste.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Redo.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Refresh.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Rename.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Search.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Settings.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Smash.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Snapdrop.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Sort.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Thispc.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Undo.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Up.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Upload.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Users.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Video.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Icons\Warning.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\CompressWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\CreateFileWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\CreateFolderWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\DeleteWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\ErrorWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\FtpWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\MainWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\PropertiesWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\RenameWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\SearchWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\SettingsWindow.ico" />
+        <None Include="bin\Debug\net6.0\Assets\Window\SortWindow.ico" />
+    </ItemGroup>
+    <ItemGroup>
+        <AvaloniaResource Include="Fonts\Karla.ttf" />
+        <AvaloniaResource Include="Fonts\Poppins-Regular.ttf" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="0.10.13" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.13" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
+        <PackageReference Include="MessageBox.Avalonia" Version="1.7.1" />
+        <PackageReference Include="Syroot.Windows.IO.KnownFolders" Version="1.3.0" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Update="Fonts\Lato-Bold.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Fonts\NoticiaText-Bold.ttf">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Cli\Cli.csproj" />
+        <ProjectReference Include="..\Extensions\LibraryCompression\LibraryCompression.csproj" />
+        <ProjectReference Include="..\Extensions\LibraryClient\LibraryClient.csproj" />
+        <ProjectReference Include="..\InitLoader\InitLoader.csproj" />
+        <ProjectReference Include="..\ResourcesLoader\ResourcesLoader.csproj" />
+        <ProjectReference Include="..\Manager\Library\Library.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Views\ErrorPopUp\ErrorPopUp.axaml.cs">
+        <DependentUpon>ErrorPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PopUps\CreatePopUp.axaml.cs">
+        <DependentUpon>CreatePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Ftp\LoginFTP.axaml.cs">
+        <DependentUpon>LoginFTP.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\CreateFolderPopUp.axaml.cs">
+        <DependentUpon>CreateFolderPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\CreatePopUp.axaml.cs">
+        <DependentUpon>CreatePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\DeletePopUp.axaml.cs">
+        <DependentUpon>DeletePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\RenamePopUp.axaml.cs">
+        <DependentUpon>RenamePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\SearchPopUp.axaml.cs">
+        <DependentUpon>SearchPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\SortPopUp.axaml.cs">
+        <DependentUpon>SortPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Remove="Views\PopUps\CreateFolderPopUp.axaml.cs" />
+      <Compile Remove="Views\PopUps\DeletePopUp.axaml.cs" />
+      <Compile Update="Views\Actions\DeleteMultiplePopUp.axaml.cs">
+        <DependentUpon>DeleteMultiplePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Actions\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Ftp\LocalFTPNavigationBar.axaml.cs">
+        <DependentUpon>NavigationBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ErrorPopUp\NormalErrorPopUp.axaml.cs">
+        <DependentUpon>NormalError.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ErrorPopUp\CriticalErrorPopUp.axaml.cs">
+        <DependentUpon>CriticalErrorPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\Local.axaml.cs">
+        <DependentUpon>Local.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LocalView\LocalActionView.axaml.cs">
+        <DependentUpon>ActionBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LocalView\LocalNavigationView.axaml.cs">
+        <DependentUpon>NavigationBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LocalView\LocalPointer.axaml.cs">
+        <DependentUpon>PointerItem.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LocalView\LocalPointersView.axaml.cs">
+        <DependentUpon>PathsBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\AbstractActions\CreateFolderPopUp.axaml.cs">
+        <DependentUpon>CreateFolderPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\RemoteView\MainWindowRemote.axaml.cs">
+        <DependentUpon>MainWindowFTP.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\RemoteView\RemoteAction.axaml.cs">
+        <DependentUpon>RemoteAction.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\RemoteView\RemotePointers.axaml.cs">
+        <DependentUpon>RemoteFTP.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\RemoteView\RemoteNavigation.axaml.cs">
+        <DependentUpon>RemoteFTPNavigationBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\RemoteView\RemotePointer.axaml.cs">
+        <DependentUpon>RemotePointer.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\CreateFolderPopUp.axaml.cs">
+        <DependentUpon>CreateFolderPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\CreatePopUp.axaml.cs">
+        <DependentUpon>CreatePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeleteMultiplePopUp.axaml.cs">
+        <DependentUpon>DeleteMultiplePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeletePopUp.axaml.cs">
+        <DependentUpon>DeletePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\RenamePopUp.axaml.cs">
+        <DependentUpon>RenamePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\SearchPopUp.axaml.cs">
+        <DependentUpon>SearchPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\SortPopUp.axaml.cs">
+        <DependentUpon>SortPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\CreateFolderPopUp.axaml.cs">
+        <DependentUpon>CreateFolderPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\CreatePopUp.axaml.cs">
+        <DependentUpon>CreatePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeleteMultiplePopUp.axaml.cs">
+        <DependentUpon>DeleteMultiplePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\DeletePopUp.axaml.cs">
+        <DependentUpon>DeletePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\RenamePopUp.axaml.cs">
+        <DependentUpon>RenamePopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\SearchPopUp.axaml.cs">
+        <DependentUpon>SearchPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\ActionsPopUp\SortPopUp.axaml.cs">
+        <DependentUpon>SortPopUp.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\ActionBar.axaml.cs">
+        <DependentUpon>ActionBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\Local.axaml.cs">
+        <DependentUpon>Local.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\NavigationBar.axaml.cs">
+        <DependentUpon>NavigationBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\PathsBar.axaml.cs">
+        <DependentUpon>PathsBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Local\PointerItem.axaml.cs">
+        <DependentUpon>PointerItem.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\CreateFolderRemote.axaml.cs">
+        <DependentUpon>CreateFolder.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\CreateFileRemote.axaml.cs">
+        <DependentUpon>CreateFile.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\DeleteMultiple.axaml.cs">
+        <DependentUpon>DeleteMultiple.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\DeleteRemote.axaml.cs">
+        <DependentUpon>Delete.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\RenameRemote.axaml.cs">
+        <DependentUpon>Rename.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\CreateFolder.axaml.cs">
+        <DependentUpon>CreateFolder.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\CreateFile.axaml.cs">
+        <DependentUpon>CreateFile.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\DeleteMultiple.axaml.cs">
+        <DependentUpon>DeleteMultiple.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Delete.axaml.cs">
+        <DependentUpon>Delete.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Rename.axaml.cs">
+        <DependentUpon>Rename.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Search.axaml.cs">
+        <DependentUpon>Search.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Sort.axaml.cs">
+        <DependentUpon>Sort.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Compress.axaml.cs">
+        <DependentUpon>Compress.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Remote\Actions\Extract.axaml.cs">
+        <DependentUpon>Extract.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="bin\Debug\net6.0\Assets\dark" />
+      <Folder Include="bin\Debug\net6.0\Assets\default" />
+      <Folder Include="bin\Debug\net6.0\Assets\light" />
+      <Folder Include="Models" />
+    </ItemGroup>
+    <ItemGroup>
+      <AvaloniaXaml Remove="Views\PopUps\DeletePopUp.axaml" />
+    </ItemGroup>
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Extensions\OpenFile.axaml" />
+      <UpToDateCheckInput Remove="Views\Extensions\SimplePointerItem.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow\Settings\Generators\ExtensionsGenerator.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow\Settings\Generators\FtpGenerator.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow\Settings\Generators\PackGenerator.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow\Settings\Generators\SingleObject\FtpServerObject.axaml" />
+      <UpToDateCheckInput Remove="Views\MainWindow\Settings\SettingsWindow.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\CreateFolderPopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\CreatePopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\DeleteMultiplePopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\DeleteMultipleSelector.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\DeletePopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\RenamePopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\SearchPopUp.axaml" />
+      <UpToDateCheckInput Remove="Views\ActionsPopUp\SortPopUp.axaml" />
+    </ItemGroup>
+</Project>

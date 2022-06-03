@@ -1,0 +1,33 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Width="300" Height="100"
+        MinHeight="100" MinWidth="200"
+        CanResize="False"
+        x:Class="Ui.Views.Local.Actions.Search"
+        Title="Search"
+        Topmost="True"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+        Icon="{x:Static resource:ResourcesWindowIcons.SearchWindowIcon}"
+        KeyDown="OnKeyPressed"
+        WindowStartupLocation="CenterScreen">
+        
+        <Grid>
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid Grid.Column="0">
+                        <Image Source="{x:Static resource:ResourcesIcons.SearchIcon}" Margin="10"/>
+                </Grid>
+                
+                <Grid Grid.Column="1">
+                        <StackPanel Margin="10">
+                                <TextBox KeyDown="SearchEnter" Watermark="*.txt" Name="TextEntered"/>
+                                <Button HorizontalAlignment="Center" Margin="0 10 0 0" Content="Search" Click="SearchClick"/>
+                        </StackPanel>
+                </Grid>
+               
+        </Grid>
+        
+</Window>

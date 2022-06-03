@@ -1,64 +1,57 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Library.ManagerExceptions;
-using Library.Pointers;
 using Microsoft.VisualBasic.FileIO;
 
 namespace Library.ManagerWriter
 {
     public static partial class ManagerWriter
     {
-        // DELETED FUNCTIONS
+        // DELETE FUNCTIONS
 
         /// <summary>
         ///     - Low Level => Delete a file using its path if it exists <br></br>
         ///     - Action : Delete a file <br></br>
-        ///     - Specification : consider using <see cref="Delete(ref DirectoryType, FileType)"></see> for CubeTools UI/>
-        ///     <br></br>
-        ///     - Implementation : NOT Check
+        ///     - Implementation : NOT CHECK
         /// </summary>
         /// <param name="path">the path of the file</param>
         /// <exception cref="InUseException">The given path is already used</exception>
         /// <exception cref="AccessException">The given path could not be accessed</exception>
         /// <exception cref="ManagerException">An Error occurred</exception>
         /// <exception cref="PathNotFoundException">The given path does not exist</exception>
-        public static void Delete(string path)
+        public static void DeleteFile(string path)
         {
             if (!File.Exists(path))
                 throw new PathNotFoundException(path + " does not exist", "Delete");
             try
             {
-                FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin,
-                    UICancelOption.DoNothing);
+                FileSystem.DeleteFile(path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
             }
             catch (Exception e)
             {
-                if (e is IOException)
-                    throw new InUseException(path + " is used by another process", "Delete");
-                if (e is UnauthorizedAccessException)
-                    throw new AccessException(path + " access is denied", "Delete");
-                throw new ManagerException("Delete is impossible", "Medium", "Writer Error",
-                    path + " could not be deleted", "Delete");
+                throw e switch
+                {
+                    IOException => new InUseException(path + " is used by another process", "Delete"),
+                    UnauthorizedAccessException => new AccessException(path + " access is denied", "Delete"),
+                    _ => new ManagerException("Delete is impossible", "Medium", "Writer Error",
+                        path + " could not be deleted", "Delete")
+                };
             }
         }
 
         /// <summary>
-        ///     - High Level => Delete a file using its associated FileType <br></br>
+        ///     - High Level => Delete a file using its associated FilePointer <br></br>
         ///     - Action : Delete a file <br></br>
         ///     - Implementation : Check
         /// </summary>
-        /// <param name="ft">a fileType that is associated to a file</param>
+        /// <param name="filePointer">the file pointer that is associated to a file</param>
         /// <exception cref="InUseException">The given path is already used</exception>
         /// <exception cref="AccessException">The given path could not be accessed</exception>
         /// <exception cref="ManagerException">An Error occurred</exception>
         /// <exception cref="PathNotFoundException">The given path does not exist</exception>
-        public static void Delete(FileType ft)
+        public static void DeleteFile(FilePointer.FilePointer filePointer)
         {
-            if (!File.Exists(ft.Path))
-                throw new CorruptedPointerException(ft.Path + " does not exist anymore", "Delete");
-            Delete(ft.Path);
-            ft.Dispose();
+            if (!filePointer.Exist()) throw new CorruptedPointerException(filePointer.Path + " does not exist anymore", "Delete");
+            DeleteFile(filePointer.Path);
+            filePointer.Dispose();
         }
 
         /// <summary>
@@ -79,45 +72,54 @@ namespace Library.ManagerWriter
                 throw new PathNotFoundException(path + " does not exist", "DeleteDir");
             try
             {
-                if (recursive)
-                    FileSystem.DeleteDirectory(path, DeleteDirectoryOption.DeleteAllContents);
-                else
-                    FileSystem.DeleteDirectory(path, DeleteDirectoryOption.ThrowIfDirectoryNonEmpty);
+                FileSystem.DeleteDirectory(path,
+                    recursive
+                        ? DeleteDirectoryOption.DeleteAllContents
+                        : DeleteDirectoryOption.ThrowIfDirectoryNonEmpty);
             }
             catch (Exception e)
             {
-                if (e is IOException)
-                    throw new SystemErrorException("directory not empty or system blocked " + path, "DeleteDir");
-                if (e is UnauthorizedAccessException)
-                    throw new AccessException(path + " access denied", "DeleteDir");
-                throw new ManagerException("Impossible to Delete", "Medium", "Writer Error",
-                    path + " could not be deleted", "DeleteDir");
+                throw e switch
+                {
+                    IOException => new SystemErrorException("directory not empty or system blocked " + path,
+                        "DeleteDir"),
+                    UnauthorizedAccessException => new AccessException(path + " access denied", "DeleteDir"),
+                    _ => new ManagerException("Impossible to Delete", "Medium", "Writer Error",
+                        path + " could not be deleted", "DeleteDir")
+                };
             }
         }
 
         /// <summary>
         ///     - High Level : Delete a directory using its associated class <br></br>
-        ///     - Action : Delete a directory using its class, recursive variable indicate if all subdirectories has to be deleted
-        ///     <br></br>
+        ///     - Action : Delete a directory using its class, recursive variable indicate if all subdirectories has to be deleted <br></br>
         ///     - Implementation : Check
         /// </summary>
-        /// <param name="ft">the directory pointer</param>
+        /// <param name="directoryPointer">the directory pointer</param>
         /// <param name="recursive">whether all content inside the directory should be deleted</param>
         /// <exception cref="SystemErrorException">the system blocked app</exception>
         /// <exception cref="AccessException">Access has been denied</exception>
         /// <exception cref="ManagerException">An error occured</exception>
         /// <exception cref="PathNotFoundException">The given path does not exist</exception>
-        public static void DeleteDir(FileType ft, bool recursive = true)
+        public static void DeleteDir(DirectoryPointer.DirectoryPointer directoryPointer, bool recursive = true)
         {
-            DeleteDir(ft.Path, recursive);
-            ft.Dispose();
+            // Load the directoryPointer and delete content
+            var loaded = directoryPointer.LoadDirectoryPointer();
+            
+            // Depending on the type of folder, choose the best alternative
+            // Loaded contains sub-folders, recall recursive function
+            if (loaded.ChildrenFiles.Any(pointer => pointer is DirectoryPointer.DirectoryPointer)) DeleteDir(loaded.ChildrenFiles, recursive);
+            else DeleteDir(loaded.Path, recursive);
+            
+            // Dispose the pointer
+            directoryPointer.Dispose();
         }
 
         /// <summary>
         ///     - High Level : Delete directories <br></br>
         ///     - Action : Delete a directories using their classes, recursive variable indicate if all subdirectories / files have
         ///     to be deleted <br></br>
-        ///     - Implementation : Check
+        ///     - Implementation : CHECK
         /// </summary>
         /// <param name="ftList">the fileType list</param>
         /// <param name="recursive">if it has to suppress all sub-directories</param>
@@ -125,9 +127,37 @@ namespace Library.ManagerWriter
         /// <exception cref="AccessException">Access has been denied</exception>
         /// <exception cref="ManagerException">An error occured</exception>
         /// <exception cref="PathNotFoundException">One of the given pointers does not exist</exception>
-        public static void DeleteDir(List<FileType> ftList, bool recursive = true)
+        public static void DeleteDir(List<Pointer> ftList, bool recursive = true)
         {
-            foreach (var ft in ftList) DeleteDir(ft, recursive);
+            foreach (var pointer in ftList)
+            {
+                switch (pointer)
+                {
+                    case FilePointer.FilePointer filePointer:
+                        DeleteFile(filePointer);
+                        break;
+                    case DirectoryPointer.DirectoryPointer directoryPointer:
+                        DeleteDir(directoryPointer, recursive);
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        ///     - Type : High Level  <br></br>
+        ///     - Action : Delete a directory or a file <br></br>
+        ///     - Implementation : Check
+        /// </summary>
+        /// <param name="source">the data source</param>
+        /// <param name="recursive">whether all content inside the directory should be deleted</param>
+        /// <exception cref="SystemErrorException">the system blocked app</exception>
+        /// <exception cref="AccessException">Access has been denied</exception>
+        /// <exception cref="ManagerException">An error occured</exception>
+        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
+        public static void Delete(string source, bool recursive = false)
+        {
+            if (File.Exists(source)) DeleteFile(source);
+            else DeleteDir(source, recursive);
         }
     }
 }

@@ -1,24 +1,21 @@
 ﻿// System's import
 
-using System;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Security;
 using Library.ManagerExceptions;
-using Library.Pointers;
 
 // Library's imports
 
 namespace Library.ManagerReader
 {
     /// <summary>
-    ///     -- ManagerReader Class --<br></br>
+    ///     ############ ManagerReader Class #############<br></br>
     ///     * Purpose : Create all methods and scripts for reading and saving purpose. <br></br>
     ///     * Methods : Getter of Properties for files, Generating pointer using saver function, Basic algorithm for basic
     ///     treatment of strings and lists <br></br>
     ///     * Specifications : Low level and High level implementation have dependencies, you should read descriptions before
     ///     doing modifications. <br></br>
+    ///     #######################################
     /// </summary>
     public static partial class ManagerReader
     {
@@ -40,7 +37,7 @@ namespace Library.ManagerReader
             if (File.Exists(path))
                 try
                 {
-                    return new FileInfo(path).DirectoryName;
+                    return new FileInfo(path).DirectoryName!.Replace("\\","/");
                 }
                 catch (Exception e)
                 {
@@ -55,7 +52,7 @@ namespace Library.ManagerReader
                 {
                     var dir = new DirectoryInfo(path).Parent;
                     if (dir is null) return "";
-                    return dir.FullName;
+                    return dir.FullName.Replace("\\","/");
                 }
                 catch (Exception e)
                 {
@@ -72,23 +69,22 @@ namespace Library.ManagerReader
         ///     - Type : High Level <br></br>
         ///     -> <see cref="GetParent(string)" />
         /// </summary>
-        /// <param name="ft">the given path (pointer)</param>
+        /// <param name="pointer">the given path (pointer)</param>
         /// <returns>the parent string name</returns>
         /// <exception cref="AccessException">the path cannot be accessed</exception>
         /// <exception cref="PathNotFoundException">the file / folder does not exist</exception>
         /// <exception cref="CorruptedPointerException">The pointer is corrupted</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static string GetParent(FileType ft)
+        public static string GetParent(Pointer pointer)
         {
-            if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
-                throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
-                    "IsFileHidden");
-            return GetParent(ft.Path);
+            if (!File.Exists(pointer.Path) && !Directory.Exists(pointer.Path))
+                throw new CorruptedPointerException("pointer of file " + pointer.Path + " should be destroyed", "IsFileHidden");
+            return GetParent(pointer.Path);
         }
 
         /// <summary>
         ///     - Action : using Path class, it generates the root's path of a given path
-        ///     - Implementation : NOT CHECK
+        ///     - Implementation : CHECK
         /// </summary>
         /// <param name="path">The given path</param>
         /// <returns>Returns the root's path of the given path</returns>
@@ -97,7 +93,7 @@ namespace Library.ManagerReader
         {
             try
             {
-                return Path.GetPathRoot(path);
+                return Path.GetPathRoot(path)!;
             }
             catch (ArgumentException)
             {
@@ -108,7 +104,7 @@ namespace Library.ManagerReader
         /// <summary>
         ///     - Type : Low Level <br></br>
         ///     - Action : Get the date of creation with a given path <br></br>
-        ///     - Implementation : Check <br></br>
+        ///     - Implementation : CHECK <br></br>
         /// </summary>
         /// <param name="path">the file or directory</param>
         /// <returns>the creation date</returns>
@@ -150,24 +146,24 @@ namespace Library.ManagerReader
         ///     - Type : High Level <br></br>
         ///     -> <see cref="GetFileCreationDate(string)" />
         /// </summary>
-        /// <param name="ft">the file or directory (pointer)</param>
+        /// <param name="pointer">the file or directory (pointer)</param>
         /// <returns>the creation date</returns>
         /// <exception cref="AccessException">the path cannot be read</exception>
         /// <exception cref="PathNotFoundException">the path does not exist</exception>
         /// <exception cref="CorruptedPointerException">the pointer is corrupted</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static string GetFileCreationDate(FileType ft)
+        public static string GetFileCreationDate(Pointer pointer)
         {
-            if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
-                throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
+            if (!File.Exists(pointer.Path) && !Directory.Exists(pointer.Path))
+                throw new CorruptedPointerException("pointer of file " + pointer.Path + " should be destroyed",
                     "GetFileCreationDate");
-            return GetFileCreationDate(ft.Path);
+            return GetFileCreationDate(pointer.Path);
         }
 
         /// <summary>
-        ///     - Type : Low Level
+        ///     - Type : Low Level <br></br>
         ///     - Action : Get the date of last edition with a given path <br></br>
-        ///     - Implementation : Check <br></br>
+        ///     - Implementation : CHECK <br></br>
         /// </summary>
         /// <param name="path">the file or directory</param>
         /// <returns>the last edition date</returns>
@@ -206,21 +202,21 @@ namespace Library.ManagerReader
         }
 
         /// <summary>
-        ///     - Type : High Level
+        ///     - Type : High Level <br></br>
         ///     -> <see cref="GetFileCreationDate(string)" />
         /// </summary>
-        /// <param name="ft">the file or directory (pointer)</param>
+        /// <param name="pointer">the file or directory (pointer)</param>
         /// <returns>the last edition date</returns>
         /// <exception cref="AccessException">the path cannot be read</exception>
         /// <exception cref="PathNotFoundException">the path does not exist</exception>
         /// <exception cref="CorruptedPointerException">the pointer is corrupted</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static string GetFileLastEdition(FileType ft)
+        public static string GetFileLastEdition(Pointer pointer)
         {
-            if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
-                throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
+            if (!File.Exists(pointer.Path) && !Directory.Exists(pointer.Path))
+                throw new CorruptedPointerException("pointer of file " + pointer.Path + " should be destroyed",
                     "GetFileLastEdition");
-            return GetFileLastEdition(ft.Path);
+            return GetFileLastEdition(pointer.Path);
         }
 
         /// <summary>
@@ -268,24 +264,23 @@ namespace Library.ManagerReader
         ///     - Type : High Level <br></br>
         ///     -> <see cref="GetFileAccessDate(string)" />
         /// </summary>
-        /// <param name="ft">the file or directory (pointer)</param>
+        /// <param name="pointer">the file or directory (pointer)</param>
         /// <returns>the last access date</returns>
         /// <exception cref="AccessException">the path cannot be read</exception>
         /// <exception cref="PathNotFoundException">the path does not exist</exception>
         /// <exception cref="CorruptedPointerException">the pointer is corrupted</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static string GetFileAccessDate(FileType ft)
+        public static string GetFileAccessDate(Pointer pointer)
         {
-            if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
-                throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
-                    "GetFileAccessDate");
-            return GetFileAccessDate(ft.Path);
+            if (!pointer.Exist()) throw new CorruptedPointerException("pointer of file " + pointer.Path + " should be destroyed", "GetFileAccessDate");
+            return GetFileAccessDate(pointer.Path);
         }
 
         /// <summary>
         ///     - Type : Low Level <br></br>
         ///     - Action : Get the file size in byte <br></br>
-        ///     - Implementation : Check (prototype)
+        ///     - Implementation : CHECK <br></br>
+        ///     - Consider using the Pointer's method instead to increase performance
         /// </summary>
         /// <returns>the size of the file or directory</returns>
         /// <exception cref="AccessException">the path cannot be accessed</exception>
@@ -333,24 +328,19 @@ namespace Library.ManagerReader
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="CorruptedPointerException">the given pointer is corrupted</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static long GetFileSize(FileType ft)
+        public static long GetFileSize(Pointer pointer)
         {
-            if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
-                throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
-                    "GetFileSize");
-            return GetFileSize(ft.Path);
+            if (!pointer.Exist()) throw new CorruptedPointerException("pointer of file " + pointer.Path + " should be destroyed", "GetFileSize");
+            return GetFileSize(pointer.Path);
         }
         
         /// <summary>
         ///     - Type : Low Level <br></br>
         ///     - Action : Reformat an absolute path to the name of the file or dir <br></br>
-        ///     - Implementation : Check
+        ///     - Implementation : CHECK
         /// </summary>
         /// <returns>A string that represents the name of an absolute path</returns>
-        public static string GetPathToName(string path)
-        {
-            return Path.GetFileName(path);
-        }
+        public static string GetPathToName(string path) => Path.GetFileName(path);
 
         /// <summary>
         ///     - Type : High Level <br></br>
@@ -358,12 +348,12 @@ namespace Library.ManagerReader
         /// </summary>
         /// <returns>A string that represents the name of an absolute path</returns>
         /// <exception cref="CorruptedPointerException">The given pointer is corrupted</exception>
-        public static string GetPathToName(FileType ft)
+        public static string GetPathToName(Pointer pointer)
         {
-            if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
-                throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
+            if (pointer.Exist())
+                throw new CorruptedPointerException("pointer of file " + pointer.Path + " should be destroyed",
                     "GetPathToName");
-            return GetPathToName(ft.Path);
+            return GetPathToName(pointer.Path);
         }
 
         /// <summary>
@@ -372,10 +362,7 @@ namespace Library.ManagerReader
         ///     - Implementation : Check
         /// </summary>
         /// <returns>A string that represents the name of the file without its extension</returns>
-        public static string GetPathToNameNoExtension(string path)
-        {
-            return Path.GetFileNameWithoutExtension(path);
-        }
+        public static string GetPathToNameNoExtension(string path) => Path.GetFileNameWithoutExtension(path);
 
         /// <summary>
         ///     - Type : High Level <br></br>
@@ -383,12 +370,10 @@ namespace Library.ManagerReader
         /// </summary>
         /// <returns>A string that represents the name of the file without its extension</returns>
         /// <exception cref="CorruptedPointerException">the given pointer does not exist</exception>
-        public static string GetPathToNameNoExtension(FileType ft)
+        public static string GetPathToNameNoExtension(Pointer pointer)
         {
-            if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
-                throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
-                    "GetPathToNameNoExtension");
-            return GetPathToNameNoExtension(ft.Path);
+            if (!pointer.Exist()) throw new CorruptedPointerException("pointer of file " + pointer.Path + " should be destroyed", "GetPathToNameNoExtension");
+            return GetPathToNameNoExtension(pointer.Path);
         }
 
         /// <summary>
@@ -435,15 +420,15 @@ namespace Library.ManagerReader
         ///     - Type : High Level <br></br>
         ///     -> <see cref="GetFileExtension(string)" />
         /// </summary>
-        /// <param name="ft">the pointer that has to be identified</param>
+        /// <param name="pointer">the pointer that has to be identified</param>
         /// <returns>Extension of a file</returns>
         /// <exception cref="CorruptedPointerException">the given pointer is corrupted</exception>
-        public static string GetFileExtension(FileType ft)
+        public static string GetFileExtension(Pointer pointer)
         {
-            if (!File.Exists(ft.Path) && !Directory.Exists(ft.Path))
-                throw new CorruptedPointerException("pointer of file " + ft.Path + " should be destroyed",
+            if (!File.Exists(pointer.Path) && !Directory.Exists(pointer.Path))
+                throw new CorruptedPointerException("pointer of file " + pointer.Path + " should be destroyed",
                     "GetPathToNameNoExtension");
-            return GetFileExtension(ft.Path);
+            return GetFileExtension(pointer.Path);
         }
 
         /// <summary>

@@ -8,14 +8,14 @@ namespace Tests
 {
     public class WriterTests
     {
-        private DirectoryType env;
+        private DirectoryPointer env;
 
         [OneTimeSetUp]
         public void Setup()
         {
             ManagerWriter.CreateDir(
                 "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/Tests/Tests/WriterTests");
-            env = new DirectoryType("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/Tests/Tests/WriterTests");
+            env = new DirectoryPointer("C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/Tests/Tests/WriterTests");
             env.AddFile("attributes", "txt");
             // For Rename purposes
             env.AddFile("rename1(1)", "txt");
@@ -76,11 +76,11 @@ namespace Tests
         public void Rename3(string nameS, string nameD)
         {
             nameS = env.Path + '/' + nameS;
-            var ftS = new FileType(nameS);
+            var ftS = new FilePointer(nameS);
             nameD = env.Path + '/' + nameD;
             ManagerWriter.Rename(ftS, nameD);
             Assert.IsTrue(File.Exists(nameD) || Directory.Exists(nameD));
-            var ftD = new FileType(nameD);
+            var ftD = new FilePointer(nameD);
             ManagerWriter.Rename(ftD, nameS);
         }
 
@@ -93,7 +93,7 @@ namespace Tests
         public void Rename4(string nameS, string nameD, bool overwrite)
         {
             nameS = env.Path + '/' + nameS;
-            var ftS = new FileType(nameS);
+            var ftS = new FilePointer(nameS);
             nameD = env.Path + '/' + nameD;
             if (overwrite)
             {
@@ -105,7 +105,7 @@ namespace Tests
             {
                 ManagerWriter.Rename(ftS, nameD);
                 Assert.IsTrue(File.Exists(nameD) || Directory.Exists(nameD));
-                var ftD = new FileType(nameD);
+                var ftD = new FilePointer(nameD);
                 ManagerWriter.Rename(ftD, nameS);
             }
         }

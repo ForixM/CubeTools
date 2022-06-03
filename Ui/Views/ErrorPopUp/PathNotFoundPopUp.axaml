@@ -1,0 +1,50 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Ui.Views.ErrorPopUp.PathNotFoundPopUp"
+        Width="400" Height="200"
+        MinWidth="350" MinHeight="135"
+        CanResize="False"
+        Topmost="True"
+        Title="Path not found"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+        Icon="{x:Static resource:ResourcesWindowIcons.ErrorWindow}"
+        KeyDown="OnEscapePressed">
+        
+        <Grid>
+                <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid Grid.Column="0">
+                        <Image Source="{x:Static resource:ResourcesIcons.WarningIcon}" Height="100"/>
+                </Grid>
+                
+                <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                                <RowDefinition Height="45"/>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="60"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Grid Grid.Row="0">
+                                <TextBlock TextWrapping="Wrap" MaxLines="2" Text="Path could not be identified in your system" VerticalAlignment="Center" TextAlignment="Center" FontSize="14"/>
+                        </Grid>
+                        
+                        <Grid Grid.Row="1">
+                                <TextBlock TextWrapping="Wrap" MaxLines="3" Name="ContentError" VerticalAlignment="Center" TextAlignment="Center" FontSize="12" Foreground="#251A00"/>
+                        </Grid>
+                        
+                        <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto">
+            
+                                <Grid Grid.Column="0">
+                                        <Button Click="ButtonQuitClicked" Name="ButtonQuit" Content="Quit"/>
+                                </Grid>
+                        
+                                <Grid Grid.Column="1">
+                                        <Button Click="ButtonReloadClicked" Name="ButtonReload" Content="Reload"/>
+                                </Grid>
+                        </Grid>
+                </Grid>
+        </Grid>
+</Window>

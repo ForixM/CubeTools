@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+             x:Class="Ui.Views.Remote.RemoteAction">
+	
+	<UserControl.Styles>
+		<StyleInclude Source="/Styles/Styles.axaml"/>
+	</UserControl.Styles>
+	
+	<WrapPanel>
+		
+		<Button Classes="Manager" Name="AddFileButton" Click="CreateFile">
+			<Image Source="{x:Static resource:ResourcesIconsCompressed.CreateCompressed}"/>
+		</Button>
+		
+		<Button Classes="Manager" Name="AddDirButton" Click="CreatDir">
+			<Image Source="{x:Static resource:ResourcesIconsCompressed.CreateFolderCompressed}"/>
+		</Button>
+		
+		<Button Classes="Manager" Name="RenameButton" Click="Rename">
+			<Image Source="{x:Static resource:ResourcesIconsCompressed.RenameCompressed}"/>
+		</Button>
+		
+		<Button Classes="Manager" Name="DeleteButton" Click="Delete">
+			<Image Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
+		</Button>
+		
+		<Button Classes="Manager" Name="DownloadButton" Click="Download">
+			<Image Source="{x:Static resource:ResourcesIconsCompressed.DownloadCompressed}"/>
+		</Button>
+		
+	</WrapPanel>
+</UserControl>

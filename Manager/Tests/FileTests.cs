@@ -7,14 +7,14 @@ namespace Tests
 {
     public class FileTests
     {
-        private DirectoryType env;
+        private DirectoryPointer env;
 
         [SetUp]
         public void Setup()
         {
             Directory.CreateDirectory(
                 "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/Tests/Tests/FileTests/");
-            env = new DirectoryType(
+            env = new DirectoryPointer(
                 "C:/Users/mateo/OneDrive/Documents/GitHub/CubeTools/Tests/Tests/FileTests/");
             Directory.SetCurrentDirectory(env.Path);
             env.AddFile("init", "txt");
@@ -24,7 +24,7 @@ namespace Tests
         [Test]
         public void FileTypeConstructor()
         {
-            var ft = new FileType();
+            var ft = new FilePointer();
             Assert.AreEqual(ft.Path, "");
             Assert.AreEqual(ft.Name, "");
             Assert.AreEqual(ft.Type, "");
@@ -46,10 +46,10 @@ namespace Tests
         public void Init(string filename, bool exist)
         {
             filename = env.Path + filename;
-            var ft = new FileType(filename);
+            var ft = new FilePointer(filename);
             ManagerReader.ReadFileType(ref ft);
             if (!exist)
-                Assert.AreEqual(true, ft == FileType.NullPointer);
+                Assert.AreEqual(true, ft == FilePointer.NullPointer);
             else
                 Assert.AreEqual(true, ft == env.GetChild(ft.Name));
         }

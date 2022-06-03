@@ -1,8 +1,5 @@
-using System;
-using System.IO;
 using System.Security;
 using Library.ManagerExceptions;
-using Library.Pointers;
 
 namespace Library.ManagerWriter
 {
@@ -104,7 +101,7 @@ namespace Library.ManagerWriter
 
         /// <summary>
         ///     - Action : Add an attribute to a directory given with a directoryInfo
-        ///     - Implementation : NOT Check
+        ///     - Implementation : Check
         /// </summary>
         /// <param name="di">the directory that has to be modified</param>
         /// <param name="attribute">the attribute that has to be added</param>
@@ -189,10 +186,7 @@ namespace Library.ManagerWriter
         /// <exception cref="DiskNotReadyException">the disk is refreshing</exception>
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static void SetAttributes(FileType ft, bool set, FileAttributes fa)
-        {
-            SetAttributes(ft.Path, set, fa);
-        }
+        public static void SetAttributes(Pointer ft, bool set, FileAttributes fa) => SetAttributes(ft.Path, set, fa);
 
         #endregion
     }

@@ -33,8 +33,7 @@ namespace LogErrors
                 time = time.Trim(new []{'A', 'M', 'P'});
                 foreach (var c in Path.GetInvalidPathChars())
                 {
-                    if (time.Contains(c))
-                        time = time.Replace(c, ' ');
+                    if (time.Contains(c)) time = time.Replace(c, ' ');
                 }
                 FilePath = LogPath + '/' + time + ".txt";
             }

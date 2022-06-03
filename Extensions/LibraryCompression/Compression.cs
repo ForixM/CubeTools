@@ -1,8 +1,7 @@
-﻿// System
-
+﻿using Library;
+using Library.DirectoryPointer;
+using Library.FilePointer;
 using Library.ManagerReader;
-using Library.Pointers;
-// External libraries
 using SevenZip;
 
 namespace LibraryCompression
@@ -16,12 +15,9 @@ namespace LibraryCompression
         /// </summary>
         public static void Init()
         {
-            if (ConfigLoader.ConfigLoader.Settings.AppPath is "" or ".")
-                SevenZipBase.SetLibraryPath("7z.dll");
-            else if (ConfigLoader.ConfigLoader.Settings.AppPath![^1] == '/')
-                SevenZipBase.SetLibraryPath(ConfigLoader.ConfigLoader.Settings.AppPath + "7z.dll");
-            else 
-                SevenZipBase.SetLibraryPath(ConfigLoader.ConfigLoader.Settings.AppPath + "/7z.dll");
+            if (ConfigLoader.ConfigLoader.Settings.AppPath is "" or ".") SevenZipBase.SetLibraryPath("7z.dll");
+            else if (ConfigLoader.ConfigLoader.Settings.AppPath![^1] == '/') SevenZipBase.SetLibraryPath(ConfigLoader.ConfigLoader.Settings.AppPath + "7z.dll");
+            else SevenZipBase.SetLibraryPath(ConfigLoader.ConfigLoader.Settings.AppPath + "/7z.dll");
 
             Console.WriteLine(SevenZipBase.CurrentLibraryFeatures);
             _initialized = true;
@@ -36,7 +32,7 @@ namespace LibraryCompression
         /// <param name="compressingEvent">Optional method parameter to track compression progression</param>
         /// <param name="finishedEvent">Optional method parameter called when compression have finished</param>
         /// <returns>Compression Task which is async and already ran</returns>
-        public static Task CompressDirectory(FileType directory, OutArchiveFormat archiveFormat,
+        public static Task CompressDirectory(DirectoryPointer directory, OutArchiveFormat archiveFormat,
             Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
         {
             if (!_initialized)
@@ -67,8 +63,8 @@ namespace LibraryCompression
         /// <param name="compressingEvent">Optional method parameter to track compression progression</param>
         /// <param name="finishedEvent">Optional method parameter called when compression have finished</param>
         /// <returns>Compression Task which is async and already ran</returns>
-        public static Task CompressDirectory(FileType directory, string dest = "", OutArchiveFormat archiveFormat = OutArchiveFormat.SevenZip,
-            Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
+        public static Task CompressDirectory(DirectoryPointer directory, string dest = "", OutArchiveFormat archiveFormat = OutArchiveFormat.SevenZip,
+            Action<object, ProgressEventArgs>? compressingEvent = null, Action<object, EventArgs>? finishedEvent = null)
         {
             if (!_initialized)
                 throw new SystemException("Compression haven't been initialized");
@@ -79,8 +75,8 @@ namespace LibraryCompression
                 ScanOnlyWritable = true
             };
             // Adding parameters
-            if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
-            if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent);
+            if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent!);
+            if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent!);
             compressor.CustomParameters.Add("mt", "on");
             // Return compressor
             return compressor.CompressDirectoryAsync(directory.Path, dest);
@@ -90,36 +86,34 @@ namespace LibraryCompression
         ///     Compress the given files table into an archive file with the same name that the parent directory of the
         ///     first file in the table
         /// </summary>
-        /// <param name="files">The FileType table to compress</param>
+        /// <param name="files">The FilePointer table to compress</param>
         /// <param name="archiveFormat">Compression algorithm to use. Only ZIP and SevenZip are supported</param>
         /// <param name="compressingEvent">Optional method parameter to track compression progression</param>
         /// <param name="finishedEvent">Optional method parameter called when compression have finished</param>
         /// <returns>Compression Task which is async and already ran</returns>
-        public static Task CompressFiles(FileType[] files, OutArchiveFormat archiveFormat,
-            Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
-        {
-            return CompressFiles(files, files[0].Path, archiveFormat, compressingEvent, finishedEvent);
-        }
+        public static Task CompressFiles(FilePointer[] files, OutArchiveFormat archiveFormat,
+            Action<object, ProgressEventArgs>? compressingEvent = null, Action<object, EventArgs>? finishedEvent = null)
+         => CompressFiles(files, files[0].Path, archiveFormat, compressingEvent, finishedEvent);
 
         /// <summary>
         ///     Compress the given files table into the given archive destination
         /// </summary>
-        /// <param name="files">The FileType table to compress</param>
+        /// <param name="files">The FilePointer table to compress</param>
         /// <param name="dest">The archive destination where all files will be compressed</param>
         /// <param name="archiveFormat">Compression algorithm to use. Only ZIP and SevenZip are supported</param>
         /// <param name="compressingEvent">Optional method parameter to track compression progression</param>
         /// <param name="finishedEvent">Optional method parameter called when compression have finished</param>
         /// <returns>Compression Task which is async and already ran</returns>
-        public static Task CompressFiles(FileType[] files, string dest, OutArchiveFormat archiveFormat,
-            Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
+        public static Task CompressFiles(FilePointer[] files, string dest, OutArchiveFormat archiveFormat,
+            Action<object, ProgressEventArgs>? compressingEvent = null, Action<object, EventArgs>? finishedEvent = null)
         {
             if (!_initialized)
                 throw new SystemException("Compression haven't been initialized");
             // Initialized compressor
             var compressor = new SevenZipCompressor();
             // Adding parameters
-            if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
-            if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent);
+            if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent!);
+            if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent!);
             compressor.ArchiveFormat = archiveFormat;
             compressor.CustomParameters.Add("mt", "on");
             compressor.ScanOnlyWritable = true;
@@ -129,11 +123,12 @@ namespace LibraryCompression
             return compressor.CompressFilesAsync(dest, filePaths);
         }
 
-        public static Task CompressItems(List<FileType> directories, string dest, OutArchiveFormat archiveFormat,
-            Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
+        public static Task CompressItems(List<Pointer> directories, string dest, OutArchiveFormat archiveFormat,
+            Action<object, ProgressEventArgs>? compressingEvent = null, Action<object, EventArgs>? finishedEvent = null)
         {
             if (!_initialized)
                 throw new SystemException("Compression haven't been initialized");
+            
             // Initialized compressor
             var compressor = new SevenZipCompressor()
             {
@@ -142,20 +137,18 @@ namespace LibraryCompression
                 DirectoryStructure = true,
                 PreserveDirectoryRoot = false
             };
+            
             // Adding parameters
-            if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent);
-            if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent);
+            if (compressingEvent != null) compressor.Compressing += new EventHandler<ProgressEventArgs>(compressingEvent!);
+            if (finishedEvent != null) compressor.CompressionFinished += new EventHandler<EventArgs>(finishedEvent!);
             compressor.CustomParameters.Add("mt", "on");
+            
             // Adding files path
             Dictionary<string, string> files = new Dictionary<string, string>();
-            foreach (FileType item in directories)
+            foreach (Pointer item in directories)
             {
-                if (item.IsDir)
-                {
-                    DictionarizeFolder(files, item.Path, ManagerReader.GetParent(item.Path));
-                }
-                else
-                    files.Add(item.Name, item.Path);
+                if (item.IsDir) DictionarizeFolder(files, item.Path, ManagerReader.GetParent(item.Path));
+                else files.Add(item.Name, item.Path);
             }
 
             return new Task(() => compressor.CompressFileDictionary(files, dest));
@@ -182,8 +175,8 @@ namespace LibraryCompression
         /// <param name="compressingEvent">Optional method parameter to track extraction progression</param>
         /// <param name="finishedEvent">Optional method parameter called when extraction have finished</param>
         /// <returns>Extraction Task which is async and already ran</returns>
-        public static Task Extract(FileType archive, Action<object, ProgressEventArgs> compressingEvent = null,
-            Action<object, EventArgs> finishedEvent = null)
+        public static Task Extract(Pointer archive, Action<object, ProgressEventArgs>? compressingEvent = null,
+            Action<object, EventArgs>? finishedEvent = null)
         {
             var dest = archive.Path;
             while (dest[^1] != '.') dest = dest.Remove(dest.Length - 1, 1);
@@ -202,7 +195,7 @@ namespace LibraryCompression
         /// <param name="compressingEvent">Optional method parameter to track extraction progression</param>
         /// <param name="finishedEvent">Optional method parameter called when extraction have finished</param>
         /// <returns>Extraction Task which is async and already ran</returns>
-        public static Task Extract(FileType archive, string destination,
+        public static Task Extract(Pointer archive, string destination,
             Action<object, ProgressEventArgs> compressingEvent = null, Action<object, EventArgs> finishedEvent = null)
         {
             destination = destination.Replace("/", @"\");

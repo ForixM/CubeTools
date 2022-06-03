@@ -1,0 +1,128 @@
+ <UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Ui.Views.Local.ActionBar"
+             xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader">
+	
+	<UserControl.Styles>
+		<StyleInclude Source="/Styles/Styles.axaml"/>
+	</UserControl.Styles>
+	 
+	 <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45"/>
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45" />
+			<ColumnDefinition Width="45"/>
+			<ColumnDefinition Width="45"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="45"/>
+			<ColumnDefinition Width="45"/>
+			<ColumnDefinition Width="45"/>
+			<ColumnDefinition Width="45"/>
+			<ColumnDefinition Width="3"/>
+		</Grid.ColumnDefinitions>
+
+		<!-- First column : Creation-->
+		<Grid Grid.Column="0">
+			<Button Classes="Manager" Name="AddFileButton" Click="CreateFile" ToolTip.Tip="Create File">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.CreateCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<Grid Grid.Column="1">
+			<Button Classes="Manager" Name="AddDirButton" Click="CreatDir" ToolTip.Tip="Create folder">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.CreateFolderCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Second column : Copy function-->
+		<Grid Grid.Column="2">
+			<Button Classes="Manager" Name="CopyButton" Click="Copy" ToolTip.Tip="Copy">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.CopyCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Third column : Cut Button -->
+		<Grid Grid.Column="3">
+			<Button Classes="Manager" Name="CutButton" Click="Cut" ToolTip.Tip="Cut">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.CutCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Fourth column : Paste button -->
+		<Grid Grid.Column="4">
+			<Button Classes="Manager" Name="PasteButton" Click="Paste" ToolTip.Tip="Paste">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.PasteCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Fifth column : Rename button -->
+		<Grid Grid.Column="5">
+			<Button Classes="Manager" Name="RenameButton" Click="Rename" ToolTip.Tip="Rename">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.RenameCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- -->
+		<Grid Grid.Column="6">
+			<Button Classes="Manager" Name="CompressButton" Click="Compression" ToolTip.Tip="Compress">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.CompressionCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Sixth column : Delete button -->
+		<Grid Grid.Column="7">
+			<Button Classes="Manager" Name="DeleteButton" Click="Delete" ToolTip.Tip="Delete">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		
+		<!-- Sort Button-->
+		<Grid Grid.Column="9">
+			<Button Classes="Manager" Name="SortButton" Click="Sort" ToolTip.Tip="Sort">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.SortCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!--  Search button -->
+		<Grid Grid.Column="10">
+			<Button Classes="Manager" Name="SearchButton" Click="Search" ToolTip.Tip="Search">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.SearchCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Snapdrop button -->
+		<Grid Grid.Column="11">
+			<Button Classes="Manager" Name="SnapdropButton" Click="Snap" ToolTip.Tip="SnapDrop">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.SnapDropCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+		<!-- Smash button -->
+		<Grid Grid.Column="12">
+			<Button Classes="Manager" Name="SmashButton" Click="Smash" ToolTip.Tip="Smash">
+				<StackPanel>
+					<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.SmashCompressed}"/>
+				</StackPanel>
+			</Button>
+		</Grid>
+	 </Grid>
+</UserControl>
