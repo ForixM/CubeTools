@@ -1,24 +1,26 @@
-﻿using Google.Apis.Drive.v3;
+﻿using System;
+using System.Collections.Generic;
+using Google.Apis.Drive.v3;
 
 namespace LibraryClient.LibraryGoogleDrive
 {
     public static class FileReader
     {
-        public static string GetFolderId(string FolderName)
+        public static string GetFolderId(string FolderName, string Parent)
         {
             var service = OAuth.GetDriveService();
 
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.PageSize = 10;
-            listRequest.Q = $"mimeType = 'application/vnd.google-apps.folder' and name = '{FolderName}'";
-            listRequest.Fields = "nextPageToken, files(id, name)";
+            listRequest.Q = $"mimeType = 'application/vnd.google-apps.folder' and name = '{FolderName}' and {Parent}' in parents";
+            listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
 
             IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
                 .Files;
 
                 if (files.Count == 0)
                 {
-                    throw new Exception("Folder with doesn't exist");
+                    return null;
                 }
 
                 return files[0].Id;
@@ -30,24 +32,15 @@ namespace LibraryClient.LibraryGoogleDrive
 
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.PageSize = 10;
-
-            if (Parent == "")
-            {
-                listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}'";
-            }
-            else
-            {
-                listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}' and '{Parent}' in parents";
-            }
-
-            listRequest.Fields = "nextPageToken, files(id, name)";
+            listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}' and '{Parent}' in parents";
+            listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
 
             IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
                 .Files;
 
             if (files.Count == 0)
             {
-                throw new Exception("File with doesn't exist");
+                return null;
             }
 
             return files[0].Id;
@@ -75,25 +68,117 @@ namespace LibraryClient.LibraryGoogleDrive
             return fileproperties;
         }
         
-        public static void ListFileAndFolder(string folderID)
+        public static List<Google.Apis.Drive.v3.Data.File> ListFileAndFolder(string folderID)
         {
             var service = OAuth.GetDriveService();
 
             FilesResource.ListRequest listRequest = service.Files.List();
-            listRequest.PageSize = 100;
-            listRequest.Fields = "nextPageToken, files(id, name)";
+            listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
             listRequest.Q = $"'{folderID}' in parents";
 
-            // List files.
-            IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
-                .Files;
-            Console.WriteLine("Files:");
-            if (files != null && files.Count > 0)
-                foreach (var file in files)
-                    Console.WriteLine("{0} ({1})", file.Name, file.Id);
-            else
-                Console.WriteLine("No files found.");
-            Console.Read();
+            var list = new List<Google.Apis.Drive.v3.Data.File>();
+            string pageToken = null;
+            do
+            {
+                listRequest.PageToken = pageToken;
+                var result = listRequest.Execute();
+                var files = result.Files;
+                pageToken = result.NextPageToken;
+                list.AddRange(files);
+            } while (pageToken != null);
+
+            return list;
+        }
+        
+        public static List<Google.Apis.Drive.v3.Data.File> ListFile(string folderID)
+        {
+            var service = OAuth.GetDriveService();
+
+            FilesResource.ListRequest listRequest = service.Files.List();
+            listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
+            listRequest.Q = $"mimeType!='application/vnd.google-apps.folder' and '{folderID}' in parents";
+
+            var list = new List<Google.Apis.Drive.v3.Data.File>();
+            string pageToken = null;
+            do
+            {
+                listRequest.PageToken = pageToken;
+                var result = listRequest.Execute();
+                var files = result.Files;
+                pageToken = result.NextPageToken;
+                list.AddRange(files);
+            } while (pageToken != null);
+
+            return list;
+        }
+        
+        public static List<Google.Apis.Drive.v3.Data.File> ListFolder(string folderID)
+        {
+            var service = OAuth.GetDriveService();
+
+            FilesResource.ListRequest listRequest = service.Files.List();
+            listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
+            listRequest.Q = $"mimeType=='application/vnd.google-apps.folder' and '{folderID}' in parents";
+
+            var list = new List<Google.Apis.Drive.v3.Data.File>();
+            string pageToken = null;
+            do
+            {
+                listRequest.PageToken = pageToken;
+                var result = listRequest.Execute();
+                var files = result.Files;
+                pageToken = result.NextPageToken;
+                list.AddRange(files);
+            } while (pageToken != null);
+
+            return list;
+        }
+
+        public static string GetFileIdFromPath(string path)
+        {
+            string[] pathList = path.Split('/');
+
+            string parent = "root";
+            
+            for (int i = 0; i < pathList.Length - 1; i++)
+            {
+                parent = GetFolderId(pathList[i], parent);
+            }
+
+            return GetFileId(pathList[^1], parent);
+        }
+
+        public static string GetFileName(string fileId)
+        {
+            var Service = OAuth.GetDriveService();
+            var DriveFile = Service.Files.Get(fileId).Execute();
+
+            return DriveFile.Name;
+        }
+        
+        public static string GetFileType(string fileId)
+        {
+            var Service = OAuth.GetDriveService();
+            var DriveFile = Service.Files.Get(fileId).Execute();
+
+            return DriveFile.MimeType;
+        }
+        
+        
+        public static string GetFileDescription(string fileId)
+        {
+            var Service = OAuth.GetDriveService();
+            var DriveFile = Service.Files.Get(fileId).Execute();
+
+            return DriveFile.Description;
+        }
+        
+        public static string GetFileKind(string fileId)
+        {
+            var Service = OAuth.GetDriveService();
+            var DriveFile = Service.Files.Get(fileId).Execute();
+
+            return DriveFile.Kind;
         }
     }
 }
