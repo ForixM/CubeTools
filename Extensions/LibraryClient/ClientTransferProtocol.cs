@@ -14,6 +14,7 @@ namespace LibraryClient
         public ClientTransferProtocol(ClientType type, string host, string username, string password) : base(type)
         {
             _clientFtp = new ClientFtp(host, username, password);
+            CurrentFolder = FtpFolder.ROOT;
         }
         
         #region Configuration
@@ -57,8 +58,8 @@ namespace LibraryClient
         public override void Refresh()
         {
             Children.Clear();
-            if (CurrentFolder is null) return;
-            foreach (var item in _clientFtp.ListDirectory( (FtpFolder)CurrentFolder).Items) Children.Add(item);
+            // if (CurrentFolder is null) return;
+            foreach (var item in _clientFtp.ListDirectory((FtpFolder)CurrentFolder).Items) Children.Add(item);
         }
 
         public override bool ItemExist(RemoteItem folder, RemoteItem item) => _clientFtp.ItemExist((FtpFolder) folder, (IFtpItem) item);
