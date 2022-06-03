@@ -10,7 +10,7 @@ namespace ResourcesLoader
                                                                   "ExtensionsCompressed/jpg.ico");
 
         public static readonly IImage TextExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                 "ExtensionsCompressed/pages.ico");
+                                                                 "ExtensionsCompressed/txt.ico");
 
         public static readonly IImage ExeExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                 "ExtensionsCompressed/exe.ico");
