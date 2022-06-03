@@ -9,10 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Extensions\LibraryFTP\LibraryFTP.csproj" />
-        <ProjectReference Include="..\Extensions\LibraryGoogleDrive\LibraryGoogleDrive.csproj" />
+        <ProjectReference Include="..\Extensions\LibraryClient\LibraryClient.csproj" />
         <ProjectReference Include="..\Manager\Library\Library.csproj" />
-        <ProjectReference Include="..\Extensions\LibraryOnedrive\LibraryOnedrive.csproj" />
     </ItemGroup>
 
     <ItemGroup>

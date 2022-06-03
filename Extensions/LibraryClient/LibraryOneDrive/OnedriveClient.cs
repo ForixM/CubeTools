@@ -4,9 +4,10 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Web;
+using HeyRed.Mime;
 using Library;
 using Library.FilePointer;
-using MimeTypes;
+using static LibraryClient.MimeTypes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -142,7 +143,7 @@ namespace LibraryClient.LibraryOneDrive
             HttpResponseMessage response = await _client.PutAsync(
                 _api + path + "/" + Path.GetFileName(file.Path) + ":/content?access_token=" + token.access_token,
                 new StringContent(System.IO.File.ReadAllText(file.Path), Encoding.UTF8,
-                    MimeTypeMap.GetMimeType(file.Path)));
+                    MimeTypesMap.GetMimeType(file.Path)));
             uploadFinished?.Invoke(this, (int)response.StatusCode == 201);
             return (int) response.StatusCode == 201;
         }
@@ -155,7 +156,7 @@ namespace LibraryClient.LibraryOneDrive
                                                                             ":/content?access_token=" +
                                                                             token.access_token);
             request.Method = "PUT";
-            request.ContentType = MimeTypeMap.GetMimeType(file.Path);
+            request.ContentType = MimeTypesMap.GetMimeType(file.Path);
             request.AllowWriteStreamBuffering = false;
             Stream fileStream = new FileStream(file.Path, FileMode.Open);
             request.ContentLength = fileStream.Length;
