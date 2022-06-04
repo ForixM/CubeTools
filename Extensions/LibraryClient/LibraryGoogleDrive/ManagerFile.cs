@@ -53,7 +53,7 @@ namespace LibraryClient.LibraryGoogleDrive
             return request.ResponseBody.Id;
         }
 
-        public static void DownloadFile(string fileName)
+        public static MemoryStream DownloadFile(string fileName)
         {
             var Service = OAuth.GetDriveService();
             var fileId = FileReader.GetFileId(fileName);
@@ -61,7 +61,7 @@ namespace LibraryClient.LibraryGoogleDrive
             var request = Service.Files.Get(fileId);
             var stream = new MemoryStream();
 
-            request.MediaDownloader.ProgressChanged += (Google.Apis.Download.IDownloadProgress progress) =>
+            request.MediaDownloader.ProgressChanged += (progress) =>
             {
                 switch (progress.Status)
                 {
@@ -73,7 +73,6 @@ namespace LibraryClient.LibraryGoogleDrive
                     case Google.Apis.Download.DownloadStatus.Completed:
                     {
                         Console.WriteLine("Download complete.");
-                        //SaveStream(stream, saveTo);
                         break;
                     }
                     case Google.Apis.Download.DownloadStatus.Failed:
@@ -85,6 +84,7 @@ namespace LibraryClient.LibraryGoogleDrive
             };
 
             request.Download(stream);
+            return stream;
         }
 
         public static void DeleteFile(string fileId)
