@@ -194,11 +194,11 @@ namespace Ui.Views.Local
             try
             {
                 // Delete Pointer
-                if (source.IsDir || source.Size > 1000000) source.DeleteAsync().GetAwaiter().OnCompleted(Main.ReloadPath);
+                if (source.IsDir || source.Size > 1000000) source.DeleteAsync().GetAwaiter().OnCompleted(Main.Refresh);
                 else
                 {
                     source.Delete();
-                    Main.ReloadPath();
+                    Main.Refresh();
                 }
                 // Remove reference from Directory Pointer
                 Main.NavigationBarView.FolderPointer.Remove(source);

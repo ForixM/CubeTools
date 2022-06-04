@@ -91,13 +91,13 @@ namespace Ui.Views.Remote.Actions
                         _main.SelectErrorPopUp(exception);
                     }
 
-                    _main.ReloadPath();
+                    _main.Refresh();
                     Close();
                 }
 
                 if (_modifiedPointer.Name == _renameBox.Text)
                 {
-                    _main.ReloadPath();
+                    _main.Refresh();
                     Close();
                 }
             }

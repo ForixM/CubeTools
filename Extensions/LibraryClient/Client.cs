@@ -122,6 +122,7 @@ namespace LibraryClient
         public abstract string GetItemName(RemoteItem item);
         public abstract string GetItemType(RemoteItem item);
         public abstract long GetItemSize(RemoteItem item);
+        public abstract RemoteItem GetParentReference(RemoteItem item);
         public abstract List<RemoteItem>? ListChildren(RemoteItem folder);
 
         public abstract void InitializeProperties(RemoteItem item);

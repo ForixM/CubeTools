@@ -62,7 +62,7 @@ namespace Ui.Views.Local
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
             _main.ActionBarView.SelectedXaml.Clear();
-            if (Directory.Exists(Pointer.Path)) _main.NavigationBarView.Add(new DirectoryPointerLoaded(Pointer.Path));
+            if (Directory.Exists(Pointer.Path)) _main.NavigationBarView.Add(Pointer.Path);
             _main.AccessPath(Pointer.Path);
         }
 
@@ -96,7 +96,7 @@ namespace Ui.Views.Local
             else
             {
                 new ErrorPopUp.PathNotFoundPopUp(new PathNotFoundException(Pointer.Path + " does not exist")).Show();
-                _main.ReloadPath();
+                _main.Refresh();
             }
         }
 

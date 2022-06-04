@@ -89,13 +89,13 @@ namespace Ui.Views.Local.Actions
                 {
                     _main.SelectErrorPopUp(exception);
                 }
-                _main.ReloadPath();
+                _main.Refresh();
                 Close();
             }
 
             if (_modifiedPointer.Path == "" || _modifiedPointer.Name == _renameBox.Text)
             {
-                _main.ReloadPath();
+                _main.Refresh();
                 Close();
             }
         }

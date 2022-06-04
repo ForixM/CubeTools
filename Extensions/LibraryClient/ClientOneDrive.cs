@@ -98,6 +98,11 @@ namespace LibraryClient
             throw new NotImplementedException();
         }
 
+        public override RemoteItem GetParentReference(RemoteItem item)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
     }

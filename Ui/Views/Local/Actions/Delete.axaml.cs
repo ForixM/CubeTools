@@ -65,14 +65,14 @@ namespace Ui.Views.Local.Actions
                     // Close display
                     _pointer.DeleteAsync().GetAwaiter().OnCompleted(() =>
                     {
-                        _main?.ReloadPath();
+                        _main?.Refresh();
                     });
                 }
                 // Run task sync
                 else
                 {
                     _pointer.Delete();
-                    _main?.ReloadPath();
+                    _main?.Refresh();
                 }
             }
             catch (Exception exception)

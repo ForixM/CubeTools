@@ -64,7 +64,7 @@ namespace Ui.Views.Remote.Actions
                 try
                 {
                     _main.Client.CreateFile(string.IsNullOrEmpty(name) ? "New File.txt" : name);
-                    _main.ReloadPath();
+                    _main.Refresh();
                     Close();
                 }
                 catch (Exception exception)

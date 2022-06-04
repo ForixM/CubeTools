@@ -20,9 +20,9 @@ namespace Ui.Views.Local
         // A pointer to the current loaded Directory
         public DirectoryPointerLoaded FolderPointer;
         // Queue Pointers : Pointers registered in a queue
-        public List<DirectoryPointer> QueuePointers;
+        private List<string> _queue;
         // Index Queue : the current index of the queue
-        public int QueueIndex;
+        private int _index;
         
         #endregion
 
@@ -39,8 +39,8 @@ namespace Ui.Views.Local
             Main = Local.LastReference;
             InitializeComponent();
             CurrentPathXaml = this.FindControl<TextBox>("CurrentPath");
-            QueueIndex = -1;
-            QueuePointers = new List<DirectoryPointer>();
+            _index = -1;
+            _queue = new List<string>();
         }
 
         private void InitializeComponent()
@@ -62,10 +62,10 @@ namespace Ui.Views.Local
         /// </summary>
         private void LeftArrowClick(object? sender, RoutedEventArgs e)
         {
-            if (QueueIndex > 0)
+            if (_index > 0)
             {
-                QueueIndex--;
-                Main.AccessPath(QueuePointers[QueueIndex].Path);
+                _index--;
+                Main.AccessPath(_queue[_index]);
             }
         }
 
@@ -74,10 +74,10 @@ namespace Ui.Views.Local
         /// </summary>
         private void RightArrowClick(object? sender, RoutedEventArgs e)
         {
-            if (QueueIndex < QueuePointers.Count - 1)
+            if (_index < _queue.Count - 1)
             {
-                QueueIndex++;
-                Main.AccessPath(QueuePointers[QueueIndex].Path);
+                _index++;
+                Main.AccessPath(_queue[_index]);
             }
             // End of the queue
         }
@@ -87,8 +87,12 @@ namespace Ui.Views.Local
         /// </summary>
         private void UpArrowClick(object? sender, RoutedEventArgs e)
         {
-            Main.AccessPath(ManagerReader.GetParent(Main.NavigationBarView.FolderPointer.Path));
-            Add(new DirectoryPointerLoaded(Main.NavigationBarView.FolderPointer.Path));
+            string pathParent = ManagerReader.GetParent(FolderPointer.Path);
+            if (pathParent != "")
+            {
+                Main.AccessPath(pathParent);
+                Add(FolderPointer.Path);
+            }
         }
 
         /// <summary>
@@ -99,7 +103,7 @@ namespace Ui.Views.Local
             try
             {
                 Main.NavigationBarView.FolderPointer.SetChildrenFiles();
-                Main.ReloadPath();
+                Main.Refresh();
             }
             catch (Exception exception)
             {
@@ -124,19 +128,17 @@ namespace Ui.Views.Local
         ///     Add the folder to the queue of the visited folders
         /// </summary>
         /// <param name="folder"></param>
-        public void Add(DirectoryPointer folder)
+        public void Add(string folder)
         {
-            if (QueuePointers.Count - 1 == QueueIndex || QueueIndex < 0)
+            if (_queue.Count - 1 == _index || _index < 0)
+                _queue.Add(folder);
+            else if (_queue.Count > _index + 1 && folder != _queue[_index + 1])
             {
-                QueuePointers.Add(folder);
-            }
-            else if (QueuePointers.Count > QueueIndex + 1 && folder != QueuePointers[QueueIndex + 1])
-            {
-                QueuePointers.RemoveRange(QueueIndex + 1, QueuePointers.Count - QueueIndex - 1);
-                QueuePointers.Add(folder);
+                _queue.RemoveRange(_index + 1, _queue.Count - _index - 1);
+                _queue.Add(folder);
             }
 
-            QueueIndex++;
+            _index++;
         }
         
         /// <summary>
@@ -148,14 +150,14 @@ namespace Ui.Views.Local
             try
             {
                 if (FolderPointer is null) FolderPointer = new DirectoryPointerLoaded(path);
-                FolderPointer.ChangeDirectory(path);
+                else FolderPointer.ChangeDirectory(path);
             }
             catch (ManagerException e)
             {
                 Main.SelectErrorPopUp(e);
             }
             CurrentPathXaml.Text = FolderPointer.Path;
-            Add(FolderPointer);
+            //Add(FolderPointer);
         }
 
         /// <summary>

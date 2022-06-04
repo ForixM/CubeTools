@@ -6,20 +6,22 @@
         /// Mandatory to access every information
         /// </summary>
         protected string _path;
+        protected string _parentPath;
         
         // Secondary to get other information on the item
         protected string _type;
         protected string _name;
         protected long _size;
+        protected string _lastModified;
         
         // Getter and Setter
-        public string ParentPath(RemoteItem root) => _path == root.Path ? root.Path : _path.Remove(_path.Length - _name.Length, _name.Length);
+        public string ParentPath => _parentPath;
+        public string LastModified => _lastModified;
         public string Path => _path;
-        public string Type { get => _type; set => _type = value; }
-
-        public string Name { get => _name; set => _name = value; }
-
-        public long Size { get => _size; set => _size = value; }
+        public string Type => _type;
+        public string Name => _name;
+        public long Size => _size;
+        
 
         public bool IsDir;
 
@@ -27,6 +29,8 @@
         public RemoteItem()
         {
             _path = "/";
+            _lastModified = "";
+            _parentPath = "";
             _type = "";
             _name = "";
             _size = 0;

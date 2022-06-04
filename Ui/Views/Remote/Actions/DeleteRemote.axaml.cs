@@ -60,7 +60,7 @@ namespace Ui.Views.Remote.Actions
             try
             {
                 _main?.Client.Delete(_pointer);
-                _main?.ReloadPath();
+                _main?.Refresh();
             }
             catch (Exception exception)
             {

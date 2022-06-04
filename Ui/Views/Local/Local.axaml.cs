@@ -30,7 +30,8 @@ namespace Ui.Views.Local
 
             string path = Directory.GetCurrentDirectory();
             NavigationBarView.AccessPath(path);
-            PathsBarView.ReloadPath();
+            NavigationBarView.Add(path);
+            PathsBarView.Refresh();
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -58,14 +59,14 @@ namespace Ui.Views.Local
             else
             {
                 NavigationBarView.AccessPath(path);
-                PathsBarView.ReloadPath();
+                PathsBarView.Refresh();
             }
         }
 
         /// <summary>
         /// Reload the current directory
         /// </summary>
-        public void ReloadPath()
+        public void Refresh()
         {
             try
             {
@@ -75,14 +76,14 @@ namespace Ui.Views.Local
             {
                 if (e is ManagerException @managerException) SelectErrorPopUp(@managerException);
             }
-            PathsBarView.ReloadPath();
+            PathsBarView.Refresh();
         }
 
         /// <summary>
         ///  Reload the current directory (not the pointer) by displaying specific pointers
         /// </summary>
         /// <param name="list">the list of pointer to display</param>
-        public void ReloadPath(List<Pointer> list) => PathsBarView.ReloadPath(list);
+        public void Refresh(List<Pointer> list) => PathsBarView.Refresh(list);
         
         /// <summary>
         /// Select and generate the correct popup according to the exception given in parameter

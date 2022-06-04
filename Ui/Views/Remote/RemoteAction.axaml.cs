@@ -56,7 +56,7 @@ namespace Ui.Views.Remote
             Copied.Clear();
             CutXaml.Clear();
             foreach (var item in Main!.RemoteActionView.Selected) Copied.Add(item);
-            Main.ReloadPath();
+            Main.Refresh();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Ui.Views.Remote
                 Copied.Add(item);
                 CutXaml.Add(item);
             }
-            Main!.ReloadPath();
+            Main!.Refresh();
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Ui.Views.Remote
             foreach (var item in CutXaml)
                 Main!.Client.Delete(item);
             
-            Main!.ReloadPath();
+            Main!.Refresh();
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Ui.Views.Remote
                     break;
             }
 
-            Main!.ReloadPath();
+            Main!.Refresh();
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Ui.Views.Remote
         {
             foreach (var item in Main!.RemoteActionView.Selected)
                 DeletePointer(item);
-            Main.ReloadPath();
+            Main.Refresh();
         }
         
         /// <summary>
@@ -129,7 +129,7 @@ namespace Ui.Views.Remote
             
             foreach (var item in Main!.RemoteActionView.Selected)
                 Main.Client.Download(Main.Client.CurrentFolder, item.Name);
-            Main.ReloadPath();
+            Main.Refresh();
         }
 
 

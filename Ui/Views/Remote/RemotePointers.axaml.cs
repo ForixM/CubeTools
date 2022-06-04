@@ -24,7 +24,7 @@ namespace Ui.Views.Remote
         
         #endregion
 
-        public void ReloadPath()
+        public void Refresh()
         {
             Generator.Children.Clear();
             foreach (var ft in Main.Client.Children)
@@ -36,7 +36,7 @@ namespace Ui.Views.Remote
             }
         }
         
-        public void ReloadPath(List<RemoteItem> pointers)
+        public void Refresh(List<RemoteItem> pointers)
         {
             Generator.Children.Clear();
             foreach (var ft in pointers)

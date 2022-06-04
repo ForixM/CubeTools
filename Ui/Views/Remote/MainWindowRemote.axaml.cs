@@ -46,7 +46,8 @@ namespace Ui.Views.Remote
         public MainWindowRemote(Client client) : this()
         {
             Client = client;
-            ReloadPath();
+            RemoteNavigationView.Add(Client.CurrentFolder!);
+            Refresh();
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -55,12 +56,12 @@ namespace Ui.Views.Remote
 
         #region Process
 
-        public void ReloadPath()
+        public void Refresh()
         {
             try
             {
                 Client.Refresh();
-                RemotePointersView.ReloadPath();
+                RemotePointersView.Refresh();
                 RemoteNavigationView.Refresh();
             }
             catch (Exception e)
@@ -80,8 +81,8 @@ namespace Ui.Views.Remote
                 try
                 {
                     Client.AccessPath(item);
-                    RemoteNavigationView.AccessPath(item);
-                    RemotePointersView.ReloadPath();
+                    RemotePointersView.Refresh();
+                    RemoteNavigationView.Refresh();
                 }
                 catch (Exception e)
                 {
@@ -99,18 +100,6 @@ namespace Ui.Views.Remote
                     if (e is ManagerException managerException) SelectErrorPopUp(managerException);
                 }
             }
-        }
-        
-        /// <summary>
-        /// Access to the given path (remote)
-        /// </summary>
-        /// <param name="name">the name of the file or folder</param>
-        /// <param name="folder">the current folder</param>
-        public void AccessPath(RemoteItem folder, string name)
-        {
-            var item = Client.GetItem(folder.Path.Length == 0 || folder.Path[^1] == '/' ? folder.Path + name : folder.Path + "/" + name);
-            if (item is not null) AccessPath(item);
-            else SelectErrorPopUp(new PathNotFoundException("Unable to access the path","AccessPath"));
         }
 
         public void AccessPath(string path)
@@ -197,7 +186,7 @@ namespace Ui.Views.Remote
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.RenameShortcut))
                     RemoteActionView.Rename(sender, e);
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.ReloadShortcut))
-                    ReloadPath();
+                    Refresh();
                 else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts.SettingsShortcut)
                     new SettingsWindow().Show();
             }

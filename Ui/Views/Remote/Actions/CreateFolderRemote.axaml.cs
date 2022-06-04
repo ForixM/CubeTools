@@ -70,7 +70,7 @@ namespace Ui.Views.Remote.Actions
                 try
                 {
                     _main.Client.CreateFolder(name);
-                    _main.ReloadPath();
+                    _main.Refresh();
                     Close();
                 }
                 catch (Exception exception)

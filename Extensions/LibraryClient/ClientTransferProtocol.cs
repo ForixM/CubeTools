@@ -46,9 +46,9 @@ namespace LibraryClient
 
         public override void AccessPath(RemoteItem destination)
         {
+            foreach (var item in Children) item.Dispose();
             Children.Clear();
-            foreach (var item in _clientFtp.ListDirectory((FtpFolder) destination).Items)
-                Children.Add(item);
+            foreach (var item in _clientFtp.ListDirectory((FtpFolder) destination).Items) Children.Add(item);
             CurrentFolder = destination;
         }
 
@@ -101,7 +101,9 @@ namespace LibraryClient
             throw new NotImplementedException();
         }
 
+        public override RemoteItem GetParentReference(RemoteItem item) => ((FtpFolder) item).Parent;
+
         #endregion
-        
+
     }
 }

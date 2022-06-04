@@ -14,14 +14,6 @@ namespace Ui.Views.Remote
         private int _index;
         private List<RemoteItem> _queue;
 
-        public int Index
-        {
-            get => _index;
-            set => _index = value;
-        }
-
-        public List<RemoteItem> Queue => _queue;
-        
         public TextBox CurrentPathXaml;
         public MainWindowRemote Main;
         
@@ -30,9 +22,12 @@ namespace Ui.Views.Remote
         public RemoteNavigation()
         {
             InitializeComponent();
-            CurrentPathXaml = this.FindControl<TextBox>("RemoteCurrentPath");
-            _queue = new List<RemoteItem>();
+            //
             Main = MainWindowRemote.LastView;
+            CurrentPathXaml = this.FindControl<TextBox>("RemoteCurrentPath");
+            //
+            _queue = new List<RemoteItem>();
+            _index = -1;
         }
 
         private void InitializeComponent()
@@ -54,7 +49,7 @@ namespace Ui.Views.Remote
         /// </summary>
         private void LeftArrowClick(object? sender, RoutedEventArgs e)
         {
-            if (Main.RemoteNavigationView.Index > 0)
+            if (_index > 0)
             {
                 _index--;
                 Main.AccessPath(_queue[_index]);
@@ -78,8 +73,12 @@ namespace Ui.Views.Remote
         /// </summary>
         private void UpArrowClick(object? sender, RoutedEventArgs e)
         {
-            if (Main.Client.CurrentFolder is not null && Main.Client.Root.Path == Main.Client.CurrentFolder.Path)
-                Main.AccessPath(Main.Client.CurrentFolder.ParentPath(Main.Client.Root));
+            if (Main.Client.CurrentFolder is not null && Main.Client.Root.Path != Main.Client.CurrentFolder.Path)
+            {
+                Main.AccessPath(Main.Client.GetParentReference(Main.Client.CurrentFolder));
+                if (Main.Client.CurrentFolder is { } folder)
+                    Add(folder);
+            }
         }
 
         /// <summary>
@@ -89,7 +88,7 @@ namespace Ui.Views.Remote
         {
             try
             {
-                Main.ReloadPath();
+                Main.Refresh();
             }
             catch (Exception exception)
             {
@@ -104,35 +103,22 @@ namespace Ui.Views.Remote
         /// <summary>
         /// Add a folder in the queue
         /// </summary>
-        /// <param name="folder"></param>
+        /// <param name="folder">the folder to add</param>
         public void Add(RemoteItem folder)
         {
-            if (_queue.Count - 1 == Index || Index < 0)
+            if (_queue.Count - 1 == _index || _index < 0) _queue.Add(folder);
+            else if (_queue.Count > _index + 1 && folder != _queue[_index + 1])
             {
-                _queue.Add(folder);
-            }
-            else if (_queue.Count > Index + 1 && folder != _queue[Index + 1])
-            {
-                _queue.RemoveRange(Index + 1, _queue.Count - Index - 1);
+                _queue.RemoveRange(_index + 1, _queue.Count - _index - 1);
                 _queue.Add(folder);
             }
 
-            Index++;
+            _index++;
         }
-
+        
         /// <summary>
-        /// Add to the queue
+        /// 
         /// </summary>
-        /// <param name="item"></param>
-        public void AccessPath(RemoteItem item)
-        {
-            if (item.IsDir)
-            {
-                CurrentPathXaml.Text = item.Path;
-                Add(item);
-            }
-        }
-
         public void Refresh()
         {
             if (Main.Client.CurrentFolder is not null) CurrentPathXaml.Text = Main.Client.CurrentFolder.Path;

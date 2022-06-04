@@ -86,7 +86,7 @@ namespace Ui.Views.Properties
             try
             {
                 _pointer.SetAttributes(false, FileAttributes.ReadOnly);
-                //_parentModel!.ReloadPath();
+                //_parentModel!.Refresh();
             }
             catch (ManagerException exception)
             {
@@ -106,7 +106,7 @@ namespace Ui.Views.Properties
             try
             {
                 ManagerWriter.SetAttributes(_pointer, true, FileAttributes.ReadOnly);
-                //_parentModel!.ReloadPath();
+                //_parentModel!.Refresh();
             }
             catch (ManagerException exception)
             {
@@ -145,7 +145,7 @@ namespace Ui.Views.Properties
             try
             {
                 ManagerWriter.SetAttributes(_pointer, true, FileAttributes.Hidden);
-                //_parentModel?.ReloadPath();
+                //_parentModel?.Refresh();
             }
             catch (ManagerException exception)
             {
@@ -156,7 +156,7 @@ namespace Ui.Views.Properties
 
         private void OnClose(object? sender, CancelEventArgs e)
         {
-            //_parentModel!.ReloadPath();
+            //_parentModel!.Refresh();
         }
         
         private void OnClick(object? sender, RoutedEventArgs e)
