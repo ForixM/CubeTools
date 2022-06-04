@@ -46,28 +46,6 @@ namespace LibraryClient.LibraryGoogleDrive
             return files[0].Id;
         }
 
-        public static List<string> GetFileProperties(string fileid)
-        {
-            var service = OAuth.GetDriveService();
-
-            FilesResource.ListRequest listRequest = service.Files.List();
-            listRequest.DriveId = fileid;
-            IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute().Files;
-
-            if (files.Count == 0)
-            {
-                throw new Exception("File doesn't exist");
-            }
-
-            List<string> fileproperties = new List<string>();
-            fileproperties.Add(files[0].Name);
-            fileproperties.Add(files[0].MimeType);
-            fileproperties.Add(files[0].Size.ToString());
-            fileproperties.Add(files[0].Parents[0]);
-
-            return fileproperties;
-        }
-        
         public static List<Google.Apis.Drive.v3.Data.File> ListFileAndFolder(string folderID)
         {
             var service = OAuth.GetDriveService();
@@ -179,6 +157,39 @@ namespace LibraryClient.LibraryGoogleDrive
             var DriveFile = Service.Files.Get(fileId).Execute();
 
             return DriveFile.Kind;
+        }
+
+        public static long GetFileSize(string fileId)
+        {
+            var Service = OAuth.GetDriveService();
+            var DriveFile = Service.Files.Get(fileId).Execute();
+
+            return DriveFile.Size.Value;
+        }
+
+        public static string GetFileParent(string fileId)
+        {
+            var Service = OAuth.GetDriveService();
+            var DriveFile = Service.Files.Get(fileId).Execute();
+
+            return DriveFile.Parents[0];
+        }
+        
+        public static string GetPathFromFile(string fileId)
+        {
+            var Service = OAuth.GetDriveService();
+            var DriveFile = Service.Files.Get(fileId).Execute();
+
+            string pathRes = "";
+            
+            while (DriveFile.Parents[0] != "root")
+            {
+                pathRes = '/' + pathRes;
+                pathRes += DriveFile.Name;
+                DriveFile = Service.Files.Get(GetFileParent(DriveFile.Id)).Execute();
+            }
+
+            return pathRes;
         }
     }
 }
