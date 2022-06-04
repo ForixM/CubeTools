@@ -187,7 +187,7 @@ namespace LibraryClient.LibraryFtp
             request.Method = WebRequestMethods.Ftp.MakeDirectory;
             request.Credentials = new NetworkCredential(_username, _password);
             request.GetResponse();
-            return (FtpFolder) GetItem(parent, name);
+            return (FtpFolder) GetItem(parent, name)!;
         }
         
         public void Delete(IFtpItem item)
@@ -241,20 +241,21 @@ namespace LibraryClient.LibraryFtp
             {
                 byte[] buffer = new byte[4];
                 ftpStream.Write(buffer, 0, 0);
-                /*int read;
-                while ((read = fileStream.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ftpStream.Write(buffer, 0, read);
-                    progress?.Invoke(this, fileStream.Position, new FileInfo(file.Path).Length);
-                }*/
             }
             FtpWebResponse response = (FtpWebResponse) request.GetResponse();
             finish?.Invoke(this,(int) response.StatusCode == 200);
-            return (FtpFile) GetItem(destination, fileName);
+            return (FtpFile) GetItem(destination, fileName)!;
         }
 
-        [CanBeNull]
-        public IFtpItem GetItem(FtpFolder folder, string fileName) => ListDirectory(folder.Path).Items.FirstOrDefault(item => item.Name == fileName);
+        public IFtpItem? GetItem(FtpFolder folder, string fileName) => ListDirectory(folder.Path).Items.FirstOrDefault(item => item.Name == fileName);
+
+        public IFtpItem? GetItem(string path)
+        {
+            string name = Path.GetFileName(path);
+            int last = path.Length;
+            string parent = path.Remove(last - name.Length, name.Length);
+            return ListDirectory(parent).Items.FirstOrDefault(item => item.Name == name);
+        }
         public bool ItemExist(FtpFolder folder, IFtpItem item) => ListDirectory(folder).Items.Contains(item);
     }
 }

@@ -15,7 +15,8 @@ namespace LibraryClient
         {
             _clientFtp = new ClientFtp(host, username, password);
             CurrentFolder = FtpFolder.ROOT;
-            foreach (var item in _clientFtp.ListDirectory( (FtpFolder)CurrentFolder).Items) Children.Add(item);
+            Root = FtpFolder.ROOT;
+            foreach (var item in _clientFtp.ListDirectory((FtpFolder)CurrentFolder).Items) Children.Add(item);
         }
         
         #region Actions
@@ -48,6 +49,7 @@ namespace LibraryClient
             Children.Clear();
             foreach (var item in _clientFtp.ListDirectory((FtpFolder) destination).Items)
                 Children.Add(item);
+            CurrentFolder = destination;
         }
 
         public override void Refresh()
@@ -57,8 +59,18 @@ namespace LibraryClient
             foreach (var item in _clientFtp.ListDirectory( (FtpFolder)CurrentFolder).Items) Children.Add(item);
         }
 
-        public override RemoteItem? GetItem(string name) => CurrentFolder is FtpFolder folder ? _clientFtp.GetItem(folder, name) : null;
-        
+        public override RemoteItem? GetItem(string path)
+        {
+            string name = System.IO.Path.GetFileName(path);
+            int last = path.Length;
+            string parentPath = path.Remove(last - name.Length, name.Length);
+            return _clientFtp.ListDirectory(parentPath).Items.FindLast(item => item.Name == name);
+        }
+
+        public override RemoteItem? GetItem(RemoteItem folder, string name)
+        {
+            throw new NotImplementedException();
+        }
 
         public override List<RemoteItem>? ListChildren(RemoteItem folder)
         {
@@ -90,14 +102,6 @@ namespace LibraryClient
         }
 
         #endregion
-
-        #region Others
-
-        public override RemoteItem GetRoot()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
+        
     }
 }

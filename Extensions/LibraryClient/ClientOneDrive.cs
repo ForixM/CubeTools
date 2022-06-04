@@ -12,7 +12,6 @@ namespace LibraryClient
             _clientOneDrive = new OnedriveClient();
         }
         
-        
         #region Actions
 
         public override RemoteItem CreateFile(string name)
@@ -60,7 +59,12 @@ namespace LibraryClient
             throw new NotImplementedException();
         }
 
-        public override RemoteItem? GetItem(string name)
+        public override RemoteItem? GetItem(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override RemoteItem? GetItem(RemoteItem folder, string name)
         {
             throw new NotImplementedException();
         }
@@ -96,13 +100,5 @@ namespace LibraryClient
 
         #endregion
 
-        #region Others
-
-        public override RemoteItem GetRoot()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

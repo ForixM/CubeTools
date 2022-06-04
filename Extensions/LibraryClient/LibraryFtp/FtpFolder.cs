@@ -5,12 +5,12 @@ namespace LibraryClient.LibraryFtp
     
     public class FtpFolder : IFtpItem
     {
-
         public static readonly FtpFolder ROOT = new FtpFolder("", "/", "");
 
         public FtpFolder(string name, string parentPath, string lastmodified)
         {
-            this._name = name;
+            IsDir = true;
+            _name = name;
             if (parentPath == "/")
             {
                 this._parentPath = "/";
@@ -33,6 +33,7 @@ namespace LibraryClient.LibraryFtp
         
         public FtpFolder(string name, IFtpItem parent, string lastmodified)
         {
+            IsDir = true;
             this._name = name;
             this._parent = parent;
             this._parentPath = parent.Path;
@@ -41,6 +42,7 @@ namespace LibraryClient.LibraryFtp
 
         public FtpFolder(string path) // TODO Implement constructor with a path
         {
+            IsDir = true;
             if (path == "") path = "/";
             string newpath = path;
             while (newpath[^1] != '/') newpath = newpath.Remove(newpath.Length - 1);

@@ -61,6 +61,7 @@ namespace Ui.Views.Remote
             {
                 Client.Refresh();
                 RemotePointersView.ReloadPath();
+                RemoteNavigationView.Refresh();
             }
             catch (Exception e)
             {
@@ -68,12 +69,24 @@ namespace Ui.Views.Remote
             }
         }
 
-        public void AccessPath(RemoteItem item, bool isdir)
+        /// <summary>
+        /// Access to an item
+        /// </summary>
+        /// <param name="item">the given item to access</param>
+        public void AccessPath(RemoteItem item)
         {
-            if (isdir)
+            if (item.IsDir)
             {
-                Client.AccessPath(item);
-                RemotePointersView.ReloadPath();
+                try
+                {
+                    Client.AccessPath(item);
+                    RemoteNavigationView.AccessPath(item);
+                    RemotePointersView.ReloadPath();
+                }
+                catch (Exception e)
+                {
+                    if (e is ManagerException managerException) SelectErrorPopUp(managerException);
+                }
             }
             else
             {
@@ -91,14 +104,22 @@ namespace Ui.Views.Remote
         /// <summary>
         /// Access to the given path (remote)
         /// </summary>
-        /// <param name="name">the </param>
-        /// <param name="isdir"></param>
-        public void AccessPath(string name, bool isdir)
+        /// <param name="name">the name of the file or folder</param>
+        /// <param name="folder">the current folder</param>
+        public void AccessPath(RemoteItem folder, string name)
         {
-            RemoteItem? item = Client?.GetItem(name);
-            if (item is not null) AccessPath(item, isdir);
+            var item = Client.GetItem(folder.Path.Length == 0 || folder.Path[^1] == '/' ? folder.Path + name : folder.Path + "/" + name);
+            if (item is not null) AccessPath(item);
+            else SelectErrorPopUp(new PathNotFoundException("Unable to access the path","AccessPath"));
         }
-        
+
+        public void AccessPath(string path)
+        {
+            var item = Client.GetItem(path);
+            if (item is not null) AccessPath(item);
+            else SelectErrorPopUp(new PathNotFoundException("Unable to access the path","AccessPath"));
+        }
+
         public void SelectErrorPopUp(ManagerException exception) => Local.SelectErrorPopUp(exception);
 
         #endregion

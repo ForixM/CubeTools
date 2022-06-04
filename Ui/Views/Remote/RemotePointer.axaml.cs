@@ -60,7 +60,7 @@ namespace Ui.Views.Remote
         {
             Main.RemoteActionView.Selected.Clear();
             if (Pointer.IsDir) Main.RemoteNavigationView.Add(Pointer);
-            Main.AccessPath(Pointer, Pointer.IsDir);
+            Main.AccessPath(Pointer);
         }
 
         /// <summary>

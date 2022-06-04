@@ -31,6 +31,7 @@ namespace Ui.Views.Remote
         {
             InitializeComponent();
             CurrentPathXaml = this.FindControl<TextBox>("RemoteCurrentPath");
+            _queue = new List<RemoteItem>();
             Main = MainWindowRemote.LastView;
         }
 
@@ -45,8 +46,7 @@ namespace Ui.Views.Remote
         private void EditCurrentPath(object? sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            string name = ((TextBox) sender!).Text;
-            Main.AccessPath(name, Main.Client.GetItem(name)?.IsDir ?? true);
+            Main.AccessPath(((TextBox) sender!).Text);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Ui.Views.Remote
             if (Main.RemoteNavigationView.Index > 0)
             {
                 _index--;
-                Main.AccessPath(_queue[_index], true);
+                Main.AccessPath(_queue[_index]);
             }
         }
 
@@ -69,7 +69,7 @@ namespace Ui.Views.Remote
             if (_index < _queue.Count - 1)
             {
                 _index++;
-                Main.AccessPath(_queue[_index], true);
+                Main.AccessPath(_queue[_index]);
             }
         }
 
@@ -78,17 +78,8 @@ namespace Ui.Views.Remote
         /// </summary>
         private void UpArrowClick(object? sender, RoutedEventArgs e)
         {
-            /*
-            if (ParentView.Remote.FtpModel.RemoteDirectory != FtpFolder.ROOT)
-            {
-                ParentView.Remote.FtpModel.RemoteDirectory =
-                    (FtpFolder) ParentView.Remote.FtpModel.RemoteDirectory.Parent;
-                if (ParentView.Remote.FtpModel.RemoteDirectory is { } folder && ParentView.Model != null)
-                    ((MainWindowFTP)ParentView.Model.View).NavigationBar.Model.Add(folder);
-                // ParentView.Remote.FtpModel.Children = ParentView.Model.Client.ListDirectory((FtpFolder) ParentView.Remote.FtpModel.RemoteDirectory.Parent);
-                ParentView.ReloadPathRemote();
-            }
-            */
+            if (Main.Client.CurrentFolder is not null && Main.Client.Root.Path == Main.Client.CurrentFolder.Path)
+                Main.AccessPath(Main.Client.CurrentFolder.ParentPath(Main.Client.Root));
         }
 
         /// <summary>
@@ -109,15 +100,11 @@ namespace Ui.Views.Remote
                 }
             }
         }
-        
+
         /// <summary>
-        /// The settings is opened
+        /// Add a folder in the queue
         /// </summary>
-        private void SettingsClick(object? sender, RoutedEventArgs e)
-        {
-            // TODO Implement a settings Window
-        }
-        
+        /// <param name="folder"></param>
         public void Add(RemoteItem folder)
         {
             if (_queue.Count - 1 == Index || Index < 0)
@@ -131,6 +118,24 @@ namespace Ui.Views.Remote
             }
 
             Index++;
+        }
+
+        /// <summary>
+        /// Add to the queue
+        /// </summary>
+        /// <param name="item"></param>
+        public void AccessPath(RemoteItem item)
+        {
+            if (item.IsDir)
+            {
+                CurrentPathXaml.Text = item.Path;
+                Add(item);
+            }
+        }
+
+        public void Refresh()
+        {
+            if (Main.Client.CurrentFolder is not null) CurrentPathXaml.Text = Main.Client.CurrentFolder.Path;
         }
         
         #endregion

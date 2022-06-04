@@ -9,8 +9,7 @@ namespace LibraryClient.LibraryFtp
         protected IFtpItem _parent;
         protected string _parentPath;
         protected string _lastmodified;
-
-        public new bool IsDir => this is FtpFolder;
+        
         public string SizeXaml => ManagerReader.ByteToPowByte(Size);
         public string ParentPath => _parentPath;
         public IFtpItem Parent => _parent ?? new FtpFolder(_parentPath);
