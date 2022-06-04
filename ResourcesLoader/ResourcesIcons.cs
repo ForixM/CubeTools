@@ -83,6 +83,11 @@ namespace ResourcesLoader
                                                                      "Icons/Error.ico");
         public static readonly IImage WarningIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                              "Icons/Warning.ico");
-
+        public static readonly IImage ThemeIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                               "Icons/Theme.ico");
+        public static readonly IImage ShortcutIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                               "Icons/Shortcut.ico");
+        public static readonly IImage UploadIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                "Icons/Upload.ico");
     }
 }

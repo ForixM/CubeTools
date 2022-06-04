@@ -79,5 +79,11 @@ namespace ResourcesLoader
                                                                  "IconsCompressed/Documents.ico");
         public static readonly IImage InfoCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                             "Icons/Info.ico");
+        public static readonly IImage ThemeCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                             "IconsCompressed/Theme.ico");
+        public static readonly IImage ShortcutCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                "IconsCompressed/Shortcut.ico");
+        public static readonly IImage UploadCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                      "IconsCompressed/Upload.ico");
     }
 }

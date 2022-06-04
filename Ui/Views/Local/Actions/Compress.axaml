@@ -8,6 +8,7 @@
         WindowStartupLocation="CenterScreen"
         Title="Compression"
         Topmost="True"
+        Width="300" Height="100"
         KeyDown="OnKeyPressedWindow">
     
     <Grid ColumnDefinitions="100,200">
