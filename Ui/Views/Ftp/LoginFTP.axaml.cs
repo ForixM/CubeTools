@@ -1,8 +1,11 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Library.ManagerExceptions;
 using LibraryClient;
+using Ui.Views.ErrorPopUp;
 using Ui.Views.Remote;
 
 namespace Ui.Views.Ftp
@@ -63,7 +66,18 @@ namespace Ui.Views.Ftp
             else
             {
                 // Initialize the connexion and the window
-                new MainWindowRemote(new ClientTransferProtocol(ClientType.FTP, _ip.Text + ":" + _port.Text, _user.Text, _mdp.Text)).Show();
+                try
+                {
+                    Client client = new ClientTransferProtocol(ClientType.FTP,
+                        _ip.Text + ":" + _port.Text, _user.Text, _mdp.Text);
+                    new MainWindowRemote(client).Show();
+                    Close();
+                }
+                catch (Exception exception)
+                {
+                    new NormalErrorPopUp(new ManagerException("Invalid Credentials", "Low-Critical",
+                        "CubeTools crashed", "Username or Password are incorrect")).Show();
+                }
             }
         }
     }

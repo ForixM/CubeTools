@@ -9,7 +9,7 @@ namespace LibraryClient.LibraryOneDrive
     }
 
     [DataContract]
-    public class OneItem
+    public class OneItem : RemoteItem
     {
         [DataMember(Name = "name")] public string name { get; set; }
 
@@ -24,6 +24,8 @@ namespace LibraryClient.LibraryOneDrive
         [DataMember(Name = "file")] public OneFile file { get; set; }
 
         public OneItemType Type => folder == null ? OneItemType.FILE : OneItemType.FOLDER;
+        
+        public new bool IsDir => Type == OneItemType.FOLDER;
 
         [DataMember(Name = "parentReference")] public ParentReference parentReference { get; set; }
 

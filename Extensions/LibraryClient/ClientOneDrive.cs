@@ -12,88 +12,69 @@ namespace LibraryClient
             _clientOneDrive = new OnedriveClient();
         }
         
+        
         #region Actions
 
-        public override RemoteItem CreateFile(string name)
+        public override RemoteItem CreateFile(string name) //TODO
         {
             throw new NotImplementedException();
         }
 
         public override RemoteItem CreateFolder(string name)
         {
-            throw new NotImplementedException();
+            return _clientOneDrive.CreateFolder(name, (OneItem)CurrentFolder);
         }
 
-        public override RemoteItem? Copy(RemoteItem item)
+        public override RemoteItem? Copy(RemoteItem item) //TODO
         {
             throw new NotImplementedException();
         }
 
         public override void Delete(RemoteItem item)
         {
-            throw new NotImplementedException();
+            _clientOneDrive.DeleteItem((OneItem)item);
         }
 
-        public override void Rename(RemoteItem item, string newName)
+        public override void Rename(RemoteItem item, string newName) //TODO
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); 
         }
 
         public override Pointer Download(RemoteItem item, string name)
         {
-            throw new NotImplementedException();
+            _clientOneDrive.DownloadFile(name, (OneItem)item);
+            return base.Download(item, name);
         }
 
         public override void Upload(Pointer pointer, RemoteItem destination)
         {
-            throw new NotImplementedException();
+            _clientOneDrive.UploadFile(pointer, (OneItem) destination);
         }
 
         public override void AccessPath(RemoteItem destination)
         {
-            throw new NotImplementedException();
+            CurrentFolder = destination;
+            foreach (OneItem item in _clientOneDrive.GetArboresence((OneItem)destination).items)
+            {
+                Children.Add(item);
+            }
         }
 
         public override void Refresh()
         {
-            throw new NotImplementedException();
+            foreach (OneItem item in _clientOneDrive.GetArboresence((OneItem)CurrentFolder).items)
+            {
+                Children.Add(item);
+            }
         }
 
-        public override RemoteItem? GetItem(string path)
+        public override RemoteItem? GetItem(string name) //TODO
         {
+            // => CurrentFolder.IsDir ? _clientOneDrive.GetItem(folder, name) : null;
             throw new NotImplementedException();
         }
 
-        public override RemoteItem? GetItem(RemoteItem folder, string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override List<RemoteItem>? ListChildren(RemoteItem folder)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-        
-        #region Properties
-
-        public override string GetItemName(RemoteItem item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override long GetItemSize(RemoteItem item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string GetItemType(RemoteItem item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void InitializeProperties(RemoteItem item)
+        public override RemoteItem? GetItem(RemoteItem folder, string name) //TODO
         {
             throw new NotImplementedException();
         }
@@ -103,7 +84,39 @@ namespace LibraryClient
             throw new NotImplementedException();
         }
 
+        public override List<RemoteItem>? ListChildren(RemoteItem folder) //TODO
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+        
+        #region Properties
+
+        public override string GetItemName(RemoteItem item) //TODO
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long GetItemSize(RemoteItem item) //TODO
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GetItemType(RemoteItem item) //TODO
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void InitializeProperties(RemoteItem item) //TODO
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
+        #region Others
+
+        #endregion
     }
 }

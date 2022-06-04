@@ -7,7 +7,7 @@ using System.Web;
 using HeyRed.Mime;
 using Library;
 using Library.FilePointer;
-using static LibraryClient.MimeTypes;
+using LibraryClient.LibraryFtp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -123,10 +123,10 @@ namespace LibraryClient.LibraryOneDrive
             return (int) response.Result.StatusCode == 201;
         }
         
-        public bool CreateFolder(string name, OneItem folder)
+        public OneItem CreateFolder(string name, OneItem folder)
         {
             if (folder.Type != OneItemType.FOLDER)
-                return false;
+                return null;
             string data = "{'name':'"+name+"','folder':{ },'@microsoft.graph.conflictBehavior':'rename'}";
             Task<HttpResponseMessage> response =
                 _client.PostAsync(
@@ -134,7 +134,19 @@ namespace LibraryClient.LibraryOneDrive
                     token.access_token,
                     new StringContent(data, Encoding.UTF8, "application/json"));
             response.Wait();
-            return (int) response.Result.StatusCode == 201;
+            if ((int)response.Result.StatusCode == 201)
+            {
+                OneArboresence arbo = GetArboresence(folder);
+                foreach (OneItem item in arbo.items)
+                {
+                    if (item.name == name && item.IsDir)
+                    {
+                        return item;
+                    }
+                }
+            }
+
+            return null;
         }
 
 
