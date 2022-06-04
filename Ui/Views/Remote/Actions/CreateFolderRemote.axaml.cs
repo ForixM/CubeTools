@@ -1,11 +1,11 @@
 ﻿using System;
-using System.IO;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
+using Ui.Views.Error;
 
 namespace Ui.Views.Remote.Actions
 {
@@ -62,9 +62,15 @@ namespace Ui.Views.Remote.Actions
         private void CreateDir(string name)
         {
             if (_main?.Client is null) return;
-            else if (!ManagerReader.IsPathCorrect(name)) _textEntered.Text = "Invalid Text !";
+            else if (!ManagerReader.IsPathCorrect(name))
+            {
+                new ErrorBase(new PathFormatException("Invalid Name !", "Create a folder")).ShowDialog<object>(_main);
+            }
             else if (_main.Client.GetItem(name) is not null)
-                _main.SelectErrorPopUp(new ReplaceException("Folder already exists !"));
+            {
+                new ErrorBase(new ReplaceException("Folder already exists !", "Create a folder UI"))
+                    .ShowDialog<bool>(_main);
+            }
             else
             {
                 try
@@ -78,7 +84,7 @@ namespace Ui.Views.Remote.Actions
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to create a new folder";
-                        _main.SelectErrorPopUp(@managerException);
+                        new ErrorBase(@managerException).ShowDialog<object>(_main);
                     }
                 }
             }

@@ -8,6 +8,7 @@ using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
 using LibraryClient;
+using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views.Remote.Actions
@@ -88,7 +89,7 @@ namespace Ui.Views.Remote.Actions
                     }
                     catch (ManagerException exception)
                     {
-                        _main.SelectErrorPopUp(exception);
+                        new ErrorBase(exception).ShowDialog<object>(_main!);
                     }
 
                     _main.Refresh();

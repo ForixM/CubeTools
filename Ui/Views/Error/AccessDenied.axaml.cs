@@ -4,36 +4,34 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 
-namespace Ui.Views.ErrorPopUp
+namespace Ui.Views.Error
 {
-    public class SystemErrorPopUp : Window
+    public class AccessDenied : Window
     {
-        
         public readonly TextBlock ContentError;
-        private readonly Button _buttonQuit;
-        private readonly Button _buttonReload;
+        private readonly Button _buttonYes;
+        private readonly Button _buttonNo;
         
-        public SystemErrorPopUp()
+        public AccessDenied()
         {
             InitializeComponent();
             ContentError = this.FindControl<TextBlock>("ContentError");
-            _buttonQuit = this.FindControl<Button>("ButtonQuit");
-            _buttonReload = this.FindControl<Button>("ButtonReload");
+            _buttonYes = this.FindControl<Button>("ButtonYes");
+            _buttonNo = this.FindControl<Button>("ButtonNo");
         }
-        public SystemErrorPopUp(SystemErrorException exception) : this()
+        public AccessDenied(ManagerException exception) : this()
         {
             ContentError.Text = exception.ErrorMessage;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
-
-
+        
         // EVENTS
-
-        private void ButtonQuitClicked(object? sender, RoutedEventArgs e) => Close();
-
-        private void ButtonReloadClicked(object? sender, RoutedEventArgs e) => Close();
-
+        private void ButtonYesClicked(object? sender, RoutedEventArgs e)
+        {
+            // TODO Edit Yes button for admin action
+        }
+        private void ButtonNoClicked(object? sender, RoutedEventArgs e) => Close();
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Escape) Close();

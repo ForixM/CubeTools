@@ -7,6 +7,7 @@ using Library.ManagerExceptions;
 using LibraryClient;
 using LibraryClient.LibraryOneDrive;
 using Syroot.Windows.IO;
+using Ui.Views.Error;
 using Ui.Views.Ftp;
 using Ui.Views.Remote;
 
@@ -31,7 +32,7 @@ namespace Ui.Views.MainWindow
             client.Client.authenticated += (o, success) =>
             {
                 if (success) Dispatcher.UIThread.Post(() => new MainWindowRemote(client).Show());
-                else throw new NoException();
+                else new ErrorBase(new ConnectionRefused("OneDrive connection could not be established", "Connection to OneDrive")).Show();
             };
         }
         

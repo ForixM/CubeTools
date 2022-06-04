@@ -1,0 +1,14 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Ui.Views.Error.Information.PathNotFoundInfo">
+        
+        <Grid ColumnDefinitions="50*,50*">
+            
+                <Grid Grid.Column="0" VerticalAlignment="Center">
+                        <Button Width="70" Height="40" HorizontalAlignment="Center" Click="ButtonQuitClicked" Name="ButtonQuit" Content="Cancel"/>
+                </Grid>
+                <Grid Grid.Column="1" VerticalAlignment="Center">
+                        <Button Width="70" Height="40" HorizontalAlignment="Center" Click="ButtonReloadClicked" Name="ButtonReload" Content="Reload"/>
+                </Grid>
+        </Grid>
+</UserControl>

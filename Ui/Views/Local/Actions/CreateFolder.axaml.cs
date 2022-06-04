@@ -6,6 +6,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
+using Ui.Views.Error;
 
 namespace Ui.Views.Local.Actions
 {
@@ -62,9 +63,14 @@ namespace Ui.Views.Local.Actions
         private void CreateDir(string name)
         {
             if (!ManagerReader.IsPathCorrect(name))
-                _textEntered.Text = "Invalid Text !";
+            {
+                new ErrorBase(new PathFormatException($"{name} is an invalid name", "Create a local folder"))
+                    .ShowDialog<bool>(_main.Main);
+            }
             else if (Directory.Exists(name))
-                _main.SelectErrorPopUp(new ReplaceException("File already exists !"));
+            {
+                new ErrorBase(new ReplaceException("File already exists !", "Create a local folder")).ShowDialog<bool>(_main.Main);
+            }
             else
             {
                 try
@@ -78,7 +84,7 @@ namespace Ui.Views.Local.Actions
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to create a new folder";
-                        _main.SelectErrorPopUp(@managerException);
+                        new ErrorBase(@managerException).ShowDialog<object>(_main.Main);
                     }
                 }
             }

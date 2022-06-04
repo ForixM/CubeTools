@@ -6,7 +6,7 @@ using Avalonia.Markup.Xaml;
 using Library;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
-using Ui.Views.ErrorPopUp;
+using Ui.Views.Error;
 
 namespace Ui.Views.Local
 {
@@ -52,8 +52,8 @@ namespace Ui.Views.Local
                 }
                 catch (Exception e)
                 {
-                    if (e is ManagerException @managerException) SelectErrorPopUp(@managerException);
-                    else SelectErrorPopUp(new SystemErrorException("System was unable to open your file", "AccessPath"));
+                    if (e is ManagerException @managerException) new ErrorBase(@managerException).ShowDialog<object>(Main);
+                    else new ErrorBase(new SystemErrorException("System was unable to open your file", "AccessPath")).ShowDialog<bool>(Main);
                 }
             }
             else
@@ -74,7 +74,7 @@ namespace Ui.Views.Local
             }
             catch (Exception e)
             {
-                if (e is ManagerException @managerException) SelectErrorPopUp(@managerException);
+                if (e is ManagerException @managerException) new ErrorBase(@managerException).ShowDialog<object>(Main);
             }
             PathsBarView.Refresh();
         }
@@ -85,31 +85,6 @@ namespace Ui.Views.Local
         /// <param name="list">the list of pointer to display</param>
         public void Refresh(List<Pointer> list) => PathsBarView.Refresh(list);
         
-        /// <summary>
-        /// Select and generate the correct popup according to the exception given in parameter
-        /// </summary>
-        /// <param name="exception"></param>
-        public void SelectErrorPopUp(ManagerException exception)
-        {
-            switch (exception)
-            {
-                case PathNotFoundException @pathNotFoundException:
-                    new PathNotFoundPopUp(@pathNotFoundException).Show();
-                    break;
-                case AccessException @accessException:
-                    new AccessDeniedPopUp(@accessException).Show();
-                    break;
-                case DiskNotReadyException @diskNotReadyException:
-                    new DiskNotReadyPopUp(@diskNotReadyException).Show();
-                    break;
-                case SystemErrorException @systemErrorException:
-                    new SystemErrorPopUp(@systemErrorException).Show();
-                    break;
-                default:
-                    new ErrorPopUp.ErrorPopUp(exception).Show();
-                    break;
-            }
-        }
         #endregion
     }
 }

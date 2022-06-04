@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using LibraryClient;
+using Ui.Views.Error;
 
 namespace Ui.Views.Remote.Actions
 {
@@ -67,7 +68,7 @@ namespace Ui.Views.Remote.Actions
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = $"Unable to delete {_pointer.Name}";
-                    _main?.SelectErrorPopUp(@managerException);
+                    new ErrorBase(@managerException).ShowDialog<object>(this);
                 }
             }
         }

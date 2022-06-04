@@ -7,6 +7,8 @@ using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using LibraryClient;
+using Microsoft.VisualBasic;
+using Ui.Views.Error;
 using Ui.Views.Settings;
 
 namespace Ui.Views.Remote
@@ -68,7 +70,7 @@ namespace Ui.Views.Remote
             }
             catch (Exception e)
             {
-                if (e is ManagerException managerException) SelectErrorPopUp(managerException);
+                if (e is ManagerException managerException) new ErrorBase(managerException).ShowDialog<object>(this);
             }
         }
 
@@ -88,7 +90,7 @@ namespace Ui.Views.Remote
                 }
                 catch (Exception e)
                 {
-                    if (e is ManagerException managerException) SelectErrorPopUp(managerException);
+                    if (e is ManagerException managerException) new ErrorBase(managerException).ShowDialog<object>(this);
                 }
             }
             else
@@ -99,7 +101,7 @@ namespace Ui.Views.Remote
                 }
                 catch (Exception e)
                 {
-                    if (e is ManagerException managerException) SelectErrorPopUp(managerException);
+                    if (e is ManagerException managerException) new ErrorBase(managerException).ShowDialog<object>(this);
                 }
             }
         }
@@ -108,10 +110,8 @@ namespace Ui.Views.Remote
         {
             var item = Client.GetItem(path);
             if (item is not null) AccessPath(item);
-            else SelectErrorPopUp(new PathNotFoundException("Unable to access the path","AccessPath"));
+            else new ErrorBase(new PathNotFoundException("Unable to access the path","AccessPath")).ShowDialog<object>(this);
         }
-
-        public void SelectErrorPopUp(ManagerException exception) => Local.SelectErrorPopUp(exception);
 
         #endregion
         

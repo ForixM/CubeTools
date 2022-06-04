@@ -12,7 +12,7 @@ namespace Library
     /// Inheritance : x - FilePointer, DirectoryPointer
     /// ##################################################################
     /// </summary>
-    public abstract partial class Pointer
+    public abstract partial class Pointer : IDisposable
     {
         // This region contains every variables that stores the information of the file
         #region Variables

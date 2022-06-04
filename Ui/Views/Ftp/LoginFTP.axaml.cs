@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using LibraryClient;
-using Ui.Views.ErrorPopUp;
+using Ui.Views.Error;
 using Ui.Views.Remote;
 
 namespace Ui.Views.Ftp
@@ -68,15 +68,13 @@ namespace Ui.Views.Ftp
                 // Initialize the connexion and the window
                 try
                 {
-                    Client client = new ClientTransferProtocol(ClientType.FTP,
-                        _ip.Text + ":" + _port.Text, _user.Text, _mdp.Text);
+                    Client client = new ClientTransferProtocol(ClientType.FTP, _ip.Text + ":" + _port.Text, _user.Text, _mdp.Text);
                     new MainWindowRemote(client).Show();
                     Close();
                 }
                 catch (Exception exception)
                 {
-                    new NormalErrorPopUp(new ManagerException("Invalid Credentials", "Low-Critical",
-                        "CubeTools crashed", "Username or Password are incorrect")).Show();
+                    new ErrorBase(new ConnectionRefused("Invalid Credentials", "LoginFTP")).Show();
                 }
             }
         }

@@ -35,7 +35,7 @@ namespace Library.ManagerWriter
                     throw new DiskNotReadyException("Disk is refreshing", "RemoveFileAttribute");
                 if (e is FileNotFoundException or DirectoryNotFoundException)
                     throw new PathNotFoundException("The given file does not exist", "RemoveFileAttribute");
-                throw new ManagerException("Reader error", "Medium", "Impossible to read file",
+                throw new ManagerException("Reader error", Level.Normal, "Impossible to read file",
                     "The file cannot be read", "RemoveFileAttribute");
             }
         }
@@ -65,7 +65,7 @@ namespace Library.ManagerWriter
                     throw new DiskNotReadyException("Disk is refreshing", "AddFileAttribute");
                 if (e is FileNotFoundException or DirectoryNotFoundException)
                     throw new PathNotFoundException("The given file does not exist", "AddFileAttribute");
-                throw new ManagerException("Writer error", "Medium", "Impossible to modify file attributes",
+                throw new ManagerException("Writer error", Level.Normal, "Impossible to modify file attributes",
                     "The file cannot be modified", "AddFileAttribute");
             }
         }
@@ -94,7 +94,7 @@ namespace Library.ManagerWriter
                     throw new AccessException("The given directory cannot be accessed", "RemoveDirAttribute");
                 if (e is IOException)
                     throw new DiskNotReadyException("the disk is not ready to modify data", "RemoveDirAttribute");
-                throw new ManagerException("Writer error", "Medium", "Impossible to modify directory attributes",
+                throw new ManagerException("Writer error", Level.Normal, "Impossible to modify directory attributes",
                     "The path cannot be modified", "RemoveDirAttribute");
             }
         }
@@ -123,7 +123,7 @@ namespace Library.ManagerWriter
                     throw new AccessException("The given directory cannot be accessed", "AddDirAttribute");
                 if (e is IOException)
                     throw new DiskNotReadyException("the disk is not ready to modify data", "AddDirAttribute");
-                throw new ManagerException("Writer error", "Medium", "Impossible to modify directory attributes",
+                throw new ManagerException("Writer error", Level.Normal, "Impossible to modify directory attributes",
                     "The path cannot be modified", "AddDirAttribute");
             }
         }

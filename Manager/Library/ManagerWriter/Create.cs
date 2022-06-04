@@ -37,7 +37,7 @@ namespace Library.ManagerWriter
                 {
                     UnauthorizedAccessException => new AccessException(dest + " could not be read", "Create"),
                     NotSupportedException => new PathFormatException(dest + " : format is incorrect", "Create"),
-                    _ => new ManagerException("Writer Error", "Medium", "Creation impossible", "Access has been denied",
+                    _ => new ManagerException("Writer Error", Level.Normal, "Creation impossible", "Access has been denied",
                         "Create")
                 };
             }
@@ -81,7 +81,7 @@ namespace Library.ManagerWriter
                     ArgumentException or ArgumentNullException => new PathFormatException($"","CreateDir"),
                     IOException => new SystemErrorException($"System blocked the creation of {dest}", "CreateDir"),
                     UnauthorizedAccessException or SecurityException => new AccessException($"{dest} could not be created", "CreateDir"),
-                    _ => new ManagerException("An Error occured", "Medium", "Unable to create directory",
+                    _ => new ManagerException("An Error occured", Level.Normal, "Unable to create directory",
                         $"Creation of the directory {dest} could not be done", "CreateDir")
                 };
             }

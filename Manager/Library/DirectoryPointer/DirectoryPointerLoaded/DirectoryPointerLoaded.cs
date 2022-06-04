@@ -58,7 +58,7 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
                 {
                     IOException => new SystemErrorException(path + " has been blocked by system", "Directory Constructor"),
                     SecurityException => new AccessException(path + " could be not accessed", "Directory Constructor"),
-                    _ => new ManagerException("ManagerException", "High", "GenerateDirectory",
+                    _ => new ManagerException("ManagerException", Level.High, "GenerateDirectory",
                         "Generate directory was impossible", "Directory Constructor")
                 };
             }
@@ -283,7 +283,8 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
                         IOException => new SystemErrorException("system blocked " + newPath, "ChangeDirectory"),
                         SecurityException or UnauthorizedAccessException => new AccessException(
                             newPath + " could not be accessed", "ChangeDirectory"),
-                        _ => new ManagerException("", "", "", "", "")
+                        _ => new ManagerException("Reader Error", Level.High, "Cannot construct the loaded pointer",
+                            "The system was unable to get a folder and its associated children","CTOR_DirectoryPointerLoaded")
                     };
                 }
 
@@ -299,7 +300,8 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
         public override void Dispose()
         {
             foreach (var pointer in _childrenFiles) pointer.Dispose();
-            base.Dispose();
+            GC.SuppressFinalize(this);
+            GC.Collect();
         }
 
         #endregion

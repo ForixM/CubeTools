@@ -31,7 +31,7 @@ namespace Library.ManagerWriter
                 {
                     IOException => new InUseException(path + " is used by another process", "Delete"),
                     UnauthorizedAccessException => new AccessException(path + " access is denied", "Delete"),
-                    _ => new ManagerException("Delete is impossible", "Medium", "Writer Error",
+                    _ => new ManagerException("Delete is impossible", Level.Normal, "Writer Error",
                         path + " could not be deleted", "Delete")
                 };
             }
@@ -84,7 +84,7 @@ namespace Library.ManagerWriter
                     IOException => new SystemErrorException("directory not empty or system blocked " + path,
                         "DeleteDir"),
                     UnauthorizedAccessException => new AccessException(path + " access denied", "DeleteDir"),
-                    _ => new ManagerException("Impossible to Delete", "Medium", "Writer Error",
+                    _ => new ManagerException("Impossible to Delete", Level.Normal, "Writer Error",
                         path + " could not be deleted", "DeleteDir")
                 };
             }

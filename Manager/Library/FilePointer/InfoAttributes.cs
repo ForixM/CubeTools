@@ -22,8 +22,8 @@ namespace Library.FilePointer
         {
             if (!Exist())
             {
-                if (IsDir) throw new CorruptedDirectoryException();
-                throw new CorruptedPointerException();
+                if (IsDir) throw new CorruptedDirectoryException($"Invalid directory pointer {_path}", "HasAttribute");
+                throw new CorruptedPointerException($"Invalid pointer {_path}", "HasAttribute");
             }
 
             try
@@ -41,7 +41,7 @@ namespace Library.FilePointer
                         "HasAttribute"),
                     UnauthorizedAccessException or SecurityException => new AccessException("the file " + _path + " access is denied",
                         "HasAttribute"),
-                    _ => new ManagerException("Reader error", "High", "Impossible to read",
+                    _ => new ManagerException("Reader error", Level.High, "Impossible to read",
                         "the given path " + _path + " could not be read", "HasAttribute")
                 };
             }

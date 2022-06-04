@@ -44,7 +44,7 @@ namespace Library.ManagerWriter
                     {
                         UnauthorizedAccessException => new AccessException(source + " could not be accessed", "Copy"),
                         IOException => new ReplaceException(res + " already exist, cannot replace it", "Copy"),
-                        _ => new ManagerException("ManagerException", "High", "Copy impossible",
+                        _ => new ManagerException("ManagerException", Level.High, "Copy impossible",
                             "Cannot copy file " + source, "Copy")
                     };
                 }
@@ -94,7 +94,7 @@ namespace Library.ManagerWriter
                         {
                             UnauthorizedAccessException => new AccessException(dest + " could not be replaced", "Copy"),
                             IOException => new InUseException(dest + " could not be replaced", "Copy"),
-                            _ => new ManagerException("An error occured", "High", "Impossible to replace",
+                            _ => new ManagerException("An error occured", Level.High, "Impossible to replace",
                                 "Copy was impossible, replace could not be done", "Copy")
                         };
                     }
@@ -107,7 +107,7 @@ namespace Library.ManagerWriter
                     {
                         if (e is UnauthorizedAccessException)
                             throw new AccessException(dest + " could not be replaced", "Copy");
-                        throw new ManagerException("An error occured", "Medium", "Impossible to replace",
+                        throw new ManagerException("An error occured", Level.Normal, "Impossible to replace",
                             "Copy was impossible, replace could not be done", "Copy");
                     }
             }
@@ -137,7 +137,7 @@ namespace Library.ManagerWriter
                     case IOException:
                         throw new SystemErrorException("system blocked copy of " + source + " to " + dest, "Copy");
                     default:
-                        throw new ManagerException("", "", "", "", "Copy");
+                        throw new ManagerException("Writer error", Level.Normal, "Unable to copy a file", $"{source} could not be copied", "Copy");
                 }
             }
         }
@@ -223,7 +223,7 @@ namespace Library.ManagerWriter
                     IOException => new SystemErrorException("Copy could not be done", "CopyDirectory"),
                     PathTooLongException or NotSupportedException => new PathFormatException(
                         "A file / folder contained a path too large", "CopyDirectory"),
-                    _ => new ManagerException("An error occured", "Medium", "Copy directories",
+                    _ => new ManagerException("An error occured", Level.Normal, "Copy directories",
                         "Copy sub-dirs and sub-files could not be done", "CopyDirectory")
                 };
             }

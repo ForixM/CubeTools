@@ -103,7 +103,7 @@ namespace Ui.Views.Remote
                     new RenameRemote(Main!.RemoteActionView.Selected[0], Main.Client.Children, Main).Show();
                     break;
                 default:
-                    new ErrorPopUp.ErrorPopUp(new ManagerException("Unable to rename multiple data")).Show();
+                    new Error.ErrorPopUp(new ManagerException("Unable to rename multiple data")).Show();
                     break;
             }
 

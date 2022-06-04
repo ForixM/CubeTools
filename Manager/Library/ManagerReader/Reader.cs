@@ -43,7 +43,7 @@ namespace Library.ManagerReader
                 {
                     if (e is UnauthorizedAccessException or SecurityException)
                         throw new AccessException(path + " access denied", "GetParent");
-                    throw new ManagerException("Access to parent", "High", "Parent not found",
+                    throw new ManagerException("Access to parent", Level.High, "Parent not found",
                         "Error while trying to get the Directory of " + path, "GetParent");
                 }
 
@@ -58,7 +58,7 @@ namespace Library.ManagerReader
                 {
                     if (e is UnauthorizedAccessException or SecurityException)
                         throw new AccessException(path + " access denied", "GetParent");
-                    throw new ManagerException("Access to parent", "High", "Parent not found",
+                    throw new ManagerException("Access to parent", Level.High, "Parent not found",
                         "Error while trying to get the Directory of " + path, "GetParent");
                 }
 
@@ -122,7 +122,7 @@ namespace Library.ManagerReader
                 {
                     if (e is UnauthorizedAccessException)
                         throw new AccessException(path + " cannot be accessed", "GetFileCreationDate");
-                    throw new ManagerException("Reader error", "High", "Impossible to read",
+                    throw new ManagerException("Reader error", Level.High ,"Impossible to read",
                         path + " could not be read", "GetFileCreationDate");
                 }
 
@@ -135,7 +135,7 @@ namespace Library.ManagerReader
                 {
                     if (e is UnauthorizedAccessException)
                         throw new AccessException(path + " cannot be accessed", "GetFileCreationDate");
-                    throw new ManagerException("Reader error", "High", "Impossible to read",
+                    throw new ManagerException("Reader error", Level.High, "Impossible to read",
                         path + " could not be read", "GetFileCreationDate");
                 }
 
@@ -181,7 +181,7 @@ namespace Library.ManagerReader
                 {
                     if (e is UnauthorizedAccessException)
                         throw new AccessException(path + " cannot be accessed", "GetFileLastEdition");
-                    throw new ManagerException("Reader error", "High", "Impossible to read",
+                    throw new ManagerException("Reader error", Level.High, "Impossible to read",
                         path + " could not be read", "GetFileLastEdition");
                 }
 
@@ -194,7 +194,7 @@ namespace Library.ManagerReader
                 {
                     if (e is UnauthorizedAccessException)
                         throw new AccessException(path + " cannot be accessed", "GetFileLastEdition");
-                    throw new ManagerException("Reader error", "High", "Impossible to read",
+                    throw new ManagerException("Reader error", Level.High, "Impossible to read",
                         path + " could not be read", "GetFileLastEdition");
                 }
 
@@ -240,7 +240,7 @@ namespace Library.ManagerReader
                 {
                     if (e is UnauthorizedAccessException)
                         throw new AccessException(path + " cannot be accessed", "GetFileAccessDate");
-                    throw new ManagerException("Reader error", "High", "Impossible to read",
+                    throw new ManagerException("Reader error", Level.Normal, "Impossible to read",
                         path + " could not be read", "GetFileAccessDate");
                 }
 
@@ -253,7 +253,7 @@ namespace Library.ManagerReader
                 {
                     if (e is UnauthorizedAccessException)
                         throw new AccessException(path + " cannot be accessed", "GetFileAccessDate");
-                    throw new ManagerException("Reader error", "High", "Impossible to read",
+                    throw new ManagerException("Reader error", Level.Normal, "Impossible to read",
                         path + " could not be read", "GetFileAccessDate");
                 }
 
@@ -298,7 +298,7 @@ namespace Library.ManagerReader
                 {
                     if (e is SecurityException or UnauthorizedAccessException)
                         throw new AccessException(path + " cannot be read", "GetFileSize");
-                    throw new ManagerException("Reader error", "Medium", "Impossible to enumerate files",
+                    throw new ManagerException("Reader error", Level.Normal, "Impossible to enumerate files",
                         path + " and their children could not be read", "GetFileSize");
                 }
             if (File.Exists(path))
@@ -312,7 +312,7 @@ namespace Library.ManagerReader
                         throw new AccessException(path + " cannot be read", "GetFileSize");
                     if (e is IOException)
                         throw new DiskNotReadyException(path + " cannot be read", "GetFileSize");
-                    throw new ManagerException("Reader error", "Medium", "Impossible to enumerate files",
+                    throw new ManagerException("Reader error", Level.Normal, "Impossible to enumerate files",
                         path + " and their children could not be read", "GetFileSize");
                 }
             throw new PathNotFoundException(path + " does not exist", "GetFileAccessDate");
@@ -396,7 +396,7 @@ namespace Library.ManagerReader
             {
                 if (e is SecurityException)
                     throw new AccessException(name + " cannot be read", "GetNameToPath");
-                throw new ManagerException("Reader error", "Medium", "Transform absolute path to name",
+                throw new ManagerException("Reader error", Level.Normal, "Transform absolute path to name",
                     name + " could not be read", "GetNameToPath");
             }
         }
@@ -462,7 +462,7 @@ namespace Library.ManagerReader
                     return "";
                 }
 
-                throw new ManagerException("Reader Error", "Medium", "Content not readable",
+                throw new ManagerException("Reader Error", Level.Normal, "Content not readable",
                     "Content could not be read", "GetContent");
             }
         }
@@ -470,36 +470,7 @@ namespace Library.ManagerReader
         /// <summary>
         /// Basic return of the current Platform
         /// </summary>
-        /// <returns></returns>
-        public static PlatformID GetOs()
-        {
-            return Environment.OSVersion.Platform;
-        }
-
-        /// <summary>
-        /// - Action : Returns the amount of sub-files and sub-dirs (NOT RECURSIVE)
-        /// - Implementation : NOT CHECK 
-        /// </summary>
-        /// <param name="path">The given DIRECTORY's path that has to be analyzed</param>
-        /// <returns></returns>
-        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
-        /// <exception cref="AccessException">the given path cannot be accessed</exception>
-        /// <exception cref="ManagerException">An unknown error occured</exception>
-        public static int GetAmountOfLocalData(string path)
-        {
-            if (!Directory.Exists(path))
-                throw new PathNotFoundException("", ""); // TODO Add exception
-            try
-            {
-                DirectoryInfo di = new(path); 
-                return di.EnumerateDirectories().Count() + di.EnumerateFiles().Count();
-            }
-            catch (Exception e)
-            {
-                if (e is SecurityException or UnauthorizedAccessException)
-                    throw new AccessException("", ""); // TODO Add expcetion
-                throw new ManagerException("", "", "", "", "");
-            }
-        }
+        /// <returns>The PlatformID associated to the current platform</returns>
+        public static PlatformID GetOs() => Environment.OSVersion.Platform;
     }
 }

@@ -8,6 +8,7 @@ using Avalonia.Media;
 using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Library.ManagerExceptions;
 using ResourcesLoader;
+using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views.Local
@@ -95,7 +96,7 @@ namespace Ui.Views.Local
             }
             else
             {
-                new ErrorPopUp.PathNotFoundPopUp(new PathNotFoundException(Pointer.Path + " does not exist")).Show();
+                new ErrorBase(new PathNotFoundException(Pointer.Path + " does not exist", "Pointer Local UI")).Show();
                 _main.Refresh();
             }
         }

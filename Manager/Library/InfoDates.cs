@@ -37,7 +37,7 @@ namespace Library
                     UnauthorizedAccessException => new AccessException(_path + " cannot be accessed",
                         "GetPointerCreationDate"),
                     PathTooLongException or ArgumentException or ArgumentNullException => new PathFormatException(_path + " has an invalid format", "GetPointerCreationDate"),
-                    _ => new ManagerException("Reader error", "High", "Unable to read",
+                    _ => new ManagerException("Reader error", Level.Normal, "Unable to read",
                         _path + " could not be read", "GetPointerCreationDate")
                 };
             }
@@ -76,7 +76,7 @@ namespace Library
                     PathTooLongException or ArgumentException or ArgumentNullException => 
                         new PathFormatException(_path + " has an invalid format", "GetPointerLastEdition"),
                     _ => 
-                        new ManagerException("Reader error", "High", "Unable to read", _path + " could not be read", "GetPointerLastEdition")
+                        new ManagerException("Reader error", Level.Normal, "Unable to read", _path + " could not be read", "GetPointerLastEdition")
                 };
             }
         }
@@ -114,7 +114,7 @@ namespace Library
                     PathTooLongException or ArgumentException or ArgumentNullException => 
                         new PathFormatException(_path + " has an invalid format", "GetPointerAccessDate"),
                     _ => 
-                        new ManagerException("Reader error", "High", "Unable to read", _path + " could not be read", "GetPointerAccessDate")
+                        new ManagerException("Reader error", Level.Normal, "Unable to read", _path + " could not be read", "GetPointerAccessDate")
                 };
             }
         }

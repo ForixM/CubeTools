@@ -6,6 +6,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using Library;
+using Ui.Views.Error;
 using Ui.Views.Local.Actions;
 using DeleteMultiple = Ui.Views.Remote.Actions.DeleteMultiple;
 
@@ -104,7 +105,7 @@ namespace Ui.Views.Local
                     new Ui.Views.Local.Actions.Rename(SelectedXaml[0].Pointer, Main.NavigationBarView.FolderPointer.ChildrenFiles, Main).Show();
                     break;
                 default:
-                    Main.SelectErrorPopUp(new ManagerException("Unable to rename multiple data"));
+                    new ErrorBase(new ManagerException("Unable to rename multiple data")).ShowDialog<object>(Main.Main);
                     break;
             }
         }
@@ -208,7 +209,7 @@ namespace Ui.Views.Local
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = $"Unable to copy {source.Name}";
-                    Main.SelectErrorPopUp(@managerException);
+                    new ErrorBase(@managerException).ShowDialog<object>(Main.Main);
                 }
             }
         }

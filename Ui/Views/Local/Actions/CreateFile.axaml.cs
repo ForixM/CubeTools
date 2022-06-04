@@ -6,6 +6,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
+using Ui.Views.Error;
 
 namespace Ui.Views.Local.Actions
 {
@@ -59,9 +60,13 @@ namespace Ui.Views.Local.Actions
             if (_main == null) return;
             
             if (!ManagerReader.IsPathCorrect(name))
-                _main.SelectErrorPopUp(new PathFormatException("Format is invalid !"));
+            {
+                new ErrorBase(new PathFormatException("Format is invalid !", "Create a local file")).ShowDialog<object>(_main.Main);
+            }
             else if (File.Exists(_main.NavigationBarView.FolderPointer.Path + "/"+name))
-                _main.SelectErrorPopUp(new ReplaceException("File already exists !"));
+            {
+                new ErrorBase(new ReplaceException("File already exists !", "Create a local file")).ShowDialog<bool>(_main.Main);
+            }
             else
             {
                 try
@@ -91,7 +96,7 @@ namespace Ui.Views.Local.Actions
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to create a new file";
-                        _main.SelectErrorPopUp(@managerException);
+                        new ErrorBase(@managerException).ShowDialog<object>(_main.Main);
                     }
                 }
             }

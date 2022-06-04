@@ -9,6 +9,7 @@ using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.DirectoryPointer;
 using Library.DirectoryPointer.DirectoryPointerLoaded;
+using Ui.Views.Error;
 using Ui.Views.Settings;
 
 namespace Ui.Views.Local
@@ -110,7 +111,7 @@ namespace Ui.Views.Local
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = "Unable to reload files and folders";
-                    Main.SelectErrorPopUp(@managerException);
+                    new ErrorBase(@managerException).ShowDialog<object>(Main.Main);
                 }
             }
         }
@@ -154,7 +155,7 @@ namespace Ui.Views.Local
             }
             catch (ManagerException e)
             {
-                Main.SelectErrorPopUp(e);
+                new ErrorBase(e).ShowDialog<object>(Main.Main);
             }
             CurrentPathXaml.Text = FolderPointer.Path;
             //Add(FolderPointer);
@@ -171,7 +172,7 @@ namespace Ui.Views.Local
             }
             catch (ManagerException e)
             {
-                Main.SelectErrorPopUp(e);
+                new ErrorBase(e).ShowDialog<object>(Main.Main);
             }
         }
         

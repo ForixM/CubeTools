@@ -6,6 +6,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using LibraryClient;
+using Ui.Views.Error;
 
 namespace Ui.Views.Remote
 {
@@ -95,7 +96,7 @@ namespace Ui.Views.Remote
                 if (exception is ManagerException managerException)
                 {
                     managerException.Errorstd = "Unable to reload file";
-                    Main.SelectErrorPopUp(managerException);
+                    new ErrorBase(managerException).ShowDialog<object>(Main);
                 }
             }
         }
