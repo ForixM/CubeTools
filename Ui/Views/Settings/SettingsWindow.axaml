@@ -3,14 +3,132 @@
              xmlns:generators="clr-namespace:Ui.Views.Settings.Generators"
              x:Class="Ui.Views.Settings.SettingsWindow"
              WindowStartupLocation="CenterScreen"
-             CanResize="True"
+             CanResize="False"
              Title="Settings"
-             Width="1000" Height="750"
-             MinWidth="850" MinHeight="700">
+             xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+             Width="500" Height="750"
+             MinWidth="500" MinHeight="750">
 	 
-	 <ScrollViewer Margin="10">
+	 <ScrollViewer>
 		 <StackPanel>
 			 
+			 <StackPanel>
+				 <Grid ColumnDefinitions="200, *">
+					 <Grid Grid.Column="0">
+						 <Image Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Static resource:ResourcesIcons.SettingsIcon}"/>
+					 </Grid>
+					 <Grid Grid.Column="1">
+						 <TextBlock Text="Settings" FontWeight="Bold" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+					 </Grid>
+				 </Grid>
+			 </StackPanel>
+			 
+			 <StackPanel Margin="0 20 0 0">
+				 <Grid ColumnDefinitions="100, 750">
+					 <Grid Grid.Column="0">
+						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.ThemeCompressed}"/>
+					 </Grid>
+					 <Grid Grid.Column="1">
+						 <TextBlock Text="Theme" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+					 </Grid>
+				 </Grid>
+				 <StackPanel>
+					 <Grid ColumnDefinitions="150, *, 150">
+						 <Grid Grid.Column="0" Margin="25 5 0 0">
+							 <TextBlock Text = "Theme Pack :"/>
+						 </Grid>
+						 <Grid Grid.Column="1">
+							 <generators:PackGenerator/>
+						 </Grid>
+						 <Grid Grid.Column="2" Margin="0 5 0 0">
+							 <Button Content="Reload to default" Click="ReloadToDefaultStyle"/>
+						 </Grid>
+					 </Grid>
+				 </StackPanel>
+			 </StackPanel>
+			 
+			 <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 15" Width="350"/>
+			 
+			 <StackPanel Margin="0 5 0 0">
+				 <Grid ColumnDefinitions="100, 750">
+					 <Grid Grid.Column="0">
+						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="60" Source="{x:Static resource:ResourcesIconsCompressed.ShortcutCompressed}"/>
+					 </Grid>
+					 <Grid Grid.Column="1">
+						 <TextBlock Text="Shortcuts" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+					 </Grid>
+				 </Grid>
+				 <Expander IsExpanded="False" Header="Custom Shortcuts" Margin="20 0">
+					 <StackPanel>
+						 <WrapPanel>
+							 <TextBlock Text="Copy : "/>
+							 <TextBox Watermark="Copy"/>
+						 </WrapPanel>
+						 <WrapPanel>
+							 <TextBlock Text="Cut : "/>
+							 <TextBox Watermark="Cut"/>
+						 </WrapPanel>
+						 <WrapPanel>
+							 <TextBlock Text="Close : "/>
+							 <TextBox Watermark="Close"/>
+						 </WrapPanel>
+						 <WrapPanel>
+							 <TextBlock Text="Paste : "/>
+							 <TextBox Watermark="Paste"/>
+						 </WrapPanel>
+						 <WrapPanel>
+							 <TextBlock Text="Delete : "/>
+							 <TextBox Watermark="Delete"/>
+						 </WrapPanel>
+						 <WrapPanel>
+							 <TextBlock Text="Delete Permanent : "/>
+							 <TextBox Watermark="Delete Permanent"/>
+						 </WrapPanel>
+						 <WrapPanel>
+							 <TextBlock Text="Create File : "/>
+							 <TextBox Watermark="Create File"/>
+						 </WrapPanel>
+						 <WrapPanel>
+							 <TextBlock Text="Create Folder : "/>
+							 <TextBox Watermark="Create Folder"/>
+						 </WrapPanel>
+						 <WrapPanel>
+							 <TextBlock Text="New Window : "/>
+							 <TextBox Watermark="New Window"/>
+						 </WrapPanel>
+						 <WrapPanel>
+							 <TextBlock Text="Search : "/>
+							 <TextBox Watermark="Search"/>
+						 </WrapPanel>
+					 </StackPanel>
+				 </Expander>
+			 </StackPanel>
+			 
+			 <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 15" Width="350"/>
+			 
+			 <StackPanel Margin="0 25 0 0">
+				 <Grid ColumnDefinitions="100, *, 170">
+					 <Grid Grid.Column="0">
+						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.UploadCompressed}"/>
+					 </Grid>
+					 <Grid Grid.Column="1">
+						 <TextBlock Text="Uninstall" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+					 </Grid>
+					 <Grid Grid.Column="2">
+						 <Button Background="#ffcdd2" Margin="0 0 15 0">
+							 <TextBlock Text="Uninstall CubeTools" Foreground="#b71c1c"/>
+						 </Button>
+					 </Grid>
+				 </Grid>
+			 </StackPanel>
+			 
+			 <WrapPanel HorizontalAlignment="Right" Margin="0 20 10 0">
+				 <Button Content="Save" Click="Save"/>
+				 <Button Content="Quit" Click="Quit"/>
+			 </WrapPanel>
+			 
+			 
+			 <!--
 			 <Expander IsExpanded="True" Header="Styles" ExpandDirection="Down">
 				 <StackPanel>
 					 <WrapPanel>
@@ -22,6 +140,7 @@
 					 </WrapPanel>
 				 </StackPanel>
 			 </Expander>
+			 
 			 
 			 <Expander IsExpanded="True" Header="OneDrive Accounts" ExpandDirection="Down">
 				 <StackPanel>
@@ -90,6 +209,7 @@
 					<Button Content="Save" Click="Save"/>
 					<Button Content="Quit" Click="Quit"/>
 			 </WrapPanel>
+			 -->
 		 </StackPanel>
 	 </ScrollViewer>
 </Window>
