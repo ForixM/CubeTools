@@ -25,6 +25,7 @@ namespace Ui.Views.Remote
 
         public Client Client;
         public List<Key> KeysPressed;
+        public bool GotFocusLocal;
 
         #endregion
 
@@ -39,8 +40,9 @@ namespace Ui.Views.Remote
             RemoteNavigationView = this.FindControl<RemoteNavigation>("RemoteNavigation");
             RemoteActionView = this.FindControl<RemoteAction>("RemoteAction");
             RemotePointersView = this.FindControl<RemotePointers>("RemotePointers");
-            // Components
+            // Variables
             KeysPressed = new List<Key>();
+            GotFocusLocal = true;
         }
 
         public MainWindowRemote(Client client) : this()
@@ -66,7 +68,7 @@ namespace Ui.Views.Remote
             }
             catch (Exception e)
             {
-                if (e is ManagerException @managerException) new Views.ErrorPopUp.ErrorPopUp();
+                if (e is ManagerException managerException) SelectErrorPopUp(managerException);
             }
         }
 
@@ -93,7 +95,7 @@ namespace Ui.Views.Remote
             {
                 try
                 {
-                    ManagerReader.AutoLaunchAppProcess(Client.Download(item, Local.NavigationBarView.FolderPointer.Path).Path);
+                    ManagerReader.AutoLaunchAppProcess(Client.DownloadFile(item, Local.NavigationBarView.FolderPointer).Path);
                 }
                 catch (Exception e)
                 {

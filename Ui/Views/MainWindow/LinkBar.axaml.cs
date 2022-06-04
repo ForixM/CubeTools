@@ -2,8 +2,13 @@ using System;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
+using Library.ManagerExceptions;
+using LibraryClient;
+using LibraryClient.LibraryOneDrive;
 using Syroot.Windows.IO;
 using Ui.Views.Ftp;
+using Ui.Views.Remote;
 
 namespace Ui.Views.MainWindow
 {
@@ -22,6 +27,12 @@ namespace Ui.Views.MainWindow
 
         private void AccessError(object? sender, RoutedEventArgs e)
         {
+            ClientOneDrive client = new ClientOneDrive(ClientType.ONEDRIVE);
+            client.Client.authenticated += (o, success) =>
+            {
+                if (success) Dispatcher.UIThread.Post(() => new MainWindowRemote(client).Show());
+                else throw new NoException();
+            };
         }
         
         private void FTP(object? sender, RoutedEventArgs e) => new LoginFTP().Show();

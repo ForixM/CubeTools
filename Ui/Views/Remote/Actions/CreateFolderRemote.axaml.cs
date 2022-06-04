@@ -11,7 +11,7 @@ namespace Ui.Views.Remote.Actions
 {
     public class CreateFolderRemote : Window
     {
-        private readonly MainWindowRemote _main;
+        private readonly MainWindowRemote? _main;
         private readonly TextBox _textEntered;
 
         #region Init
@@ -61,7 +61,7 @@ namespace Ui.Views.Remote.Actions
 
         private void CreateDir(string name)
         {
-            if (_main.Client is null) return;
+            if (_main?.Client is null) return;
             else if (!ManagerReader.IsPathCorrect(name)) _textEntered.Text = "Invalid Text !";
             else if (_main.Client.GetItem(name) is not null)
                 _main.SelectErrorPopUp(new ReplaceException("Folder already exists !"));

@@ -1,15 +1,23 @@
 ﻿using Library;
+using Library.DirectoryPointer;
+using Library.FilePointer;
+using LibraryClient.LibraryFtp;
 using LibraryClient.LibraryOneDrive;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace LibraryClient
 {
     public class ClientOneDrive : Client
     {
         private OnedriveClient _clientOneDrive;
+        public OnedriveClient Client => _clientOneDrive;
 
         public ClientOneDrive(ClientType type) : base(type)
         {
             _clientOneDrive = new OnedriveClient();
+            Root = OneItem.ROOT;
+            CurrentFolder = OneItem.ROOT;
         }
         
         
@@ -20,10 +28,7 @@ namespace LibraryClient
             throw new NotImplementedException();
         }
 
-        public override RemoteItem CreateFolder(string name)
-        {
-            return _clientOneDrive.CreateFolder(name, (OneItem)CurrentFolder);
-        }
+        public override RemoteItem CreateFolder(string name) => _clientOneDrive.CreateFolder(name, (OneItem)CurrentFolder);
 
         public override RemoteItem? Copy(RemoteItem item) //TODO
         {
@@ -40,53 +45,44 @@ namespace LibraryClient
             throw new NotImplementedException(); 
         }
 
-        public override Pointer Download(RemoteItem item, string name)
+        public override Pointer DownloadFile(RemoteItem item, DirectoryPointer destination)
         {
-            _clientOneDrive.DownloadFile(name, (OneItem)item);
-            return base.Download(item, name);
+            _clientOneDrive.DownloadFile(destination.Path, (OneItem)item);
+            return base.DownloadFile(item, destination);
         }
 
-        public override void Upload(Pointer pointer, RemoteItem destination)
+        public override void UploadFile(FilePointer pointer, RemoteItem destination) =>  _clientOneDrive.UploadFile(pointer, (OneItem) destination);
+
+        public override void UploadFolder(DirectoryPointer pointer, RemoteItem destination)
         {
-            _clientOneDrive.UploadFile(pointer, (OneItem) destination);
+            // TODO Upload function
+            throw new NotImplementedException();
+            //_clientOneDrive.UploadFile(pointer, (OneItem) destination);
         }
 
         public override void AccessPath(RemoteItem destination)
         {
+            DisposeChildren();
             CurrentFolder = destination;
-            foreach (OneItem item in _clientOneDrive.GetArboresence((OneItem)destination).items)
-            {
-                Children.Add(item);
-            }
+            foreach (OneItem item in _clientOneDrive.GetArboresence((OneItem)destination).items) Children.Add(item);
         }
 
-        public override void Refresh()
-        {
-            foreach (OneItem item in _clientOneDrive.GetArboresence((OneItem)CurrentFolder).items)
-            {
-                Children.Add(item);
-            }
-        }
-
-        public override RemoteItem? GetItem(string name) //TODO
-        {
-            // => CurrentFolder.IsDir ? _clientOneDrive.GetItem(folder, name) : null;
-            throw new NotImplementedException();
-        }
-
-        public override RemoteItem? GetItem(RemoteItem folder, string name) //TODO
-        {
-            throw new NotImplementedException();
-        }
-
+        public override RemoteItem? GetItem(string name) => 
+            _clientOneDrive.GetArboresence((OneItem) CurrentFolder!).items.FirstOrDefault(oneObject => oneObject.name == name);
+        
         public override RemoteItem GetParentReference(RemoteItem item)
         {
-            throw new NotImplementedException();
+            JObject jObject = _clientOneDrive.GetItemFullMetadata(item.ParentPath);
+            OneItem parentItem =  JsonConvert.DeserializeObject<OneItem>(jObject.ToString());
+            parentItem.SetVariables();
+            return parentItem;
         }
 
-        public override List<RemoteItem>? ListChildren(RemoteItem folder) //TODO
+        public override List<RemoteItem>? ListChildren()
         {
-            throw new NotImplementedException();
+            List<RemoteItem> result = new List<RemoteItem>();
+            result.AddRange(_clientOneDrive.GetArboresence((OneItem) CurrentFolder!).items);
+            return result;
         }
 
         #endregion

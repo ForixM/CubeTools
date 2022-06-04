@@ -11,6 +11,18 @@ namespace LibraryClient.LibraryOneDrive
     [DataContract]
     public class OneItem : RemoteItem
     {
+        
+        public static OneItem ROOT = new()
+        {
+            name = "",
+            size = 0,
+            folder = new OneFolder(),
+            parentReference = new ParentReference
+            {
+                path = "/drive/root:"
+            }
+        };
+
         [DataMember(Name = "name")] public string name { get; set; }
 
         [DataMember(Name = "size")] public long size { get; set; }
@@ -29,6 +41,20 @@ namespace LibraryClient.LibraryOneDrive
 
         [DataMember(Name = "parentReference")] public ParentReference parentReference { get; set; }
 
+        /// <summary>
+        /// Call when getting the arboresence of a OneFolder
+        /// </summary>
+        public void SetVariables()
+        {
+            _name = name;
+            _size = size;
+            string extension = System.IO.Path.GetExtension(name);
+            _type = extension == "" ? "" : extension.Remove(0, 1);
+            base.IsDir = this.IsDir;
+            _parentPath = parentReference.path == null ? "/drive/root:" : parentReference.path;
+            _path = parentReference.path == null ? "/drive/root:" : _parentPath+name;
+        }
+        
         public override string ToString()
         {
             var disp = "name=" + name + "\nsize=" + size + "\n";

@@ -20,8 +20,8 @@ namespace Ui.Views.Remote
 
         public RemoteAction()
         {
+            Main = MainWindowRemote.LastView;
             InitializeComponent();
-            Main = null;
             Selected = new List<RemoteItem>();
             Copied = new List<RemoteItem>();
             CutXaml = new List<RemoteItem>();
@@ -126,9 +126,12 @@ namespace Ui.Views.Remote
         public void Download(object? sender, RoutedEventArgs e)
         {
             if (Main?.Client?.CurrentFolder is null) return;
-            
+
             foreach (var item in Main!.RemoteActionView.Selected)
-                Main.Client.Download(Main.Client.CurrentFolder, item.Name);
+            {
+                if (item.IsDir) Main.Client.DownloadFolder(item, Main.Local.NavigationBarView.FolderPointer);
+                else Main.Client.DownloadFile(item, Main.Local.NavigationBarView.FolderPointer);
+            }
             Main.Refresh();
         }
 

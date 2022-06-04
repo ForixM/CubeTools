@@ -19,7 +19,6 @@ namespace Ui.Views.Remote.Actions
         {
             InitializeComponent();
             _textEntered = this.FindControl<TextBox>("TextEntered");
-            _main = null;
         }
         public CreateFileRemote(MainWindowRemote main) : this()
         {

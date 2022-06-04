@@ -1,7 +1,7 @@
 ﻿using Library;
 using Library.DirectoryPointer;
-using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Library.FilePointer;
+using Library.ManagerExceptions;
 
 namespace LibraryClient
 {
@@ -52,36 +52,49 @@ namespace LibraryClient
         public abstract RemoteItem? Copy(RemoteItem item);
         
         /// <summary>
-        /// 
+        /// Delete a folder or a file in the current folder
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">the item to delete</param>
         public abstract void Delete(RemoteItem item);
         
         /// <summary>
-        /// 
+        /// Rename a folder or a file by the newName given <br></br>
+        /// <remarks>The item is modified, not returned</remarks>
         /// </summary>
-        /// <param name="item"></param>
-        /// <param name="newName"></param>
+        /// <param name="item">the item to rename</param>
+        /// <param name="newName">the name name of the item</param>
+        /// <exception cref="ReplaceException">The newName given already exists</exception>
         public abstract void Rename(RemoteItem item, string newName);
 
         /// <summary>
         /// Download the file or folder given by its name (name)
         /// </summary>
-        /// <param name="folder">the folder of reference</param>
-        /// <param name="name">the name of the file / folder to download</param>
+        /// <param name="item">the file / folder to download</param>
+        /// <param name="destination">The destination</param>
         /// <returns>The </returns>
-        public virtual Pointer Download(RemoteItem folder, string name)
-        {
-            
-            if (File.Exists(name)) return new FilePointer(name);
-            else return new DirectoryPointer(name);
-        }
+        public virtual Pointer DownloadFile(RemoteItem item, DirectoryPointer destination) => new FilePointer(item.Name);
+        
+        /// <summary>
+        /// Download the file or folder given by its name (name)
+        /// </summary>
+        /// <param name="item">the file / folder to download</param>
+        /// <param name="destination">The destination</param>
+        /// <returns>The downloaded folder</returns>
+        public virtual Pointer DownloadFolder(RemoteItem item, DirectoryPointer destination) => new DirectoryPointer(item.Name);
+        
         /// <summary>
         /// Upload the Local Pointer to the RemoteFolder
         /// </summary>
         /// <param name="pointer">The Pointer</param>
         /// <param name="destination">The Remote Folder</param>
-        public abstract void Upload(Pointer pointer, RemoteItem destination);
+        public abstract void UploadFile(FilePointer pointer, RemoteItem destination);
+        
+        /// <summary>
+        /// Upload the Local Pointer to the RemoteFolder
+        /// </summary>
+        /// <param name="pointer">The Pointer</param>
+        /// <param name="destination">The Remote Folder</param>
+        public abstract void UploadFolder(DirectoryPointer pointer, RemoteItem destination);
         
         /// <summary>
         /// Access the path given by name <br></br>
@@ -89,11 +102,15 @@ namespace LibraryClient
         /// </summary>
         /// <param name="destination">the name folder or file</param>
         public abstract void AccessPath(RemoteItem destination);
-        
+
         /// <summary>
         /// Refresh the children of the client
         /// </summary>
-        public abstract void Refresh();
+        public void Refresh()
+        {
+            DisposeChildren();
+            Children = ListChildren() ?? new List<RemoteItem>();
+        }
 
         /// <summary>
         /// Get the item by its name if it exists in the current loaded folder
@@ -115,6 +132,7 @@ namespace LibraryClient
         public abstract string GetItemType(RemoteItem item);
         public abstract long GetItemSize(RemoteItem item);
         public abstract RemoteItem GetParentReference(RemoteItem item);
+        
         /// <summary>
         /// Return the children in the current folder <br></br>
         /// If the folder is null, return null
@@ -124,6 +142,21 @@ namespace LibraryClient
 
         public abstract void InitializeProperties(RemoteItem item);
 
+        #endregion
+        
+        #region Memory
+
+        /// <summary>
+        /// Dispose the children
+        /// </summary>
+        public void DisposeChildren()
+        {
+            foreach (var item in Children)
+                item.Dispose();
+            GC.Collect();
+            Children.Clear();
+        }
+        
         #endregion
         
 
