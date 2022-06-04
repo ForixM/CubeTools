@@ -98,17 +98,9 @@ namespace LibraryClient
         /// <summary>
         /// Get the item by its name if it exists in the current loaded folder
         /// </summary>
-        /// <param name="path">The path of the file, each file/folder separated by a /</param>
-        /// <returns>The remote Item</returns>
-        public abstract RemoteItem? GetItem(string path);
-
-        /// <summary>
-        /// Get the item by its current folder and its name
-        /// </summary>
-        /// <param name="folder">the current folder</param>
-        /// <param name="name">the name of the file or folder</param>
-        /// <returns>The remote item</returns>
-        public abstract RemoteItem? GetItem(RemoteItem folder, string name);
+        /// <param name="name">The name of the file, each file/folder separated by a / in the current folder</param>
+        /// <returns>The remote Item in the current folder</returns>
+        public abstract RemoteItem? GetItem(string name);
 
         #endregion
         
@@ -123,7 +115,12 @@ namespace LibraryClient
         public abstract string GetItemType(RemoteItem item);
         public abstract long GetItemSize(RemoteItem item);
         public abstract RemoteItem GetParentReference(RemoteItem item);
-        public abstract List<RemoteItem>? ListChildren(RemoteItem folder);
+        /// <summary>
+        /// Return the children in the current folder <br></br>
+        /// If the folder is null, return null
+        /// </summary>
+        /// <returns></returns>
+        public abstract List<RemoteItem>? ListChildren();
 
         public abstract void InitializeProperties(RemoteItem item);
 
