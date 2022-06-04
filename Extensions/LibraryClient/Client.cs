@@ -15,7 +15,6 @@ namespace LibraryClient
     {
         public RemoteItem Root;
         
-        public string Path;
         public RemoteItem? CurrentFolder;
         public ClientType Type;
         public List<RemoteItem> Children;
@@ -25,9 +24,7 @@ namespace LibraryClient
             // Attributes
             Type = type;
             Children = new List<RemoteItem>();
-            Root = GetRoot();
             CurrentFolder = Root;
-            Path = Root.Path;
             CurrentFolder = null;
         }
 
@@ -75,6 +72,7 @@ namespace LibraryClient
         /// <returns>The </returns>
         public virtual Pointer Download(RemoteItem folder, string name)
         {
+            
             if (File.Exists(name)) return new FilePointer(name);
             else return new DirectoryPointer(name);
         }
@@ -103,7 +101,14 @@ namespace LibraryClient
         /// <param name="path">The path of the file, each file/folder separated by a /</param>
         /// <returns>The remote Item</returns>
         public abstract RemoteItem? GetItem(string path);
-        
+
+        /// <summary>
+        /// Get the item by its current folder and its name
+        /// </summary>
+        /// <param name="folder">the current folder</param>
+        /// <param name="name">the name of the file or folder</param>
+        /// <returns>The remote item</returns>
+        public abstract RemoteItem? GetItem(RemoteItem folder, string name);
 
         #endregion
         
@@ -123,15 +128,6 @@ namespace LibraryClient
 
         #endregion
         
-        #region Others
-
-        /// <summary>
-        /// Allow the client to get the root of the remote connection
-        /// </summary>
-        /// <returns>The Remote folder that represent the root</returns>
-        public abstract RemoteItem GetRoot();
-
-        #endregion
 
     }
 

@@ -15,6 +15,7 @@
 
         // Getter and Setter
 
+        public string ParentPath(RemoteItem root) => _path == root.Path ? root.Path : _path.Remove(_path.Length - _name.Length, _name.Length);
         public string Path => _path;
         public string Type { get => _type; set => _type = value; }
 
