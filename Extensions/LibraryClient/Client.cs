@@ -1,12 +1,20 @@
 ﻿using Library;
 using Library.DirectoryPointer;
+using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Library.FilePointer;
 
 namespace LibraryClient
 {
+    /// <summary>
+    /// Abstract Client <br></br>
+    /// - Purpose : Provide a whole interface to make interaction with the UI easier <br></br>
+    /// - Used : GoogleDriveClient, OneDriveClient, FTPClient
+    /// - Be aware that all access to a remote file or folder should be done by using its absolute path <br></br>
+    /// </summary>
     public abstract class Client
     {
-
+        public RemoteItem Root;
+        
         public string Path;
         public RemoteItem? CurrentFolder;
         public ClientType Type;
@@ -17,16 +25,12 @@ namespace LibraryClient
             // Attributes
             Type = type;
             Children = new List<RemoteItem>();
-            Path = "";
-            LoadConfiguration(type);
+            Root = GetRoot();
+            CurrentFolder = Root;
+            Path = Root.Path;
             CurrentFolder = null;
         }
-        
-        #region Configuration
-        protected abstract void LoadConfiguration(ClientType type);
-        
-        #endregion
-        
+
         #region Actions
 
         /// <summary>
@@ -66,14 +70,19 @@ namespace LibraryClient
         /// <summary>
         /// Download the file or folder given by its name (name)
         /// </summary>
-        /// <param name="item">the folder of reference</param>
+        /// <param name="folder">the folder of reference</param>
         /// <param name="name">the name of the file / folder to download</param>
-        /// <returns></returns>
-        public virtual Pointer Download(RemoteItem item, string name)
+        /// <returns>The </returns>
+        public virtual Pointer Download(RemoteItem folder, string name)
         {
-            if (System.IO.File.Exists(name)) return new FilePointer(name);
+            if (File.Exists(name)) return new FilePointer(name);
             else return new DirectoryPointer(name);
         }
+        /// <summary>
+        /// Upload the Local Pointer to the RemoteFolder
+        /// </summary>
+        /// <param name="pointer">The Pointer</param>
+        /// <param name="destination">The Remote Folder</param>
         public abstract void Upload(Pointer pointer, RemoteItem destination);
         
         /// <summary>
@@ -89,18 +98,38 @@ namespace LibraryClient
         public abstract void Refresh();
 
         /// <summary>
-        /// Verify whether the item is in the folder
-        /// </summary>
-        /// <param name="folder">the folder</param>
-        /// <param name="item">the given item to search</param>
-        /// <returns></returns>
-        public abstract bool ItemExist(RemoteItem folder, RemoteItem item);
-
-        /// <summary>
         /// Get the item by its name if it exists in the current loaded folder
         /// </summary>
+        /// <param name="path">The path of the file, each file/folder separated by a /</param>
         /// <returns>The remote Item</returns>
-        public abstract RemoteItem? GetItem(string name);
+        public abstract RemoteItem? GetItem(string path);
+        
+
+        #endregion
+        
+        #region Properties
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public abstract string GetItemName(RemoteItem item);
+        public abstract string GetItemType(RemoteItem item);
+        public abstract long GetItemSize(RemoteItem item);
+        public abstract List<RemoteItem>? ListChildren(RemoteItem folder);
+
+        public abstract void InitializeProperties(RemoteItem item);
+
+        #endregion
+        
+        #region Others
+
+        /// <summary>
+        /// Allow the client to get the root of the remote connection
+        /// </summary>
+        /// <returns>The Remote folder that represent the root</returns>
+        public abstract RemoteItem GetRoot();
 
         #endregion
 

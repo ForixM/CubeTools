@@ -1,4 +1,5 @@
 ﻿using Library;
+using LibraryClient.LibraryGoogleDrive;
 
 namespace LibraryClient
 {
@@ -11,66 +12,96 @@ namespace LibraryClient
             //_clientOneDrive = new OnedriveClient();
         }
         
-        #region Configuration
-
-        protected override void LoadConfiguration(ClientType type)
-        {
-        }
-        
-        #endregion
         
         #region Actions
 
-        public override RemoteItem CreateFile(string name) => null; //_clientOneDrive.CreateFile((FtpFolder) CurrentFolder!, name);
-        public override RemoteItem CreateFolder(string name) => null; //_clientOneDrive.CreateFolder( CurrentFolder!, name);
+        public override RemoteItem CreateFile(string name)
+        {
+            throw new NotImplementedException();
+        }
 
-        public override RemoteItem? Copy(RemoteItem item) => null;
+        public override RemoteItem CreateFolder(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override RemoteItem? Copy(RemoteItem item)
+        {
+            throw new NotImplementedException();
+        }
 
         public override void Delete(RemoteItem item)
         {
-            return;}//_clientOneDrive.DeleteItem((OneItem) item);
+            throw new NotImplementedException();
+        }
 
         public override void Rename(RemoteItem item, string newName)
         {
-            return;} //_clientOneDrive.Rename((IFtpItem) item, newName);
+            throw new NotImplementedException();
+        }
 
         public override Pointer Download(RemoteItem item, string name)
         {
-            /*_clientOneDrive.DownloadFile((OneItem) item, name);
-            return base.Download(item, name);*/
-            return Pointer.NullPointer;
+            throw new NotImplementedException();
         }
 
         public override void Upload(Pointer pointer, RemoteItem destination)
         {
-            /*
-            if (pointer.IsDir) _clientFtp.UploadFolder(pointer, (FtpFolder) destination);
-            else _clientFtp.UploadFile(pointer, (FtpFolder)destination);
-            */
+            throw new NotImplementedException();
         }
 
         public override void AccessPath(RemoteItem destination)
         {
-            /*
-            Children.Clear();
-            foreach (var item in _clientFtp.ListDirectory((FtpFolder) destination).Items)
-                Children.Add(item);
-                */
+            throw new NotImplementedException();
         }
 
         public override void Refresh()
         {
-            /*
-            Children.Clear();
-            if (CurrentFolder is null) return;
-            foreach (var item in _clientFtp.ListDirectory( (FtpFolder)CurrentFolder).Items) Children.Add(item);
-            */
+            throw new NotImplementedException();
         }
 
-        public override bool ItemExist(RemoteItem folder, RemoteItem item) => false; /*_clientFtp.ItemExist((FtpFolder) folder, (IFtpItem) item);*/
+        public override RemoteItem? GetItem(string name)
+        {
+            throw new NotImplementedException();
+        }
 
-        public override RemoteItem? GetItem(string name) => null;
-            //CurrentFolder is FtpFolder ? _clientFtp.GetItem((FtpFolder) CurrentFolder, name) : null;
+        public override List<RemoteItem>? ListChildren(RemoteItem folder)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+        
+        #region Properties
+
+        public override string GetItemName(RemoteItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override long GetItemSize(RemoteItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GetItemType(RemoteItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void InitializeProperties(RemoteItem item)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Others
+
+        public override RemoteItem GetRoot()
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

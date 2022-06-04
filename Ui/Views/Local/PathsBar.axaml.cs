@@ -8,6 +8,7 @@ namespace Ui.Views.Local
 {
     public class PathsBar : UserControl
     {
+        
         public Local Main;
         public StackPanel Generator;
 

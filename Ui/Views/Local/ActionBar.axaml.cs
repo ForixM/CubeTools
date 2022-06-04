@@ -157,7 +157,6 @@ namespace Ui.Views.Local
             const string uri = "https://www.fromsmash.com";
             var psi = new System.Diagnostics.ProcessStartInfo
             {
-                UseShellExecute = true,
                 FileName = uri
             };
             System.Diagnostics.Process.Start(psi);

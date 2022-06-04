@@ -6,42 +6,25 @@ namespace LibraryClient.LibraryGoogleDrive
         
     public static class ManagerFile
     {
-        public static string CreateFolder(string parent, string folderName = "")
+        public static string CreateFolder(string parent, string folderName)
         {
             var Service = OAuth.GetDriveService();
             var DriveFolder = new Google.Apis.Drive.v3.Data.File();
-
-                if (folderName == "")
-                {
-                    DriveFolder.Name = "Nouveau Dossier";
-                }
-                else
-                {
-                    DriveFolder.Name = folderName;
-                }
-
-                DriveFolder.MimeType = "application/vnd.google-apps.folder";
-            DriveFolder.Parents = new[] {parent};
+            DriveFolder.Name = folderName;
+            DriveFolder.MimeType = "application/vnd.google-apps.folder";
+            DriveFolder.Parents = new string[] {parent};
 
             var command = Service.Files.Create(DriveFolder);
             var file = command.Execute();
             return file.Id;
         }
 
-        public static string CreateFile(string folderId, string fileName = "")
+        public static string CreateFile(string folderId, string fileName)
         {
             var Service = OAuth.GetDriveService();
             var DriveFile = new Google.Apis.Drive.v3.Data.File();
-
-            if (fileName == "")
-            {
-                DriveFile.Name = "Nouveau Fichier";
-            }
-            else
-            {
-                DriveFile.Name = fileName;
-            }
             
+            DriveFile.Name = fileName;
             DriveFile.MimeType = "application/octet-stream";
             DriveFile.Parents = new[] {folderId};
 
@@ -59,7 +42,7 @@ namespace LibraryClient.LibraryGoogleDrive
             DriveFile.Name = fileName;
             DriveFile.MimeType = fileMime;
             DriveFile.Description = fileDescription;
-            DriveFile.Parents = new[] {folder};
+            DriveFile.Parents = new string[] {folder};
 
             var request = Service.Files.Create(DriveFile, file, fileMime);
             request.Fields = "id";
@@ -128,6 +111,16 @@ namespace LibraryClient.LibraryGoogleDrive
             
             DriveFile.Parents.Clear();
             DriveFile.Parents = new[] {newfolderid};
+
+            Service.Files.Update(DriveFile, fileid).Execute();
+        }
+
+        public static void Rename(string fileid, string newName)
+        {
+            var Service = OAuth.GetDriveService();
+            var DriveFile = Service.Files.Get(fileid).Execute();
+
+            DriveFile.Name = newName;
 
             Service.Files.Update(DriveFile, fileid).Execute();
         }

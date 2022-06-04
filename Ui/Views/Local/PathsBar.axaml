@@ -3,6 +3,6 @@
              x:Class="Ui.Views.Local.PathsBar">
 	
 	<ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
-		<StackPanel Name="Generator" />
+		<StackPanel Name="Generator"/>
 	</ScrollViewer>
 </UserControl>

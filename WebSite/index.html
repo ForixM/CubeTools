@@ -84,19 +84,24 @@
         </div>
 
         <div class="download">
-            <div class="content">
-                <i class="fas fa-cloud-download-alt"></i>
-                <span class="button-text">Download</span>
-
-            </div>
+            <a href="Download/Test.txt" download>
+                <div class="content">
+                    <i class="fas fa-cloud-download-alt"></i>
+                    <span class="button-text">Download</span>
+                </div>
+            </a>
+            
         </div>
 
         <div class="documentation">
-            <div class="content">
-                <i class="fas fa-book"></i>
-                <span class="documentation-text">Documentation</span>
+            <a href="Download/Test.txt" download>
+                <div class="content">
+                    <i class="fas fa-book"></i>
+                    <span class="documentation-text">Documentation</span>
+                </div>
+            </a>
 
-            </div>
+            
         </div>
 
         <h2 id="about">About</h2>
@@ -155,9 +160,9 @@
                         </li>
                         <li> FTP
                             <ul>
-                                <li>Oui</li>
-                                <li>Oui</li>
-                                <li>Oui</li>
+                                <li>Méthodes de compressions/décompression de fichiers</li>
+                                <li>Choix de l'algorithme: LZMA ou ZIP</li>
+                                <li>Utilisation de l'API 7-zip</li>
                             </ul>
                         </li>
                     </ul>
@@ -244,19 +249,44 @@
             </div>
         </div>
         <h2 id="project">Project</h2>
+
+        <div class="slide-container">
+            <div class="menu-container">
+                <label for="slide-dot-1"></label>
+                <label for="slide-dot-2"></label>
+                <label for="slide-dot-3"></label>
+            </div>
+
+            <input class="slide-input" id="slide-dot-1" type="radio" name="slides" checked>
+            <input class="slide-input" id="slide-dot-2" type="radio" name="slides" checked>
+            <input class="slide-input" id="slide-dot-3" type="radio" name="slides" checked>
+        </div>
+
+
         <h2 id="services">Services</h2>
         <div class="grid">
             <article class="serv-grid grid1">
+                <h3>Cross Platform</h3>
+                <p>Grâce à la Framework Avalonia, nous avons pu créer une application WPF compatible avec de nombreux systèmes
+                    d'exploitation.
+                </p>
+                <img src="myicons/CrossPlateform.png">
             </article>
             <article class="serv-grid grid2">
+                <img src="myicons/Google_Drive.svg.png">
             </article>
             <article class="serv-grid grid3">
             </article>
             <article class="serv-grid grid4">
+                <img src="myicons/OneDrive.svg.png">
             </article>
             <article class="serv-grid grid5">
+                <h3>Une application moderne</h3>
+                <p>Un design moderne et de nombreux outils pour répondre à tous vos besoins, 
+                    pour gérer vos fichiers en toute simplicité</p>
             </article>
         </div>
+        
         <h2 id="contact">Contact us</h2>
         <div class="conBar">
             <div class="conBox">

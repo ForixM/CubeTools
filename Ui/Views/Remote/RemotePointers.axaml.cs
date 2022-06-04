@@ -17,21 +17,29 @@ namespace Ui.Views.Remote
         {
             InitializeComponent();
             Generator = this.FindControl<StackPanel>("RemoteGenerator");
-        }
-
-        public RemotePointers(MainWindowRemote main) : this()
-        {
-            Main = main;
+            Main = MainWindowRemote.LastView;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
 
-        public void ReloadPath(List<RemoteItem> ftList)
+        public void ReloadPath()
         {
             Generator.Children.Clear();
-            foreach (var ft in ftList)
+            foreach (var ft in Main.Client.Children)
+            {
+                var pi = new RemotePointer(ft, Main);
+                if (Main.RemoteActionView.Selected.Contains(pi.Pointer)) pi.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
+                else pi.button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
+                Generator.Children.Add(pi);
+            }
+        }
+        
+        public void ReloadPath(List<RemoteItem> pointers)
+        {
+            Generator.Children.Clear();
+            foreach (var ft in pointers)
             {
                 var pi = new RemotePointer(ft, Main);
                 // TODO CHECK

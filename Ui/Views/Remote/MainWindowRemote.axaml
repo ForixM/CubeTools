@@ -52,7 +52,7 @@
                                 </Grid>
                                 <Grid Row="2">
                                         <ScrollViewer>
-                                                <remote:RemotePointers Name="RemoteFtp"/>
+                                                <remote:RemotePointers Name="RemotePointers"/>
                                         </ScrollViewer>
                                 </Grid>
                         </Grid>

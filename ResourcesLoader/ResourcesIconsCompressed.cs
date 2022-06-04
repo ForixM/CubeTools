@@ -25,6 +25,8 @@ namespace ResourcesLoader
                                                            "IconsCompressed/Desktop.ico");
         public static readonly IImage DownloadsCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Downloads.ico");
+        public static readonly IImage DownloadCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                      "IconsCompressed/Download.ico");
         public static readonly IImage FavoritesCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Favorites.ico");
         public static readonly IImage FileCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +

@@ -41,14 +41,12 @@ namespace Ui.Views.Remote
         /// <summary>
         /// Create a new file (New File by default)
         /// </summary>
-        public void CreateFile(object? sender, RoutedEventArgs e)
-        {
-        }
+        public void CreateFile(object? sender, RoutedEventArgs e) => new CreateFileRemote(Main!).Show();
 
         /// <summary>
         /// Create a new directory (New Folder by default)
         /// </summary>
-        public void CreatDir(object? sender, RoutedEventArgs e) => new CreateFileRemote(Main!).Show();
+        public void CreatDir(object? sender, RoutedEventArgs e) => new CreateFolderRemote(Main!).Show();
 
         /// <summary>
         /// Add to Copied the selected elements
@@ -97,10 +95,18 @@ namespace Ui.Views.Remote
         /// </summary>
         public void Rename(object? sender, RoutedEventArgs e)
         {
-            if (Selected.Count == 1)
-                new RenameRemote(Main!.RemoteActionView.Selected[0], Main.Client.Children, Main).Show();
-            else new ErrorPopUp.ErrorPopUp(new ManagerException("Unable to rename multiple data")).Show();
-            
+            switch (Selected.Count)
+            {
+                case 0:
+                    return;
+                case 1:
+                    new RenameRemote(Main!.RemoteActionView.Selected[0], Main.Client.Children, Main).Show();
+                    break;
+                default:
+                    new ErrorPopUp.ErrorPopUp(new ManagerException("Unable to rename multiple data")).Show();
+                    break;
+            }
+
             Main!.ReloadPath();
         }
 
@@ -111,6 +117,18 @@ namespace Ui.Views.Remote
         {
             foreach (var item in Main!.RemoteActionView.Selected)
                 DeletePointer(item);
+            Main.ReloadPath();
+        }
+        
+        /// <summary>
+        /// Delete selected
+        /// </summary>
+        public void Download(object? sender, RoutedEventArgs e)
+        {
+            if (Main?.Client?.CurrentFolder is null) return;
+            
+            foreach (var item in Main!.RemoteActionView.Selected)
+                Main.Client.Download(Main.Client.CurrentFolder, item.Name);
             Main.ReloadPath();
         }
 
