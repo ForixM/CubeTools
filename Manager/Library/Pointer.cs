@@ -37,7 +37,6 @@ namespace Library
         
         // Date
         public string Date => GetPointerCreationDate();
-
         public string LastDate => GetPointerLastEdition();
         public string AccessDate => GetPointerAccessDate();
 

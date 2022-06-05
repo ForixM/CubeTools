@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library.ManagerReader;
 
 namespace Ui.Views.Local.Actions
@@ -61,7 +64,20 @@ namespace Ui.Views.Local.Actions
 
         private void SearchList()
         {
-            _main.Refresh(ManagerReader.FastSearchByName(_main.NavigationBarView.FolderPointer.Path, _textEntered.Text, 100).ToList());
+            Dispatcher.UIThread.Post(() =>
+            {
+                var children = new List<Library.Pointer>();
+                Task.Run(() =>
+                {
+                    children = ManagerReader.FastSearchByName(_main.NavigationBarView.FolderPointer.Path,
+                        _textEntered.Text, 100).ToList();
+                }).GetAwaiter().OnCompleted(() =>
+                {
+                    _main.Refresh(children);
+                });
+
+            });
+            
         }
         
     }

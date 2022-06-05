@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using SevenZip;
 using Pointer = Library.Pointer;
 
@@ -43,12 +44,15 @@ namespace Ui.Views.Local.Actions
         {
             if (e.Key is Key.Enter)
             {
-                Task task = Task.Run(() =>
+                Dispatcher.UIThread.Post(() =>
                 {
-                    foreach (var ft in _data)
-                        LibraryCompression.Compression.Extract(ft);
-                });
-                task.GetAwaiter().OnCompleted(Close);
+                    Task task = Task.Run(() =>
+                    {
+                        foreach (var ft in _data)
+                            LibraryCompression.Compression.Extract(ft);
+                    });
+                    task.GetAwaiter().OnCompleted(Close);
+                }, DispatcherPriority.MaxValue);
             }
         }
 

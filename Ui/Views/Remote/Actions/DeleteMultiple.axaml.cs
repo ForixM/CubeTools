@@ -92,7 +92,8 @@ namespace Ui.Views.Remote.Actions
             {
                 try
                 {
-                    ft.DeleteAsync().GetAwaiter().OnCompleted(() => _main?.NavigationBarView.FolderPointer.Remove(ft));
+                    ft.Delete();
+                    _main?.NavigationBarView.FolderPointer.Remove(ft);
                 }
                 catch (ManagerException e)
                 {

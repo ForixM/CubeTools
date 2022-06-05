@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library.ManagerExceptions;
 using Library;
+using Library.ManagerReader;
 using Ui.Views.Error;
 using Ui.Views.Local.Actions;
 using DeleteMultiple = Ui.Views.Remote.Actions.DeleteMultiple;
@@ -194,15 +197,11 @@ namespace Ui.Views.Local
         {
             try
             {
-                // Delete Pointer
-                if (source.IsDir || source.Size > 1000000) source.DeleteAsync().GetAwaiter().OnCompleted(Main.Refresh);
-                else
-                {
-                    source.Delete();
-                    Main.Refresh();
-                }
-                // Remove reference from Directory Pointer
-                Main.NavigationBarView.FolderPointer.Remove(source);
+                // Copy Pointer
+                Dispatcher.UIThread.Post(
+                    () => source.Copy(ManagerReader.GenerateNameForModification(source.Path), true),
+                    DispatcherPriority.MaxValue);
+                Main.Refresh();
             }
             catch (Exception exception)
             {

@@ -182,7 +182,7 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
         /// <param name="extension">the extension of the file</param>
         public void AddFile(string name, string extension)
         {
-            var path = $"{Path}/{name}.{extension}";
+            var path = (extension != "") ? $"{Path}/{name}.{extension}" : $"{Path}/{name}";
             if (!HasChild(path)) ChildrenFiles.Add(ManagerWriter.ManagerWriter.Create(path, extension));
         }
 
@@ -240,6 +240,7 @@ namespace Library.DirectoryPointer.DirectoryPointerLoaded
                     ChildrenFiles[i] = File.Exists(path)? new FilePointer.FilePointer(path) : new DirectoryPointer(path);
                     return;
                 }
+            GC.Collect();
         }
 
         #endregion

@@ -37,7 +37,7 @@ namespace Library.DirectoryPointer
         /// <exception cref="ManagerException"></exception>
         public override void Rename(string dest, bool overwrite = false)
         {
-            // Dest have an incorrect format
+            // Dest has an incorrect format
             if (!ManagerReader.ManagerReader.IsPathCorrect(dest)) throw new PathFormatException(Path + " : format of path is incorrect", "Copy");
             if (!IsValid())
             {
@@ -51,21 +51,26 @@ namespace Library.DirectoryPointer
                 if (File.Exists(dest)) ManagerWriter.ManagerWriter.DeleteFile(dest);
                 else if (Directory.Exists(dest)) ManagerWriter.ManagerWriter.DeleteDir(dest);
             }
-            // Try to Rename (move the directory)
+            else
+            {
+                if (Directory.Exists(dest) || File.Exists(dest))
+                    throw new ReplaceException($"{dest} already exist", "Rename");
+            }
+            // Try to Rename the directory
             try
             {
-                FileSystem.MoveDirectory(_path, dest, UIOption.AllDialogs, UICancelOption.ThrowException);
+                FileSystem.RenameDirectory(_path, dest);
             }
             catch (Exception e)
             {
                 throw e switch
                 {
-                    SecurityException or UnauthorizedAccessException => new AccessException(
+                    DirectoryNotFoundException => new PathNotFoundException($"{_path} cannot be found in the client's system", "Rename"),
+                    SecurityException or UnauthorizedAccessException or IOException => new AccessException(
                         $"{_path} cannot be renamed, access denied", "Rename"),
                     ArgumentException or ArgumentNullException or PathTooLongException or NotSupportedException =>
                         new PathFormatException($"{_path} has an invalid format", "Rename"),
-                    DirectoryNotFoundException => new PathNotFoundException($"{_path} cannot be found in the client's system", "Rename"),
-                    _ => new ManagerException("Unable to rename a folder", Level.High, "Writer error", $"Cannot rename {_path}", "Rename")
+                    _ => new ManagerException("Unable to rename a folder", Level.High, "Writer error", $"Cannot rename {_path}", "Rename"),
                 };
             }
             
@@ -101,39 +106,33 @@ namespace Library.DirectoryPointer
             // Then finally Copy
             try
             {
-                FileSystem.CopyDirectory(_path, dest, UIOption.AllDialogs, UICancelOption.ThrowException);
+                FileSystem.CopyDirectory(_path, dest, UIOption.AllDialogs, UICancelOption.DoNothing);
             }
             catch (Exception e)
             {
-                if (e is ManagerException) throw;
-                throw e switch
+                switch (e)
                 {
-                    SecurityException or UnauthorizedAccessException => new AccessException(
-                        _path + " could not be accessed", "CopyDirectory"),
-                    IOException => new SystemErrorException("Copy could not be done", "CopyDirectory"),
-                    PathTooLongException or NotSupportedException => new PathFormatException(
-                        "A file / folder contained a path too large", "CopyDirectory"),
-                    _ => new ManagerException("An error occured", Level.Normal, "Copy directories",
-                        "Copy sub-dirs and sub-files could not be done", "CopyDirectory")
-                };
+                    case OperationCanceledException:
+                        return NullPointer;
+                    case ManagerException:
+                        throw;
+                    default:
+                        throw e switch
+                        {
+                            SecurityException or UnauthorizedAccessException => new AccessException(
+                                _path + " could not be accessed", "CopyDirectory"),
+                            IOException => new SystemErrorException("Copy could not be done", "CopyDirectory"),
+                            PathTooLongException or NotSupportedException => new PathFormatException(
+                                "A file / folder contained a path too large", "CopyDirectory"),
+                            _ => new ManagerException("An error occured", Level.Normal, "Copy directories",
+                                "Copy sub-dirs and sub-files could not be done", "CopyDirectory")
+                        };
+                }
             }
 
             return new DirectoryPointer(dest);
         }
-
-        /// <summary>
-        ///     - High Level Method : <see cref="Copy"/>
-        /// </summary>
-        /// <param name="dest">the dest file or folder</param>
-        /// <param name="replace">Replace a file or not : USE WITH PRECAUTION</param>
-        /// <returns>Returns the new file created, empty for errors</returns>
-        /// <exception cref="PathFormatException">The format of the path is incorrect</exception>
-        /// <exception cref="PathNotFoundException">The given path could not be found</exception>
-        /// <exception cref="AccessException">The given path could not be accessed</exception>
-        /// <exception cref="InUseException">The given path is already used in another process</exception>
-        /// <exception cref="ManagerException">An error occured while copying</exception>
-        public override async Task<Pointer> CopyAsync(string dest, bool replace = false) => await new Task<Pointer>(() => Copy(dest, replace));
-
+        
         #endregion
         
         #region Delete
@@ -156,6 +155,7 @@ namespace Library.DirectoryPointer
             }
             catch (Exception e)
             {
+                if (e is OperationCanceledException) return;
                 throw e switch
                 {
                     IOException => new InUseException(_path + " is used by another process", "Delete"),
@@ -166,15 +166,6 @@ namespace Library.DirectoryPointer
             }
             Dispose();
         }
-
-        /// <summary>
-        ///   High Level Method : <see cref="Delete"/> 
-        /// </summary>
-        /// <exception cref="InUseException">The given path is already used</exception>
-        /// <exception cref="AccessException">The given path could not be accessed</exception>
-        /// <exception cref="ManagerException">An Error occurred</exception>
-        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
-        public override async Task DeleteAsync() => await new Task(Delete);
         
         #endregion
         

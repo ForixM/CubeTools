@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library.ManagerExceptions;
 using Ui.Views.Error;
 using Pointer = Library.Pointer;
@@ -92,7 +93,12 @@ namespace Ui.Views.Local.Actions
             {
                 try
                 {
-                    ft.DeleteAsync().GetAwaiter().OnCompleted(() => _main?.NavigationBarView.FolderPointer.Remove(ft));
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        ft.Delete();
+                        _main?.Refresh();
+                    }, DispatcherPriority.MaxValue);
+                    _main?.NavigationBarView.FolderPointer.Remove(ft);
                 }
                 catch (ManagerException e)
                 {

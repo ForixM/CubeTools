@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library.ManagerExceptions;
 using Ui.Views.Error;
 using Pointer = Library.Pointer;
@@ -61,20 +62,12 @@ namespace Ui.Views.Local.Actions
             // Run Tasks Async
             try
             {
-                if (_pointer.Size > 1000000)
-                {
-                    // Close display
-                    _pointer.DeleteAsync().GetAwaiter().OnCompleted(() =>
-                    {
-                        _main?.Refresh();
-                    });
-                }
-                // Run task sync
-                else
+                Dispatcher.UIThread.Post(() =>
                 {
                     _pointer.Delete();
                     _main?.Refresh();
-                }
+                }, DispatcherPriority.MaxValue);
+                _main?.Refresh();
             }
             catch (Exception exception)
             {

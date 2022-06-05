@@ -19,26 +19,8 @@
                 </Grid>
                 
                 <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                                <RowDefinition Height="45"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="60"/>
-                                <RowDefinition Height="30"/>
-                        </Grid.RowDefinitions>
-                        
-                        <Grid Grid.Row="1">
-                                <TextBlock TextWrapping="Wrap" MaxLines="2" Text="AccessDenied" VerticalAlignment="Center" TextAlignment="Center" FontSize="14"/>
-                        </Grid>
-                        
-                        <Grid Grid.Row="2">
-                                <TextBlock TextWrapping="Wrap" MaxLines="3" Name="ContentError" VerticalAlignment="Center" TextAlignment="Center" FontSize="12" Foreground="#251A00"/>
-                                <TextBlock Text="Would you like to get the administrator right for this action : " Margin="0 5 0 0"/>
-                        </Grid>
-                        
-                        <Grid Grid.Row="3">
-                                <Control Name="Container">
-                                </Control>
-                        </Grid>
+                        <TextBlock Name="ContentError"/>
+                        <Control Name="Container"/>
                 </Grid>
         </Grid>
 </Window>

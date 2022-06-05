@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
@@ -8,39 +9,39 @@ namespace Ui.Views.Error
 {
     public class ErrorBase : Window
     {
-        private readonly TextBlock ContentError;
-        private Control Container;
+        private readonly TextBlock _contentError;
+        private readonly Image _imageError;
+        public Control Container;
         public readonly ManagerException BaseException;
         
         public ErrorBase()
         {
             InitializeComponent();
             Container = this.FindControl<Control>("Container");
-            ContentError = this.FindControl<TextBlock>("ContentError");
+            _contentError = this.FindControl<TextBlock>("ContentError");
+            _imageError = this.FindControl<Image>("ImageError");
         }
         public ErrorBase(ManagerException exception) : this()
         {
             BaseException = exception;
-            ContentError.Text = exception.ErrorMessage;
+            _contentError.Text = exception.ErrorMessage;
+            CustomizeWindow();
         }
 
         public void CustomizeWindow()
         {
             Title = BaseException.Errorstd;
-            ContentError.Text = BaseException.ErrorMessage;
+            _contentError.Text = BaseException.ErrorMessage;
+            _imageError.Source = BaseException.Level switch
+            {
+                Level.Info => ResourcesLoader.ResourcesIcons.WarningIcon,
+                Level.Normal => ResourcesLoader.ResourcesIcons.ErrorIcon,
+                _ => ResourcesLoader.ResourcesIcons.CriticalErrorIcon
+            };
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void InitializeContainer()
-        {
-            Container = BaseException switch
-            {
-                PathNotFoundException => new PathNotFoundInfo(this),
-                _ => Container
-            };
-        }
-        
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Escape) Close(null);

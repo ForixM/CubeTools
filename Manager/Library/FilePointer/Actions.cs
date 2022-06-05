@@ -121,19 +121,7 @@ namespace Library.FilePointer
                 };
             }
         }
-
-        /// <summary>
-        ///     - High Level Method : <see cref="Copy"/>
-        /// </summary>
-        /// <param name="dest">the dest file or folder</param>
-        /// <param name="replace">Replace a file or not : USE WITH PRECAUTION</param>
-        /// <returns>Returns the new file created, empty for errors</returns>
-        /// <exception cref="PathFormatException">The format of the path is incorrect</exception>
-        /// <exception cref="PathNotFoundException">The given path could not be found</exception>
-        /// <exception cref="AccessException">The given path could not be accessed</exception>
-        /// <exception cref="InUseException">The given path is already used in another process</exception>
-        /// <exception cref="ManagerException">An error occured while copying</exception>
-        public override async Task<Pointer> CopyAsync(string dest, bool replace = false) => await Task.Run(() => Copy(dest, replace));
+        
 
         #endregion
         
@@ -168,16 +156,7 @@ namespace Library.FilePointer
             Dispose();
         }
 
-        /// <summary>
-        ///   High Level Method : <see cref="Delete"/> 
-        /// </summary>
-        /// <exception cref="InUseException">The given path is already used</exception>
-        /// <exception cref="AccessException">The given path could not be accessed</exception>
-        /// <exception cref="ManagerException">An Error occurred</exception>
-        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
-        public override async Task DeleteAsync() => await Task.Run(Delete);
-        
-        
+
         #endregion
         
         #region Properties

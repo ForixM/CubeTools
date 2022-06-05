@@ -443,12 +443,16 @@
         <DependentUpon>ErrorBase.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Error\Information\PathNotFoundAction.axaml.cs">
-        <DependentUpon>PathNotFoundPopUp.axaml</DependentUpon>
+      <Compile Update="Views\Error\Information\ErrorInfo.axaml.cs">
+        <DependentUpon>NormalErrorInfo.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Error\Information\DiskNotReadyInfo.axaml.cs">
-        <DependentUpon>DiskNotReadyInfo.axaml</DependentUpon>
+      <Compile Update="Views\Error\Refresh\RefreshAction.axaml.cs">
+        <DependentUpon>RefreshAction.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Error\Replace\ReplaceAction.axaml.cs">
+        <DependentUpon>RefreshAction.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>
@@ -457,7 +461,6 @@
       <Folder Include="bin\Debug\net6.0\Assets\default" />
       <Folder Include="bin\Debug\net6.0\Assets\light" />
       <Folder Include="Models" />
-      <Folder Include="Views\Error\Action" />
     </ItemGroup>
     <ItemGroup>
       <AvaloniaXaml Remove="Views\PopUps\DeletePopUp.axaml" />

@@ -1,6 +1,6 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="Ui.Views.Error.Information.DiskNotReadyInfo">
+        x:Class="Ui.Views.Error.Refresh.RefreshAction">
         
         <Grid ColumnDefinitions="50*,50*">
             
@@ -8,7 +8,7 @@
                         <Button Width="70" Height="40" HorizontalAlignment="Center" Click="OkClick" Content="Ok"/>
                 </Grid>
                 <Grid Grid.Column="1" VerticalAlignment="Center">
-                        <Button Width="70" Height="40" HorizontalAlignment="Center" Click="TryReloadClick" Content="Try to Refresh"/>
+                        <Button Width="70" Height="40" HorizontalAlignment="Center" Click="TryReloadClick" Content="Refresh"/>
                 </Grid>
         </Grid>
 </UserControl>
