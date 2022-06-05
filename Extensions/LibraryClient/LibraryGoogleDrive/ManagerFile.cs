@@ -94,14 +94,22 @@ namespace LibraryClient.LibraryGoogleDrive
             command.Execute();
         }
 
-        public static string CopyFile(string fileID, string newFileName, string newFolderName = "")
+        public static string CopyFile(string fileId)
         {
             var Service = OAuth.GetDriveService();
-            var CopyFile = new Google.Apis.Drive.v3.Data.File();
-            var command = Service.Files.Copy(CopyFile, fileID);
-            command.Execute();
-            CopyFile.Name = newFileName;
-            return CopyFile.Id;
+            var DriveFile = Service.Files.Get(fileId).Execute();
+
+            string name = DriveFile.Name + "- Copy";
+
+            while (FileReader.GetFileId(name, DriveFile.Parents[0]) != null)
+            {
+                name += "- Copy";
+            }
+            
+            var copyFile = new Google.Apis.Drive.v3.Data.File();
+            var command = Service.Files.Copy(copyFile, fileId).Execute();
+            copyFile.Name = name;
+            return copyFile.Id;
         }
 
         public static void ChangeParentsFile(string fileid, string newfolderid)

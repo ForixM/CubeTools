@@ -6,13 +6,20 @@ namespace LibraryClient.LibraryGoogleDrive
 {
     public static class FileReader
     {
-        public static string GetFolderId(string FolderName, string Parent)
+        public static string GetFolderId(string FolderName, string Parent = "")
         {
             var service = OAuth.GetDriveService();
 
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.PageSize = 10;
-            listRequest.Q = $"mimeType = 'application/vnd.google-apps.folder' and name = '{FolderName}' and {Parent}' in parents";
+            if (Parent == "")
+            {
+                listRequest.Q = $"mimeType = 'application/vnd.google-apps.folder' and name = '{FolderName}'";
+            }
+            else
+            {
+                listRequest.Q = $"mimeType = 'application/vnd.google-apps.folder' and name = '{FolderName}' and '{Parent}' in parents";
+            }
             listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
 
             IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
@@ -32,7 +39,14 @@ namespace LibraryClient.LibraryGoogleDrive
 
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.PageSize = 10;
-            listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}' and '{Parent}' in parents";
+            if (Parent == "")
+            {
+                listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}'";
+            }
+            else
+            {
+                listRequest.Q = $"mimeType != 'application/vnd.google-apps.folder' and name = '{FileName}' and '{Parent}' in parents";
+            }
             listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
 
             IList<Google.Apis.Drive.v3.Data.File> files = listRequest.Execute()
@@ -96,7 +110,7 @@ namespace LibraryClient.LibraryGoogleDrive
 
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
-            listRequest.Q = $"mimeType=='application/vnd.google-apps.folder' and '{folderID}' in parents";
+            listRequest.Q = $"mimeType='application/vnd.google-apps.folder' and '{folderID}' in parents";
 
             var list = new List<Google.Apis.Drive.v3.Data.File>();
             string pageToken = null;
@@ -190,6 +204,19 @@ namespace LibraryClient.LibraryGoogleDrive
             }
 
             return pathRes;
+        }
+
+        public static bool IsDir(string fileId)
+        {
+            var Service = OAuth.GetDriveService();
+            var DriveFile = Service.Files.Get(fileId).Execute();
+
+            if (DriveFile.MimeType == "application/vnd.google-apps.folder")
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

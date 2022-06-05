@@ -19,8 +19,7 @@ namespace LibraryClient.LibraryGoogleDrive
             _size = FileReader.GetFileSize(fileId);
             _descrpition = FileReader.GetFileDescription(fileId);
             _path = FileReader.GetPathFromFile(fileId);
-
-
+            _isDir = FileReader.IsDir(fileId);
         }
     }
 }
