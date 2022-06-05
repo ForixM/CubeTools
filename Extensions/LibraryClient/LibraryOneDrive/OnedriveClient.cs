@@ -167,7 +167,7 @@ namespace LibraryClient.LibraryOneDrive
         public async Task<bool> UploadFile(Pointer file, OneItem destination)
         {
             if (destination.Type != OneItemType.FOLDER) return false;
-            HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_api + destination.path + "/" +
+            HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_api + destination.path +
                                                                             Path.GetFileName(file.Path) +
                                                                             ":/content?access_token=" +
                                                                             token.access_token);
@@ -192,6 +192,26 @@ namespace LibraryClient.LibraryOneDrive
             fileStream.Close();
             HttpWebResponse response = (HttpWebResponse) request.GetResponse();
             Console.WriteLine("Finished");
+            uploadFinished?.Invoke(this,  (int)response.StatusCode == 201);
+            return (int) response.StatusCode == 201;
+        }
+        
+        public async Task<bool> CreateFile(string fileName, OneItem destination)
+        {
+            if (destination.Type != OneItemType.FOLDER) return false;
+            HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_api + destination.path +
+                                                                            fileName +
+                                                                            ":/content?access_token=" +
+                                                                            token.access_token);
+            request.Method = "PUT";
+            request.ContentType = MimeTypesMap.GetMimeType(fileName);
+            request.AllowWriteStreamBuffering = false;
+            
+            Stream serverStream = request.GetRequestStream();
+            serverStream.Write(Array.Empty<byte>(), 0, 0);
+            serverStream.Close();
+            
+            HttpWebResponse response = (HttpWebResponse) request.GetResponse();
             uploadFinished?.Invoke(this,  (int)response.StatusCode == 201);
             return (int) response.StatusCode == 201;
         }
@@ -273,6 +293,25 @@ namespace LibraryClient.LibraryOneDrive
                 _client.DeleteAsync(_api + this.RootPath + path + "?access_token=" + token.access_token);
             response.Wait();
             return (int) response.Result.StatusCode == 204;
+        }
+        
+        public bool RenameItem(OneItem item, string newname)
+        {
+            JObject body = new JObject();
+            body.Add(new JProperty("parentReference", new JObject(new JProperty("id", item.parentReference.id))));
+            body.Add(new JProperty("name", newname));
+            Task<HttpResponseMessage> response =
+                _client.PatchAsync(
+                    _api + item.path + "?access_token=" + token.access_token,
+                    new StringContent(body.ToString(), Encoding.UTF8, "application/json"));
+            response.Wait();
+            if ((int)response.Result.StatusCode == 200)
+            {
+                item.name = newname;
+                return true;
+            }
+
+            return false;
         }
 
         public bool MoveItem(OneItem item, OneItem destination)
