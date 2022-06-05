@@ -61,7 +61,7 @@ namespace Ui.Views.Local.Actions
 
         private void SearchList()
         {
-            _main.ReloadPath(ManagerReader.FastSearchByName(_main.NavigationBarView.FolderPointer.Path, _textEntered.Text, 100).ToList());
+            _main.Refresh(ManagerReader.FastSearchByName(_main.NavigationBarView.FolderPointer.Path, _textEntered.Text, 100).ToList());
         }
         
     }

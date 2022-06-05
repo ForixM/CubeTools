@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
+using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views.Local.Actions
@@ -65,14 +66,14 @@ namespace Ui.Views.Local.Actions
                     // Close display
                     _pointer.DeleteAsync().GetAwaiter().OnCompleted(() =>
                     {
-                        _main?.ReloadPath();
+                        _main?.Refresh();
                     });
                 }
                 // Run task sync
                 else
                 {
                     _pointer.Delete();
-                    _main?.ReloadPath();
+                    _main?.Refresh();
                 }
             }
             catch (Exception exception)
@@ -80,7 +81,7 @@ namespace Ui.Views.Local.Actions
                 if (exception is ManagerException @managerException)
                 {
                     @managerException.Errorstd = $"Unable to delete {_pointer.Name}";
-                    _main?.SelectErrorPopUp(@managerException);
+                    new ErrorBase(@managerException).ShowDialog<object>(_main!.Main);
                 }
             }
         }

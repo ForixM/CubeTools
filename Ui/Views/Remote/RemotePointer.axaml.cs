@@ -59,8 +59,9 @@ namespace Ui.Views.Remote
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
             Main.RemoteActionView.Selected.Clear();
-            if (Pointer.IsDir) Main.RemoteNavigationView.Add(Pointer);
-            Main.AccessPath(Pointer, Pointer.IsDir);
+            if (Pointer.IsDir)
+                Main.RemoteNavigationView.Add(Pointer);
+            Main.AccessPath(Pointer);
         }
 
         /// <summary>

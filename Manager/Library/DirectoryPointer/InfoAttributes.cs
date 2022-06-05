@@ -37,7 +37,7 @@ namespace Library.DirectoryPointer
                         new AccessException("the directory to access # " + _path + " # cannot be read", "HasAttribute"),
                     IOException => new DiskNotReadyException("the given path " + _path + " could not be read",
                         "HasAttribute"),
-                    _ => new ManagerException("Reader error", "High", "Impossible to read",
+                    _ => new ManagerException("Reader error", Level.High, "Unable to read",
                         "the given path " + _path + " could not be read", "HasAttribute")
                 };
             }

@@ -7,7 +7,7 @@ using System.Web;
 using HeyRed.Mime;
 using Library;
 using Library.FilePointer;
-using static LibraryClient.MimeTypes;
+using LibraryClient.LibraryFtp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -26,7 +26,7 @@ namespace LibraryClient.LibraryOneDrive
         private static string _redirectUri = "http://localhost:4040";
 
         private Token token;
-        private string path = "/drive/root:";
+        private string RootPath = "/drive/root:";
         private HttpClient _client;
 
         private static string _authorityUri =
@@ -78,12 +78,14 @@ namespace LibraryClient.LibraryOneDrive
         {
             HttpClient client = new HttpClient();
             Task<string> responseString =
-                client.GetStringAsync(_api + path + ":/children?access_token=" + token.access_token +
+                client.GetStringAsync(_api + RootPath + ":/children?access_token=" + token.access_token +
                                       "&select=name,size,folder,file,parentReference,id");
             responseString.Wait();
             try
             {
-                return JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
+                var temp = JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
+                foreach (var item in temp!.items) item.SetVariables();
+                return temp;
             }
             catch (JsonException e)
             {
@@ -102,7 +104,9 @@ namespace LibraryClient.LibraryOneDrive
             responseString.Wait();
             try
             {
-                return JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
+                var temp = JsonConvert.DeserializeObject<OneArboresence>(responseString.Result);
+                foreach (var item in temp!.items) item.SetVariables();
+                return temp;
             }
             catch (Exception e)
             {
@@ -115,7 +119,7 @@ namespace LibraryClient.LibraryOneDrive
             HttpClient client = new HttpClient();
             string data = "{'name':'"+name+"','folder':{ },'@microsoft.graph.conflictBehavior':'rename'}";
             Task<HttpResponseMessage> response =
-                client.PostAsync(_api + path + ":/children?access_token=" + token.access_token,
+                client.PostAsync(_api + RootPath + ":/children?access_token=" + token.access_token,
                     new StringContent(data, Encoding.UTF8, "application/json"));
             response.Wait();
             Task<string> resStr = response.Result.Content.ReadAsStringAsync();
@@ -123,10 +127,10 @@ namespace LibraryClient.LibraryOneDrive
             return (int) response.Result.StatusCode == 201;
         }
         
-        public bool CreateFolder(string name, OneItem folder)
+        public OneItem CreateFolder(string name, OneItem folder)
         {
             if (folder.Type != OneItemType.FOLDER)
-                return false;
+                return null;
             string data = "{'name':'"+name+"','folder':{ },'@microsoft.graph.conflictBehavior':'rename'}";
             Task<HttpResponseMessage> response =
                 _client.PostAsync(
@@ -134,14 +138,26 @@ namespace LibraryClient.LibraryOneDrive
                     token.access_token,
                     new StringContent(data, Encoding.UTF8, "application/json"));
             response.Wait();
-            return (int) response.Result.StatusCode == 201;
+            if ((int)response.Result.StatusCode == 201)
+            {
+                OneArboresence arbo = GetArboresence(folder);
+                foreach (OneItem item in arbo.items)
+                {
+                    if (item.name == name && item.IsDir)
+                    {
+                        return item;
+                    }
+                }
+            }
+
+            return null;
         }
 
 
         public async Task<bool> UploadFile(FilePointer file)
         {
             HttpResponseMessage response = await _client.PutAsync(
-                _api + path + "/" + Path.GetFileName(file.Path) + ":/content?access_token=" + token.access_token,
+                _api + RootPath + "/" + Path.GetFileName(file.Path) + ":/content?access_token=" + token.access_token,
                 new StringContent(System.IO.File.ReadAllText(file.Path), Encoding.UTF8,
                     MimeTypesMap.GetMimeType(file.Path)));
             uploadFinished?.Invoke(this, (int)response.StatusCode == 201);
@@ -221,7 +237,7 @@ namespace LibraryClient.LibraryOneDrive
             if (path.StartsWith("./"))
             {
                 path = path.Remove(0, 2);
-                path = this.path + path;
+                path = this.RootPath + path;
             }
             else if (path.StartsWith("/"))
             {
@@ -254,7 +270,7 @@ namespace LibraryClient.LibraryOneDrive
         public bool DeleteItem(string path)
         {
             Task<HttpResponseMessage> response =
-                _client.DeleteAsync(_api + this.path + path + "?access_token=" + token.access_token);
+                _client.DeleteAsync(_api + this.RootPath + path + "?access_token=" + token.access_token);
             response.Wait();
             return (int) response.Result.StatusCode == 204;
         }
@@ -277,6 +293,16 @@ namespace LibraryClient.LibraryOneDrive
         {
             Task<HttpResponseMessage> response =
                 _client.GetAsync(_api + item.path + "?access_token=" + token.access_token);
+            response.Wait();
+            Task<string> strResponse = response.Result.Content.ReadAsStringAsync();
+            strResponse.Wait();
+            return (int)response.Result.StatusCode==200 ? JObject.Parse(strResponse.Result) : null;
+        }
+        
+        public JObject GetItemFullMetadata(string path)
+        {
+            Task<HttpResponseMessage> response =
+                _client.GetAsync(_api + path + "?access_token=" + token.access_token);
             response.Wait();
             Task<string> strResponse = response.Result.Content.ReadAsStringAsync();
             strResponse.Wait();

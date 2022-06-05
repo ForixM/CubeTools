@@ -45,7 +45,7 @@
                         <!--Remote Files-->
                         <Grid Column="1" RowDefinitions="65, 45, Auto">
                                 <Grid Row="0">
-                                        <remote:RemoteNavigation Name="RemoteNavigationBar"/>
+                                        <remote:RemoteNavigation Name="RemoteNavigation"/>
                                 </Grid>
                                 <Grid Row="1">
                                         <remote:RemoteAction Name="RemoteAction"/>

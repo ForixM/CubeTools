@@ -52,7 +52,7 @@ namespace Library.DirectoryPointer
                 {
                     IOException => new SystemErrorException(path + " has been blocked by system", "Directory Constructor"),
                     SecurityException => new AccessException(path + " could be not accessed", "Directory Constructor"),
-                    _ => new ManagerException("ManagerException", "High", "GenerateDirectory",
+                    _ => new ManagerException("ManagerException", Level.High, "GenerateDirectory",
                         "Generate directory was impossible", "Directory Constructor")
                 };
             }

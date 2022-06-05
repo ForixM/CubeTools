@@ -21,7 +21,7 @@ namespace Ui.Views.Local
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        public void ReloadPath()
+        public void Refresh()
         {
             var list = Main.NavigationBarView.FolderPointer.ChildrenFiles;
             Generator.Children.Clear();
@@ -37,7 +37,7 @@ namespace Ui.Views.Local
             }
         }
         
-        public void ReloadPath(List<Pointer> list)
+        public void Refresh(List<Pointer> list)
         {
             Generator.Children.Clear();
             int size = list.Count;

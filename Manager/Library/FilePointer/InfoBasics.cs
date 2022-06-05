@@ -35,7 +35,7 @@ namespace Library.FilePointer
             {
                 if (e is UnauthorizedAccessException or SecurityException or NullReferenceException)
                     throw new AccessException(Path + " access denied", "GetParent");
-                throw new ManagerException("Access to parent", "High", "Parent not found",
+                throw new ManagerException("Access to parent", Level.High, "Parent not found",
                     "Error while trying to get the Directory of " + Path, "GetParent");
             }
         }
@@ -64,7 +64,7 @@ namespace Library.FilePointer
                     SecurityException or UnauthorizedAccessException or NullReferenceException =>
                         new AccessException(Path + " cannot be read", "GetFileSize"),
                     IOException => new DiskNotReadyException(Path + " cannot be read", "GetFileSize"),
-                    _ => new ManagerException("Reader error", "Medium", "Impossible to enumerate files",
+                    _ => new ManagerException("Reader error", Level.Normal, "Unable to enumerate files",
                         Path + " and their children could not be read", "GetFileSize")
                 };
             }
@@ -112,7 +112,7 @@ namespace Library.FilePointer
                         Console.Error.WriteLine(Path + " is too large to be read");
                         return "";
                     default:
-                        throw new ManagerException("Reader Error", "Medium", "Out Of Memory",
+                        throw new ManagerException("Reader Error", Level.Normal, "Out Of Memory",
                             "The content of " + Path + " is unreadable, a memory error occured", "GetContent");
                 }
             }

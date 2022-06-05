@@ -3,7 +3,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 
-namespace Ui.Views.ErrorPopUp
+namespace Ui.Views.Error
 {
     public class ErrorPopUp : Window
     {

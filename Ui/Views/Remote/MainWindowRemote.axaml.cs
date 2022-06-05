@@ -7,6 +7,8 @@ using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using LibraryClient;
+using Microsoft.VisualBasic;
+using Ui.Views.Error;
 using Ui.Views.Settings;
 
 namespace Ui.Views.Remote
@@ -25,6 +27,7 @@ namespace Ui.Views.Remote
 
         public Client Client;
         public List<Key> KeysPressed;
+        public bool GotFocusLocal;
 
         #endregion
 
@@ -39,14 +42,16 @@ namespace Ui.Views.Remote
             RemoteNavigationView = this.FindControl<RemoteNavigation>("RemoteNavigation");
             RemoteActionView = this.FindControl<RemoteAction>("RemoteAction");
             RemotePointersView = this.FindControl<RemotePointers>("RemotePointers");
-            // Components
+            // Variables
             KeysPressed = new List<Key>();
+            GotFocusLocal = true;
         }
 
         public MainWindowRemote(Client client) : this()
         {
             Client = client;
-            ReloadPath();
+            RemoteNavigationView.Add(Client.CurrentFolder!);
+            Refresh();
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -55,51 +60,58 @@ namespace Ui.Views.Remote
 
         #region Process
 
-        public void ReloadPath()
+        public void Refresh()
         {
             try
             {
                 Client.Refresh();
-                RemotePointersView.ReloadPath();
+                RemotePointersView.Refresh();
+                RemoteNavigationView.Refresh();
             }
             catch (Exception e)
             {
-                if (e is ManagerException @managerException) new Views.ErrorPopUp.ErrorPopUp();
+                if (e is ManagerException managerException) new ErrorBase(managerException).ShowDialog<object>(this);
             }
         }
 
-        public void AccessPath(RemoteItem item, bool isdir)
+        /// <summary>
+        /// Access to an item
+        /// </summary>
+        /// <param name="item">the given item to access</param>
+        public void AccessPath(RemoteItem item)
         {
-            if (isdir)
+            if (item.IsDir)
             {
-                Client.AccessPath(item);
-                RemotePointersView.ReloadPath();
+                try
+                {
+                    Client.AccessPath(item);
+                    RemotePointersView.Refresh();
+                    RemoteNavigationView.Refresh();
+                }
+                catch (Exception e)
+                {
+                    if (e is ManagerException managerException) new ErrorBase(managerException).ShowDialog<object>(this);
+                }
             }
             else
             {
                 try
                 {
-                    ManagerReader.AutoLaunchAppProcess(Client.Download(item, Local.NavigationBarView.FolderPointer.Path).Path);
+                    ManagerReader.AutoLaunchAppProcess(Client.DownloadFile(item, Local.NavigationBarView.FolderPointer).Path);
                 }
                 catch (Exception e)
                 {
-                    if (e is ManagerException managerException) SelectErrorPopUp(managerException);
+                    if (e is ManagerException managerException) new ErrorBase(managerException).ShowDialog<object>(this);
                 }
             }
         }
-        
-        /// <summary>
-        /// Access to the given path (remote)
-        /// </summary>
-        /// <param name="name">the </param>
-        /// <param name="isdir"></param>
-        public void AccessPath(string name, bool isdir)
+
+        public void AccessPath(string path)
         {
-            RemoteItem? item = Client?.GetItem(name);
-            if (item is not null) AccessPath(item, isdir);
+            var item = Client.GetItem(path);
+            if (item is not null) AccessPath(item);
+            else new ErrorBase(new PathNotFoundException("Unable to access the path","AccessPath")).ShowDialog<object>(this);
         }
-        
-        public void SelectErrorPopUp(ManagerException exception) => Local.SelectErrorPopUp(exception);
 
         #endregion
         
@@ -176,7 +188,7 @@ namespace Ui.Views.Remote
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.RenameShortcut))
                     RemoteActionView.Rename(sender, e);
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.ReloadShortcut))
-                    ReloadPath();
+                    Refresh();
                 else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts.SettingsShortcut)
                     new SettingsWindow().Show();
             }

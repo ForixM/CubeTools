@@ -3,32 +3,26 @@ namespace  LibraryClient.LibraryFtp
     
     public class FtpFile : IFtpItem
     {
-        // private string _name;
-        // private string _parentPath;
-
-        // public string Name => _name;
-        // public string ParentPath => _parentPath;
-        // public string Path => _parentPath + _name;
-    
-        public FtpFile(string name, int size, string parentPath, string lastmodified)
+        public FtpFile(string name, int size, string parentPath, string lastModified)
         {
-            this._name = name;
-            this._size = size;
-            this._parentPath = parentPath;
-            this._lastmodified = lastmodified;
+            IsDir = false;
+            _path = parentPath + name;
+            _name = name;
+            _size = size;
+            _parentPath = parentPath;
+            _lastModified = lastModified;
         }
     
-        public FtpFile(string name, int size, IFtpItem parent, string lastmodified)
+        public FtpFile(string name, int size, IFtpItem parent, string lastModified)
         {
-            this._name = name;
-            this._size = size;
-            this._parent = parent;
-            this._lastmodified = lastmodified;
+            IsDir = false;
+            _name = name;
+            _size = size;
+            _parent = parent;
+            _lastModified = lastModified;
+            _path = parent.Path + name;
         }
 
-        public override string ToString()
-        {
-            return $"{{name={_name}, size={_size}, path={Path}, lastmodified={_lastmodified}}}";
-        }
+        public override string ToString() => $"{{name={_name}, size={_size}, path={Path}, lastmodified={_lastModified}}}";
     }
 }

@@ -20,8 +20,8 @@ namespace Ui.Views.Remote
 
         public RemoteAction()
         {
+            Main = MainWindowRemote.LastView;
             InitializeComponent();
-            Main = null;
             Selected = new List<RemoteItem>();
             Copied = new List<RemoteItem>();
             CutXaml = new List<RemoteItem>();
@@ -56,7 +56,7 @@ namespace Ui.Views.Remote
             Copied.Clear();
             CutXaml.Clear();
             foreach (var item in Main!.RemoteActionView.Selected) Copied.Add(item);
-            Main.ReloadPath();
+            Main.Refresh();
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Ui.Views.Remote
                 Copied.Add(item);
                 CutXaml.Add(item);
             }
-            Main!.ReloadPath();
+            Main!.Refresh();
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Ui.Views.Remote
             foreach (var item in CutXaml)
                 Main!.Client.Delete(item);
             
-            Main!.ReloadPath();
+            Main!.Refresh();
         }
 
         /// <summary>
@@ -103,11 +103,11 @@ namespace Ui.Views.Remote
                     new RenameRemote(Main!.RemoteActionView.Selected[0], Main.Client.Children, Main).Show();
                     break;
                 default:
-                    new ErrorPopUp.ErrorPopUp(new ManagerException("Unable to rename multiple data")).Show();
+                    new Error.ErrorPopUp(new ManagerException("Unable to rename multiple data")).Show();
                     break;
             }
 
-            Main!.ReloadPath();
+            Main!.Refresh();
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace Ui.Views.Remote
         {
             foreach (var item in Main!.RemoteActionView.Selected)
                 DeletePointer(item);
-            Main.ReloadPath();
+            Main.Refresh();
         }
         
         /// <summary>
@@ -126,10 +126,13 @@ namespace Ui.Views.Remote
         public void Download(object? sender, RoutedEventArgs e)
         {
             if (Main?.Client?.CurrentFolder is null) return;
-            
+
             foreach (var item in Main!.RemoteActionView.Selected)
-                Main.Client.Download(Main.Client.CurrentFolder, item.Name);
-            Main.ReloadPath();
+            {
+                if (item.IsDir) Main.Client.DownloadFolder(item, Main.Local.NavigationBarView.FolderPointer);
+                else Main.Client.DownloadFile(item, Main.Local.NavigationBarView.FolderPointer);
+            }
+            Main.Refresh();
         }
 
 

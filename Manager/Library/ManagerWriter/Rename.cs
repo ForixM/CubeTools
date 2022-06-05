@@ -82,7 +82,7 @@ namespace Library.ManagerWriter
                 {
                     SecurityException => new AccessException($"Access to {source} is denied", "RenameDirectory"),
                     ArgumentNullException or PathTooLongException or ArgumentException => new PathFormatException($"{source} has an invalid format", "RenameDirectory"),
-                    _ => new ManagerException("Unable to rename a folder", "High", "Writer error", $"Unable to rename {source} to {dest}", "RenameDirectory")
+                    _ => new ManagerException("Unable to rename a folder", Level.High, "Writer error", $"Unable to rename {source} to {dest}", "RenameDirectory")
                 };
             }
             
@@ -165,7 +165,7 @@ namespace Library.ManagerWriter
                     FileNotFoundException => new PathNotFoundException($"{source} could not be found in the client's system", "RenameFile"),
                     IOException => new DiskNotReadyException($"The disk is not ready to rename {dest}", "RenameFile"),
                     SecurityException or UnauthorizedAccessException => new AccessException($"Access to {source} is denied", "RenameFile"),
-                    _ => new ManagerException("Unable to rename a file", "High", "Writer error", $"Unable to rename {source} to {dest}", "RenameFile")
+                    _ => new ManagerException("Unable to rename a file", Level.High, "Writer error", $"Unable to rename {source} to {dest}", "RenameFile")
                 };
             }
         }

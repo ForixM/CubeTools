@@ -7,6 +7,7 @@ using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
+using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views.Local.Actions
@@ -87,15 +88,15 @@ namespace Ui.Views.Local.Actions
                 }
                 catch (ManagerException exception)
                 {
-                    _main.SelectErrorPopUp(exception);
+                    new ErrorBase(exception).ShowDialog<object>(_main?.Main);
                 }
-                _main.ReloadPath();
+                _main?.Refresh();
                 Close();
             }
 
             if (_modifiedPointer.Path == "" || _modifiedPointer.Name == _renameBox.Text)
             {
-                _main.ReloadPath();
+                _main?.Refresh();
                 Close();
             }
         }

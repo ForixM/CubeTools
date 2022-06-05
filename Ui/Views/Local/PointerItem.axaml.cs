@@ -8,6 +8,7 @@ using Avalonia.Media;
 using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Library.ManagerExceptions;
 using ResourcesLoader;
+using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views.Local
@@ -62,7 +63,7 @@ namespace Ui.Views.Local
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
             _main.ActionBarView.SelectedXaml.Clear();
-            if (Directory.Exists(Pointer.Path)) _main.NavigationBarView.Add(new DirectoryPointerLoaded(Pointer.Path));
+            if (Directory.Exists(Pointer.Path)) _main.NavigationBarView.Add(Pointer.Path);
             _main.AccessPath(Pointer.Path);
         }
 
@@ -95,8 +96,8 @@ namespace Ui.Views.Local
             }
             else
             {
-                new ErrorPopUp.PathNotFoundPopUp(new PathNotFoundException(Pointer.Path + " does not exist")).Show();
-                _main.ReloadPath();
+                new ErrorBase(new PathNotFoundException(Pointer.Path + " does not exist", "Pointer Local UI")).Show();
+                _main.Refresh();
             }
         }
 

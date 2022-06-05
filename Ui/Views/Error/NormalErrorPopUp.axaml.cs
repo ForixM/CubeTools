@@ -4,32 +4,28 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 
-namespace Ui.Views.ErrorPopUp
+namespace Ui.Views.Error
 {
-    public class DiskNotReadyPopUp : Window
+    public class NormalErrorPopUp : Window
     {
-        
         public readonly TextBlock ContentError;
-        private readonly Button _buttonQuit;
-        private readonly Button _buttonReload;
-
-        public DiskNotReadyPopUp()
+        private readonly Button ButtonOk;
+        
+        public NormalErrorPopUp()
         {
             InitializeComponent();
             ContentError = this.FindControl<TextBlock>("ContentError");
-            _buttonQuit = this.FindControl<Button>("ButtonQuit");
-            _buttonReload = this.FindControl<Button>("ButtonReload");
+            ButtonOk = this.FindControl<Button>("ButtonOk");
         }
-        public DiskNotReadyPopUp(ManagerException exception) : this()
+        public NormalErrorPopUp(ManagerException exception) : this()
         {
             ContentError.Text = exception.ErrorMessage;
+            Title = exception.Errorstd;
         }
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-
         // EVENTS
-        private void ButtonCancelClicked(object? sender, RoutedEventArgs e) => Close();
-        private void ButtonReloadClicked(object? sender, RoutedEventArgs e) => Close();
+        private void ButtonOkClicked(object? sender, RoutedEventArgs e) => Close();
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Escape) Close();

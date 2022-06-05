@@ -6,6 +6,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
+using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views.Remote.Actions
@@ -95,7 +96,7 @@ namespace Ui.Views.Remote.Actions
                 }
                 catch (ManagerException e)
                 {
-                    _main?.SelectErrorPopUp(e);
+                    new ErrorBase(e).ShowDialog<object>(_main?.Main);
                 }
             }
         }

@@ -230,7 +230,7 @@ namespace Library.ManagerReader
                     throw new AccessException($"{path} could not be accessed", "FastReaderSize");
                 if (e is ArgumentException or PathTooLongException or ArgumentNullException)
                     throw new PathFormatException($"{path} is incorrect", "FastReaderFiles");
-                throw new ManagerException("Unable to get the amount of files of the given path", "High", "Access unable", $"unable to get size of {path}", "FastReaderFiles");
+                throw new ManagerException("Unable to get the amount of files of the given path", Level.High, "Access unable", $"unable to get size of {path}", "FastReaderFiles");
             }
         }
 
@@ -564,9 +564,8 @@ namespace Library.ManagerReader
         /// <returns></returns>
         public static Pointer SearchByFullName(List<Pointer> fileTypes, string fullName)
         {
-            foreach (var ft in fileTypes)
-                if (ft.Name == fullName)
-                    return ft;
+            foreach (var ft in fileTypes.Where(ft => ft.Name == fullName))
+                return ft;
 
             return SearchByIndeterminedName(fileTypes, fullName);
         }
@@ -640,9 +639,9 @@ namespace Library.ManagerReader
                     switch (e)
                     {
                         case ArgumentException or ArgumentNullException or PathTooLongException:
-                            throw new PathFormatException();// TODO EDIT EXCEPTION
+                            throw new PathFormatException($"{path} has an invalid character or is too long","FastSearchByName");
                         case DirectoryNotFoundException or IOException:
-                            throw new PathNotFoundException(); //TODO EDIT EXCEPTION
+                            throw new PathNotFoundException($"{path} not found in your system","FastSearchByName");
                     }
                 }
                 foreach (var file in paths)

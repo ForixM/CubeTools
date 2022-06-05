@@ -80,7 +80,7 @@ namespace Ui.Views.Local.Actions
             task.Start();
             task.GetAwaiter().OnCompleted(() =>
             {
-                _main!.ReloadPath();
+                _main!.Refresh();
                 Close();
             });
         }

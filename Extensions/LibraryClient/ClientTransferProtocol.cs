@@ -1,4 +1,7 @@
 ﻿using Library;
+using Library.DirectoryPointer;
+using Library.FilePointer;
+using Library.ManagerExceptions;
 using LibraryClient.LibraryFtp;
 
 namespace LibraryClient
@@ -15,7 +18,8 @@ namespace LibraryClient
         {
             _clientFtp = new ClientFtp(host, username, password);
             CurrentFolder = FtpFolder.ROOT;
-            foreach (var item in _clientFtp.ListDirectory( (FtpFolder)CurrentFolder).Items) Children.Add(item);
+            Root = FtpFolder.ROOT;
+            foreach (var item in _clientFtp.ListDirectory((FtpFolder)CurrentFolder).Items) Children.Add(item);
         }
         
         #region Actions
@@ -30,39 +34,45 @@ namespace LibraryClient
 
         public override void Rename(RemoteItem item, string newName) =>_clientFtp.Rename((IFtpItem) item, newName);
 
-        public override Pointer Download(RemoteItem item, string name)
+        public override Pointer DownloadFile(RemoteItem item, DirectoryPointer destination)
         {
-            // TODO CHECK
-            _clientFtp.DownloadFile((FtpFile) item, name);
-            return base.Download(item, name);
+            _clientFtp.DownloadFile((FtpFile) item, destination.Path);
+            return base.DownloadFile(item, destination);
         }
 
-        public override void Upload(Pointer pointer, RemoteItem destination)
+        public override Pointer DownloadFolder(RemoteItem item, DirectoryPointer destination)
         {
-            if (pointer.IsDir) _clientFtp.UploadFolder(pointer, (FtpFolder) destination);
-            else _clientFtp.UploadFile(pointer, (FtpFolder)destination);
+            // TODO Implement FTP
+            throw new NotImplementedException();
+            return base.DownloadFolder(item, destination);
         }
+
+        public override void UploadFile(FilePointer pointer, RemoteItem destination) =>  _clientFtp.UploadFile(pointer, (FtpFolder) destination);
+
+        public override void UploadFolder(DirectoryPointer pointer, RemoteItem destination) => _clientFtp.UploadFolder(pointer, (FtpFolder) destination);
 
         public override void AccessPath(RemoteItem destination)
         {
+            foreach (var item in Children) item.Dispose();
             Children.Clear();
-            foreach (var item in _clientFtp.ListDirectory((FtpFolder) destination).Items)
-                Children.Add(item);
+            foreach (var item in _clientFtp.ListDirectory((FtpFolder) destination).Items) Children.Add(item);
+            CurrentFolder = destination;
         }
 
-        public override void Refresh()
+        public override RemoteItem? GetItem(string path, bool isAbsolute = false)
         {
-            Children.Clear();
-            if (CurrentFolder is null) return;
-            foreach (var item in _clientFtp.ListDirectory( (FtpFolder)CurrentFolder).Items) Children.Add(item);
+            string name = System.IO.Path.GetFileName(path);
+            int last = path.Length;
+            string parentPath = path.Remove(last - name.Length, name.Length);
+            return _clientFtp.ListDirectory(parentPath).Items.FindLast(item => item.Name == name);
         }
-
-        public override RemoteItem? GetItem(string name) => CurrentFolder is FtpFolder folder ? _clientFtp.GetItem(folder, name) : null;
         
-
-        public override List<RemoteItem>? ListChildren(RemoteItem folder)
+        public override List<RemoteItem>? ListChildren()
         {
-            throw new NotImplementedException();
+            if (CurrentFolder is null) return null;
+            var result = new List<RemoteItem>();
+            result.AddRange(_clientFtp.ListDirectory((FtpFolder) CurrentFolder).Items);
+            return result;
         }
 
         #endregion
@@ -89,15 +99,9 @@ namespace LibraryClient
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region Others
-
-        public override RemoteItem GetRoot()
-        {
-            throw new NotImplementedException();
-        }
+        public override RemoteItem GetParentReference(RemoteItem item) => ((FtpFolder) item).Parent;
 
         #endregion
+
     }
 }

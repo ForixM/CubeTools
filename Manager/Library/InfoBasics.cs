@@ -89,7 +89,7 @@ namespace Library
             {
                 if (e is SecurityException or UnauthorizedAccessException)
                     throw new AccessException(Name + " cannot be read", "GetNameToPath");
-                throw new ManagerException("Reader error", "Medium", "Transform absolute path to name",
+                throw new ManagerException("Reader error", Level.Normal, "Transform absolute path to name",
                     Name + " could not be read", "GetNameToPath");
             }
         }

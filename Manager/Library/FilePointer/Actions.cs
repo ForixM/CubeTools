@@ -67,7 +67,7 @@ namespace Library.FilePointer
                     FileNotFoundException => new PathNotFoundException($"{Path} could not be found in the client's system", "RenameFile"),
                     IOException => new DiskNotReadyException($"The disk is not ready to rename {dest}", "RenameFile"),
                     SecurityException or UnauthorizedAccessException => new AccessException($"Access to {Path} is denied", "RenameFile"),
-                    _ => new ManagerException("Unable to rename a file", "High", "Writer error", $"Unable to rename {Path} to {dest}", "RenameFile")
+                    _ => new ManagerException("Unable to rename a file", Level.High, "Writer error", $"Unable to rename {Path} to {dest}", "RenameFile")
                 };
             }
             
@@ -117,7 +117,7 @@ namespace Library.FilePointer
                     ArgumentException or ArgumentNullException => new PathFormatException($"{dest} has an invalid format", "Copy"),
                     UnauthorizedAccessException or SecurityException => new AccessException(Path + " could not be accessed", "Copy"),
                     IOException => new SystemErrorException("system blocked copy of " + Path + " to " + dest, "Copy"),
-                    _ => new ManagerException("", "", "", "", "Copy")
+                    _ => new ManagerException("Writer Error", Level.Normal, "Unable to make a copy", $"The system was unable to make a copy of {_path}", "Copy")
                 };
             }
         }
@@ -161,7 +161,7 @@ namespace Library.FilePointer
                 {
                     IOException => new InUseException(_path + " is used by another process", "Delete"),
                     UnauthorizedAccessException => new AccessException(_path + " access is denied", "Delete"),
-                    _ => new ManagerException("Delete is impossible", "Medium", "Writer Error",
+                    _ => new ManagerException("Delete is impossible", Level.Normal, "Writer Error",
                         _path + " could not be deleted", "Delete")
                 };
             }
@@ -207,7 +207,7 @@ namespace Library.FilePointer
                     UnauthorizedAccessException or SecurityException => new AccessException(
                         "The given directory cannot be accessed", "AddDirAttribute"),
                     IOException => new DiskNotReadyException("the disk is not ready to modify data", "AddDirAttribute"),
-                    _ => new ManagerException("Writer error", "Medium", "Impossible to modify directory attributes",
+                    _ => new ManagerException("Writer error", Level.Normal, "Impossible to modify directory attributes",
                         "The path cannot be modified", "AddDirAttribute")
                 };
             }
@@ -238,7 +238,7 @@ namespace Library.FilePointer
                         "The given directory cannot be accessed", "RemoveDirAttribute"),
                     IOException => new DiskNotReadyException("the disk is not ready to modify data",
                         "RemoveDirAttribute"),
-                    _ => new ManagerException("Writer error", "Medium", "Impossible to modify directory attributes",
+                    _ => new ManagerException("Writer error", Level.Normal, "Impossible to modify directory attributes",
                         "The path cannot be modified", "RemoveDirAttribute")
                 };
             }

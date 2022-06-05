@@ -1,12 +1,12 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
-        x:Class="Ui.Views.ErrorPopUp.DiskNotReadyPopUp"
+        x:Class="Ui.Views.Error.AccessDenied"
         Width="400" Height="200"
         CanResize="False"
         Topmost="True"
+        Title="Access is denied"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
         Icon="{x:Static resource:ResourcesWindowIcons.ErrorWindow}"
-        Title="Disk is not ready"
         KeyDown="OnEscapePressed">
         
         <Grid>
@@ -21,22 +21,30 @@
                 
                 <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
+                                <RowDefinition Height="45"/>
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="60"/>
                                 <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
                         
-                        <Grid Grid.Row="0">
+                        <Grid Grid.Row="1">
                                 <TextBlock TextWrapping="Wrap" MaxLines="2" Text="AccessDenied" VerticalAlignment="Center" TextAlignment="Center" FontSize="14"/>
                         </Grid>
                         
-                        <Grid Grid.Row="1">
+                        <Grid Grid.Row="2">
                                 <TextBlock TextWrapping="Wrap" MaxLines="3" Name="ContentError" VerticalAlignment="Center" TextAlignment="Center" FontSize="12" Foreground="#251A00"/>
+                                <TextBlock Text="Would you like to get the administrator right for this action : " Margin="0 5 0 0"/>
                         </Grid>
                         
-                        <Grid Grid.Row="2">
-                                <Button Click="ButtonReloadClicked" Name="ButtonReload" Content="Reload"/>
-                                <Button Click="ButtonCancelClicked" Name="ButtonCancel" Content="Cancel"/>
+                        <Grid Grid.Row="3" ColumnDefinitions="Auto,Auto">
+            
+                                <Grid Grid.Column="0">
+                                        <Button Click="ButtonYesClicked" Name="ButtonYes" Content="Yes"/>
+                                </Grid>
+                        
+                                <Grid Grid.Column="1">
+                                        <Button Click="ButtonNoClicked" Name="ButtonNo" Content="No"/>
+                                </Grid>
                         </Grid>
                 </Grid>
         </Grid>

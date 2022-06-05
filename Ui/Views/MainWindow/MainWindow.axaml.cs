@@ -82,7 +82,7 @@ namespace Ui.Views.MainWindow
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.RenameShortcut))
                     LocalView.ActionBarView.Rename(sender, e);
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.ReloadShortcut))
-                    LocalView.ReloadPath();
+                    LocalView.Refresh();
                 else if (KeysPressed ==ConfigLoader.ConfigLoader.Settings.Shortcuts.SettingsShortcut)
                     new SettingsWindow().Show();
             }

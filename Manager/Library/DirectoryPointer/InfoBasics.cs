@@ -36,7 +36,7 @@ namespace Library.DirectoryPointer
             {
                 if (e is UnauthorizedAccessException or SecurityException)
                     throw new AccessException(Path + " access denied", "GetParent");
-                throw new ManagerException("Access to parent", "High", "Parent not found",
+                throw new ManagerException("Access to parent", Level.High, "Parent not found",
                     "Error while trying to get the Directory of " + Path, "GetParent");
             }
         }
@@ -60,7 +60,7 @@ namespace Library.DirectoryPointer
             {
                 if (e is SecurityException or UnauthorizedAccessException or NullReferenceException)
                     throw new AccessException(Path + " cannot be read", "GetFileSize");
-                throw new ManagerException("Reader error", "Medium", "Impossible to enumerate files",
+                throw new ManagerException("Reader error", Level.Normal, "Impossible to enumerate files",
                     Path + " and their children could not be read", "GetFileSize");
             }
         }

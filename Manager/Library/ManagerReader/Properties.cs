@@ -195,7 +195,7 @@ namespace Library.ManagerReader
                             "HasAttribute");
                     if (e is UnauthorizedAccessException)
                         throw new AccessException("the file " + path + " access is denied", "HasAttribute");
-                    throw new ManagerException("Reader error", "High", "Impossible to read",
+                    throw new ManagerException("Reader error", Level.High, "Impossible to read",
                         "the given path " + path + " could not be read", "HasAttribute");
                 }
 
@@ -213,7 +213,7 @@ namespace Library.ManagerReader
                     if (e is IOException)
                         throw new DiskNotReadyException("the given path " + path + " could not be read",
                             "HasAttribute");
-                    throw new ManagerException("Reader error", "High", "Impossible to read",
+                    throw new ManagerException("Reader error", Level.High, "Impossible to read",
                         "the given path " + path + " could not be read", "HasAttribute");
                 }
 

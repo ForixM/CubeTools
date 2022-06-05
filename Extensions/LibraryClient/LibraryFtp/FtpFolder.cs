@@ -5,18 +5,20 @@ namespace LibraryClient.LibraryFtp
     
     public class FtpFolder : IFtpItem
     {
-
         public static readonly FtpFolder ROOT = new FtpFolder("", "/", "");
 
-        public FtpFolder(string name, string parentPath, string lastmodified)
+        public FtpFolder(string name, string parentPath, string lastModified)
         {
-            this._name = name;
+            IsDir = true;
+            _name = name;
             if (parentPath == "/")
             {
-                this._parentPath = "/";
+                _path = "/";
+                _parentPath = "/";
             }
             else
             {
+                _path = parentPath + name + "/";
                 string temp = parentPath;
                 string name1 = "";
                 if (temp[^1] == '/') temp = temp.Remove(temp.Length - 1);
@@ -26,25 +28,29 @@ namespace LibraryClient.LibraryFtp
                     temp = temp.Remove(temp.Length - 1);
                 }
 
-                this._parentPath = temp;
+                _parentPath = temp;
             }
-            this._lastmodified = lastmodified;
+            _lastModified = lastModified;
         }
         
-        public FtpFolder(string name, IFtpItem parent, string lastmodified)
+        public FtpFolder(string name, IFtpItem parent, string lastModified)
         {
-            this._name = name;
-            this._parent = parent;
-            this._parentPath = parent.Path;
-            this._lastmodified = lastmodified;
+            IsDir = true;
+            _path = name =="" && parent.Path == "/" ? "/" :parent.Path + name + "/";
+            _name = name;
+            _parent = parent; 
+            _parentPath = parent.Path;
+            _lastModified = lastModified;
         }
 
         public FtpFolder(string path) // TODO Implement constructor with a path
         {
+            _path = path;
+            IsDir = true;
             if (path == "") path = "/";
             string newpath = path;
             while (newpath[^1] != '/') newpath = newpath.Remove(newpath.Length - 1);
-            this._lastmodified = "";
+            this._lastModified = "";
             string parentPath = path;
             if (parentPath == "/")
             {
@@ -70,7 +76,7 @@ namespace LibraryClient.LibraryFtp
 
         public override string ToString()
         {
-            return $"{{name={_name}, lastmodified={_lastmodified}}}";
+            return $"{{name={_name}, lastmodified={_lastModified}}}";
         }
     }
 }

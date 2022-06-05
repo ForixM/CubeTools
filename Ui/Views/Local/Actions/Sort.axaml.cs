@@ -31,25 +31,25 @@ namespace Ui.Views.Local.Actions
 
         private void OnNameClick(object? sender, RoutedEventArgs e)
         {
-            _main?.ReloadPath( ManagerReader.SortByName(_main.NavigationBarView.FolderPointer.ChildrenFiles));
+            _main?.Refresh( ManagerReader.SortByName(_main.NavigationBarView.FolderPointer.ChildrenFiles));
             Close();
         }
         
         private void OnTypeClick(object? sender, RoutedEventArgs e)
         {
-            _main?.ReloadPath( ManagerReader.SortByType(_main.NavigationBarView.FolderPointer.ChildrenFiles));
+            _main?.Refresh( ManagerReader.SortByType(_main.NavigationBarView.FolderPointer.ChildrenFiles));
             Close();
         }
         
         private void OnSizeClick(object? sender, RoutedEventArgs e)
         {
-            _main?.ReloadPath( ManagerReader.SortBySize(_main.NavigationBarView.FolderPointer.ChildrenFiles));
+            _main?.Refresh( ManagerReader.SortBySize(_main.NavigationBarView.FolderPointer.ChildrenFiles));
             Close();
         }
         
         private void OnDateClick(object? sender, RoutedEventArgs e)
         {
-            _main?.ReloadPath( ManagerReader.SortByModifiedDate(_main.NavigationBarView.FolderPointer.ChildrenFiles));
+            _main?.Refresh( ManagerReader.SortByModifiedDate(_main.NavigationBarView.FolderPointer.ChildrenFiles));
             Close();
         }
         

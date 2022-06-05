@@ -52,6 +52,7 @@ namespace LibraryClient
         public override Pointer Download(RemoteItem item, string name)
         {
             throw new NotImplementedException();
+            return base.Download(item, name);
         }
 
         public override void Upload(Pointer pointer, RemoteItem destination)
@@ -95,6 +96,11 @@ namespace LibraryClient
             return file;
         }
 
+        public override RemoteItem? GetItem(RemoteItem folder, string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public override List<RemoteItem>? ListChildren(RemoteItem folder)
         {
             throw new NotImplementedException();
@@ -125,14 +131,6 @@ namespace LibraryClient
         }
 
         #endregion
-
-        #region Others
-
-        public override RemoteItem GetRoot()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
+        
     }
 }
