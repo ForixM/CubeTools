@@ -17,6 +17,7 @@ namespace LibraryClient.LibraryOneDrive
             name = "",
             size = 0,
             folder = new OneFolder(),
+            root = new object(),
             parentReference = new ParentReference
             {
                 path = "/drive/root:"
@@ -39,6 +40,10 @@ namespace LibraryClient.LibraryOneDrive
         
         public new bool IsDir => Type == OneItemType.FOLDER;
 
+        [DataMember(Name="root")]public Object root { get; set; }
+
+        public bool isRoot => root != null;
+        
         [DataMember(Name = "parentReference")] public ParentReference parentReference { get; set; }
 
         /// <summary>
@@ -51,8 +56,8 @@ namespace LibraryClient.LibraryOneDrive
             string extension = System.IO.Path.GetExtension(name);
             _type = extension == "" ? "" : extension.Remove(0, 1);
             base.IsDir = this.IsDir;
-            _parentPath = parentReference.path == null ? "/drive/root:" : parentReference.path;
-            _path = parentReference.path == null ? "/drive/root:" : _parentPath+name;
+            _parentPath = isRoot ? "/drive/root:" : parentReference.path+"/";
+            _path = isRoot ? "/drive/root:" : _parentPath+name+"/";
         }
         
         public override string ToString()

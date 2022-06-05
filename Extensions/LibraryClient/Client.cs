@@ -117,7 +117,7 @@ namespace LibraryClient
         /// </summary>
         /// <param name="name">The name of the file, each file/folder separated by a / in the current folder</param>
         /// <returns>The remote Item in the current folder</returns>
-        public abstract RemoteItem? GetItem(string name);
+        public abstract RemoteItem? GetItem(string name, bool isAbsolute = false);
 
         #endregion
         

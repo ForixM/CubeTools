@@ -59,7 +59,7 @@ namespace LibraryClient
             CurrentFolder = destination;
         }
 
-        public override RemoteItem? GetItem(string path)
+        public override RemoteItem? GetItem(string path, bool isAbsolute = false)
         {
             string name = System.IO.Path.GetFileName(path);
             int last = path.Length;
