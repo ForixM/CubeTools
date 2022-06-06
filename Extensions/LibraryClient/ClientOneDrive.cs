@@ -77,14 +77,14 @@ namespace LibraryClient
             foreach (OneItem item in _clientOneDrive.GetArboresence((OneItem)destination).items) Children.Add(item);
         }
 
-        public override RemoteItem? GetItem(string name, bool isAbsolute = false)
+        public override RemoteItem? GetItem(string path, bool isAbsolute = false)
         {
             if (isAbsolute)
             {
                 try
                 {
                     OneItem item =
-                        JsonConvert.DeserializeObject<OneItem>(_clientOneDrive.GetItemFullMetadata(name).ToString());
+                        JsonConvert.DeserializeObject<OneItem>(_clientOneDrive.GetItemFullMetadata(path).ToString());
                     item.SetVariables();
                     return item;
                 }
@@ -94,7 +94,7 @@ namespace LibraryClient
                 }
             }
             return _clientOneDrive.GetArboresence((OneItem) CurrentFolder!).items
-                .FirstOrDefault(oneObject => oneObject.name == name);
+                .FirstOrDefault(oneObject => oneObject.name == path);
         }
         
         public override RemoteItem GetParentReference(RemoteItem item)
