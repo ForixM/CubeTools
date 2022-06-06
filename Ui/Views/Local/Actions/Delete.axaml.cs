@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -27,6 +28,7 @@ namespace Ui.Views.Local.Actions
         {
             _main = main;
             _pointer = pointer;
+            Title = $"Delete {pointer.Name} ?";
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -64,10 +66,8 @@ namespace Ui.Views.Local.Actions
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    _pointer.Delete();
-                    _main?.Refresh();
+                    Task.Run(_pointer.Delete).GetAwaiter().OnCompleted(_main!.Refresh);
                 }, DispatcherPriority.MaxValue);
-                _main?.Refresh();
             }
             catch (Exception exception)
             {

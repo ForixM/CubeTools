@@ -39,11 +39,7 @@ namespace Library.FilePointer
         {
             // Dest have an incorrect format
             if (!ManagerReader.ManagerReader.IsPathCorrect(dest)) throw new PathFormatException(Path + " : format of path is incorrect", "Copy");
-            if (!IsValid())
-            {
-                Dispose();
-                throw new PathNotFoundException(Path + " is invalid", "Copy");
-            }
+            if (!IsValid()) throw new PathNotFoundException(Path + " is invalid", "Copy");
             
             // Dest already exists and overwrite is activated : destroy it
             if (overwrite)
@@ -51,13 +47,17 @@ namespace Library.FilePointer
                 if (File.Exists(dest)) ManagerWriter.ManagerWriter.DeleteFile(dest);
                 else if (Directory.Exists(dest)) ManagerWriter.ManagerWriter.DeleteDir(dest);
             }
+            else
+            {
+                if (File.Exists(dest) || Directory.Exists(dest)) throw new ReplaceException($"Unable to rename {_path}", "RenameFile");
+            }
             
             // Try to Rename
             if (!File.Exists(Path)) throw new PathNotFoundException($"{Path} does not exist", "RenameFile");
             if (File.Exists(dest) && !overwrite) throw new ReplaceException($"{dest} already exists, rename aborted", "RenameFile");
             try
             {
-                FileSystem.MoveFile(_path, dest, UIOption.AllDialogs, UICancelOption.ThrowException);
+                FileSystem.RenameFile(_path, dest);
             }
             catch (Exception e)
             {
@@ -100,13 +100,10 @@ namespace Library.FilePointer
             // Source or dest have an incorrect format
             if (!IsValid() || !ManagerReader.ManagerReader.IsPathCorrect(dest)) throw new PathFormatException(_path + " : format of path is incorrect", "Copy");
 
-            // Dest already exists : destroy it
-            if (recursive) ManagerWriter.ManagerWriter.Delete(dest, true);
-
             // Then finally Copy
             try
             {
-                FileSystem.CopyFile(Path, dest, UIOption.AllDialogs, UICancelOption.ThrowException);
+                FileSystem.CopyFile(Path, dest, UIOption.AllDialogs, UICancelOption.DoNothing);
                 return new FilePointer(dest);
             }
             catch (Exception e)
@@ -141,12 +138,15 @@ namespace Library.FilePointer
             if (!Exist()) throw new PathNotFoundException(_path + " does not exist", "Delete");
             try
             {
-                FileSystem.DeleteFile(_path, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
+                FileSystem.DeleteFile(_path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
             }
             catch (Exception e)
             {
                 throw e switch
                 {
+                    ArgumentException or ArgumentNullException or PathTooLongException => new PathFormatException(
+                        $"The path {_path} is invalid","Delete file"),
+                    FileNotFoundException or DirectoryNotFoundException => throw new PathNotFoundException(_path + " does not exist", "Delete"),
                     IOException => new InUseException(_path + " is used by another process", "Delete"),
                     UnauthorizedAccessException => new AccessException(_path + " access is denied", "Delete"),
                     _ => new ManagerException("Delete is impossible", Level.Normal, "Writer Error",
@@ -154,6 +154,7 @@ namespace Library.FilePointer
                 };
             }
             Dispose();
+            GC.Collect();
         }
 
 

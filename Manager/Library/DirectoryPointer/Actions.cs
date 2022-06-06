@@ -39,23 +39,25 @@ namespace Library.DirectoryPointer
         {
             // Dest has an incorrect format
             if (!ManagerReader.ManagerReader.IsPathCorrect(dest)) throw new PathFormatException(Path + " : format of path is incorrect", "Copy");
-            if (!IsValid())
-            {
-                Dispose();
-                throw new PathNotFoundException(Path + " is invalid", "Copy");
-            }
+            if (!IsValid()) throw new PathNotFoundException(Path + " is invalid", "Copy");
             
             // Dest already exists and overwrite is activated : destroy it
             if (overwrite)
             {
-                if (File.Exists(dest)) ManagerWriter.ManagerWriter.DeleteFile(dest);
-                else if (Directory.Exists(dest)) ManagerWriter.ManagerWriter.DeleteDir(dest);
+                try
+                {
+                    if (File.Exists(dest)) ManagerWriter.ManagerWriter.DeleteFile(dest);
+                    else if (Directory.Exists(dest)) ManagerWriter.ManagerWriter.DeleteDir(dest);
+                }
+                catch (Exception e)
+                { }
             }
             else
             {
                 if (Directory.Exists(dest) || File.Exists(dest))
                     throw new ReplaceException($"{dest} already exist", "Rename");
             }
+            
             // Try to Rename the directory
             try
             {
@@ -101,7 +103,7 @@ namespace Library.DirectoryPointer
             // Source does not exist
             if (!Exist()) throw new PathNotFoundException($"{_path} not found", "Copy");
             // Source or dest have an incorrect format
-            if (!IsValid() || !ManagerReader.ManagerReader.IsPathCorrect(dest)) throw new PathFormatException(_path + " : format of path is incorrect", "Copy");
+            if (!IsValid()) throw new PathFormatException(_path + " : format of path is incorrect", "Copy");
 
             // Then finally Copy
             try
@@ -110,26 +112,18 @@ namespace Library.DirectoryPointer
             }
             catch (Exception e)
             {
-                switch (e)
+                if (e is ManagerException) throw;
+                throw e switch
                 {
-                    case OperationCanceledException:
-                        return NullPointer;
-                    case ManagerException:
-                        throw;
-                    default:
-                        throw e switch
-                        {
-                            SecurityException or UnauthorizedAccessException => new AccessException(
-                                _path + " could not be accessed", "CopyDirectory"),
-                            IOException => new SystemErrorException("Copy could not be done", "CopyDirectory"),
-                            PathTooLongException or NotSupportedException => new PathFormatException(
-                                "A file / folder contained a path too large", "CopyDirectory"),
-                            _ => new ManagerException("An error occured", Level.Normal, "Copy directories",
-                                "Copy sub-dirs and sub-files could not be done", "CopyDirectory")
-                        };
-                }
+                    SecurityException or UnauthorizedAccessException => new AccessException(
+                        _path + " could not be accessed", "CopyDirectory"),
+                    IOException => new SystemErrorException("Copy could not be done", "CopyDirectory"),
+                    PathTooLongException or NotSupportedException => new PathFormatException(
+                        "A file / folder contained a path too large", "CopyDirectory"),
+                    _ => new ManagerException("An error occured", Level.Normal, "Copy directories",
+                        "Copy sub-dirs and sub-files could not be done", "CopyDirectory")
+                };
             }
-
             return new DirectoryPointer(dest);
         }
         
@@ -151,11 +145,11 @@ namespace Library.DirectoryPointer
             if (!Exist()) throw new PathNotFoundException(_path + " does not exist", "Delete");
             try
             {
-                FileSystem.DeleteDirectory(_path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.ThrowException);
+                FileSystem.DeleteDirectory(_path, UIOption.AllDialogs, RecycleOption.SendToRecycleBin, UICancelOption.DoNothing);
             }
             catch (Exception e)
             {
-                if (e is OperationCanceledException) return;
+                if (e is ManagerException) throw;
                 throw e switch
                 {
                     IOException => new InUseException(_path + " is used by another process", "Delete"),
@@ -165,6 +159,7 @@ namespace Library.DirectoryPointer
                 };
             }
             Dispose();
+            GC.Collect();
         }
         
         #endregion
@@ -191,6 +186,8 @@ namespace Library.DirectoryPointer
             {
                 throw e switch
                 {
+                    ArgumentException or PathTooLongException => new PathFormatException(
+                        "the given folder has an invalid path", "AddAttribute"),
                     FileNotFoundException or DirectoryNotFoundException => new PathNotFoundException(
                         "the given directory does not exist", "AddDirAttribute"),
                     UnauthorizedAccessException or SecurityException => new AccessException(
@@ -222,6 +219,8 @@ namespace Library.DirectoryPointer
             {
                 throw e switch
                 {
+                    ArgumentException or PathTooLongException => new PathFormatException(
+                        "the given directory has an invalid path","RemoveDirAttribute"),
                     FileNotFoundException or DirectoryNotFoundException => new PathNotFoundException(
                         "the given directory does not exist", "RemoveDirAttribute"),
                     UnauthorizedAccessException or SecurityException => new AccessException(

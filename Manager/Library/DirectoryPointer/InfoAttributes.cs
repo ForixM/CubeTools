@@ -31,9 +31,9 @@ namespace Library.DirectoryPointer
                     FileNotFoundException or DirectoryNotFoundException =>
                         new PathNotFoundException("the given path " + _path + " could not be found in the system",
                             "HasAttribute"),
-                    PathTooLongException => new PathFormatException("the given path " + _path + " is invalid",
+                    PathTooLongException or ArgumentException => new PathFormatException("the given path " + _path + " is invalid",
                         "HasAttribute"),
-                    SecurityException or ArgumentException or UnauthorizedAccessException or NullReferenceException =>
+                    SecurityException or UnauthorizedAccessException or NullReferenceException =>
                         new AccessException("the directory to access # " + _path + " # cannot be read", "HasAttribute"),
                     IOException => new DiskNotReadyException("the given path " + _path + " could not be read",
                         "HasAttribute"),

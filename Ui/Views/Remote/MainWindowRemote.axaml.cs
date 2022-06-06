@@ -17,7 +17,7 @@ namespace Ui.Views.Remote
     {
         #region Variables
         
-        public static MainWindowRemote LastView;
+        public static MainWindowRemote LastReference;
 
         public Local.Local Local;
         
@@ -35,10 +35,11 @@ namespace Ui.Views.Remote
         
         public MainWindowRemote()
         {
-            LastView = this;
+            LastReference = this;
             InitializeComponent();
             // References
             Local = this.FindControl<Local.Local>("Local");
+            Local.IsRemote = true;
             RemoteNavigationView = this.FindControl<RemoteNavigation>("RemoteNavigation");
             RemoteActionView = this.FindControl<RemoteAction>("RemoteAction");
             RemotePointersView = this.FindControl<RemotePointers>("RemotePointers");

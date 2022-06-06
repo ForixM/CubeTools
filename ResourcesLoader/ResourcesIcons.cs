@@ -89,5 +89,7 @@ namespace ResourcesLoader
                                                                "Icons/Shortcut.ico");
         public static readonly IImage UploadIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                 "Icons/Upload.ico");
+        public static readonly IImage DriveIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                   "Icons/Drive.ico");
     }
 }

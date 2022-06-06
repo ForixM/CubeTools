@@ -4,11 +4,11 @@
         
         <Grid ColumnDefinitions="50*,50*">
             
-                <Grid Grid.Column="0" VerticalAlignment="Center">
-                        <Button Width="70" Height="40" HorizontalAlignment="Center" Click="OkClick" Content="Ok"/>
+                <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Click="OkClick" Content="Ok"/>
                 </Grid>
-                <Grid Grid.Column="1" VerticalAlignment="Center">
-                        <Button Width="70" Height="40" HorizontalAlignment="Center" Click="TryReloadClick" Content="Refresh"/>
+                <Grid Grid.Column="1">
+                        <Button Click="TryReloadClick" Content="Refresh"/>
                 </Grid>
         </Grid>
 </UserControl>

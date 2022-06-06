@@ -7,13 +7,15 @@ using Library;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Ui.Views.Error;
+using Ui.Views.Remote;
 
 namespace Ui.Views.Local
 {
     public class Local : UserControl
     {
         public static Local LastReference;
-        public readonly MainWindow.MainWindow Main;
+        public readonly Window Main;
+        public bool IsRemote;
 
         public ActionBar ActionBarView;
         public NavigationBar NavigationBarView;
@@ -21,13 +23,29 @@ namespace Ui.Views.Local
 
         public Local()
         {
+            IsRemote = false;
             LastReference = this;
             Main = MainWindow.MainWindow.LastReference;
             InitializeComponent();
             ActionBarView = this.FindControl<ActionBar>("ActionBar");
             NavigationBarView = this.FindControl<NavigationBar>("NavigationBar");
             PathsBarView = this.FindControl<PathsBar>("PathsBar");
-
+            
+            string path = Directory.GetCurrentDirectory();
+            NavigationBarView.AccessPath(path);
+            NavigationBarView.Add(path);
+            PathsBarView.Refresh();
+        }
+        public Local(bool isRemote = false)
+        {
+            IsRemote = isRemote;
+            LastReference = this;
+            Main = !isRemote ?  MainWindow.MainWindow.LastReference : MainWindowRemote.LastReference;
+            InitializeComponent();
+            ActionBarView = this.FindControl<ActionBar>("ActionBar");
+            NavigationBarView = this.FindControl<NavigationBar>("NavigationBar");
+            PathsBarView = this.FindControl<PathsBar>("PathsBar");
+            
             string path = Directory.GetCurrentDirectory();
             NavigationBarView.AccessPath(path);
             NavigationBarView.Add(path);

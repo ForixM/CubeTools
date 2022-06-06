@@ -9,78 +9,59 @@ using LibraryClient.LibraryOneDrive;
 using Syroot.Windows.IO;
 using Ui.Views.Error;
 using Ui.Views.Ftp;
+using Ui.Views.MainWindow.DynamicLinkBar;
 using Ui.Views.Remote;
 
 namespace Ui.Views.MainWindow
 {
     public class LinkBar : UserControl
     {
-
         public Local.Local Main;
+        
+        private StackPanel _quickAccess;
+        private StackPanel _favorites;
+        private StackPanel _drives;
+        private StackPanel _clouds;
         
         public LinkBar()
         {
             Main = Local.Local.LastReference;
             InitializeComponent();
+            _quickAccess = this.FindControl<StackPanel>("QuickAccess");
+            _favorites = this.FindControl<StackPanel>("Favorites");
+            _drives = this.FindControl<StackPanel>("Drives");
+            _clouds = this.FindControl<StackPanel>("Clouds");
+            InitializeExpanders();
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void AccessError(object? sender, RoutedEventArgs e)
+        private void InitializeExpanders()
         {
-            ClientOneDrive client = new ClientOneDrive(ClientType.ONEDRIVE);
-            client.Client.authenticated += (o, success) =>
-            {
-                if (success) Dispatcher.UIThread.Post(() => new MainWindowRemote(client).Show());
-                else new ErrorBase(new ConnectionRefused("OneDrive connection could not be established", "Connection to OneDrive")).Show();
-            };
-        }
-        
-        private void FTP(object? sender, RoutedEventArgs e) => new LoginFTP().Show();
-
-        private void OpenDesktop(object? sender, RoutedEventArgs e)
-        {
-            Main.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-        }
-
-        private void OpenDocuments(object? sender, RoutedEventArgs e)
-        {
-            Main.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
-        }
-
-        private void OpenImages(object? sender, RoutedEventArgs e)
-        {
-            Main.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
-        }
-
-        private void OpenDownloads(object? sender, RoutedEventArgs e)
-        {
-            Main.AccessPath(KnownFolders.Downloads.Path);
+	        // Quick Access
+	        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyComputer), "My Computer", ResourcesLoader.ResourcesIconsCompressed.FolderCompressed));
+	        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Me", ResourcesLoader.ResourcesIconsCompressed.UsersCompressed));
+	        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Desktop", ResourcesLoader.ResourcesIconsCompressed.DesktopCompressed));
+	        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Documents", ResourcesLoader.ResourcesIconsCompressed.DocumentsCompressed));
+	        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Pictures", ResourcesLoader.ResourcesIconsCompressed.ImagesCompressed));
+	        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
+	        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
+	        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
+	        /*
+	        // Favorites
+	        foreach (var link in ConfigLoader.ConfigLoader.Settings.)
+	        {
+		        
+	        }
+	        */
+	        // Drives
+	        foreach (var drive in System.IO.DriveInfo.GetDrives())
+		        _drives.Children.Add(new OneLink(drive.Name, drive.Name, ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
+	        // Clouds
+	        _clouds.Children.Add(new FTPHandler());
+	        _clouds.Children.Add(new OneDriveHandler());
+	        _clouds.Children.Add(new GoogleDriveHandler());
         }
 
-        private void OpenMusic(object? sender, RoutedEventArgs e)
-        {
-            Main.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic));
-        }
-
-        private void OpenVideos(object? sender, RoutedEventArgs e)
-        {
-            Main.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos));
-        }
-
-        private void OpenFavorites(object? sender, RoutedEventArgs e)
-        {
-            Main.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.Favorites));
-        }
-
-        private void OpenMyComputer(object? sender, RoutedEventArgs e)
-        {
-            Main.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.MyComputer));
-        }
-
-        private void OpenUser(object? sender, RoutedEventArgs e)
-        {
-            Main.AccessPath(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
-        }
     }
 }

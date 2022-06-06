@@ -155,7 +155,8 @@ namespace Ui.Views.Local
             }
             catch (ManagerException e)
             {
-                new ErrorBase(e).ShowDialog<object>(Main.Main);
+                new ErrorBase(e).Show();
+                //new ErrorBase(e).ShowDialog<object>(Main.Main);
             }
             CurrentPathXaml.Text = FolderPointer.Path;
             //Add(FolderPointer);

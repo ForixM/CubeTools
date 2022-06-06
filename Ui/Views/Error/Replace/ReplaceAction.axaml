@@ -4,14 +4,14 @@
         
         <Grid ColumnDefinitions="33*,33*,33*">
             
-                <Grid Grid.Column="0" VerticalAlignment="Center">
-                        <Button Width="70" Height="40" HorizontalAlignment="Center" Click="ReplaceClick" Content="Replace"/>
+                <Grid Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Button HorizontalAlignment="Center" Click="ReplaceClick" Content="Replace"/>
                 </Grid>
-                <Grid Grid.Column="1" VerticalAlignment="Center">
-                        <Button Width="70" Height="40" HorizontalAlignment="Center" Click="CopyClick" Content="Make a Copy"/>
+                <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Button HorizontalAlignment="Center" Click="CopyClick" Content="Make a Copy"/>
                 </Grid>
-                <Grid Grid.Column="2" VerticalAlignment="Center">
-                        <Button Width="70" Height="40" HorizontalAlignment="Center" Click="CancelClick" Content="Cancel"/>
+                <Grid Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Button Click="CancelClick" Content="Cancel"/>
                 </Grid>
         </Grid>
 </UserControl>

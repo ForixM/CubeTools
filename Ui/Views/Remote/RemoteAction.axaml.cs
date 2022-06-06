@@ -21,7 +21,7 @@ namespace Ui.Views.Remote
 
         public RemoteAction()
         {
-            Main = MainWindowRemote.LastView;
+            Main = MainWindowRemote.LastReference;
             InitializeComponent();
             Selected = new List<RemoteItem>();
             Copied = new List<RemoteItem>();

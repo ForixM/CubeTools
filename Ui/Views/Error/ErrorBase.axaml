@@ -8,19 +8,23 @@
         Icon="{x:Static resource:ResourcesWindowIcons.ErrorWindow}"
         KeyDown="OnEscapePressed">
         
-        <Grid>
-                <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="250"/>
-                </Grid.ColumnDefinitions>
-                
+        <Grid ColumnDefinitions="125,275">
+
                 <Grid Grid.Column="0">
                         <Image Name="ImageError" Source="{x:Static resource:ResourcesIcons.ErrorIcon}" Height="100"/>
                 </Grid>
                 
                 <Grid Grid.Column="1">
-                        <TextBlock Name="ContentError"/>
-                        <Control Name="Container"/>
+                        <Grid RowDefinitions="40,60,65,35">
+                                <Grid Row="0">
+                                        <TextBlock Name="StdError" VerticalAlignment="Center" FontSize="18" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap"/>
+                                </Grid>
+                                <Grid Row="1">
+                                        <TextBlock Name="ContentError" VerticalAlignment="Center" FontSize="12" FontWeight="SemiLight" TextAlignment="Center" TextWrapping="Wrap"/>
+                                </Grid>
+                                <Grid Row="2" Name="Container">
+                                </Grid>
+                        </Grid>
                 </Grid>
         </Grid>
 </Window>

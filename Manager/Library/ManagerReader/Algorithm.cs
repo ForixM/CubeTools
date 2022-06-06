@@ -46,7 +46,7 @@ namespace Library.ManagerReader
             {
                 var name = GetPathToName(path);
                 while (File.Exists(res) || Directory.Exists(res))
-                    res = $"{dir}/{name} - Copy";
+                    res += "- Copy";
 
                 return res;
             }

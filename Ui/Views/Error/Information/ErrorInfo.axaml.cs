@@ -14,7 +14,7 @@ namespace Ui.Views.Error.Information
             InitializeComponent();
         }
 
-        public ErrorInfo(ErrorBase popup)
+        public ErrorInfo(ErrorBase popup) : this()
         {
             this.popup = popup;
         }

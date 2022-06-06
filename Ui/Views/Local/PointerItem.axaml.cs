@@ -1,14 +1,13 @@
-using System;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Library.ManagerExceptions;
 using ResourcesLoader;
 using Ui.Views.Error;
+using Ui.Views.Remote;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views.Local
@@ -48,10 +47,7 @@ namespace Ui.Views.Local
             _icon.Source = ResourcesConverter.TypeToIcon(pointer.Type, pointer.IsDir);
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
         
@@ -84,24 +80,44 @@ namespace Ui.Views.Local
         /// </summary>
         private void OnClick(object? sender, RoutedEventArgs e)
         {
-            if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
+            if (_main.IsRemote)
             {
-                if (!_main.Main.KeysPressed.Contains(Key.LeftCtrl) && !_main.Main.KeysPressed.Contains(Key.RightCtrl))
+                if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
+                {
+                    // Remove all not ctrl pressed
+                    if (_main.Main is MainWindowRemote mainReference && !mainReference.KeysPressed.Contains(Key.LeftCtrl) && !mainReference.KeysPressed.Contains(Key.RightCtrl))
+                        _main.ActionBarView.SelectedXaml.Clear();
+                    // Add or Remove
+                    if (_main.ActionBarView.SelectedXaml.Contains(this)) _main.ActionBarView.SelectedXaml.Remove(this);
+                    else _main.ActionBarView.SelectedXaml.Add(this);
+                    // Modify UI
+                    foreach (var control in _main.PathsBarView.Generator.Children)
+                        ((PointerItem) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
+                    foreach (var control in _main.ActionBarView.SelectedXaml)
+                        control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
+                }
+                else
+                {
+                    new ErrorBase(new PathNotFoundException(Pointer.Path + " does not exist", "Pointer Local UI")).Show();
+                    _main.Refresh();
+                }
+            }
+            else
+            {
+                // Remove all not ctrl pressed
+                if (_main.Main is MainWindow.MainWindow mainReference && !mainReference.KeysPressed.Contains(Key.LeftCtrl) && !mainReference.KeysPressed.Contains(Key.RightCtrl))
                     _main.ActionBarView.SelectedXaml.Clear();
-                _main.ActionBarView.SelectedXaml.Add(this);
+                // Add or Remove
+                if (_main.ActionBarView.SelectedXaml.Contains(this)) _main.ActionBarView.SelectedXaml.Remove(this);
+                else _main.ActionBarView.SelectedXaml.Add(this);
+                // Modify UI
                 foreach (var control in _main.PathsBarView.Generator.Children)
                     ((PointerItem) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
                 foreach (var control in _main.ActionBarView.SelectedXaml)
                     control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
             }
-            else
-            {
-                new ErrorBase(new PathNotFoundException(Pointer.Path + " does not exist", "Pointer Local UI")).Show();
-                _main.Refresh();
-            }
         }
 
         #endregion
-        
     }
 }

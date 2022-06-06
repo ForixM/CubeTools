@@ -105,7 +105,7 @@ namespace Ui.Views.Local
                 case < 1:
                     return;
                 case 1:
-                    new Ui.Views.Local.Actions.Rename(SelectedXaml[0].Pointer, Main.NavigationBarView.FolderPointer.ChildrenFiles, Main).Show();
+                    new Rename(SelectedXaml[0].Pointer, Main.NavigationBarView.FolderPointer.ChildrenFiles, Main).Show();
                     break;
                 default:
                     new ErrorBase(new ManagerException("Unable to rename multiple data")).ShowDialog<object>(Main.Main);
@@ -199,9 +199,14 @@ namespace Ui.Views.Local
             {
                 // Copy Pointer
                 Dispatcher.UIThread.Post(
-                    () => source.Copy(ManagerReader.GenerateNameForModification(source.Path), true),
+                    () =>
+                    {
+                        string nameModified =
+                            ManagerReader.GetPathToName(ManagerReader.GenerateNameForModification(Main.NavigationBarView.FolderPointer.Path + "/" + source.Name));
+                        string dest = Main.NavigationBarView.FolderPointer.Path + "/" + nameModified;
+                        Task.Run(() => source.Copy(dest, true)).GetAwaiter().OnCompleted(Main.Refresh);
+                    },
                     DispatcherPriority.MaxValue);
-                Main.Refresh();
             }
             catch (Exception exception)
             {

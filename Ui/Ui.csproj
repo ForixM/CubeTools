@@ -455,6 +455,22 @@
         <DependentUpon>RefreshAction.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\MainWindow\DynamicLinkBar\OneLink.axaml.cs">
+        <DependentUpon>Drive.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\DynamicLinkBar\OneDriveHandler.axaml.cs">
+        <DependentUpon>OneDriveHandler.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\DynamicLinkBar\FTPHandler.axaml.cs">
+        <DependentUpon>FTPHandler.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow\DynamicLinkBar\GoogleDriveHandler.axaml.cs">
+        <DependentUpon>GoogleDriveHandler.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="bin\Debug\net6.0\Assets\dark" />

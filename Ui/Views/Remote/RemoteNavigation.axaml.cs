@@ -24,7 +24,7 @@ namespace Ui.Views.Remote
         {
             InitializeComponent();
             //
-            Main = MainWindowRemote.LastView;
+            Main = MainWindowRemote.LastReference;
             CurrentPathXaml = this.FindControl<TextBox>("RemoteCurrentPath");
             //
             _queue = new List<RemoteItem>();

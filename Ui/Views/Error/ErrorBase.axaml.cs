@@ -3,34 +3,42 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
-using Ui.Views.Error.Information;
 
 namespace Ui.Views.Error
 {
     public class ErrorBase : Window
     {
         private readonly TextBlock _contentError;
+        private readonly TextBlock _stdError;
         private readonly Image _imageError;
-        public Control Container;
+        public Grid Container;
         public readonly ManagerException BaseException;
         
         public ErrorBase()
         {
             InitializeComponent();
-            Container = this.FindControl<Control>("Container");
+            Container = this.FindControl<Grid>("Container");
             _contentError = this.FindControl<TextBlock>("ContentError");
+            _stdError = this.FindControl<TextBlock>("StdError");
             _imageError = this.FindControl<Image>("ImageError");
         }
-        public ErrorBase(ManagerException exception) : this()
+        public ErrorBase(ManagerException exception)
         {
             BaseException = exception;
+            InitializeComponent();
+            Container = this.FindControl<Grid>("Container");
+            _contentError = this.FindControl<TextBlock>("ContentError");
+            _stdError = this.FindControl<TextBlock>("StdError");
+            _imageError = this.FindControl<Image>("ImageError");
             _contentError.Text = exception.ErrorMessage;
+            ErrorConverter.SetContainer(this, exception);
             CustomizeWindow();
         }
 
         public void CustomizeWindow()
         {
             Title = BaseException.Errorstd;
+            _stdError.Text = BaseException.ErrorType;
             _contentError.Text = BaseException.ErrorMessage;
             _imageError.Source = BaseException.Level switch
             {
