@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using HeyRed.Mime;
 using Library;
+using Library.DirectoryPointer;
 using Library.FilePointer;
 using LibraryClient.LibraryFtp;
 using Newtonsoft.Json;
@@ -196,6 +197,22 @@ namespace LibraryClient.LibraryOneDrive
             return (int) response.StatusCode == 201;
         }
         
+        public async Task<bool> UploadFolder(Pointer folder, OneItem destination)
+        {
+            if (!destination.IsDir) return false;
+            OneItem newFolder = CreateFolder(folder.Name,
+                destination);
+            foreach (string file in Directory.GetFiles(folder.Path))
+            {
+                UploadFile(new FilePointer(file), newFolder);
+            }
+            foreach (string directory in Directory.GetDirectories(folder.Path))
+            {
+                UploadFolder(new DirectoryPointer(directory+@"\"), newFolder);
+            }
+            return true;
+        }
+        
         public async Task<bool> CreateFile(string fileName, OneItem destination)
         {
             if (destination.Type != OneItemType.FOLDER) return false;
@@ -276,6 +293,23 @@ namespace LibraryClient.LibraryOneDrive
             File.WriteAllBytes(dest, resStr.Result);
             uploadFinished?.Invoke(this, true); //TODO handle success bool value
             return new FilePointer(dest);
+        }
+        
+        public string DownloadFolder(string dest, OneItem folder)
+        {
+            if (!folder.IsDir) return null;
+            Directory.CreateDirectory(dest + folder.name);
+            OneArboresence arbo = GetArboresence(folder);
+            foreach (OneItem item in arbo.items)
+            {
+                if (!item.IsDir)
+                    DownloadFile(dest+folder.name+"/"+item.name, item);
+                else
+                {
+                    DownloadFolder(dest+folder.name+"/", item);
+                }
+            }
+            return dest;
         }
 
         public bool DeleteItem(OneItem item)
