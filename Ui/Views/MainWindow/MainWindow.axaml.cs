@@ -22,6 +22,8 @@ namespace Ui.Views.MainWindow
             InitializeComponent();
             LinkBarView = this.FindControl<LinkBar>("LinkBar");
             LocalView = this.FindControl<Local.Local>("Local");
+            LinkBarView.Main = LocalView;
+            LinkBarView.InitializeExpanders();
             KeysPressed = new List<Key>();
         }
 

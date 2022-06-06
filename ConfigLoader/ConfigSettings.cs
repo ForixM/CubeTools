@@ -12,10 +12,9 @@ namespace ConfigLoader
         // Sections
         [DataMember(Name = "Application")] public ApplicationSettings? Application { get; set; }
         [DataMember(Name="Styles")] public StylesSettings? Styles { get; set; }
-        [DataMember(Name = "OneDrive")] public OneDriveSettings? OneDrive { get; set; }
-        [DataMember(Name = "GoogleDrive")] public GoogleDriveSettings? GoogleDrive { get; set; }
         [DataMember(Name = "FTP")] public FtpSettings? Ftp { get; set; }
         [DataMember(Name = "Shortcuts")] public ShortcutsSettings? Shortcuts { get; set; }
+        [DataMember(Name = "Links")] public LinksSettings? Links { get; set; }
 
         public string ResourcePath => AppPath + "/" + (Styles != null ? Styles.Pack : "Assets/default") + "/";
         public string LoadedJson;
