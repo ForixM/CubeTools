@@ -43,5 +43,42 @@ namespace ConfigLoader.Settings
         [DataMember(Name = "mp4")] public string? ApplicationMp4 { get; set; }
         [DataMember(Name = "mov")] public string? ApplicationMov { get; set; }
         [DataMember(Name = "mpeg")] public string? ApplicationMpeg { get; set; }
+
+        public Dictionary<string, string?> Applications;
+
+        public ApplicationSettings()
+        {
+            Applications = new Dictionary<string, string?>();
+            
+            Applications.Add("default", ApplicationDefault);
+            Applications.Add("txt", ApplicationTxt);
+            Applications.Add("pdf", ApplicationPdf);
+            Applications.Add("jpg", ApplicationJpg);
+            Applications.Add("jpeg", ApplicationJpeg);
+            Applications.Add("png", ApplicationPng);
+            Applications.Add("ico", ApplicationIco);
+            Applications.Add("exe", ApplicationExe);
+            Applications.Add("iso", ApplicationIso);
+            Applications.Add("docx", ApplicationDocx);
+            Applications.Add("odt", ApplicationOdt);
+            Applications.Add("pptx", ApplicationPptx);
+            Applications.Add("xlsx", ApplicationXlsx);
+            Applications.Add("key", ApplicationKey);
+            Applications.Add("py", ApplicationPy);
+            Applications.Add("cs", ApplicationCs);
+            Applications.Add("cpp", ApplicationCPlusPlus);
+            Applications.Add("java", ApplicationJava);            
+            Applications.Add("html", ApplicationHtml);
+            Applications.Add("gitignore", ApplicationGitignore);
+            Applications.Add("zip", ApplicationZip);
+            Applications.Add("rar", ApplicationRar);
+            Applications.Add("mp3", ApplicationMp3);
+            Applications.Add("alac", ApplicationAlac);
+            Applications.Add("flac", ApplicationFlac);
+            Applications.Add("wav", ApplicationWav);
+            Applications.Add("mp4", ApplicationMp4);
+            Applications.Add("mov", ApplicationMov);
+            Applications.Add("mpeg", ApplicationMpeg);
+        }
     }
 }

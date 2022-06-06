@@ -7,9 +7,6 @@ namespace InitLoader
     /// </summary>
     public static partial class InitLoader
     {
-        private static void InitLibraries()
-        {
-            Compression.Init();
-        }
+        private static void InitLibraries() => Compression.Init();
     }
 }

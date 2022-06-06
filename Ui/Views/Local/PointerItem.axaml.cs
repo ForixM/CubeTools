@@ -70,7 +70,7 @@ namespace Ui.Views.Local
         {
             if ((File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path)) && e.MouseButton is MouseButton.Right)
             {
-                var propertiesPopUp = new Properties.Properties(Pointer);
+                var propertiesPopUp = new Information.MoreInformation(Pointer);
                 propertiesPopUp.Show();
             }
         }

@@ -7,7 +7,7 @@ namespace ConfigLoader
     public static class ConfigLoader
     {
         /// <summary>
-        /// All Settings wrapping up in one single variable : FANTASTIC
+        /// All Settings wrapping up in one single variable
         /// </summary>
         public static ConfigSettings Settings;
         
@@ -24,23 +24,17 @@ namespace ConfigLoader
                     File.Copy("Config.default.json", "Config.json");
                     path = "Config.json";
                 }
-                string content;
-                using (StreamReader reader = new StreamReader(path))
-                {
-                    content = reader.ReadToEnd();
-                }
-
-                Settings = (ConfigSettings) JsonConvert.DeserializeObject(content, typeof(ConfigSettings));
-                Settings.LoadedJson = Path.GetFileName(path);
+                Settings = (ConfigSettings) JsonConvert.DeserializeObject(new StreamReader(path).ReadToEnd(), typeof(ConfigSettings))!;
+                Settings.AppPath = Directory.GetCurrentDirectory().Replace('\\','/');
+                Settings.LoadedJson = Path.Combine(Settings.AppPath, Path.GetFileName(path));
             }
             catch (Exception e)
             {
-                if (e is JsonException)
-                    LogErrors.LogErrors.LogWrite("Unable to read configuration file given with path : " + path, e);
+                if (e is NullReferenceException) throw new Exception("Critical ERROR ! Unable to load json config files !");
+                if (e is JsonException) LogErrors.LogErrors.LogWrite("Unable to read configuration file given with path : " + path, e);
             }
 
-            if (Settings == null)
-                throw new Exception("Critical ERROR ! Unable to load json config files !");
+            
         }
         /// <summary>
         /// Save the instance ConfigSettings in the json configuration file
@@ -49,22 +43,14 @@ namespace ConfigLoader
         {
             try
             {
-                if (File.Exists(path))
-                {
-                    try
-                    {
-                        File.Delete(path);
-                    }
-                    catch (Exception) { }
-                }
-                File.Create(JsonSerializer.Serialize(Settings));
+                File.CreateText(JsonSerializer.Serialize(Settings));
             }
             catch (Exception e)
             {
                 if (e is JsonException)
                     LogErrors.LogErrors.LogWrite("Unable to save the current Configuration in the config file",e);
                 else if (e is IOException or UnauthorizedAccessException)
-                    LogErrors.LogErrors.LogWrite("Unable tod estroy config files", e);
+                    LogErrors.LogErrors.LogWrite("Unable to overwrite config files", e);
             }
         }
     }
