@@ -1,0 +1,13 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+             x:Class="Ui.Views.MainWindow.DynamicLinkBar.OneLink" MaxHeight="40">
+	
+	<Button Click="OpenLink" Height="40">
+		<WrapPanel>
+			<Image Name="Image" Source="{x:Static resource:ResourcesIconsCompressed.DesktopCompressed}"/>
+			<TextBlock Name="Description"/>
+		</WrapPanel>
+	</Button>
+	
+</UserControl>

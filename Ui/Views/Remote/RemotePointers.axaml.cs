@@ -17,7 +17,7 @@ namespace Ui.Views.Remote
         {
             InitializeComponent();
             Generator = this.FindControl<StackPanel>("RemoteGenerator");
-            Main = MainWindowRemote.LastView;
+            Main = MainWindowRemote.LastReference;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

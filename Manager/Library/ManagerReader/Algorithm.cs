@@ -46,7 +46,7 @@ namespace Library.ManagerReader
             {
                 var name = GetPathToName(path);
                 while (File.Exists(res) || Directory.Exists(res))
-                    res = $"{dir}/{name} - Copy";
+                    res += "- Copy";
 
                 return res;
             }
@@ -710,10 +710,18 @@ namespace Library.ManagerReader
         /// <param name="path">The given file to open</param>
         public static void AutoLaunchAppProcess(string path)
         {
-            var extension = GetFileExtension(path);
-            var recommended = RecommendedPrograms(GetOs(), extension, path);
-            if (recommended.Count != 0)
-                LaunchAppProcess(recommended[0], path);
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo(path)
+            {
+                UseShellExecute = true
+            };
+            p.Start();
+            // System.Diagnostics.Process.Start("C:\\Users\\forix\\Documents\\anime a test.txt");
+            // System.Diagnostics.Process.Start(path);
+            // var extension = GetFileExtension(path);
+            // var recommended = RecommendedPrograms(GetOs(), extension, path);
+            // if (recommended.Count != 0)
+            //     LaunchAppProcess(recommended[0], path);
         }
         
         /// <summary>

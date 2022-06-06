@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library.ManagerReader;
 using SevenZip;
 using Pointer = Library.Pointer;
@@ -76,13 +77,10 @@ namespace Ui.Views.Local.Actions
         {
             string data = _archiveNameVisual.Text;
             data += SelectStringbyArchive(_archiveFormat);
-            var task = LibraryCompression.Compression.CompressItems(_datas, data, _archiveFormat);
-            task.Start();
-            task.GetAwaiter().OnCompleted(() =>
+            Dispatcher.UIThread.Post(() =>
             {
-                _main!.Refresh();
-                Close();
-            });
+                LibraryCompression.Compression.CompressItems(_datas, data, _archiveFormat).GetAwaiter().OnCompleted(_main!.Refresh);
+            }, DispatcherPriority.MaxValue);
         }
 
         /// <summary>

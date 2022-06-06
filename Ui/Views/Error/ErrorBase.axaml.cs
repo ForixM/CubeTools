@@ -1,46 +1,55 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
-using Ui.Views.Error.Information;
 
 namespace Ui.Views.Error
 {
     public class ErrorBase : Window
     {
-        private readonly TextBlock ContentError;
-        private Control Container;
+        private readonly TextBlock _contentError;
+        private readonly TextBlock _stdError;
+        private readonly Image _imageError;
+        public Grid Container;
         public readonly ManagerException BaseException;
         
         public ErrorBase()
         {
             InitializeComponent();
-            Container = this.FindControl<Control>("Container");
-            ContentError = this.FindControl<TextBlock>("ContentError");
+            Container = this.FindControl<Grid>("Container");
+            _contentError = this.FindControl<TextBlock>("ContentError");
+            _stdError = this.FindControl<TextBlock>("StdError");
+            _imageError = this.FindControl<Image>("ImageError");
         }
-        public ErrorBase(ManagerException exception) : this()
+        public ErrorBase(ManagerException exception)
         {
             BaseException = exception;
-            ContentError.Text = exception.ErrorMessage;
+            InitializeComponent();
+            Container = this.FindControl<Grid>("Container");
+            _contentError = this.FindControl<TextBlock>("ContentError");
+            _stdError = this.FindControl<TextBlock>("StdError");
+            _imageError = this.FindControl<Image>("ImageError");
+            _contentError.Text = exception.ErrorMessage;
+            ErrorConverter.SetContainer(this, exception);
+            CustomizeWindow();
         }
 
         public void CustomizeWindow()
         {
             Title = BaseException.Errorstd;
-            ContentError.Text = BaseException.ErrorMessage;
+            _stdError.Text = BaseException.ErrorType;
+            _contentError.Text = BaseException.ErrorMessage;
+            _imageError.Source = BaseException.Level switch
+            {
+                Level.Info => ResourcesLoader.ResourcesIcons.WarningIcon,
+                Level.Normal => ResourcesLoader.ResourcesIcons.ErrorIcon,
+                _ => ResourcesLoader.ResourcesIcons.CriticalErrorIcon
+            };
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void InitializeContainer()
-        {
-            Container = BaseException switch
-            {
-                PathNotFoundException => new PathNotFoundInfo(this),
-                _ => Container
-            };
-        }
-        
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Escape) Close(null);

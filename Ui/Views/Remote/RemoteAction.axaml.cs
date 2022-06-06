@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using LibraryClient;
+using Ui.Views.Error;
 using Ui.Views.Remote.Actions;
 
 namespace Ui.Views.Remote
@@ -20,7 +21,7 @@ namespace Ui.Views.Remote
 
         public RemoteAction()
         {
-            Main = MainWindowRemote.LastView;
+            Main = MainWindowRemote.LastReference;
             InitializeComponent();
             Selected = new List<RemoteItem>();
             Copied = new List<RemoteItem>();
@@ -103,7 +104,7 @@ namespace Ui.Views.Remote
                     new RenameRemote(Main!.RemoteActionView.Selected[0], Main.Client.Children, Main).Show();
                     break;
                 default:
-                    new Error.ErrorPopUp(new ManagerException("Unable to rename multiple data")).Show();
+                    new ErrorBase(new ManagerException("Unable to rename multiple data")).ShowDialog<bool>(Main);
                     break;
             }
 

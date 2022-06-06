@@ -89,7 +89,7 @@ namespace Ui.Views.Local.Actions
                         }
                     }
                     _main.PathsBarView.Refresh();
-                    Close();
+                    Close(null);
                 }
                 catch (Exception exception)
                 {

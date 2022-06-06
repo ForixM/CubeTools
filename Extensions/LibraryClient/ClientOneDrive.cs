@@ -24,9 +24,15 @@ namespace LibraryClient
         
         #region Actions
 
-        public override RemoteItem CreateFile(string name) //TODO
+        public override RemoteItem CreateFile(string name)
         {
-            throw new NotImplementedException();
+            Task<bool> createTask = _clientOneDrive.CreateFile(name, (OneItem)CurrentFolder);
+            if (createTask.Result)
+            {
+                return GetItem(name, true);
+            }
+
+            return null;
         }
 
         public override RemoteItem CreateFolder(string name) => _clientOneDrive.CreateFolder(name, (OneItem)CurrentFolder);
@@ -41,9 +47,12 @@ namespace LibraryClient
             _clientOneDrive.DeleteItem((OneItem)item);
         }
 
-        public override void Rename(RemoteItem item, string newName) //TODO
+        public override void Rename(RemoteItem item, string newName)
         {
-            throw new NotImplementedException(); 
+            if (!_clientOneDrive.RenameItem((OneItem) item, newName))
+            {
+                //TODO: Error popup, can't rename this file
+            }
         }
 
         public override Pointer DownloadFile(RemoteItem item, DirectoryPointer destination)
@@ -108,22 +117,22 @@ namespace LibraryClient
         
         #region Properties
 
-        public override string GetItemName(RemoteItem item) //TODO
+        public override string GetItemName(RemoteItem item)
         {
-            throw new NotImplementedException();
+            return item.Name;
         }
 
-        public override long GetItemSize(RemoteItem item) //TODO
+        public override long GetItemSize(RemoteItem item)
         {
-            throw new NotImplementedException();
+            return item.Size;
         }
 
-        public override string GetItemType(RemoteItem item) //TODO
+        public override string GetItemType(RemoteItem item)
         {
-            throw new NotImplementedException();
+            return item.Type;
         }
 
-        public override void InitializeProperties(RemoteItem item) //TODO
+        public override void InitializeProperties(RemoteItem item)
         {
             throw new NotImplementedException();
         }

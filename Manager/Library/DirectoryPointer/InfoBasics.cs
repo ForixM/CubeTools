@@ -28,9 +28,7 @@ namespace Library.DirectoryPointer
         {
             try
             {
-                return DirectoryInfo is not null
-                    ? ""
-                    : DirectoryInfo!.FullName;
+                return DirectoryInfo is null ? "" : DirectoryInfo.FullName;
             }
             catch (Exception e)
             {

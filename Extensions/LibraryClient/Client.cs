@@ -115,9 +115,9 @@ namespace LibraryClient
         /// <summary>
         /// Get the item by its name if it exists in the current loaded folder
         /// </summary>
-        /// <param name="name">The name of the file, each file/folder separated by a / in the current folder</param>
+        /// <param name="path">The name of the file, each file/folder separated by a / in the current folder</param>
         /// <returns>The remote Item in the current folder</returns>
-        public abstract RemoteItem? GetItem(string name, bool isAbsolute = false);
+        public abstract RemoteItem? GetItem(string path, bool isAbsolute = false);
 
         #endregion
         

@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library.ManagerExceptions;
 using Library;
+using Library.ManagerReader;
 using Ui.Views.Error;
 using Ui.Views.Local.Actions;
 using DeleteMultiple = Ui.Views.Remote.Actions.DeleteMultiple;
@@ -102,7 +105,7 @@ namespace Ui.Views.Local
                 case < 1:
                     return;
                 case 1:
-                    new Ui.Views.Local.Actions.Rename(SelectedXaml[0].Pointer, Main.NavigationBarView.FolderPointer.ChildrenFiles, Main).Show();
+                    new Rename(SelectedXaml[0].Pointer, Main.NavigationBarView.FolderPointer.ChildrenFiles, Main).Show();
                     break;
                 default:
                     new ErrorBase(new ManagerException("Unable to rename multiple data")).ShowDialog<object>(Main.Main);
@@ -194,15 +197,16 @@ namespace Ui.Views.Local
         {
             try
             {
-                // Delete Pointer
-                if (source.IsDir || source.Size > 1000000) source.DeleteAsync().GetAwaiter().OnCompleted(Main.Refresh);
-                else
-                {
-                    source.Delete();
-                    Main.Refresh();
-                }
-                // Remove reference from Directory Pointer
-                Main.NavigationBarView.FolderPointer.Remove(source);
+                // Copy Pointer
+                Dispatcher.UIThread.Post(
+                    () =>
+                    {
+                        string nameModified =
+                            ManagerReader.GetPathToName(ManagerReader.GenerateNameForModification(Main.NavigationBarView.FolderPointer.Path + "/" + source.Name));
+                        string dest = Main.NavigationBarView.FolderPointer.Path + "/" + nameModified;
+                        Task.Run(() => source.Copy(dest, true)).GetAwaiter().OnCompleted(Main.Refresh);
+                    },
+                    DispatcherPriority.MaxValue);
             }
             catch (Exception exception)
             {

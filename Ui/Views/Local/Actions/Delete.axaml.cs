@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library.ManagerExceptions;
 using Ui.Views.Error;
 using Pointer = Library.Pointer;
@@ -26,6 +28,7 @@ namespace Ui.Views.Local.Actions
         {
             _main = main;
             _pointer = pointer;
+            Title = $"Delete {pointer.Name} ?";
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -61,20 +64,10 @@ namespace Ui.Views.Local.Actions
             // Run Tasks Async
             try
             {
-                if (_pointer.Size > 1000000)
+                Dispatcher.UIThread.Post(() =>
                 {
-                    // Close display
-                    _pointer.DeleteAsync().GetAwaiter().OnCompleted(() =>
-                    {
-                        _main?.Refresh();
-                    });
-                }
-                // Run task sync
-                else
-                {
-                    _pointer.Delete();
-                    _main?.Refresh();
-                }
+                    Task.Run(_pointer.Delete).GetAwaiter().OnCompleted(_main!.Refresh);
+                }, DispatcherPriority.MaxValue);
             }
             catch (Exception exception)
             {

@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library.ManagerExceptions;
 using Ui.Views.Error;
 using Pointer = Library.Pointer;
@@ -20,15 +23,16 @@ namespace Ui.Views.Local.Actions
         private List<Pointer> _pointers;
 
         #region Init
-        
+
         public DeleteMultiple()
         {
             InitializeComponent();
-            
+
             GeneratorDisplay = this.FindControl<StackPanel>("GeneratorDisplay");
             Selected = new List<DeleteMultipleSelector>();
             _pointers = new List<Pointer>();
         }
+
         public DeleteMultiple(Local main, List<Pointer> pointer) : this()
         {
             _main = main;
@@ -53,7 +57,8 @@ namespace Ui.Views.Local.Actions
                 case Key.Enter:
                 {
                     Selected.Clear();
-                    foreach (DeleteMultipleSelector selector in GeneratorDisplay.Children.Where(control => control is DeleteMultipleSelector @selector &&
+                    foreach (DeleteMultipleSelector selector in GeneratorDisplay.Children.Where(control =>
+                                 control is DeleteMultipleSelector @selector &&
                                  (File.Exists(selector.Pointer.Path) || Directory.Exists(selector.Pointer.Path))))
                         Selected.Add(selector);
                     DeletePointers();
@@ -62,41 +67,48 @@ namespace Ui.Views.Local.Actions
                 }
             }
         }
-        
+
         private void OnDeleteAllClick(object? sender, RoutedEventArgs e)
         {
             Selected.Clear();
-            foreach (DeleteMultipleSelector selector in GeneratorDisplay.Children.Where(control => control is DeleteMultipleSelector @selector &&
+            foreach (DeleteMultipleSelector selector in GeneratorDisplay.Children.Where(control =>
+                         control is DeleteMultipleSelector @selector &&
                          (File.Exists(selector.Pointer.Path) || Directory.Exists(selector.Pointer.Path))))
                 Selected.Add(selector);
             DeletePointers();
             Close();
         }
-        
+
         private void OnDeleteSelectedClick(object? sender, RoutedEventArgs e)
         {
             DeletePointers();
             Close();
         }
-        
+
         private void OnCancelClicked(object? sender, RoutedEventArgs e) => Close();
 
         #endregion
-        
+
         /// <summary>
         /// Perform the action
         /// </summary>
         private void DeletePointers()
         {
-            foreach (var ft in Selected.Select(pointer => pointer.Pointer))
+            foreach (var pointer in Selected.Select(pointer => pointer.Pointer))
             {
                 try
                 {
-                    ft.DeleteAsync().GetAwaiter().OnCompleted(() => _main?.NavigationBarView.FolderPointer.Remove(ft));
+                    Dispatcher.UIThread.Post(
+                        () => { Task.Run(pointer.Delete).GetAwaiter().OnCompleted(_main!.Refresh); },
+                        DispatcherPriority.MaxValue);
                 }
-                catch (ManagerException e)
+                catch (Exception exception)
                 {
-                    new ErrorBase(e).ShowDialog<object>(_main?.Main);
+                    if (exception is ManagerException @managerException)
+                    {
+                        @managerException.Errorstd = $"Unable to delete {pointer.Name}";
+                        new ErrorBase(@managerException).ShowDialog<object>(_main!.Main);
+                    }
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -50,10 +51,7 @@ namespace Ui.Views.Local.Actions
             if (e.Key is Key.Enter) RenamePointer();
         }
         
-        private void OnClickRename(object? sender, RoutedEventArgs e)
-        {
-            RenamePointer();
-        }
+        private void OnClickRename(object? sender, RoutedEventArgs e) =>  RenamePointer();
         
         private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
         {
@@ -67,9 +65,11 @@ namespace Ui.Views.Local.Actions
         /// <summary>
         /// Perform the action
         /// </summary>
-        private void RenamePointer()
+        private async void RenamePointer()
         {
-            if (File.Exists(_renameBox.Text) || Directory.Exists(_renameBox.Text))
+            if (_modifiedPointer.Name == _renameBox.Text)
+                Close(null);
+            else if (File.Exists(_renameBox.Text) || Directory.Exists(_renameBox.Text))
             {
                 //_modifiedPointer.RenameAsync()();
             }
@@ -82,22 +82,14 @@ namespace Ui.Views.Local.Actions
             {
                 try
                 {
-                    int index = _itemsReference.IndexOf(_modifiedPointer);
-                    ManagerWriter.Rename(_modifiedPointer, _renameBox.Text, false);
-                    _itemsReference[index] = _modifiedPointer;
+                    _modifiedPointer.Rename(_renameBox.Text, false);
                 }
-                catch (ManagerException exception)
+                catch (Exception exception)
                 {
-                    new ErrorBase(exception).ShowDialog<object>(_main?.Main);
+                    if (exception is ManagerException managerException) await new ErrorBase(managerException).ShowDialog<object>(_main?.Main);
                 }
                 _main?.Refresh();
-                Close();
-            }
-
-            if (_modifiedPointer.Path == "" || _modifiedPointer.Name == _renameBox.Text)
-            {
-                _main?.Refresh();
-                Close();
+                Close(null);
             }
         }
     }

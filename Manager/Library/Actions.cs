@@ -32,13 +32,6 @@ namespace Library
         /// <param name="overwrite">Whether it has to overwrite if dest already exists</param>
         public abstract void Rename(string dest, bool overwrite = false);
 
-        /// <summary>
-        /// Async version of <see cref="Rename"/>
-        /// </summary>
-        /// <param name="dest">the destination path</param>
-        /// <param name="overwrite">Whether it has to overwrite if dest already exists</param>
-        public virtual async Task RenameAsync(string dest, bool overwrite = false) => await Task.Run(() => Rename(dest, overwrite));
-
         #endregion
 
         // Every methods that generate a copy of the pointer
@@ -58,19 +51,6 @@ namespace Library
         /// <exception cref="ManagerException">An error occured while copying</exception>
         public abstract Pointer Copy(string dest, bool recursive = false);
 
-        /// <summary>
-        /// Async version of the previous <see cref="Copy"/>
-        /// </summary>
-        /// <param name="dest"></param>
-        /// <param name="replace"></param>
-        /// <returns>The Task to execute which will return the Pointer generated</returns>
-        /// <exception cref="PathFormatException"></exception>
-        /// <exception cref="PathNotFoundException"></exception>
-        /// <exception cref="ManagerException"></exception>
-        /// <exception cref="AccessException"></exception>
-        /// <exception cref="SystemErrorException"></exception>
-        public virtual async Task<Pointer> CopyAsync(string dest, bool replace = false) => await Task.Run(() => Copy(dest, replace));
-
         #endregion
         
         // Every methods that destroy the pointer
@@ -86,16 +66,7 @@ namespace Library
         /// <exception cref="ManagerException">An Error occurred</exception>
         /// <exception cref="PathNotFoundException">The given path does not exist</exception>
         public abstract void Delete();
-
-
-        /// <summary>
-        ///   High Level Method : <see cref="Delete"/>
-        /// </summary>
-        /// <exception cref="InUseException">The given path is already used</exception>
-        /// <exception cref="AccessException">The given path could not be accessed</exception>
-        /// <exception cref="ManagerException">An Error occurred</exception>
-        /// <exception cref="PathNotFoundException">The given path does not exist</exception>
-        public abstract Task DeleteAsync();
+        
 
         #endregion
         
