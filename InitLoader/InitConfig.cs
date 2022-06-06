@@ -15,7 +15,7 @@
             else
             {
                 // Try to search a json file starting with 'Config'
-                string? path = null;
+                string? path;
                 try
                 {
                     path = Directory.GetCurrentDirectory();
@@ -24,6 +24,7 @@
                         if (file.StartsWith("Config"))
                         {
                             ConfigLoader.ConfigLoader.LoadConfiguration(file);
+                            ConfigLoader.ConfigLoader.Settings.AppPath = Directory.GetCurrentDirectory().Replace('\\','/');
                             return;
                         }
                     }
@@ -40,17 +41,15 @@
                                     "\"AssetsPath\" : \"Assets\"," +
                                     "\"AppPath\" : \".\"," +
                                     "\"Styles\" : { \"themes\" : \"default\" , \"pack\" : \"Assets/default\"}," +
-                                    "\"OneDrive\" : { \"account\" :{ }, \"registered\" : [] }," +
-                                    "\"GoogleDrive\" : {\"account\" : {}, \"registered\" : [] }, " +
                                     "\"FTP\" : { \"servers\" : [] }," +
                                     "\"Shortcuts\" :{ }," +
                                     "\"Application\" :{}" +
+                                    "\"Links\" : { links : [] }" +
                                     "}";
                 sr.Write(text);
                 sr.Close();
                 // Generate configuration
                 ConfigLoader.ConfigLoader.LoadConfiguration("Config.default.json");
-                ConfigLoader.ConfigLoader.Settings.AppPath = Directory.GetCurrentDirectory();
             }
         }
     }

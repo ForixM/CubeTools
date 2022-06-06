@@ -32,14 +32,14 @@ namespace InitLoader
         /// <param name="defaultPath">The default path of the default pack</param>
         private static void _getPackagingAssets(string packPath, string defaultPath)
         {
-            if (!Directory.Exists(defaultPath))
-                return;
+            if (!Directory.Exists(defaultPath)) return;
+            
             // 1) Verifying files
             var filesPack = Directory.EnumerateFiles(packPath);
             var filesDefault = Directory.EnumerateFiles(defaultPath);
             foreach (var file in filesDefault)
             {
-                string dest = packPath + "/" + ManagerReader.GetPathToName(file);
+                string dest = packPath + "/" + ManagerReader.GetPathToName(file);;
                 if (!filesPack.Contains(dest)) File.Copy(file, dest);
             }
             // 2) Browsing directories
@@ -47,9 +47,9 @@ namespace InitLoader
             var dirsDefault = Directory.EnumerateDirectories(packPath);
             foreach (var dir in dirsDefault)
             {
-                string dest = packPath + "/" + ManagerReader.GetPathToName((dir));
+                string dest = packPath + "/" + ManagerReader.GetPathToName(dir);
                 if (dirsPack.Contains(dest)) _getPackagingAssets(dest, dir);
-                else ManagerWriter.Copy(dir, dest);
+                else ManagerWriter.CopyDirectory(dir, dest, true);
             }
         }
     }
