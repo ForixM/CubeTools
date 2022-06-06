@@ -63,4 +63,4 @@ ___
 
 📣 **Discord :** [Open in Discord](https://discord.gg/KmGKaq29mC)
 
-🌐 **Website :**
+🌐 **Website :** https://forixm.github.io/CubeTools/WebSite/
