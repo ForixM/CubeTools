@@ -131,8 +131,15 @@ namespace LibraryClient.LibraryGoogleDrive
             string[] pathList = path.Split('/');
 
             string parent = "root";
+
+            int i = 0;
+
+            if (pathList[0] == "")
+            {
+                i += 1;
+            }
             
-            for (int i = 0; i < pathList.Length - 1; i++)
+            for (; i < pathList.Length - 1; i++)
             {
                 parent = GetFolderId(pathList[i], parent);
             }
@@ -176,15 +183,21 @@ namespace LibraryClient.LibraryGoogleDrive
         public static long GetFileSize(string fileId)
         {
             var Service = OAuth.GetDriveService();
-            var DriveFile = Service.Files.Get(fileId).Execute();
+            var request = Service.Files.Get(fileId);
+            request.Fields = "size";
+            var driveFile = request.Execute();
 
-            return DriveFile.Size.Value;
+            if (driveFile.Size != null) return driveFile.Size.Value;
+
+            return 0;
         }
 
         public static string GetFileParent(string fileId)
         {
             var Service = OAuth.GetDriveService();
-            var DriveFile = Service.Files.Get(fileId).Execute();
+            var request = Service.Files.Get(fileId);
+            request.Fields = "parents";
+            var DriveFile = request.Execute();
 
             return DriveFile.Parents[0];
         }
@@ -192,18 +205,47 @@ namespace LibraryClient.LibraryGoogleDrive
         public static string GetPathFromFile(string fileId)
         {
             var Service = OAuth.GetDriveService();
-            var DriveFile = Service.Files.Get(fileId).Execute();
-
             string pathRes = "";
             
-            while (DriveFile.Parents[0] != "root")
-            {
-                pathRes = '/' + pathRes;
-                pathRes += DriveFile.Name;
-                DriveFile = Service.Files.Get(GetFileParent(DriveFile.Id)).Execute();
-            }
+            var request = Service.Files.Get(fileId);
+            request.Fields = "parents, name";
+            var driveFile = request.Execute();
 
-            return pathRes;
+            while (true)
+            {
+                if (driveFile.Parents == null)
+                {
+                    return pathRes;
+                }
+                pathRes = '/' + driveFile.Name + pathRes;
+                fileId = driveFile.Parents[0];
+                request = Service.Files.Get(fileId);
+                request.Fields = "parents, name";
+                driveFile = request.Execute();
+            }
+        }
+
+        public static List<string> GetParentsFromFile(string fileId)
+        {
+            var Service = OAuth.GetDriveService();
+            List<string> parents = new List<string>();
+
+            var request = Service.Files.Get(fileId);
+            request.Fields = "parents, id";
+            var driveFile = request.Execute();
+
+            while (true)
+            {
+                if (driveFile.Parents == null)
+                {
+                    return parents;
+                }
+                fileId = driveFile.Parents[0];
+                parents.Add(fileId);
+                request = Service.Files.Get(fileId);
+                request.Fields = "parents, id";
+                driveFile = request.Execute();
+            }
         }
 
         public static bool IsDir(string fileId)
