@@ -1,0 +1,89 @@
+{
+  "AssetsPath" : "Assets",
+  "AppPath" : "",
+  "Styles" : 
+  {
+    "theme" : "default",
+    "pack" : "Assets/default"
+  },
+  "FTP" :
+  {
+    "current" :
+      {
+        "name" : "Default",
+        "host" : "",
+        "login" : "",
+        "password" : "",
+        "port" : ""
+      },
+    "servers" : [
+      {
+        "name" : "Test1",
+        "host" : "127.0.0.1",
+        "login" : "",
+        "password" : "",
+        "port" : "21"
+      },
+      {
+        "name" : "Test2",
+        "host" : "127.0.0.1",
+        "login" : "test",
+        "password" : "1234",
+        "port" : "20"
+      }
+    ]
+  },
+  "Shortcuts" :
+  {
+    "copy" : "CTRL+C",
+    "cut" : "CTRL+X",
+    "close" : "CTRL+W",
+    "paste" : "CTRL+V",
+    "newWindow" : "CTRL+N",
+    "search" : "CTRL+F",
+    "delete" : "DELETE",
+    "deletePermanent" : "SHIFT+DELETE",
+    "selectAll" : "CTRL+A",
+    "createFile" : "CTRL+MAJ+F",
+    "createDir" : "CTRL+MAJ+D",
+    "rename" : "F2",
+    "settings" : "CTRL+I",
+    "reload" : "CTRL+R"
+  },
+  "Application" :
+  {
+    "default" : "",
+    "txt" : "C:/notepad.exe",
+    "pdf" : "",
+    "jpg" : "",
+    "jpeg" : "",
+    "png" : "",
+    "ico" : "",
+    "exe" : "",
+    "iso" : "",
+    "docx" : "",
+    "odt" : "",
+    "pptx" : "",
+    "xlsx" : "",
+    "key" : "",
+    "py": "",
+    "cs": "",
+    "c++" : "",
+    "java" : "",
+    "html" : "",
+    "gitignore" : "",
+    "zip" : "",
+    "rar" : "",
+    "mp3" : "",
+    "alac" : "",
+    "flac" : "",
+    "wav" : "",
+    "mp4" : "",
+    "mov" : "",
+    "mpeg" : ""
+  },
+  "Links" : {
+    "links" : [
+    ]
+  }
+}
