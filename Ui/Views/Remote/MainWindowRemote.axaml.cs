@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using LibraryClient;
+using LibraryClient.LibraryOneDrive;
 using Microsoft.VisualBasic;
+using Newtonsoft.Json;
 using Ui.Views.Error;
 using Ui.Views.Settings;
 
@@ -51,6 +55,7 @@ namespace Ui.Views.Remote
         public MainWindowRemote(Client client) : this()
         {
             Client = client;
+            RemoteNavigationView.CurrentPathXaml.Text = client.CurrentFolder.Path;
             RemoteNavigationView.Add(Client.CurrentFolder!);
             Refresh();
         }
@@ -91,6 +96,7 @@ namespace Ui.Views.Remote
                 }
                 catch (Exception e)
                 {
+                
                     if (e is ManagerException managerException) new ErrorBase(managerException).ShowDialog<object>(this);
                 }
             }
@@ -109,7 +115,7 @@ namespace Ui.Views.Remote
 
         public void AccessPath(string path)
         {
-            var item = Client.GetItem(path);
+            var item = Client.GetItem(path, true);
             if (item is not null) AccessPath(item);
             else new ErrorBase(new PathNotFoundException("Unable to access the path","AccessPath")).ShowDialog<object>(this);
         }
