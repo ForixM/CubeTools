@@ -33,9 +33,10 @@ namespace LibraryClient.LibraryGoogleDrive
             return file.Id;
         }
 
-        public static string UploadFile(Stream file, string fileName, string fileMime, string folder,
-            string fileDescription)
+        public static string UploadFile(string path, string fileName, string fileMime, string folder,
+            string fileDescription = "")
         {
+            Stream file = System.IO.File.OpenRead(@path);
             var Service = OAuth.GetDriveService();
             var DriveFile = new Google.Apis.Drive.v3.Data.File();
 
@@ -53,11 +54,9 @@ namespace LibraryClient.LibraryGoogleDrive
             return request.ResponseBody.Id;
         }
 
-        public static MemoryStream DownloadFile(string fileName)
+        public static void DownloadFile(string fileId, string path)
         {
             var Service = OAuth.GetDriveService();
-            var fileId = FileReader.GetFileId(fileName);
-
             var request = Service.Files.Get(fileId);
             var stream = new MemoryStream();
 
@@ -84,7 +83,11 @@ namespace LibraryClient.LibraryGoogleDrive
             };
 
             request.Download(stream);
-            return stream;
+            var driveFile = request.Execute();
+            FileStream file = new FileStream(path + "/" + driveFile.Name, FileMode.Create, FileAccess.Write);
+            stream.WriteTo(file);
+            file.Close();
+            stream.Close();
         }
 
         public static void DeleteFile(string fileId)
@@ -112,25 +115,31 @@ namespace LibraryClient.LibraryGoogleDrive
             return copyFile.Id;
         }
 
-        public static void ChangeParentsFile(string fileid, string newfolderid)
+        public static string ChangeParentsFile(string fileId, string folderId)
         {
             var Service = OAuth.GetDriveService();
-            var DriveFile = Service.Files.Get(fileid).Execute();
-            
-            DriveFile.Parents.Clear();
-            DriveFile.Parents = new[] {newfolderid};
+            var request = Service.Files.Get(fileId);
+            request.Fields = "parents";
+            var file = request.Execute();
+            var previousParents = String.Join(",", file.Parents);
+            var updateRequest =
+                Service.Files.Update(new Google.Apis.Drive.v3.Data.File(),
+                    fileId);
+            updateRequest.Fields = "id, parents";
+            updateRequest.AddParents = folderId;
+            updateRequest.RemoveParents = previousParents;
+            file = updateRequest.Execute();
 
-            Service.Files.Update(DriveFile, fileid).Execute();
+            return file.Parents[0];
         }
 
         public static void Rename(string fileid, string newName)
         {
             var Service = OAuth.GetDriveService();
-            var DriveFile = Service.Files.Get(fileid).Execute();
-
-            DriveFile.Name = newName;
-
-            Service.Files.Update(DriveFile, fileid).Execute();
+            var file = new Google.Apis.Drive.v3.Data.File() {Name = newName};
+            var update = Service.Files.Update(file, fileid);
+            update.Fields = "name";
+            file = update.Execute();
         }
     }
 }

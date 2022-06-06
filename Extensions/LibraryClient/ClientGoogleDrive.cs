@@ -52,22 +52,21 @@ namespace LibraryClient
         public override Pointer Download(RemoteItem item, string name)
         {
             throw new NotImplementedException();
-            return base.Download(item, name);
         }
 
         public override void Upload(Pointer pointer, RemoteItem destination)
         {
-            throw new NotImplementedException();
+            ManagerFile.UploadFile(pointer.Path, pointer.Name, pointer.Type, ((GoogleDriveFile)destination).Id);
         }
 
         public override void AccessPath(RemoteItem destination)
         {
-            throw new NotImplementedException();
+            destination.Path = FileReader.GetPathFromFile(((GoogleDriveFile) destination).Id);
         }
 
         public override void Refresh()
         {
-            throw new NotImplementedException();
+            ListChildren(((GoogleDriveFile) this.CurrentFolder));
         }
 
         public override RemoteItem? GetItem(string name)
@@ -96,14 +95,17 @@ namespace LibraryClient
             return file;
         }
 
-        public override RemoteItem? GetItem(RemoteItem folder, string name)
-        {
-            throw new NotImplementedException();
-        }
-
         public override List<RemoteItem>? ListChildren(RemoteItem folder)
         {
-            throw new NotImplementedException();
+            List<Google.Apis.Drive.v3.Data.File> files = FileReader.ListFileAndFolder(((GoogleDriveFile) folder).Id);
+            List<RemoteItem> items = new List<RemoteItem>();
+            foreach (var i in files)
+            {
+                RemoteItem item = new GoogleDriveFile(i.Id);
+                items.Add(item);
+            }
+
+            return items;
         }
 
         #endregion
