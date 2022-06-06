@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Library;
+using Library.DirectoryPointer;
+using Library.FilePointer;
 using Library.ManagerReader;
 using LibraryClient.LibraryGoogleDrive;
+using File = Google.Apis.Drive.v3.Data.File;
 
 namespace LibraryClient
 {
@@ -49,55 +53,52 @@ namespace LibraryClient
             ManagerFile.Rename(((GoogleDriveFile)item).Id, newName);
         }
 
-        public override Pointer Download(RemoteItem item, string name)
+        public override Pointer DownloadFolder(RemoteItem item, DirectoryPointer destination)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public override Pointer DownloadFile(RemoteItem item, DirectoryPointer destination)
         {
             throw new NotImplementedException();
         }
 
-        public override void Upload(Pointer pointer, RemoteItem destination)
+        public override void UploadFile(FilePointer pointer, RemoteItem destination)
         {
             ManagerFile.UploadFile(pointer.Path, pointer.Name, pointer.Type, ((GoogleDriveFile)destination).Id);
+        }
+        
+        public override void UploadFolder(DirectoryPointer pointer, RemoteItem destination)
+        {
+            ManagerFile.UploadFile(pointer.Path, pointer.Name, "application/vnd.google-apps.folder", ((GoogleDriveFile)destination).Id);
         }
 
         public override void AccessPath(RemoteItem destination)
         {
-            destination.Path = FileReader.GetPathFromFile(((GoogleDriveFile) destination).Id);
+            throw new NotImplementedException();
+            //destination.Path = FileReader.GetPathFromFile(((GoogleDriveFile) destination).Id);
         }
 
-        public override void Refresh()
+        public override RemoteItem? GetItem(string path, bool isAbsolute = false)
         {
-            ListChildren(((GoogleDriveFile) this.CurrentFolder));
-        }
-
-        public override RemoteItem? GetItem(string name)
-        {
-            string id = FileReader.GetFileId(name);
+            string fileId = FileReader.GetFileIdFromPath(path);
             
-            if (id == null)
-            {
-                id = FileReader.GetFolderId(name);
-            }
-
-            GoogleDriveFile file = new GoogleDriveFile(id);
+            GoogleDriveFile file = new GoogleDriveFile(fileId);
             return file;
         }
 
-        public override RemoteItem? GetItem(RemoteItem folder, string name)
+        public override RemoteItem GetParentReference(RemoteItem item)
         {
-            string id = FileReader.GetFileId(name, ((GoogleDriveFile) folder).Id);
-            
-            if (id == null)
-            {
-                id = FileReader.GetFolderId(name, ((GoogleDriveFile) folder).Id);
-            }
+            string parent = FileReader.GetFileParent(((GoogleDriveFile) item).Id);
 
-            GoogleDriveFile file = new GoogleDriveFile(id);
-            return file;
+            GoogleDriveFile fileParent = new GoogleDriveFile(parent);
+
+            return fileParent;
         }
 
-        public override List<RemoteItem>? ListChildren(RemoteItem folder)
+        public override List<RemoteItem>? ListChildren()
         {
-            List<Google.Apis.Drive.v3.Data.File> files = FileReader.ListFileAndFolder(((GoogleDriveFile) folder).Id);
+            List<Google.Apis.Drive.v3.Data.File> files = FileReader.ListFileAndFolder(((GoogleDriveFile) this.CurrentFolder).Id);
             List<RemoteItem> items = new List<RemoteItem>();
             foreach (var i in files)
             {
