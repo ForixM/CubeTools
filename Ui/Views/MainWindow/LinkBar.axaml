@@ -34,16 +34,16 @@
 			
             <ScrollViewer>
                 <StackPanel>
-                    <Expander ExpandDirection="Down" IsExpanded="True" Width="225" Header="Quick Access">
+                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Quick Access">
                         <StackPanel Name="QuickAccess"/>
                     </Expander>
-                    <Expander ExpandDirection="Down" IsExpanded="True" Width="225" Header="Favorites">
+                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Favorites">
                         <StackPanel Name="Favorites"/>
                     </Expander>
-                    <Expander ExpandDirection="Down" IsExpanded="True" Width="225" Header="Drives">
+                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Drives">
                         <StackPanel Name="Drives"/>
                     </Expander>
-                    <Expander ExpandDirection="Down" IsExpanded="True" Width="225" Header="Clouds">
+                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Clouds">
                         <StackPanel Name="Clouds"/>
                     </Expander>
                 </StackPanel>

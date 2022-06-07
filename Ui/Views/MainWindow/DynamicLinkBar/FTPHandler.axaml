@@ -1,13 +1,13 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Ui.Views.MainWindow.DynamicLinkBar.FTPHandler"
-             MaxHeight="40" MaxWidth="250">
+             MaxHeight="50" MaxWidth="192">
 	
-	<Button Click="OpenClient" Height="40" Width="250">
-		<StackPanel>
-			<Image Name="Image"/>
-			<TextBlock Name="Description"/>
-		</StackPanel>
+	<Button CornerRadius="8" Background="Transparent" Click="OpenClient" Height="50" Width="192">
+		<WrapPanel>
+			<Image HorizontalAlignment="Left" Name="Image"/>
+			<TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Name="Description"/>
+		</WrapPanel>
 	</Button>
 	
 </UserControl>

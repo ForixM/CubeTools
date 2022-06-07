@@ -65,7 +65,7 @@
 			 <StackPanel Margin="0 5 0 0">
 				 <Grid ColumnDefinitions="100, 50, 700">
 					 <Grid Grid.Column="0">
-						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="60" Source="{x:Static resource:ResourcesIconsCompressed.FolderCompressed}"/>
+						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="60" Source="{x:Static resource:ResourcesIconsCompressed.StarredCompressed}"/>
 					 </Grid>
 					 <Grid Grid.Column="1">
 						 <Button Click="CreateLink">
