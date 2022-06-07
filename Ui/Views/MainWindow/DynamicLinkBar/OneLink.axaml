@@ -1,11 +1,11 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Ui.Views.MainWindow.DynamicLinkBar.OneLink" MaxHeight="40" MaxWidth="250">
+             x:Class="Ui.Views.MainWindow.DynamicLinkBar.OneLink" MaxHeight="50" MaxWidth="192">
 	
-	<Button Click="OpenLink" PointerPressed="OnPointerPressed" Height="40" Width="250">
+	<Button CornerRadius="8" Click="OpenLink" Background="Transparent" PointerPressed="OnPointerPressed" Height="50" Width="192">
 		<WrapPanel>
 			<Image HorizontalAlignment="Left" Name="Image"/>
-			<TextBlock VerticalAlignment="Center" Name="Description"/>
+			<TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Name="Description"/>
 		</WrapPanel>
 	</Button>
 	

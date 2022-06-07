@@ -63,21 +63,21 @@
 			 <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 15" Width="350"/>
 			 
 			 <StackPanel Margin="0 5 0 0">
-				 <Grid ColumnDefinitions="100, 50, 700">
+				 <Grid ColumnDefinitions="100, 750">
 					 <Grid Grid.Column="0">
-						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="60" Source="{x:Static resource:ResourcesIconsCompressed.FolderCompressed}"/>
+						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="60" Source="{x:Static resource:ResourcesIconsCompressed.StarredCompressed}"/>
 					 </Grid>
 					 <Grid Grid.Column="1">
-						 <Button Click="CreateLink">
-							 <Image Width="40" Height="40" Source="{x:Static resource:ResourcesIconsCompressed.CreateCompressed}"/>
-						 </Button>
-					 </Grid>
-					 <Grid Grid.Column="2">
 						 <TextBlock Text="Favorites" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 					 </Grid>
 				 </Grid>
-				 <Expander IsExpanded="False" Header="Custom Links" Margin="20 0">
-					 <generators:LinksGenerator Name="LinksGenerator"/>
+				 <Expander IsExpanded="False" Header="Custom Links" Margin="20 5 20 0">
+					 <StackPanel>
+						 <generators:LinksGenerator Width="425" Name="LinksGenerator"/>
+						 <Button Width="425" Background="Transparent" Click="CreateLink">
+								 <Image Width="30" Height="30" HorizontalAlignment="Center" Source="{x:Static resource:ResourcesIconsCompressed.CreateCompressed}"/>
+						 </Button>
+					 </StackPanel>
 				 </Expander>
 			 </StackPanel>
 			 
@@ -99,7 +99,7 @@
 				 </Grid>
 			 </StackPanel>
 			 
-			 <WrapPanel HorizontalAlignment="Right" Margin="0 20 10 0">
+			 <WrapPanel HorizontalAlignment="Right" Margin="0 20 10 12">
 				 <Button Content="Save" Click="Save"/>
 				 <Button Content="Quit" Click="Quit"/>
 			 </WrapPanel>

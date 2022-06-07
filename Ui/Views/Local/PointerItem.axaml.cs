@@ -93,7 +93,7 @@ namespace Ui.Views.Local
                     else _main.ActionBarView.SelectedXaml.Add(this);
                     // Modify UI
                     foreach (var control in _main.PathsBarView.Generator.Children)
-                        ((PointerItem) control).button.Background = new SolidColorBrush(new Color(255, 255, 255, 255));
+                        ((PointerItem) control).button.Background = new SolidColorBrush(new Color(0, 255, 255, 255));
                     foreach (var control in _main.ActionBarView.SelectedXaml)
                         control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
                 }

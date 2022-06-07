@@ -18,7 +18,7 @@ namespace Ui.Views.MainWindow.DynamicLinkBar
             InitializeComponent();
             Description = this.FindControl<TextBlock>("Description");
             Image = this.FindControl<Image>("Image");
-            Description.Text = "File Transfer";
+            Description.Text = "FTP";
             Image.Source = ResourcesLoader.ResourcesIconsCompressed.FtpCompressed;
         }
 

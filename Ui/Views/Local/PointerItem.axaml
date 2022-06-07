@@ -3,7 +3,7 @@
              x:Class="Ui.Views.Local.PointerItem"
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader">
      
-     <Button CornerRadius="8" Name="Button"
+     <Button Background="Transparent" CornerRadius="8" Name="Button"
              HorizontalAlignment="Left" Height="50" Width="2000"
              PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped">
          

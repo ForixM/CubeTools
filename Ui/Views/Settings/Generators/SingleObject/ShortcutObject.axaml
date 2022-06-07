@@ -4,8 +4,8 @@
 	 
 	 <WrapPanel>
 		 
-		 <Button Name="ShortcutModifyButton" Click="ModifyShortcut" HorizontalAlignment="Center">
-			 <TextBlock Name="ShortcutName"/>
+		 <Button Background="Transparent" Width="425" Name="ShortcutModifyButton" Click="ModifyShortcut" HorizontalAlignment="Center">
+			 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Name="ShortcutName"/>
 		 </Button>
 		 
 	 </WrapPanel>
