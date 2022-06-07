@@ -11,7 +11,6 @@ using Library;
 using Library.ManagerReader;
 using Ui.Views.Error;
 using Ui.Views.Local.Actions;
-using DeleteMultiple = Ui.Views.Remote.Actions.DeleteMultiple;
 
 namespace Ui.Views.Local
 {
@@ -90,7 +89,7 @@ namespace Ui.Views.Local
                     new Delete(Main, CutXaml[0].Pointer).Show();
                     break;
                 default:
-                    new DeleteMultiple(Main, CutXaml.Select(pointer => pointer.Pointer).ToList()).Show();
+                    new Ui.Views.Local.Actions.DeleteMultiple(Main, CutXaml.Select(pointer => pointer.Pointer).ToList()).Show();
                     break;
             }
         }

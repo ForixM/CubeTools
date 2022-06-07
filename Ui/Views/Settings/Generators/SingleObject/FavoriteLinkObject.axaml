@@ -1,0 +1,16 @@
+ <UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Ui.Views.Settings.Generators.SingleObject.FavoriteLinkObject"
+             xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader">
+	 
+	 <WrapPanel>
+		 <TextBox KeyDown="OnNameChanged" Name="Name"/>
+		 <TextBox KeyDown="OnPathChanged" Name="Path"/>
+		 <Button Width="40" Height="40" Click="OnButtonClick">
+			 <Image Source="{x:Static resource:ResourcesIconsCompressed.UploadCompressed}"/>
+		 </Button>
+		 <Button Width="40" Height="40">
+			 <Image Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
+		 </Button>
+	 </WrapPanel>
+ </UserControl>

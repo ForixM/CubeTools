@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -10,7 +11,7 @@ namespace Ui.Views.MainWindow
 {
     public class MainWindow : Window
     {
-        
+        public bool IsClosed;
         public List<Key> KeysPressed;
         public LinkBar LinkBarView;
         public Local.Local LocalView;
@@ -25,6 +26,7 @@ namespace Ui.Views.MainWindow
             LinkBarView.Main = LocalView;
             LinkBarView.InitializeExpanders();
             KeysPressed = new List<Key>();
+            IsClosed = false;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -36,25 +38,25 @@ namespace Ui.Views.MainWindow
             
             if (KeysPressed.Contains(e.Key)) return;
             KeysPressed.Add(e.Key);
-            if (IsListInListList(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.Shortcuts))
+            if (IsListInListList(KeysPressed,ConfigLoader.ConfigLoader.Settings.ListShortcuts))
             {
-                if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.CloseShortCut))
+                if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["close"]))
                     Close();
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.CreateDirShortcut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createDir"]))
                     LocalView.ActionBarView.CreatDir(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.CreateFileShortcut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createFile"]))
                     LocalView.ActionBarView.CreateFile(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.CutShortCut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["cut"]))
                     LocalView.ActionBarView.Cut(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.CopyShortCut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["copy"]))
                     LocalView.ActionBarView.Copy(sender, e);
-                else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts.DeleteShortCut)
+                else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts["delete"])
                     LocalView.ActionBarView.Delete(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.PasteShortCut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["paste"]))
                     LocalView.ActionBarView.Paste(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.SearchShortCut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["search"]))
                     LocalView.ActionBarView.Search(sender,e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.SelectAllShortcut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["selectAll"]))
                 {
                     // All items are selected
                     if (LocalView.ActionBarView.SelectedXaml.Count == LocalView.PathsBarView.Generator.Children.Count)
@@ -79,13 +81,13 @@ namespace Ui.Views.MainWindow
                         
                     }
                 }
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.NewWindowShortCut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["newWindow"]))
                     new MainWindow().Show();
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.RenameShortcut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["rename"]))
                     LocalView.ActionBarView.Rename(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.ReloadShortcut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["reload"]))
                     LocalView.Refresh();
-                else if (KeysPressed ==ConfigLoader.ConfigLoader.Settings.Shortcuts.SettingsShortcut)
+                else if (KeysPressed ==ConfigLoader.ConfigLoader.Settings.Shortcuts["settings"])
                     new SettingsWindow().Show();
             }
         }
@@ -130,7 +132,11 @@ namespace Ui.Views.MainWindow
         }
         
         #endregion
-        
 
+
+        private void Closed(object? sender, CancelEventArgs e)
+        {
+            IsClosed = true;
+        }
     }
 }

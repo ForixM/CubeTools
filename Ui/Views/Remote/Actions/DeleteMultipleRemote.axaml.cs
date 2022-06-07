@@ -1,40 +1,43 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library.ManagerExceptions;
+using LibraryClient;
 using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views.Remote.Actions
 {
-    public class DeleteMultiple : Window
+    public class DeleteMultipleRemote : Window
     {
-        private readonly Local.Local? _main;
+        private readonly MainWindowRemote _main;
         public readonly StackPanel GeneratorDisplay;
 
-        public List<DeleteMultipleSelector> Selected;
-        private List<Pointer> _pointers;
+        public List<DeleteMultipleSelectorRemote> Selected;
+        private List<RemoteItem> _pointers;
 
         #region Init
         
-        public DeleteMultiple()
+        public DeleteMultipleRemote()
         {
             InitializeComponent();
             
             GeneratorDisplay = this.FindControl<StackPanel>("GeneratorDisplay");
-            Selected = new List<DeleteMultipleSelector>();
-            _pointers = new List<Pointer>();
+            Selected = new List<DeleteMultipleSelectorRemote>();
+            _pointers = new List<RemoteItem>();
         }
-        public DeleteMultiple(Local.Local main, List<Pointer> pointer) : this()
+        public DeleteMultipleRemote(MainWindowRemote main, List<RemoteItem> pointer) : this()
         {
             _main = main;
             _pointers = pointer;
             // Init display
-            foreach (var ft in _pointers) GeneratorDisplay.Children.Add(new DeleteMultipleSelector(ft, this));
+            foreach (var ft in _pointers) GeneratorDisplay.Children.Add(new DeleteMultipleSelectorRemote(ft, this));
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -53,7 +56,7 @@ namespace Ui.Views.Remote.Actions
                 case Key.Enter:
                 {
                     Selected.Clear();
-                    foreach (DeleteMultipleSelector selector in GeneratorDisplay.Children.Where(control => control is DeleteMultipleSelector @selector &&
+                    foreach (DeleteMultipleSelectorRemote selector in GeneratorDisplay.Children.Where(control => control is DeleteMultipleSelectorRemote @selector &&
                                  (File.Exists(selector.Pointer.Path) || Directory.Exists(selector.Pointer.Path))))
                         Selected.Add(selector);
                     DeletePointers();
@@ -66,7 +69,7 @@ namespace Ui.Views.Remote.Actions
         private void OnDeleteAllClick(object? sender, RoutedEventArgs e)
         {
             Selected.Clear();
-            foreach (DeleteMultipleSelector selector in GeneratorDisplay.Children.Where(control => control is DeleteMultipleSelector @selector &&
+            foreach (DeleteMultipleSelectorRemote selector in GeneratorDisplay.Children.Where(control => control is DeleteMultipleSelectorRemote @selector &&
                          (File.Exists(selector.Pointer.Path) || Directory.Exists(selector.Pointer.Path))))
                 Selected.Add(selector);
             DeletePointers();
@@ -88,16 +91,17 @@ namespace Ui.Views.Remote.Actions
         /// </summary>
         private void DeletePointers()
         {
-            foreach (var ft in Selected.Select(pointer => pointer.Pointer))
+            foreach (var pointer in Selected.Select(pointer => pointer.Pointer))
             {
                 try
                 {
-                    ft.Delete();
-                    _main?.NavigationBarView.FolderPointer.Remove(ft);
+                    Dispatcher.UIThread.Post(
+                        () => { Task.Run(() => _main.Client.Delete(pointer)).GetAwaiter().OnCompleted(_main.Refresh); },
+                        DispatcherPriority.MaxValue);
                 }
                 catch (ManagerException e)
                 {
-                    new ErrorBase(e).ShowDialog<object>(_main?.Main);
+                    new ErrorBase(e).ShowDialog<object>(_main);
                 }
             }
         }

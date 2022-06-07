@@ -383,11 +383,11 @@
         <DependentUpon>CreateFile.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Remote\Actions\DeleteMultiple.axaml.cs">
+      <Compile Update="Views\Remote\Actions\DeleteMultipleRemote.axaml.cs">
         <DependentUpon>DeleteMultiple.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Remote\Actions\DeleteMultipleSelector.axaml.cs">
+      <Compile Update="Views\Remote\Actions\DeleteMultipleSelectorRemote.axaml.cs">
         <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
@@ -477,6 +477,26 @@
       </Compile>
       <Compile Update="Views\Information\Properties\Properties.axaml.cs">
         <DependentUpon>Properties.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Settings\ShortcutsSaver\ShortcutsSaver.axaml.cs">
+        <DependentUpon>SettingsWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Settings\Generators\ShortcutsGenerator.axaml.cs">
+        <DependentUpon>ShortcutsGenerator.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Settings\Generators\SingleObject\ShortcutObject.axaml.cs">
+        <DependentUpon>ShortcutObject.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Settings\Generators\SingleObject\FavoriteLinkObject.axaml.cs">
+        <DependentUpon>FavoriteLinkObject.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Settings\Generators\LinksGenerators.axaml.cs">
+        <DependentUpon>LinksGenerators.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

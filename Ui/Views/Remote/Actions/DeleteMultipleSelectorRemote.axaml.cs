@@ -2,17 +2,18 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library;
+using LibraryClient;
 using Ui.Views.Remote.Actions;
 
 namespace Ui.Views.Remote.Actions
 {
-    public class DeleteMultipleSelector : UserControl
+    public class DeleteMultipleSelectorRemote : UserControl
     {
-        private readonly DeleteMultiple _main;
+        private readonly DeleteMultipleRemote _main;
         
         #region Variables
         
-        public readonly Pointer Pointer;
+        public readonly RemoteItem Pointer;
 
         private readonly CheckBox _checkBox;
         private readonly TextBlock _name;
@@ -21,15 +22,14 @@ namespace Ui.Views.Remote.Actions
         
         #region Init
         
-        public DeleteMultipleSelector()
+        public DeleteMultipleSelectorRemote()
         {
             InitializeComponent();
             _name = this.FindControl<TextBlock>("Name");
             _checkBox = this.FindControl<CheckBox>("CheckBox");
-            Pointer = Pointer.NullPointer;
         }
 
-        public DeleteMultipleSelector(Pointer pointer, DeleteMultiple main) : this()
+        public DeleteMultipleSelectorRemote(RemoteItem pointer, DeleteMultipleRemote main) : this()
         {
             Pointer = pointer;
             _main = main;

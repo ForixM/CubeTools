@@ -4,7 +4,7 @@
         MinHeight="300" MinWidth="400"
         CanResize="True"
         WindowStartupLocation="CenterScreen"
-        x:Class="Ui.Views.Remote.Actions.DeleteMultiple"
+        x:Class="Ui.Views.Remote.Actions.DeleteMultipleRemote"
         Title="Delete multiple"
         Topmost="True"
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
@@ -29,7 +29,7 @@
                                         <Button Click="OnDeleteSelectedClick" HorizontalAlignment="Center" Margin="0 10 0 5" Content="Delete Selected"/>
                                         <Button Click="OnCancelClicked" HorizontalAlignment="Center" Margin="0 10 0 5" Content="Cancel"/>
                                 </WrapPanel>
-                                <ScrollViewer>
+                                <ScrollViewer Height="200">
                                         <StackPanel Name="GeneratorDisplay"/>
                                 </ScrollViewer>
                         </StackPanel>

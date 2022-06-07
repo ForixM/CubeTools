@@ -33,15 +33,12 @@
 					 </Grid>
 				 </Grid>
 				 <StackPanel>
-					 <Grid ColumnDefinitions="150, *, 150">
+					 <Grid ColumnDefinitions="150, *">
 						 <Grid Grid.Column="0" Margin="25 5 0 0">
 							 <TextBlock Text = "Theme Pack :"/>
 						 </Grid>
 						 <Grid Grid.Column="1">
 							 <generators:PackGenerator/>
-						 </Grid>
-						 <Grid Grid.Column="2" Margin="0 5 0 0">
-							 <Button Content="Reload to default" Click="ReloadToDefaultStyle"/>
 						 </Grid>
 					 </Grid>
 				 </StackPanel>
@@ -59,48 +56,28 @@
 					 </Grid>
 				 </Grid>
 				 <Expander IsExpanded="False" Header="Custom Shortcuts" Margin="20 0">
-					 <StackPanel>
-						 <WrapPanel>
-							 <TextBlock Text="Copy : "/>
-							 <TextBox Watermark="Copy"/>
-						 </WrapPanel>
-						 <WrapPanel>
-							 <TextBlock Text="Cut : "/>
-							 <TextBox Watermark="Cut"/>
-						 </WrapPanel>
-						 <WrapPanel>
-							 <TextBlock Text="Close : "/>
-							 <TextBox Watermark="Close"/>
-						 </WrapPanel>
-						 <WrapPanel>
-							 <TextBlock Text="Paste : "/>
-							 <TextBox Watermark="Paste"/>
-						 </WrapPanel>
-						 <WrapPanel>
-							 <TextBlock Text="Delete : "/>
-							 <TextBox Watermark="Delete"/>
-						 </WrapPanel>
-						 <WrapPanel>
-							 <TextBlock Text="Delete Permanent : "/>
-							 <TextBox Watermark="Delete Permanent"/>
-						 </WrapPanel>
-						 <WrapPanel>
-							 <TextBlock Text="Create File : "/>
-							 <TextBox Watermark="Create File"/>
-						 </WrapPanel>
-						 <WrapPanel>
-							 <TextBlock Text="Create Folder : "/>
-							 <TextBox Watermark="Create Folder"/>
-						 </WrapPanel>
-						 <WrapPanel>
-							 <TextBlock Text="New Window : "/>
-							 <TextBox Watermark="New Window"/>
-						 </WrapPanel>
-						 <WrapPanel>
-							 <TextBlock Text="Search : "/>
-							 <TextBox Watermark="Search"/>
-						 </WrapPanel>
-					 </StackPanel>
+					 <generators:ShortcutsGenerator/>
+				 </Expander>
+			 </StackPanel>
+			 
+			 <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 15" Width="350"/>
+			 
+			 <StackPanel Margin="0 5 0 0">
+				 <Grid ColumnDefinitions="100, 50, 700">
+					 <Grid Grid.Column="0">
+						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="60" Source="{x:Static resource:ResourcesIconsCompressed.FolderCompressed}"/>
+					 </Grid>
+					 <Grid Grid.Column="1">
+						 <Button Click="CreateLink">
+							 <Image Width="40" Height="40" Source="{x:Static resource:ResourcesIconsCompressed.CreateCompressed}"/>
+						 </Button>
+					 </Grid>
+					 <Grid Grid.Column="2">
+						 <TextBlock Text="Favorites" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+					 </Grid>
+				 </Grid>
+				 <Expander IsExpanded="False" Header="Custom Links" Margin="20 0">
+					 <generators:LinksGenerator Name="LinksGenerator"/>
 				 </Expander>
 			 </StackPanel>
 			 
@@ -126,90 +103,7 @@
 				 <Button Content="Save" Click="Save"/>
 				 <Button Content="Quit" Click="Quit"/>
 			 </WrapPanel>
-			 
-			 
-			 <!--
-			 <Expander IsExpanded="True" Header="Styles" ExpandDirection="Down">
-				 <StackPanel>
-					 <WrapPanel>
-						 <TextBlock Text = "Pack :"/>
-						 <generators:PackGenerator/>
-					 </WrapPanel>
-					 <WrapPanel>
-						 <Button Content="Reload to default" Click="ReloadToDefaultStyle"/>
-					 </WrapPanel>
-				 </StackPanel>
-			 </Expander>
-			 
-			 
-			 <Expander IsExpanded="True" Header="OneDrive Accounts" ExpandDirection="Down">
-				 <StackPanel>
-					 <TextBlock Text = "Account :"/>
-					 <TextBox Watermark="email" Name="EmailAccountOneDrive"/>
-					 <TextBox PasswordChar="*" RevealPassword="False" Watermark="password" Name="PasswordAccountOneDrive"/>
-					 <CheckBox Content="Display Password"/>
-					 <Separator Foreground="Black"/>
-					 <Expander Name="AccountsOneDriveGenerator"/>
-				 </StackPanel>
-			 </Expander>
-			 
-			 <Expander IsExpanded="True" Header="GoogleDive Accounts" ExpandDirection="Down">
-				 <StackPanel>
-					 <TextBlock Text = "Account :"/>
-					 <TextBox Watermark="email" Name="EmailAccountGoogleDrive"/>
-					 <TextBox PasswordChar="*" RevealPassword="False" Watermark="password" Name="PasswordAccountGoogleDrive"/>
-					 <CheckBox Content="Display Password"/>
-					 <Separator Foreground="Black"/>
-					 <Expander Name="AccountsGoogleDriveGenerator"/>
-				 </StackPanel>
-			 </Expander>
-			 
-			 <Expander IsExpanded="True" Header="FTP servers" Name="FtpGenerator">
-				 <generators:FtpGenerator/>
-			 </Expander>
-			 
-			 <Expander IsExpanded="True" Header="Custom Shortcuts">
-				 <StackPanel>
-					 <WrapPanel>
-						 <TextBlock Text="Copy : "/>
-					 </WrapPanel>
-					 <WrapPanel>
-						 <TextBlock Text="Cut : "/>
-					 </WrapPanel>
-					 <WrapPanel>
-						 <TextBlock Text="Close : "/>
-					 </WrapPanel>
-					 <WrapPanel>
-						 <TextBlock Text="Paste : "/>
-					 </WrapPanel>
-					 <WrapPanel>
-						 <TextBlock Text="Delete : "/>
-					 </WrapPanel>
-					 <WrapPanel>
-						 <TextBlock Text="Delete Permanent : "/>
-					 </WrapPanel>
-					 <WrapPanel>
-						 <TextBlock Text="Create a new file : "/>
-					 </WrapPanel>
-					 <WrapPanel>
-						 <TextBlock Text="Create a new folder : "/>
-					 </WrapPanel>
-					 <WrapPanel>
-						 <TextBlock Text="New Window : "/>
-					 </WrapPanel>
-					 <WrapPanel>
-						 <TextBlock Text="Search : "/>
-					 </WrapPanel>
-				 </StackPanel>
-			 </Expander>
-			 
-			 <Expander IsExpanded="True" Header="Select Applications by extensions"/>
-			 
-			 <WrapPanel HorizontalAlignment="Right" Margin="0 0 10 0">
-					<Button Content="Save" Click="Save"/>
-					<Button Content="Quit" Click="Quit"/>
-			 </WrapPanel>
-			 -->
+
 		 </StackPanel>
 	 </ScrollViewer>
 </Window>

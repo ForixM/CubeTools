@@ -17,7 +17,8 @@
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="-1"
         KeyDown="OnKeyPressedWindow"
-        KeyUp='OnKeyReleasedWindow'>
+        KeyUp='OnKeyReleasedWindow'
+        Closing="Closed">
     
     <!-- Styles Imports -->
     <Window.Styles>

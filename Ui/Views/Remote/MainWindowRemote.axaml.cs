@@ -128,23 +128,23 @@ namespace Ui.Views.Remote
         {
             if (KeysPressed.Contains(e.Key)) return;
             KeysPressed.Add(e.Key);
-            if (IsListInListList(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.Shortcuts))
+            if (IsListInListList(KeysPressed,ConfigLoader.ConfigLoader.Settings.ListShortcuts))
             {
-                if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.CloseShortCut))
+                if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["close"]))
                     Close();
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.CopyShortCut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["copy"]))
                     RemoteActionView.Copy(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.CreateDirShortcut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createDir"]))
                     RemoteActionView.CreatDir(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.CreateFileShortcut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createFile"]))
                     RemoteActionView.CreateFile(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.CutShortCut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["cut"]))
                     RemoteActionView.Cut(sender, e);
-                else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts.DeleteShortCut)
+                else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts["delete"])
                     RemoteActionView.Delete(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.PasteShortCut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["paste"]))
                     RemoteActionView.Paste(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.SelectAllShortcut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["selectAll"]))
                 {
                     // All items are selected
                     if (RemoteActionView.Selected.Count == RemotePointersView.Generator.Children.Count)
@@ -169,7 +169,7 @@ namespace Ui.Views.Remote
                         
                     }
                 }
-                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts.NewWindowShortCut))
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["newWindow"]))
                 {
                     var remote = new MainWindowRemote();
                     Client client;
@@ -192,11 +192,11 @@ namespace Ui.Views.Remote
                     remote.Client = client;
                     remote.Show();
                 }
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.RenameShortcut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["rename"]))
                     RemoteActionView.Rename(sender, e);
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts.ReloadShortcut))
+                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["reload"]))
                     Refresh();
-                else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts.SettingsShortcut)
+                else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts["settings"])
                     new SettingsWindow().Show();
             }
         }

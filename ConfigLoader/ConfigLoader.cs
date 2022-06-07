@@ -43,7 +43,7 @@ namespace ConfigLoader
         {
             try
             {
-                File.CreateText(JsonSerializer.Serialize(Settings));
+                File.CreateText(path).Write(JsonSerializer.Serialize(Settings));
             }
             catch (Exception e)
             {

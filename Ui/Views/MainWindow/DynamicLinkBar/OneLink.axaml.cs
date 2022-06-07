@@ -7,6 +7,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Library.DirectoryPointer.DirectoryPointerLoaded;
 using Library.FilePointer;
+using Library.ManagerExceptions;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views.MainWindow.DynamicLinkBar
@@ -30,9 +31,16 @@ namespace Ui.Views.MainWindow.DynamicLinkBar
 
         public OneLink(string link, string name, IImage image) : this()
         {
-            if (Directory.Exists(link)) pointer = new DirectoryPointerLoaded(link);
-            else pointer = new FilePointer(link);
-            
+            try
+            {
+                if (Directory.Exists(link)) pointer = new DirectoryPointerLoaded(link);
+                else pointer = new FilePointer(link);
+            }
+            catch (PathNotFoundException)
+            {
+                pointer = Pointer.NullPointer;
+            }
+
             Description.Text = name;
             Image.Source = image;
         }

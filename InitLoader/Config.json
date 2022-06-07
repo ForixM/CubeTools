@@ -16,44 +16,29 @@
         "password" : "",
         "port" : ""
       },
-    "servers" : [
-      {
-        "name" : "Test1",
-        "host" : "127.0.0.1",
-        "login" : "",
-        "password" : "",
-        "port" : "21"
-      },
-      {
-        "name" : "Test2",
-        "host" : "127.0.0.1",
-        "login" : "test",
-        "password" : "1234",
-        "port" : "20"
-      }
-    ]
+    "servers" : []
   },
   "Shortcuts" :
   {
-    "copy" : "CTRL+C",
-    "cut" : "CTRL+X",
-    "close" : "CTRL+W",
-    "paste" : "CTRL+V",
-    "newWindow" : "CTRL+N",
-    "search" : "CTRL+F",
-    "delete" : "DELETE",
-    "deletePermanent" : "SHIFT+DELETE",
-    "selectAll" : "CTRL+A",
-    "createFile" : "CTRL+MAJ+F",
-    "createDir" : "CTRL+MAJ+D",
-    "rename" : "F2",
-    "settings" : "CTRL+I",
-    "reload" : "CTRL+R"
+    "copy" : [118, 46],
+    "cut" : [118, 67],
+    "close" : [118, 66],
+    "paste" : [118,65],
+    "newWindow" : [118,57],
+    "search" : [118, 49],
+    "delete" : [32],
+    "deletePermanent" : [116, 32],
+    "selectAll" : [118, 44],
+    "createFile" : [118,116,49],
+    "createDir" : [118,116,47],
+    "rename" : [91],
+    "settings" : [118, 52],
+    "reload" : [118, 61]
   },
   "Application" :
   {
     "default" : "",
-    "txt" : "C:/notepad.exe",
+    "txt" : "",
     "pdf" : "",
     "jpg" : "",
     "jpeg" : "",
@@ -82,8 +67,5 @@
     "mov" : "",
     "mpeg" : ""
   },
-  "Links" : {
-    "links" : [
-    ]
-  }
+  "Links" :  {}
 }

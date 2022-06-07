@@ -41,8 +41,8 @@ namespace Ui.Views.MainWindow
 	        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
 	        // Favorites
 	        if (ConfigLoader.ConfigLoader.Settings.Links is not null)
-		        foreach (var linkSetting in ConfigLoader.ConfigLoader.Settings.Links.Links)
-			        _favorites.Children.Add(new OneLink(linkSetting.Path, linkSetting.Name, ResourcesLoader.ResourcesIconsCompressed.FolderCompressed));
+		        foreach (var key in ConfigLoader.ConfigLoader.Settings.Links.Keys)
+			        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesLoader.ResourcesIconsCompressed.FolderCompressed));
 	        // Drives
 	        foreach (var drive in System.IO.DriveInfo.GetDrives())
 		        _drives.Children.Add(new OneLink(drive.Name, drive.Name, ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
@@ -50,15 +50,18 @@ namespace Ui.Views.MainWindow
 	        _clouds.Children.Add(new FTPHandler());
 	        _clouds.Children.Add(new OneDriveHandler());
 	        _clouds.Children.Add(new GoogleDriveHandler());
-
+			// Workers
 			new Thread(LaunchUpdaterDrivers).Start();
 	        new Thread(LaunchUpdateLinks).Start();
         }
 
+        /// <summary>
+        /// Launch the worker in background
+        /// </summary>
         private void LaunchUpdaterDrivers()
         {
 	        int last = System.IO.DriveInfo.GetDrives().Length;
-	        while (true)
+	        while (Main.Main is MainWindow {IsClosed: false})
 	        {
 		        Thread.Sleep(1000);
 		        var drives = System.IO.DriveInfo.GetDrives();
@@ -70,30 +73,28 @@ namespace Ui.Views.MainWindow
 				        foreach (var drive in System.IO.DriveInfo.GetDrives())
 					        _drives.Children.Add(new OneLink(drive.Name, drive.Name,
 						        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
-			        });
+			        }, DispatcherPriority.Background);
 		        }
-
 		        last = drives.Length;
 	        }
         }
 
+        /// <summary>
+        /// Launch the worker in background
+        /// </summary>
         private void LaunchUpdateLinks()
         {
-	        int last = System.IO.DriveInfo.GetDrives().Length;
-	        while (true)
+	        var last = ConfigLoader.ConfigLoader.Settings.Links;
+	        while (Main.Main is MainWindow {IsClosed: false})
 	        {
-		        Thread.Sleep(1000);
-		        if (last != ConfigLoader.ConfigLoader.Settings.Links.Links.Count)
+		        Thread.Sleep(3000);
+		        Dispatcher.UIThread.Post(() =>
 		        {
-			        Dispatcher.UIThread.Post(() =>
-			        {
-				        _favorites.Children.Clear();
-				        foreach (var link in ConfigLoader.ConfigLoader.Settings.Links.Links)
-					        _favorites.Children.Add(new OneLink(link.Path, link.Name,
-						        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
-			        });
-		        }
-		        last = ConfigLoader.ConfigLoader.Settings.Links.Links.Count;
+			        _favorites.Children.Clear();
+			        foreach (var key in ConfigLoader.ConfigLoader.Settings.Links.Keys)
+				        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key], key,
+					        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
+		        }, DispatcherPriority.Background);
 	        }
         }
 

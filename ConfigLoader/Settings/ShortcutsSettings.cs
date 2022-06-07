@@ -113,7 +113,7 @@ namespace ConfigLoader.Settings
         [DataMember(Name="reload")] private string? reloadShortcut { get; set; }
 
         #region Converter
-        private static List<Key> FromStringToKeys(string s)
+        public static List<Key> FromStringToKeys(string s)
         {
             var keys = new List<Key>();
             foreach (var key in s.Split('+'))
@@ -271,7 +271,7 @@ namespace ConfigLoader.Settings
             }
             return keys;
         }
-        public string FromKeysToString(List<Key> keys)
+        public static string FromKeysToString(List<Key> keys)
         {
             string s = "";
             foreach (var key in keys)

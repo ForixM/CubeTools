@@ -1,0 +1,22 @@
+ <Window xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Ui.Views.Settings.ShortcutsSaver.ShortcutsSaver"
+             WindowStartupLocation="CenterScreen"
+             CanResize="False"
+             Topmost="True"
+             Title="Register your shortcut"
+             Width="200" Height="200"
+             KeyDown="OnKeyDown"
+             LostFocus="OnLostFocus">
+     
+     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+         <TextBlock Text="Type commands to modify the shortcut :"/>
+         <TextBlock Name="Display"/>
+         <WrapPanel>
+             <Button Content="Valid" Click="Valid"/>
+             <Button Content="Clear" Click="Clear"/>
+             <Button Content="Cancel" Click="Cancel"/>
+         </WrapPanel>
+     </StackPanel>
+     
+ </Window>
