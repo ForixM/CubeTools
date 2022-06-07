@@ -4,8 +4,8 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Library;
 using SevenZip;
-using Pointer = Library.Pointer;
 
 namespace Ui.Views.Local.Actions
 {
@@ -14,7 +14,7 @@ namespace Ui.Views.Local.Actions
         private Local? _main;
 
         private StackPanel _archiveInfo;
-        private List<Pointer> _data;
+        private List<LocalPointer> _data;
 
         #region Init
         
@@ -24,9 +24,9 @@ namespace Ui.Views.Local.Actions
 
             _archiveInfo = this.FindControl<StackPanel>("ArchiveInformation");
             _main = null;
-            _data = new List<Pointer>();
+            _data = new List<LocalPointer>();
         }
-        public Extract(Local main, List<Pointer> dataIn) : this()
+        public Extract(Local main, List<LocalPointer> dataIn) : this()
         {
             _main = main;
             _data = dataIn;

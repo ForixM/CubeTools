@@ -75,8 +75,8 @@ namespace Ui.Views.Local.Actions
             {
                 try
                 {
-                    _main.NavigationBarView.FolderPointer.AddDir(name);
-                    _main.PathsBarView.Refresh(_main.NavigationBarView.FolderPointer.ChildrenFiles);
+                    _main.NavigationBarView.FolderLocalPointer.AddDir(name);
+                    _main.PathsBarView.Refresh(_main.NavigationBarView.FolderLocalPointer.ChildrenFiles);
                     Close();
                 }
                 catch (Exception exception)

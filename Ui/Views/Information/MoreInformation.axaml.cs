@@ -4,9 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Library;
 using Library.ManagerExceptions;
 using Library.ManagerWriter;
-using Pointer = Library.Pointer;
 
 namespace Ui.Views.Information
 {
@@ -30,13 +30,13 @@ namespace Ui.Views.Information
 
         private bool _userActivation;
 
-        private readonly Pointer _pointer;
+        private readonly LocalPointer _localPointer;
         
         #region Init
         public MoreInformation()
         {
             InitializeComponent();
-            _pointer = Pointer.NullPointer;
+            _localPointer = LocalPointer.NullLocalPointer;
             this.SystemDecorations = SystemDecorations.None;
             _imageExtension = this.FindControl<Image>("ImageExtension");
             _fileName = this.FindControl<TextBlock>("FileName");
@@ -52,9 +52,9 @@ namespace Ui.Views.Information
 
             _userActivation = false;
         }
-        public MoreInformation(Pointer pointer) : this()
+        public MoreInformation(LocalPointer localPointer) : this()
         {
-            _pointer = pointer;
+            _localPointer = localPointer;
             /*
             _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(pointer.Type, pointer.IsDir);
             _fileName.Text = pointer.Name;

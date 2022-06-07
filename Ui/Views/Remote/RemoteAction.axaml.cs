@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
-using LibraryClient;
+using Library;
 using Ui.Views.Error;
 using Ui.Views.Remote.Actions;
 
@@ -13,9 +13,9 @@ namespace Ui.Views.Remote
     {
         public MainWindowRemote? Main;
 
-        public List<RemoteItem> Selected;
-        public List<RemoteItem> Copied;
-        public List<RemoteItem> CutXaml;
+        public List<Pointer> Selected;
+        public List<Pointer> Copied;
+        public List<Pointer> CutXaml;
 
         #region Init
 
@@ -23,9 +23,9 @@ namespace Ui.Views.Remote
         {
             Main = MainWindowRemote.LastReference;
             InitializeComponent();
-            Selected = new List<RemoteItem>();
-            Copied = new List<RemoteItem>();
-            CutXaml = new List<RemoteItem>();
+            Selected = new List<Pointer>();
+            Copied = new List<Pointer>();
+            CutXaml = new List<Pointer>();
         }
 
         public RemoteAction(MainWindowRemote main) : this()
@@ -145,13 +145,13 @@ namespace Ui.Views.Remote
         /// Copy the given pointer
         /// </summary>
         /// <param name="pointer">The pointer that we want to make a copy</param>
-        private void CopyPointer(RemoteItem pointer)
+        private void CopyPointer(Pointer pointer)
         {
             // TODO Mehdi : Implement High Level functionalities for FTP => Copy async
             Main!.Client.Copy(pointer);
         }
         
-        private void DeletePointer(RemoteItem pointer)
+        private void DeletePointer(Pointer pointer)
         {
             // TODO Mehdi : Implement High level functionalities for FTP => Delete async
             Main!.Client.Delete(pointer);

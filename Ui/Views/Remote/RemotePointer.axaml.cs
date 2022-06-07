@@ -4,8 +4,9 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerReader;
-using LibraryClient;
+using Library;
 using ResourcesLoader;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Remote
 {
@@ -14,7 +15,7 @@ namespace Ui.Views.Remote
 
         #region Variables
         
-        public RemoteItem Pointer;
+        public Pointer Pointer;
         public MainWindowRemote Main;
         
         private Image _icon;
@@ -35,7 +36,7 @@ namespace Ui.Views.Remote
             button = this.FindControl<Button>("Button");
         }
 
-        public RemotePointer(RemoteItem pointer, MainWindowRemote main) : this()
+        public RemotePointer(Pointer pointer, MainWindowRemote main) : this()
         {
             Pointer = pointer;
             _name.Text = pointer.Name;
@@ -83,6 +84,10 @@ namespace Ui.Views.Remote
         /// </summary>
         private void OnClick(object? sender, RoutedEventArgs e)
         {
+            if (Main.GotFocusLocal)
+            {
+                //Main.Local
+            }
             /*
             // if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
             // {

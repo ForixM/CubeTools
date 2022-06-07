@@ -5,24 +5,24 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using Library.DirectoryPointer.DirectoryPointerLoaded;
+using Library;
+using Library.DirectoryPointer;
 using Library.FilePointer;
 using Library.ManagerExceptions;
-using Pointer = Library.Pointer;
 
 namespace Ui.Views.MainWindow.DynamicLinkBar
 {
     public class OneLink : UserControl
     {
         public Local.Local Main;
-        public Pointer pointer;
+        public LocalPointer LocalPointer;
         public TextBlock Description;
         public Image Image;
         
         public OneLink()
         {
             Main = Local.Local.LastReference;
-            pointer = Pointer.NullPointer;
+            LocalPointer = LocalPointer.NullLocalPointer;
             
             InitializeComponent();
             Description = this.FindControl<TextBlock>("Description");
@@ -33,12 +33,12 @@ namespace Ui.Views.MainWindow.DynamicLinkBar
         {
             try
             {
-                if (Directory.Exists(link)) pointer = new DirectoryPointerLoaded(link);
-                else pointer = new FilePointer(link);
+                if (Directory.Exists(link)) LocalPointer = new DirectoryLocalPointer(link);
+                else LocalPointer = new FileLocalPointer(link);
             }
             catch (PathNotFoundException)
             {
-                pointer = Pointer.NullPointer;
+                LocalPointer = LocalPointer.NullLocalPointer;
             }
 
             Description.Text = name;
@@ -47,7 +47,7 @@ namespace Ui.Views.MainWindow.DynamicLinkBar
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void OpenLink(object? sender, RoutedEventArgs e) => Main.AccessPath(pointer.Path);
+        private void OpenLink(object? sender, RoutedEventArgs e) => Main.AccessPath(LocalPointer.Path);
         
         private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {

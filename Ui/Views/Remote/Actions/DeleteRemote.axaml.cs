@@ -4,15 +4,16 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
-using LibraryClient;
+using Library;
 using Ui.Views.Error;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Remote.Actions
 {
     public class DeleteRemote : Window
     {
         private readonly MainWindowRemote? _main;
-        private readonly RemoteItem? _pointer;
+        private readonly Pointer? _pointer;
 
         #region Init
         
@@ -22,7 +23,7 @@ namespace Ui.Views.Remote.Actions
             _main = null;
             _pointer = null;
         }
-        public DeleteRemote(MainWindowRemote main, RemoteItem pointer) : this()
+        public DeleteRemote(MainWindowRemote main, Pointer pointer) : this()
         {
             _main = main;
             _pointer = pointer;

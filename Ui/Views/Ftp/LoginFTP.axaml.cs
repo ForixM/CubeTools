@@ -4,7 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
-using LibraryClient;
+using Library;
 using Ui.Views.Error;
 using Ui.Views.Remote;
 

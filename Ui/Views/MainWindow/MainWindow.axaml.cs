@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.ComponentModel;
 using System.Linq;
 using Avalonia.Controls;
@@ -93,8 +94,19 @@ namespace Ui.Views.MainWindow
         }
         private void OnKeyReleasedWindow(object? sender, KeyEventArgs e)
         {
-            while (KeysPressed.Count != 0 && KeysPressed.Last() != e.Key)
-                KeysPressed.RemoveAt(KeysPressed.Count - 1);
+            // while (KeysPressed.Count != 0 && KeysPressed.Last() != e.Key)
+            //     KeysPressed.RemoveAt(KeysPressed.Count - 1);
+            if (KeysPressed.Contains(e.Key))
+            {
+                KeysPressed.Remove(e.Key);
+            }
+
+            Debug.Print("Keys:");
+            foreach (Key key in KeysPressed)
+            {
+                Debug.Print(key.ToString());
+            }
+            Debug.Print("-------");
         }
         
         #endregion

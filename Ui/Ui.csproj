@@ -163,12 +163,11 @@
         <AvaloniaResource Include="Fonts\Poppins-Regular.ttf" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.13" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
+        <PackageReference Include="Avalonia" Version="0.10.15" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.15" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.15" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.13" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
-        <PackageReference Include="MessageBox.Avalonia" Version="1.7.1" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.15" />
         <PackageReference Include="Syroot.Windows.IO.KnownFolders" Version="1.3.0" />
     </ItemGroup>
     
@@ -181,12 +180,12 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Cli\Cli.csproj" />
-        <ProjectReference Include="..\Extensions\LibraryCompression\LibraryCompression.csproj" />
-        <ProjectReference Include="..\Extensions\LibraryClient\LibraryClient.csproj" />
+        
+        <ProjectReference Include="..\LibraryCompression\LibraryCompression.csproj" />
+        <ProjectReference Include="..\Library\Library.csproj" />
         <ProjectReference Include="..\InitLoader\InitLoader.csproj" />
+        <ProjectReference Include="..\LibraryCompression\LibraryCompression.csproj" />
         <ProjectReference Include="..\ResourcesLoader\ResourcesLoader.csproj" />
-        <ProjectReference Include="..\Manager\Library\Library.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Views\ErrorPopUp\ErrorPopUp.axaml.cs">

@@ -12,7 +12,7 @@ namespace Cli
         #region Variables
 
         // Attributes
-        private static DirectoryPointerLoaded _directoryPointer;
+        private static DirectoryLocalPointerLoaded _directoryLocalPointer;
         private static string _promptLine;
 
         #endregion
@@ -22,7 +22,7 @@ namespace Cli
         // Constructor : OK
         public Cli()
         {
-            _directoryPointer = new DirectoryPointerLoaded();
+            _directoryLocalPointer = new DirectoryLocalPointerLoaded();
             _promptLine = ">> ";
         }
 
@@ -30,7 +30,7 @@ namespace Cli
         public Cli(string path)
         {
             path = path.Replace('\\', '/');
-            _directoryPointer = new DirectoryPointerLoaded(path);
+            _directoryLocalPointer = new DirectoryLocalPointerLoaded(path);
             _promptLine = ">> ";
         }
 
@@ -55,7 +55,7 @@ namespace Cli
             while (true)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
-                Console.Write(_directoryPointer.Path);
+                Console.Write(_directoryLocalPointer.Path);
                 Console.Write(_promptLine + " ");
                 Console.ForegroundColor = ConsoleColor.DarkRed;
                 ReadCommand();
@@ -255,7 +255,7 @@ namespace Cli
         {
             Console.WriteLine("Children");
             Console.WriteLine("__________");
-            foreach (var pointer in _directoryPointer.ChildrenFiles) Console.WriteLine(pointer.Path);
+            foreach (var pointer in _directoryLocalPointer.ChildrenFiles) Console.WriteLine(pointer.Path);
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace Cli
             {
                 name = ManagerReader.GetNameToPath(name);
                 ManagerWriter.CreateDir(name);
-                _directoryPointer.ChildrenFiles.Add(new FilePointer(name));
+                _directoryLocalPointer.ChildrenFiles.Add(new FileLocalPointer(name));
             }
             catch (Exception)
             {
@@ -368,7 +368,7 @@ namespace Cli
         {
             try
             {
-                _directoryPointer.ChildrenFiles.Add(
+                _directoryLocalPointer.ChildrenFiles.Add(
                     ManagerWriter.Create(name, ManagerReader.GetFileExtension(name)));
             }
             catch (Exception)
@@ -385,7 +385,7 @@ namespace Cli
         {
             try
             {
-                _directoryPointer = new DirectoryPointerLoaded(Path.GetFullPath(dest).Replace("\\","/"));
+                _directoryLocalPointer = new DirectoryLocalPointerLoaded(Path.GetFullPath(dest).Replace("\\","/"));
             }
             catch (ManagerException e)
             {
@@ -402,7 +402,7 @@ namespace Cli
             Console.WriteLine();
             Console.WriteLine("Path");
             Console.WriteLine("-----");
-            Console.WriteLine(_directoryPointer.Path);
+            Console.WriteLine(_directoryLocalPointer.Path);
             Console.WriteLine();
         }
 
@@ -426,7 +426,7 @@ namespace Cli
 
             try
             {
-                _directoryPointer.ChildrenFiles.Add(ManagerWriter.Copy(source));
+                _directoryLocalPointer.ChildrenFiles.Add(ManagerWriter.Copy(source));
             }
             catch (Exception e)
             {
@@ -456,7 +456,7 @@ namespace Cli
             try
             {
                 ManagerWriter.Copy(source, dest);
-                _directoryPointer.ChildrenFiles.Add(new FilePointer(dest));
+                _directoryLocalPointer.ChildrenFiles.Add(new FileLocalPointer(dest));
             }
             catch (Exception e)
             {
@@ -473,7 +473,7 @@ namespace Cli
             var res = "";
             try
             {
-                res = ManagerReader.SearchByIndeterminedName(_directoryPointer, toFind).Path;
+                res = ManagerReader.SearchByIndeterminedName(_directoryLocalPointer, toFind).Path;
             }
             catch (Exception)
             {
@@ -492,7 +492,7 @@ namespace Cli
         {
             try
             {
-                _directoryPointer.SetChildrenFiles();
+                _directoryLocalPointer.SetChildrenFiles();
             }
             catch (Exception e)
             {

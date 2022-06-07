@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Library.ManagerExceptions;
-using LibraryClient;
+using Library;
 using Ui.Views.Error;
 using Ui.Views.Remote;
 
@@ -30,10 +30,11 @@ namespace Ui.Views.MainWindow.DynamicLinkBar
 
         private void OpenClient(object? sender, RoutedEventArgs e)
         {
-            ClientOneDrive client = new ClientOneDrive(ClientType.ONEDRIVE);
-            client.Client.authenticated += (o, success) =>
+            ClientOneDrive clientRemote = new ClientOneDrive(ClientType.ONEDRIVE);
+            ClientLocal clientLocal = new ClientLocal(ClientType.LOCAL);
+            clientRemote.Client.authenticated += (o, success) =>
             {
-                if (success) Dispatcher.UIThread.Post(() => new MainWindowRemote(client).Show());
+                if (success) Dispatcher.UIThread.Post(() => new MainWindowRemote(clientLocal, clientRemote).Show());
                 else new ErrorBase(new ConnectionRefused("OneDrive connection could not be established", "Connection to OneDrive")).Show();
             };
         }

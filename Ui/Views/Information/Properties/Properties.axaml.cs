@@ -4,9 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Library;
 using Library.ManagerExceptions;
 using Library.ManagerWriter;
-using Pointer = Library.Pointer;
 
 namespace Ui.Views.Information.Properties
 {
@@ -30,13 +30,13 @@ namespace Ui.Views.Information.Properties
 
         private bool _userActivation;
 
-        private readonly Pointer _pointer;
+        private readonly LocalPointer _localPointer;
         
         #region Init
         public Properties()
         {
             InitializeComponent();
-            _pointer = Pointer.NullPointer;
+            _localPointer = LocalPointer.NullLocalPointer;
 
             _imageExtension = this.FindControl<Image>("ImageExtension");
             _fileName = this.FindControl<TextBlock>("FileName");
@@ -52,22 +52,22 @@ namespace Ui.Views.Information.Properties
 
             _userActivation = false;
         }
-        public Properties(Pointer pointer) : this()
+        public Properties(LocalPointer localPointer) : this()
         {
-            _pointer = pointer;
+            _localPointer = localPointer;
             // TODO _pointer.LoadSize();
 
-            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(pointer.Type, pointer.IsDir);
-            _fileName.Text = pointer.Name;
-            _type.Text = pointer.IsDir ? "folder" : pointer.Type;
-            _description.Text = pointer.Name;
-            _path.Text = pointer.Path;
-            _size.Text = pointer.SizeXaml;
-            _created.Text = pointer.Date;
-            _modified.Text = pointer.LastDate;
-            _accessed.Text = pointer.AccessDate;
-            _readOnly.IsChecked = pointer.ReadOnly;
-            _hidden.IsChecked = pointer.Hidden;
+            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(localPointer.Type, localPointer.IsDir);
+            _fileName.Text = localPointer.Name;
+            _type.Text = localPointer.IsDir ? "folder" : localPointer.Type;
+            _description.Text = localPointer.Name;
+            _path.Text = localPointer.Path;
+            _size.Text = localPointer.SizeXaml;
+            _created.Text = localPointer.Date;
+            _modified.Text = localPointer.LastDate;
+            _accessed.Text = localPointer.AccessDate;
+            _readOnly.IsChecked = localPointer.ReadOnly;
+            _hidden.IsChecked = localPointer.Hidden;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -85,7 +85,7 @@ namespace Ui.Views.Information.Properties
             }
             try
             {
-                _pointer.SetAttributes(false, FileAttributes.ReadOnly);
+                _localPointer.SetAttributes(false, FileAttributes.ReadOnly);
                 //_parentModel!.Refresh();
             }
             catch (ManagerException exception)
@@ -105,7 +105,7 @@ namespace Ui.Views.Information.Properties
             }
             try
             {
-                ManagerWriter.SetAttributes(_pointer, true, FileAttributes.ReadOnly);
+                ManagerWriter.SetAttributes(_localPointer, true, FileAttributes.ReadOnly);
                 //_parentModel!.Refresh();
             }
             catch (ManagerException exception)
@@ -125,7 +125,7 @@ namespace Ui.Views.Information.Properties
             }
             try
             {
-                ManagerWriter.SetAttributes(_pointer, false, FileAttributes.Hidden);
+                ManagerWriter.SetAttributes(_localPointer, false, FileAttributes.Hidden);
             }
             catch (ManagerException exception)
             {
@@ -144,7 +144,7 @@ namespace Ui.Views.Information.Properties
             }
             try
             {
-                ManagerWriter.SetAttributes(_pointer, true, FileAttributes.Hidden);
+                ManagerWriter.SetAttributes(_localPointer, true, FileAttributes.Hidden);
                 //_parentModel?.Refresh();
             }
             catch (ManagerException exception)

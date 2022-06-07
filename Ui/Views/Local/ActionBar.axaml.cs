@@ -79,17 +79,17 @@ namespace Ui.Views.Local
         {
             // 1) Copy Copied
             foreach (var item in CopiedXaml)
-                CopyPointer(item.Pointer);
+                CopyPointer(item.LocalPointer);
 
             switch (CutXaml.Count)
             {
                 case 0:
                     return;
                 case 1:
-                    new Delete(Main, CutXaml[0].Pointer).Show();
+                    new Delete(Main, CutXaml[0].LocalPointer).Show();
                     break;
                 default:
-                    new Ui.Views.Local.Actions.DeleteMultiple(Main, CutXaml.Select(pointer => pointer.Pointer).ToList()).Show();
+                    new Ui.Views.Local.Actions.DeleteMultiple(Main, CutXaml.Select(pointer => pointer.LocalPointer).ToList()).Show();
                     break;
             }
         }
@@ -104,7 +104,7 @@ namespace Ui.Views.Local
                 case < 1:
                     return;
                 case 1:
-                    new Rename(SelectedXaml[0].Pointer, Main.NavigationBarView.FolderPointer.ChildrenFiles, Main).Show();
+                    new Rename(SelectedXaml[0].LocalPointer, Main.NavigationBarView.FolderLocalPointer.ChildrenFiles, Main).Show();
                     break;
                 default:
                     new ErrorBase(new ManagerException("Unable to rename multiple data")).ShowDialog<object>(Main.Main);
@@ -122,10 +122,10 @@ namespace Ui.Views.Local
                 case 0:
                     return;
                 case 1:
-                    new Delete(Main, SelectedXaml[0].Pointer).Show();
+                    new Delete(Main, SelectedXaml[0].LocalPointer).Show();
                     break;
                 default:
-                    new DeleteMultiple(Main, Main.ActionBarView.SelectedXaml.Select(pointer => pointer.Pointer).ToList()).Show();
+                    new DeleteMultiple(Main, Main.ActionBarView.SelectedXaml.Select(pointer => pointer.LocalPointer).ToList()).Show();
                     break;
             }
         }
@@ -172,8 +172,8 @@ namespace Ui.Views.Local
         {
             if (SelectedXaml.Count == 0) return;
 
-            var archives = SelectedXaml.Where(ft =>  ft.Pointer.Type is "zip" or "7z" || ft.Pointer.Archived || ft.Pointer.Compressed).Select(item => item.Pointer);
-            var others = SelectedXaml.Where(ft =>  ft.Pointer.Type is not "zip" && ft.Pointer.Type is not "7z" || ft.Pointer.Archived || ft.Pointer.Compressed).Select(item => item.Pointer);
+            var archives = SelectedXaml.Where(ft =>  ft.LocalPointer.Type is "zip" or "7z" || ft.LocalPointer.Archived || ft.LocalPointer.Compressed).Select(item => item.LocalPointer);
+            var others = SelectedXaml.Where(ft =>  ft.LocalPointer.Type is not "zip" && ft.LocalPointer.Type is not "7z" || ft.LocalPointer.Archived || ft.LocalPointer.Compressed).Select(item => item.LocalPointer);
 
             // Opening extract for archives
             var archiveTypes = archives.ToList();
@@ -192,7 +192,7 @@ namespace Ui.Views.Local
         /// Copy the given pointer
         /// </summary>
         /// <param name="source">The pointer that we want to make a copy</param>
-        private void CopyPointer(Pointer source)
+        private void CopyPointer(LocalPointer source)
         {
             try
             {
@@ -201,8 +201,8 @@ namespace Ui.Views.Local
                     () =>
                     {
                         string nameModified =
-                            ManagerReader.GetPathToName(ManagerReader.GenerateNameForModification(Main.NavigationBarView.FolderPointer.Path + "/" + source.Name));
-                        string dest = Main.NavigationBarView.FolderPointer.Path + "/" + nameModified;
+                            ManagerReader.GetPathToName(ManagerReader.GenerateNameForModification(Main.NavigationBarView.FolderLocalPointer.Path + "/" + source.Name));
+                        string dest = Main.NavigationBarView.FolderLocalPointer.Path + "/" + nameModified;
                         Task.Run(() => source.Copy(dest, true)).GetAwaiter().OnCompleted(Main.Refresh);
                     },
                     DispatcherPriority.MaxValue);

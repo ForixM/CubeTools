@@ -23,7 +23,7 @@ namespace Ui.Views.Local
 
         public void Refresh()
         {
-            var list = Main.NavigationBarView.FolderPointer.ChildrenFiles;
+            var list = Main.NavigationBarView.FolderLocalPointer.ChildrenFiles;
             Generator.Children.Clear();
             int size = list.Count;
             for (int i = 0; i < size; i++)
@@ -37,7 +37,7 @@ namespace Ui.Views.Local
             }
         }
         
-        public void Refresh(List<Pointer> list)
+        public void Refresh(List<LocalPointer> list)
         {
             Generator.Children.Clear();
             int size = list.Count;

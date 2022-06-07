@@ -7,7 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Manager\Library\Library.csproj" />
+      <ProjectReference Include="..\ConfigLoader\ConfigLoader.csproj" />
+      <ProjectReference Include="..\Library\Library.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="0.10.15" />
+      <PackageReference Include="Avalonia.Desktop" Version="0.10.15" />
+      <PackageReference Include="Avalonia.Diagnostics" Version="0.10.15" />
     </ItemGroup>
 
 </Project>

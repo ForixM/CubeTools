@@ -12,7 +12,7 @@ namespace Ui.Views.Local.Actions
         
         #region Variables
         
-        public readonly Pointer Pointer;
+        public readonly LocalPointer LocalPointer;
 
         private readonly CheckBox _checkBox;
         private readonly TextBlock _name;
@@ -26,14 +26,14 @@ namespace Ui.Views.Local.Actions
             InitializeComponent();
             _name = this.FindControl<TextBlock>("Name");
             _checkBox = this.FindControl<CheckBox>("CheckBox");
-            Pointer = Pointer.NullPointer;
+            LocalPointer = LocalPointer.NullLocalPointer;
         }
 
-        public DeleteMultipleSelector(Pointer pointer, DeleteMultiple main) : this()
+        public DeleteMultipleSelector(LocalPointer localPointer, DeleteMultiple main) : this()
         {
-            Pointer = pointer;
+            LocalPointer = localPointer;
             _main = main;
-            _name.Text = pointer.Name;
+            _name.Text = localPointer.Name;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

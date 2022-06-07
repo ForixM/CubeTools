@@ -63,7 +63,7 @@ namespace Ui.Views.Local.Actions
             {
                 new ErrorBase(new PathFormatException("Format is invalid !", "Create a local file")).ShowDialog<object>(_main.Main);
             }
-            else if (File.Exists(_main.NavigationBarView.FolderPointer.Path + "/"+name))
+            else if (File.Exists(_main.NavigationBarView.FolderLocalPointer.Path + "/"+name))
             {
                 new ErrorBase(new ReplaceException("File already exists !", "Create a local file")).ShowDialog<bool>(_main.Main);
             }
@@ -75,16 +75,16 @@ namespace Ui.Views.Local.Actions
                     switch (split.Length)
                     {
                         case 0:
-                            _main.NavigationBarView.FolderPointer.AddFile("New File", "txt");
+                            _main.NavigationBarView.FolderLocalPointer.AddFile("New File", "txt");
                             break;
                         case 1:
-                            _main.NavigationBarView.FolderPointer.AddFile(name, "");
+                            _main.NavigationBarView.FolderLocalPointer.AddFile(name, "");
                             break;
                         default:
                         {
                             string nameNoExtension = "";
                             for (int i = 0; i < split.Length - 1; i++) nameNoExtension += split[i];
-                            _main.NavigationBarView.FolderPointer.AddFile(nameNoExtension, split[-1]);
+                            _main.NavigationBarView.FolderLocalPointer.AddFile(nameNoExtension, split[-1]);
                             break;
                         }
                     }

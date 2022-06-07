@@ -8,12 +8,13 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
-using LibraryClient;
-using LibraryClient.LibraryOneDrive;
+using Library;
+using Library.LibraryOneDrive;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using Ui.Views.Error;
 using Ui.Views.Settings;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Remote
 {
@@ -23,12 +24,13 @@ namespace Ui.Views.Remote
         
         public static MainWindowRemote LastReference;
 
-        public Local.Local Local;
+        // public Local.Local Local;
         
         public RemoteNavigation RemoteNavigationView;
         public RemoteAction RemoteActionView;
         public RemotePointers RemotePointersView;
 
+        public Client Local;
         public Client Client;
         public List<Key> KeysPressed;
         public bool GotFocusLocal;
@@ -42,8 +44,8 @@ namespace Ui.Views.Remote
             LastReference = this;
             InitializeComponent();
             // References
-            Local = this.FindControl<Local.Local>("Local");
-            Local.IsRemote = true;
+            // Local = this.FindControl<Local.Local>("Local");
+            // Local.IsRemote = true;
             RemoteNavigationView = this.FindControl<RemoteNavigation>("RemoteNavigation");
             RemoteActionView = this.FindControl<RemoteAction>("RemoteAction");
             RemotePointersView = this.FindControl<RemotePointers>("RemotePointers");
@@ -52,9 +54,10 @@ namespace Ui.Views.Remote
             GotFocusLocal = true;
         }
 
-        public MainWindowRemote(Client client) : this()
+        public MainWindowRemote(Client client, Client local) : this()
         {
             Client = client;
+            this.Local = local;
             RemoteNavigationView.CurrentPathXaml.Text = client.CurrentFolder.Path;
             RemoteNavigationView.Add(Client.CurrentFolder!);
             Refresh();
@@ -83,14 +86,14 @@ namespace Ui.Views.Remote
         /// <summary>
         /// Access to an item
         /// </summary>
-        /// <param name="item">the given item to access</param>
-        public void AccessPath(RemoteItem item)
+        /// <param name="pointer">the given item to access</param>
+        public void AccessPath(Pointer pointer)
         {
-            if (item.IsDir)
+            if (pointer.IsDir)
             {
                 try
                 {
-                    Client.AccessPath(item);
+                    Client.AccessPath(pointer);
                     RemotePointersView.Refresh();
                     RemoteNavigationView.Refresh();
                 }
@@ -104,7 +107,7 @@ namespace Ui.Views.Remote
             {
                 try
                 {
-                    ManagerReader.AutoLaunchAppProcess(Client.DownloadFile(item, Local.NavigationBarView.FolderPointer).Path);
+                    ManagerReader.AutoLaunchAppProcess(Client.DownloadFile(pointer, Local.NavigationBarView.FolderPointer).Path);
                 }
                 catch (Exception e)
                 {

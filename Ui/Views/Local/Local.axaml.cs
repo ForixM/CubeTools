@@ -88,7 +88,7 @@ namespace Ui.Views.Local
         {
             try
             {
-                NavigationBarView.FolderPointer.SetChildrenFiles();
+                NavigationBarView.FolderLocalPointer.SetChildrenFiles();
             }
             catch (Exception e)
             {
@@ -101,7 +101,7 @@ namespace Ui.Views.Local
         ///  Reload the current directory (not the pointer) by displaying specific pointers
         /// </summary>
         /// <param name="list">the list of pointer to display</param>
-        public void Refresh(List<Pointer> list) => PathsBarView.Refresh(list);
+        public void Refresh(List<LocalPointer> list) => PathsBarView.Refresh(list);
         
         #endregion
     }

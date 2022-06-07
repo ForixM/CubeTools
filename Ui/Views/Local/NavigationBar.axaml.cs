@@ -19,7 +19,7 @@ namespace Ui.Views.Local
         #region Model Variables
         
         // A pointer to the current loaded Directory
-        public DirectoryPointerLoaded FolderPointer;
+        public DirectoryLocalPointerLoaded FolderLocalPointer;
         // Queue Pointers : Pointers registered in a queue
         private List<string> _queue;
         // Index Queue : the current index of the queue
@@ -88,11 +88,11 @@ namespace Ui.Views.Local
         /// </summary>
         private void UpArrowClick(object? sender, RoutedEventArgs e)
         {
-            string pathParent = ManagerReader.GetParent(FolderPointer.Path);
+            string pathParent = ManagerReader.GetParent(FolderLocalPointer.Path);
             if (pathParent != "")
             {
                 Main.AccessPath(pathParent);
-                Add(FolderPointer.Path);
+                Add(FolderLocalPointer.Path);
             }
         }
 
@@ -103,7 +103,7 @@ namespace Ui.Views.Local
         {
             try
             {
-                Main.NavigationBarView.FolderPointer.SetChildrenFiles();
+                Main.NavigationBarView.FolderLocalPointer.SetChildrenFiles();
                 Main.Refresh();
             }
             catch (Exception exception)
@@ -150,15 +150,15 @@ namespace Ui.Views.Local
         {
             try
             {
-                if (FolderPointer is null) FolderPointer = new DirectoryPointerLoaded(path);
-                else FolderPointer.ChangeDirectory(path);
+                if (FolderLocalPointer is null) FolderLocalPointer = new DirectoryLocalPointerLoaded(path);
+                else FolderLocalPointer.ChangeDirectory(path);
             }
             catch (ManagerException e)
             {
                 new ErrorBase(e).Show();
                 //new ErrorBase(e).ShowDialog<object>(Main.Main);
             }
-            CurrentPathXaml.Text = FolderPointer.Path;
+            CurrentPathXaml.Text = FolderLocalPointer.Path;
             //Add(FolderPointer);
         }
 
@@ -169,7 +169,7 @@ namespace Ui.Views.Local
         {
             try
             {
-                FolderPointer.SetChildrenFiles();
+                FolderLocalPointer.SetChildrenFiles();
             }
             catch (ManagerException e)
             {

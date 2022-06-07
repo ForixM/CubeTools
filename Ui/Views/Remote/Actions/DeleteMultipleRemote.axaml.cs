@@ -8,7 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Library.ManagerExceptions;
-using LibraryClient;
+using Library;
 using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
@@ -20,7 +20,7 @@ namespace Ui.Views.Remote.Actions
         public readonly StackPanel GeneratorDisplay;
 
         public List<DeleteMultipleSelectorRemote> Selected;
-        private List<RemoteItem> _pointers;
+        private List<Pointer> _pointers;
 
         #region Init
         
@@ -30,9 +30,9 @@ namespace Ui.Views.Remote.Actions
             
             GeneratorDisplay = this.FindControl<StackPanel>("GeneratorDisplay");
             Selected = new List<DeleteMultipleSelectorRemote>();
-            _pointers = new List<RemoteItem>();
+            _pointers = new List<Pointer>();
         }
-        public DeleteMultipleRemote(MainWindowRemote main, List<RemoteItem> pointer) : this()
+        public DeleteMultipleRemote(MainWindowRemote main, List<Pointer> pointer) : this()
         {
             _main = main;
             _pointers = pointer;

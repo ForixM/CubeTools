@@ -66,10 +66,10 @@ namespace Ui.Views.Local.Actions
         {
             Dispatcher.UIThread.Post(() =>
             {
-                var children = new List<Library.Pointer>();
+                var children = new List<Library.LocalPointer>();
                 Task.Run(() =>
                 {
-                    children = ManagerReader.FastSearchByName(_main.NavigationBarView.FolderPointer.Path,
+                    children = ManagerReader.FastSearchByName(_main.NavigationBarView.FolderLocalPointer.Path,
                         _textEntered.Text, 100).ToList();
                 }).GetAwaiter().OnCompleted(() =>
                 {

@@ -4,9 +4,9 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Library;
 using Library.ManagerReader;
 using SevenZip;
-using Pointer = Library.Pointer;
 
 namespace Ui.Views.Local.Actions
 {
@@ -18,7 +18,7 @@ namespace Ui.Views.Local.Actions
         private readonly ComboBox _archiveFormatVisual;
         
         private OutArchiveFormat _archiveFormat;
-        private List<Pointer> _datas;
+        private List<LocalPointer> _datas;
 
         #region Init
         
@@ -31,9 +31,9 @@ namespace Ui.Views.Local.Actions
             _archiveFormat = OutArchiveFormat.Zip;
             
             _main = null;
-            _datas = new List<Pointer>();
+            _datas = new List<LocalPointer>();
         }
-        public Compress(Local main, List<Pointer> datasIn) : this()
+        public Compress(Local main, List<LocalPointer> datasIn) : this()
         {
             _main = main;
             _datas = datasIn;

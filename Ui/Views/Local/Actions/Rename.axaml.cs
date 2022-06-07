@@ -5,19 +5,19 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Library;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
 using Ui.Views.Error;
-using Pointer = Library.Pointer;
 
 namespace Ui.Views.Local.Actions
 {
     public class Rename : Window
     {
         private readonly TextBox _renameBox;
-        private readonly Pointer _modifiedPointer;
-        private readonly List<Pointer> _itemsReference;
+        private readonly LocalPointer _modifiedLocalPointer;
+        private readonly List<LocalPointer> _itemsReference;
         private readonly Local? _main;
 
         #region Init
@@ -25,15 +25,15 @@ namespace Ui.Views.Local.Actions
         {
             InitializeComponent();
             _renameBox = this.FindControl<TextBox>("Rename");
-            _modifiedPointer = Pointer.NullPointer;
-            _itemsReference = new List<Pointer>();
+            _modifiedLocalPointer = LocalPointer.NullLocalPointer;
+            _itemsReference = new List<LocalPointer>();
             _main = null;
         }
-        public Rename(Pointer ft, List<Pointer> items, Local main) : this()
+        public Rename(LocalPointer ft, List<LocalPointer> items, Local main) : this()
         {
-            _modifiedPointer = ft;
+            _modifiedLocalPointer = ft;
             _itemsReference = items;
-            _renameBox.Text = _modifiedPointer.Name;
+            _renameBox.Text = _modifiedLocalPointer.Name;
             _main = main;
         }
 
@@ -67,7 +67,7 @@ namespace Ui.Views.Local.Actions
         /// </summary>
         private async void RenamePointer()
         {
-            if (_modifiedPointer.Name == _renameBox.Text)
+            if (_modifiedLocalPointer.Name == _renameBox.Text)
                 Close(null);
             else if (File.Exists(_renameBox.Text) || Directory.Exists(_renameBox.Text))
             {
@@ -82,7 +82,7 @@ namespace Ui.Views.Local.Actions
             {
                 try
                 {
-                    _modifiedPointer.Rename(_renameBox.Text, false);
+                    _modifiedLocalPointer.Rename(_renameBox.Text, false);
                 }
                 catch (Exception exception)
                 {

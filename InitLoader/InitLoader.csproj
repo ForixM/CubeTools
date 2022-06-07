@@ -8,15 +8,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ConfigLoader\ConfigLoader.csproj" />
-      <ProjectReference Include="..\Extensions\LibraryCompression\LibraryCompression.csproj" />
+      <ProjectReference Include="..\LibraryCompression\LibraryCompression.csproj" />
+      <ProjectReference Include="..\Library\Library.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Assets\dark" />
-      <Folder Include="Assets\default" />
-      <Folder Include="Assets\light" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <PackageReference Include="Syroot.Windows.IO.KnownFolders" Version="1.3.0" />
     </ItemGroup>

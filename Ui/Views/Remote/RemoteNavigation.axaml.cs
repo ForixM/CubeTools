@@ -5,15 +5,16 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
-using LibraryClient;
+using Library;
 using Ui.Views.Error;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Remote
 {
     public class RemoteNavigation : UserControl
     {
         private int _index;
-        private List<RemoteItem> _queue;
+        private List<Pointer> _queue;
 
         public TextBox CurrentPathXaml;
         public MainWindowRemote Main;
@@ -27,7 +28,7 @@ namespace Ui.Views.Remote
             Main = MainWindowRemote.LastReference;
             CurrentPathXaml = this.FindControl<TextBox>("RemoteCurrentPath");
             //
-            _queue = new List<RemoteItem>();
+            _queue = new List<Pointer>();
             _index = -1;
         }
 
@@ -105,7 +106,7 @@ namespace Ui.Views.Remote
         /// Add a folder in the queue
         /// </summary>
         /// <param name="folder">the folder to add</param>
-        public void Add(RemoteItem folder)
+        public void Add(Pointer folder)
         {
             if (_queue.Count - 1 == _index || _index < 0) _queue.Add(folder);
             else if (_queue.Count > _index + 1 && folder != _queue[_index + 1])

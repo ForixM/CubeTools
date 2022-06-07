@@ -5,16 +5,16 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Library;
 using Library.ManagerExceptions;
 using Ui.Views.Error;
-using Pointer = Library.Pointer;
 
 namespace Ui.Views.Local.Actions
 {
     public class Delete : Window
     {
         private readonly Local? _main;
-        private readonly Pointer _pointer;
+        private readonly LocalPointer _localPointer;
 
         #region Init
         
@@ -22,13 +22,13 @@ namespace Ui.Views.Local.Actions
         {
             InitializeComponent();
             _main = null;
-            _pointer = Pointer.NullPointer;
+            _localPointer = LocalPointer.NullLocalPointer;
         }
-        public Delete(Local main, Pointer pointer) : this()
+        public Delete(Local main, LocalPointer localPointer) : this()
         {
             _main = main;
-            _pointer = pointer;
-            Title = $"Delete {pointer.Name} ?";
+            _localPointer = localPointer;
+            Title = $"Delete {localPointer.Name} ?";
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -60,20 +60,20 @@ namespace Ui.Views.Local.Actions
         private void DeletePointer()
         {
             // Remove reference from Directory Pointer
-            _main?.NavigationBarView.FolderPointer.Remove(_pointer);
+            _main?.NavigationBarView.FolderLocalPointer.Remove(_localPointer);
             // Run Tasks Async
             try
             {
                 Dispatcher.UIThread.Post(() =>
                 {
-                    Task.Run(_pointer.Delete).GetAwaiter().OnCompleted(_main!.Refresh);
+                    Task.Run(_localPointer.Delete).GetAwaiter().OnCompleted(_main!.Refresh);
                 }, DispatcherPriority.MaxValue);
             }
             catch (Exception exception)
             {
                 if (exception is ManagerException @managerException)
                 {
-                    @managerException.Errorstd = $"Unable to delete {_pointer.Name}";
+                    @managerException.Errorstd = $"Unable to delete {_localPointer.Name}";
                     new ErrorBase(@managerException).ShowDialog<object>(_main!.Main);
                 }
             }

@@ -7,7 +7,7 @@ using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
-using LibraryClient;
+using Library;
 using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
@@ -16,8 +16,8 @@ namespace Ui.Views.Remote.Actions
     public class RenameRemote : Window
     {
         private readonly TextBox _renameBox;
-        private readonly RemoteItem? _modifiedPointer;
-        private readonly List<RemoteItem> _itemsReference;
+        private readonly Pointer? _modifiedPointer;
+        private readonly List<Pointer> _itemsReference;
         private readonly MainWindowRemote? _main;
 
         #region Init
@@ -26,10 +26,10 @@ namespace Ui.Views.Remote.Actions
             InitializeComponent();
             _renameBox = this.FindControl<TextBox>("Rename");
             _modifiedPointer = null;
-            _itemsReference = new List<RemoteItem>();
+            _itemsReference = new List<Pointer>();
             _main = null;
         }
-        public RenameRemote(RemoteItem pointer, List<RemoteItem> items, MainWindowRemote main) : this()
+        public RenameRemote(Pointer pointer, List<Pointer> items, MainWindowRemote main) : this()
         {
             _modifiedPointer = pointer;
             _itemsReference = items;

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using LibraryClient;
+using Library;
 
 namespace Ui.Views.Remote
 {
@@ -36,7 +36,7 @@ namespace Ui.Views.Remote
             }
         }
         
-        public void Refresh(List<RemoteItem> pointers)
+        public void Refresh(List<Pointer> pointers)
         {
             Generator.Children.Clear();
             foreach (var ft in pointers)

@@ -5,11 +5,11 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Library;
 using Library.ManagerExceptions;
 using ResourcesLoader;
 using Ui.Views.Error;
 using Ui.Views.Remote;
-using Pointer = Library.Pointer;
 
 namespace Ui.Views.Local
 {
@@ -19,7 +19,7 @@ namespace Ui.Views.Local
         
         #region Variables
         
-        public Pointer Pointer;
+        public LocalPointer LocalPointer;
         
         private Image _icon;
         private TextBlock _name;
@@ -39,13 +39,13 @@ namespace Ui.Views.Local
             button = this.FindControl<Button>("Button");
         }
 
-        public PointerItem(Pointer pointer, Local main) : this()
+        public PointerItem(LocalPointer localPointer, Local main) : this()
         {
-            Pointer = pointer;
+            LocalPointer = localPointer;
             _main = main;
-            _name.Text = pointer.Name;
-            _size.Text = pointer.SizeXaml;
-            _icon.Source = ResourcesConverter.TypeToIcon(pointer.Type, pointer.IsDir);
+            _name.Text = localPointer.Name;
+            _size.Text = localPointer.SizeXaml;
+            _icon.Source = ResourcesConverter.TypeToIcon(localPointer.Type, localPointer.IsDir);
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -60,8 +60,8 @@ namespace Ui.Views.Local
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
             _main.ActionBarView.SelectedXaml.Clear();
-            if (Directory.Exists(Pointer.Path)) _main.NavigationBarView.Add(Pointer.Path);
-            _main.AccessPath(Pointer.Path);
+            if (Directory.Exists(LocalPointer.Path)) _main.NavigationBarView.Add(LocalPointer.Path);
+            _main.AccessPath(LocalPointer.Path);
         }
 
         /// <summary>
@@ -69,9 +69,9 @@ namespace Ui.Views.Local
         /// </summary>
         private void OnTaped(object? sender, PointerPressedEventArgs e)
         {
-            if ((File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path)) && e.MouseButton is MouseButton.Right)
+            if ((File.Exists(LocalPointer.Path) || Directory.Exists(LocalPointer.Path)) && e.MouseButton is MouseButton.Right)
             {
-                var propertiesPopUp = new Information.MoreInformation(Pointer);
+                var propertiesPopUp = new Information.MoreInformation(LocalPointer);
                 propertiesPopUp.Show();
             }
         }
@@ -83,7 +83,7 @@ namespace Ui.Views.Local
         {
             if (_main.IsRemote)
             {
-                if (File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path))
+                if (File.Exists(LocalPointer.Path) || Directory.Exists(LocalPointer.Path))
                 {
                     // Remove all not ctrl pressed
                     if (_main.Main is MainWindowRemote mainReference && !mainReference.KeysPressed.Contains(Key.LeftCtrl) && !mainReference.KeysPressed.Contains(Key.RightCtrl))
@@ -99,7 +99,7 @@ namespace Ui.Views.Local
                 }
                 else
                 {
-                    new ErrorBase(new PathNotFoundException(Pointer.Path + " does not exist", "Pointer Local UI")).Show();
+                    new ErrorBase(new PathNotFoundException(LocalPointer.Path + " does not exist", "Pointer Local UI")).Show();
                     _main.Refresh();
                 }
             }
