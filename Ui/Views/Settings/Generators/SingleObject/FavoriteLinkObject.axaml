@@ -4,13 +4,13 @@
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader">
 	 
 	 <WrapPanel>
-		 <TextBox Name="Name"/>
-		 <TextBox Name="Path"/>
-		 <Button Width="40" Height="40" Click="OnButtonClick">
-			 <Image Source="{x:Static resource:ResourcesIconsCompressed.DownloadCompressed}"/>
+		 <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Height="40" Name="Name"/>
+		 <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Width="220" Height="40" Name="Path"/>
+		 <Button Background="Transparent" Width="40" Height="40" Click="OnButtonClick">
+			 <Image Width="30" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.SaveCompressed}"/>
 		 </Button>
-		 <Button Width="40" Height="40" Click="OnDeleteClick">
-			 <Image Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
+		 <Button Background="Transparent" Width="40" Height="40" Click="OnDeleteClick">
+			 <Image Width="30" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
 		 </Button>
 	 </WrapPanel>
  </UserControl>
