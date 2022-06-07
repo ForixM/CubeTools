@@ -1,51 +1,54 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
-        Width="211" Height="185"
-        CanResize="False"
+        Width="211" Height="190"
         x:Class="Ui.Views.Information.MoreInformation"
         KeyDown="OnEscapePressed"
         LostFocus="OnLostFocus">
+    
+    <UserControl.Styles>
+        <StyleInclude Source="/Styles/Styles.axaml"/>
+    </UserControl.Styles>
     
     <Grid RowDefinitions="35,5,70,5,35,35">
         <!-- Buttons for basic actions -->
         <Grid Row="0">
             <WrapPanel>
-                <Button Width="35" Name="CopyButton" Click="Copy" ToolTip.Tip="Copy">
-	                <Image Height="35" Source="{x:Static resource:ResourcesIconsCompressed.CopyCompressed}"/>
+                <Button Classes="MoreMenu" Width="35" Name="CopyButton" Click="Copy" ToolTip.Tip="Copy">
+	                <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.CopyCompressed}"/>
                 </Button>
-                <Button Width="35" Name="CutButton" Click="Cut" ToolTip.Tip="Cut">
-	                <Image Height="35" Source="{x:Static resource:ResourcesIconsCompressed.CutCompressed}"/>
+                <Button Classes="MoreMenu" Width="35" Name="CutButton" Click="Cut" ToolTip.Tip="Cut">
+	                <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.CutCompressed}"/>
                 </Button>
-                <Button Width="35" Name="PasteButton" Click="Paste" ToolTip.Tip="Paste">
-	                <Image Height="35" Source="{x:Static resource:ResourcesIconsCompressed.PasteCompressed}"/>
+                <Button Classes="MoreMenu" Width="35" Name="PasteButton" Click="Paste" ToolTip.Tip="Paste">
+	                <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.PasteCompressed}"/>
                 </Button>
-                <Button Width="35" Name="RenameButton" Click="Rename" ToolTip.Tip="Rename">
-	                <Image Height="35" Source="{x:Static resource:ResourcesIconsCompressed.RenameCompressed}"/>
+                <Button Classes="MoreMenu" Width="35" Name="RenameButton" Click="Rename" ToolTip.Tip="Rename">
+	                <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.RenameCompressed}"/>
                 </Button>
-                <Button Width="35" Name="DeleteButton" Click="Delete" ToolTip.Tip="Delete">
-                    <Image Height="35" Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
+                <Button Classes="MoreMenu" Width="35" Name="DeleteButton" Click="Delete" ToolTip.Tip="Delete">
+                    <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
                 </Button>
-                <Button Width="35" Name="Properties" Click="Delete" ToolTip.Tip="Delete">
-                    <Image Height="35" Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
+                <Button Classes="MoreMenu" Width="35" Name="Properties" Click="Properties_OnClick" ToolTip.Tip="Delete">
+                    <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.InfoCompressed}"/>
                 </Button>
             </WrapPanel>
         </Grid>
         <Grid Row="1">
-            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="15 0" Width="180"/>
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="15 5 15 0" Width="180"/>
         </Grid>
         <!-- Open actions -->
         <Grid Row="2">
             <Grid ColumnDefinitions="50, 160">
                 <Grid Column="0">
-                    <Image Height="35" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{x:Static resource:ResourcesIconsCompressed.CompressionCompressed}"/>
+                    <Image Classes="MoreMenu" Height="35" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{x:Static resource:ResourcesIconsCompressed.OpenCompressed}"/>
                 </Grid>
                 <Grid Column="1">
-                    <StackPanel>
-                        <Button Width="160">
+                    <StackPanel VerticalAlignment="Center">
+                        <Button Classes="MoreMenu" Width="160">
                             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Open"/>
                         </Button>
-                        <Button Width="160">
+                        <Button Classes="MoreMenu" Width="160">
                             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Open With"/>
                         </Button>
                     </StackPanel>
@@ -63,15 +66,15 @@
         </Grid>
         
         <Grid Row="3">
-            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="15 0" Width="180"/>
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="15 0 15 5" Width="180"/>
         </Grid>
         <!-- Secondary actions -->
         
         <Grid Row="4">
-            <Button>
+            <Button Classes="MoreMenu">
                 <Grid ColumnDefinitions="50, 160">
                     <Grid Column="0">
-                        <Image Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.CompressionCompressed}"/>
+                        <Image Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.PathCompressed}"/>
                     </Grid>
                     <Grid Column="1">
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Copy as Path"/>
@@ -80,16 +83,16 @@
             </Button>
         </Grid>
         <Grid Row="5">
-            <Button>
+            <Button Classes="MoreMenu">
                 <Grid ColumnDefinitions="50, 160">
                     <Grid Column="0">
-                        <Image Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.CompressionCompressed}"/>
+                        <Image Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.CompressionCompressed}"/>
                     </Grid>
                     <Grid Column="1">
-                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Copy as Path"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Compress"/>
                     </Grid>
                 </Grid>
             </Button>
         </Grid>
     </Grid>
-</Window>
+</UserControl>

@@ -124,5 +124,10 @@ namespace Ui.Views.Information
         }
 
         private void OnLostFocus(object? sender, RoutedEventArgs e) => Close();
+
+        private void Properties_OnClick(object? sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
