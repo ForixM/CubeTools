@@ -1,7 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Ui.Views.MainWindow.DynamicLinkBar;
 using Ui.Views.Settings.Generators;
 using Ui.Views.Settings.Generators.SingleObject;
 

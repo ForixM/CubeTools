@@ -32,8 +32,8 @@ namespace Ui.Views.Settings.ShortcutsSaver
         
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
-        
-        private void UpdateText() => _display.Text = ConfigLoader.Settings.ShortcutsSettings.FromKeysToString(_keys);
+
+        private void UpdateText() => _display.Text = "";//ConfigLoader.ConfigLoader.Settings.Shortcuts.FromKeysToString(_keys);
 
         private void OnKeyDown(object? sender, KeyEventArgs e)
         {

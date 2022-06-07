@@ -13,7 +13,7 @@ namespace Library
         private OnedriveClient _clientOneDrive;
         public OnedriveClient Client => _clientOneDrive;
 
-        public ClientOneDrive(ClientType type) : base(type)
+        public ClientOneDrive() : base(ClientType.ONEDRIVE)
         {
             _clientOneDrive = new OnedriveClient();
             Root = OnePointer.ROOT;

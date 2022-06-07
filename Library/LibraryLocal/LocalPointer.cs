@@ -78,6 +78,7 @@ namespace Library
             _name = ManagerReader.ManagerReader.GetPathToName(_path);
             _size = !IsDir ? ManagerReader.ManagerReader.GetFileSize(_path) : 0;
             _type = ManagerReader.ManagerReader.GetFileExtension(_path);
+            _parentPath = ManagerReader.ManagerReader.GetParent(_path);
         }
         
         public virtual void Dispose() => GC.SuppressFinalize(this);

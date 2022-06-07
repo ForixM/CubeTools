@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using Library;
-using Library.DirectoryPointer;
-using Library.FilePointer;
-using Library.LibraryGoogleDrive;
-using Library.ManagerReader;
-using File = Google.Apis.Drive.v3.Data.File;
+﻿using Library.LibraryGoogleDrive;
 
 namespace Library
 {
@@ -14,7 +6,7 @@ namespace Library
     {
         //private OnedriveClient _clientOneDrive;
 
-        public ClientGoogleDrive(ClientType type) : base(type)
+        public ClientGoogleDrive() : base(ClientType.GOOGLEDRIVE)
         {
             //_clientOneDrive = new OnedriveClient();
         }
@@ -53,10 +45,10 @@ namespace Library
             ManagerFile.Rename(((GoogleDriveFile)pointer).Id, newName);
         }
 
-        public override void UploadFile(FileLocalPointer localPointer, Pointer destination)
+        /*public override void UploadFile(Pointer localPointer, Pointer destination)
         {
             ManagerFile.UploadFile(localPointer.Path, localPointer.Name, localPointer.Type, ((GoogleDriveFile)destination).Id);
-        }
+        }*/
 
         public override void UploadFile(Client source, Pointer localPointer, Pointer destination)
         {

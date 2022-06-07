@@ -14,7 +14,7 @@ namespace Library
         public string Username => _clientFtp.Username;
         public string Password => _clientFtp.Password;
         
-        public ClientTransferProtocol(ClientType type, string host, string username, string password) : base(type)
+        public ClientTransferProtocol(string host, string username, string password) : base(ClientType.FTP)
         {
             _clientFtp = new ClientFtp(host, username, password);
             CurrentFolder = FtpFolder.ROOT;

@@ -6,7 +6,6 @@ using Avalonia.Markup.Xaml;
 using Library.ManagerExceptions;
 using Library;
 using Ui.Views.Error;
-using Ui.Views.Remote;
 
 namespace Ui.Views.Ftp
 {
@@ -68,8 +67,7 @@ namespace Ui.Views.Ftp
                 // Initialize the connexion and the window
                 try
                 {
-                    Client client = new ClientTransferProtocol(ClientType.FTP, _ip.Text + ":" + _port.Text, _user.Text, _mdp.Text);
-                    new MainWindowRemote(client).Show();
+                    new MainWindowRemote(new ClientLocal(), new ClientTransferProtocol(_ip.Text + ":" + _port.Text, _user.Text, _mdp.Text)).Show();
                     Close();
                 }
                 catch (Exception exception)

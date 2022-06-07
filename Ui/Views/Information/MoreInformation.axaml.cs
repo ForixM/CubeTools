@@ -12,61 +12,20 @@ namespace Ui.Views.Information
 {
     public class MoreInformation : Window
     {
-        #region Children Components
 
-        private Image _imageExtension;
-        private TextBlock _fileName;
-        private TextBlock _type;
-        private TextBlock _description;
-        private TextBlock _path;
-        private TextBlock _size;
-        private TextBlock _created;
-        private TextBlock _modified;
-        private TextBlock _accessed;
-        private CheckBox _readOnly;
-        private CheckBox _hidden;
-
-        #endregion
-
-        private bool _userActivation;
-
-        private readonly LocalPointer _localPointer;
+        private readonly OneClient? _main;
+        private readonly PointerItem? itemXaml;
         
         #region Init
         public MoreInformation()
         {
             InitializeComponent();
-            _localPointer = LocalPointer.NullLocalPointer;
-            this.SystemDecorations = SystemDecorations.None;
-            _imageExtension = this.FindControl<Image>("ImageExtension");
-            _fileName = this.FindControl<TextBlock>("FileName");
-            _type = this.FindControl<TextBlock>("Type");
-            _description = this.FindControl<TextBlock>("Description");
-            _path = this.FindControl<TextBlock>("Path");
-            _size = this.FindControl<TextBlock>("Size");
-            _created = this.FindControl<TextBlock>("Created");
-            _modified = this.FindControl<TextBlock>("Modified");
-            _accessed = this.FindControl<TextBlock>("Accessed");
-            _readOnly = this.FindControl<CheckBox>("Read-Only");
-            _hidden = this.FindControl<CheckBox>("Hidden");
-
-            _userActivation = false;
+            SystemDecorations = SystemDecorations.None;
         }
-        public MoreInformation(LocalPointer localPointer) : this()
+        public MoreInformation(PointerItem item, OneClient main) : this()
         {
-            _localPointer = localPointer;
-            /*
-            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(pointer.Type, pointer.IsDir);
-            _fileName.Text = pointer.Name;
-            _type.Text = pointer.IsDir ? "folder" : pointer.Type;
-            _description.Text = pointer.Name;
-            _path.Text = pointer.Path;
-            _size.Text = pointer.SizeXaml;
-            _created.Text = pointer.Date;
-            _modified.Text = pointer.LastDate;
-            _accessed.Text = pointer.AccessDate;
-            _readOnly.IsChecked = pointer.ReadOnly;
-            _hidden.IsChecked = pointer.Hidden;*/
+            itemXaml = item;
+            _main = main;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -75,45 +34,19 @@ namespace Ui.Views.Information
 
         #region Events
 
-        private void Copy(object? sender, RoutedEventArgs e)
-        {
-            
-        }
-        
-        private void Cut(object? sender, RoutedEventArgs e)
-        {
-            
-        }
-        
-        private void Paste(object? sender, RoutedEventArgs e)
-        {
-            
-        }
+        private void Copy(object? sender, RoutedEventArgs e) => _main!.ActionView.Copy(sender, e);
 
-        private void Rename(object? sender, RoutedEventArgs e)
-        {
-            
-        }
+        private void Cut(object? sender, RoutedEventArgs e) => _main!.ActionView.Cut(sender, e);
 
-        private void Compression(object? sender, RoutedEventArgs e)
-        {
-            
-        }
+        private void Paste(object? sender, RoutedEventArgs e) => _main!.ActionView.Paste(sender, e);
 
-        private void Delete(object? sender, RoutedEventArgs e)
-        {
-            
-        }
-        
-        private void OpenWith(object? sender, RoutedEventArgs e)
-        {
-            throw new System.NotImplementedException();
-        }
-        
-        private void OpenWithDefault(object? sender, RoutedEventArgs e)
-        {
-            throw new System.NotImplementedException();
-        }
+        private void Rename(object? sender, RoutedEventArgs e) => _main!.ActionView.Rename(sender, e);
+
+        private void Delete(object? sender, RoutedEventArgs e) => _main!.ActionView.Delete(sender, e);
+
+        private void OpenWith(object? sender, RoutedEventArgs e) => _main!.AccessPath(itemXaml!.Pointer);
+
+        private void OpenWithDefault(object? sender, RoutedEventArgs e) => _main!.AccessPath(itemXaml!.Pointer);
         
         #endregion
 
@@ -125,9 +58,6 @@ namespace Ui.Views.Information
 
         private void OnLostFocus(object? sender, RoutedEventArgs e) => Close();
 
-        private void Properties_OnClick(object? sender, RoutedEventArgs e)
-        {
-            throw new System.NotImplementedException();
-        }
+        private void OnPropertiesOpen(object? sender, RoutedEventArgs e) => new Properties.Properties();
     }
 }

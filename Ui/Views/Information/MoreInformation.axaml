@@ -29,7 +29,7 @@
                 <Button Classes="MoreMenu" Width="35" Name="DeleteButton" Click="Delete" ToolTip.Tip="Delete">
                     <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
                 </Button>
-                <Button Classes="MoreMenu" Width="35" Name="Properties" Click="Properties_OnClick" ToolTip.Tip="Delete">
+                <Button Classes="MoreMenu" Width="35" Name="Properties" Click="OnPropertiesOpen" ToolTip.Tip="Delete">
                     <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.InfoCompressed}"/>
                 </Button>
             </WrapPanel>
@@ -54,15 +54,6 @@
                     </StackPanel>
                 </Grid>
             </Grid>
-            <!--
-            <WrapPanel>
-                <Image Width="" Source="{x:Static resource:ResourcesIconsCompressed.CopyCompressed}"/>
-                <StackPanel>
-                    <Button Click="OpenWith" Content="Open"/>
-                    <Button Click="OpenWithDefault" Content="Open With"/>
-                </StackPanel>
-            </WrapPanel>
-            -->
         </Grid>
         
         <Grid Row="3">

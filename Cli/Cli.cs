@@ -1,14 +1,14 @@
-﻿using Library.ManagerExceptions;
-using Library.ManagerReader;
-using Library.ManagerWriter;
-using Library.DirectoryPointer;
-using Library.DirectoryPointer.DirectoryPointerLoaded;
-using Library.FilePointer;
-
+﻿
 namespace Cli
 {
     internal class Cli
     {
+        // TODO
+        public static void Main(string[] args)
+        {
+            return;
+        }
+        /*
         #region Variables
 
         // Attributes
@@ -501,5 +501,6 @@ namespace Cli
         }
 
         #endregion
+        */
     }
 }

@@ -246,10 +246,6 @@
         <DependentUpon>CriticalErrorPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Local\Local.axaml.cs">
-        <DependentUpon>Local.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\LocalView\LocalActionView.axaml.cs">
         <DependentUpon>ActionBar.axaml</DependentUpon>
         <SubType>Code</SubType>
@@ -354,48 +350,8 @@
         <DependentUpon>SortPopUp.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Local\ActionBar.axaml.cs">
-        <DependentUpon>ActionBar.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\Local\Local.axaml.cs">
         <DependentUpon>Local.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Local\NavigationBar.axaml.cs">
-        <DependentUpon>NavigationBar.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Local\PathsBar.axaml.cs">
-        <DependentUpon>PathsBar.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Local\PointerItem.axaml.cs">
-        <DependentUpon>PointerItem.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Remote\Actions\CreateFolderRemote.axaml.cs">
-        <DependentUpon>CreateFolder.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Remote\Actions\CreateFileRemote.axaml.cs">
-        <DependentUpon>CreateFile.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Remote\Actions\DeleteMultipleRemote.axaml.cs">
-        <DependentUpon>DeleteMultiple.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Remote\Actions\DeleteMultipleSelectorRemote.axaml.cs">
-        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Remote\Actions\DeleteRemote.axaml.cs">
-        <DependentUpon>Delete.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Remote\Actions\RenameRemote.axaml.cs">
-        <DependentUpon>Rename.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\Remote\Actions\CreateFolder.axaml.cs">
@@ -454,22 +410,6 @@
         <DependentUpon>RefreshAction.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\MainWindow\DynamicLinkBar\OneLink.axaml.cs">
-        <DependentUpon>Drive.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\MainWindow\DynamicLinkBar\OneDriveHandler.axaml.cs">
-        <DependentUpon>OneDriveHandler.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\MainWindow\DynamicLinkBar\FTPHandler.axaml.cs">
-        <DependentUpon>FTPHandler.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\MainWindow\DynamicLinkBar\GoogleDriveHandler.axaml.cs">
-        <DependentUpon>GoogleDriveHandler.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\Information\MoreInformation.axaml.cs">
         <DependentUpon>MoreInformation.axaml</DependentUpon>
         <SubType>Code</SubType>
@@ -496,6 +436,134 @@
       </Compile>
       <Compile Update="Views\Settings\Generators\LinksGenerators.axaml.cs">
         <DependentUpon>LinksGenerators.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Compress.axaml.cs">
+        <DependentUpon>Compress.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\CreateFile.axaml.cs">
+        <DependentUpon>CreateFile.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\CreateFolder.axaml.cs">
+        <DependentUpon>CreateFolder.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Delete.axaml.cs">
+        <DependentUpon>Delete.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\DeleteMultiple.axaml.cs">
+        <DependentUpon>DeleteMultiple.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Extract.axaml.cs">
+        <DependentUpon>Extract.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Rename.axaml.cs">
+        <DependentUpon>Rename.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Search.axaml.cs">
+        <DependentUpon>Search.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Sort.axaml.cs">
+        <DependentUpon>Sort.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Compress.axaml.cs">
+        <DependentUpon>Compress.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\CreateFile.axaml.cs">
+        <DependentUpon>CreateFile.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\CreateFolder.axaml.cs">
+        <DependentUpon>CreateFolder.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Delete.axaml.cs">
+        <DependentUpon>Delete.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\DeleteMultiple.axaml.cs">
+        <DependentUpon>DeleteMultiple.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\DeleteMultipleSelector.axaml.cs">
+        <DependentUpon>DeleteMultipleSelector.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Extract.axaml.cs">
+        <DependentUpon>Extract.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Rename.axaml.cs">
+        <DependentUpon>Rename.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Search.axaml.cs">
+        <DependentUpon>Search.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient\Actions\Sort.axaml.cs">
+        <DependentUpon>Sort.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\ActionView.axaml.cs">
+        <DependentUpon>ActionView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\NavigationView.axaml.cs">
+        <DependentUpon>NavigationView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\OneClient.axaml.cs">
+        <DependentUpon>OneClient.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PointerItem.axaml.cs">
+        <DependentUpon>PointerItem.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\PointersView.axaml.cs">
+        <DependentUpon>PointersView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LinkBar\GoogleDriveHandler.axaml.cs">
+        <DependentUpon>GoogleDriveHandler.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LinkBar\LinkBar.axaml.cs">
+        <DependentUpon>LinkBar.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LinkBar\OneDriveHandler.axaml.cs">
+        <DependentUpon>OneDriveHandler.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LinkBar\OneLink.axaml.cs">
+        <DependentUpon>OneLink.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\LinkBar\FTPHandler.axaml.cs">
+        <DependentUpon>FTPHandler.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MainWindowRemote.axaml.cs">
+        <DependentUpon>MainWindowRemote.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

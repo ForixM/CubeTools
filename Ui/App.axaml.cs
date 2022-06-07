@@ -2,8 +2,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Ui.Views;
-using Ui.Views.MainWindow;
-using Ui.Views.Remote;
 
 namespace Ui
 {

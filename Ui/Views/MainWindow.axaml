@@ -1,0 +1,42 @@
+<!-- Imports-->
+<Window 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+        xmlns:linkBar="clr-namespace:Ui.Views.LinkBar"
+        Icon="{x:Static resource:ResourcesWindowIcons.MainWindowIcon}"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Ui.Views.MainWindow"
+        Title="CubeTools"
+        Width="1000" Height="750"
+        MinWidth="850" MinHeight="695" 
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        KeyDown="OnKeyPressedWindow"
+        KeyUp='OnKeyReleasedWindow'
+        Closing="Closed">
+    
+    <!-- Styles Imports -->
+    <Window.Styles>
+		<StyleInclude Source="/Styles/Styles.axaml"/>
+    </Window.Styles>
+
+    <Grid RowDefinitions="35,*">
+
+        <Grid Grid.Row="1" ColumnDefinitions="250,*">
+
+            <Grid Grid.Column="0">
+                <linkBar:LinkBar Name="LinkBar" Width="250"/>
+            </Grid>
+            
+            <Grid Grid.Column="1" Name="ClientLocal">
+            </Grid>
+            
+        </Grid>
+        
+    </Grid>
+
+</Window>

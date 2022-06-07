@@ -1,8 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Ui.Views.MainWindow;
-using Ui.Views.Remote;
+using Ui.Views;
 
 namespace Ui
 {

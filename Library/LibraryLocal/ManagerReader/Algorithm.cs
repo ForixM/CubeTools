@@ -245,9 +245,9 @@ namespace Library.ManagerReader
         ///     elements
         ///     Implementation : Check
         /// </summary>
-        private static List<LocalPointer> MergeSortFileTypeByName(List<LocalPointer> ftList1, List<LocalPointer> ftList2)
+        private static List<Pointer> MergeSortFileTypeByName(List<Pointer> ftList1, List<Pointer> ftList2)
         {
-            var ftReturned = new List<LocalPointer>();
+            var ftReturned = new List<Pointer>();
 
             var i = 0;
             var j = 0;
@@ -289,9 +289,9 @@ namespace Library.ManagerReader
         ///     - Implementation : Check <br></br>
         /// </summary>
         /// <returns></returns>
-        private static List<LocalPointer> MergeSortFileTypeBySize(List<LocalPointer> ftList1, List<LocalPointer> ftList2)
+        private static List<Pointer> MergeSortFileTypeBySize(List<Pointer> ftList1, List<Pointer> ftList2)
         {
-            var ftReturned = new List<LocalPointer>();
+            var ftReturned = new List<Pointer>();
 
             var i = 0;
             var j = 0;
@@ -333,9 +333,9 @@ namespace Library.ManagerReader
         ///     - Implementation : Check <br></br>
         /// </summary>
         /// <returns></returns>
-        private static List<LocalPointer> MergeSortFileTypeByType(List<LocalPointer> ftList1, List<LocalPointer> ftList2)
+        private static List<Pointer> MergeSortFileTypeByType(List<Pointer> ftList1, List<Pointer> ftList2)
         {
-            var ftReturned = new List<LocalPointer>();
+            var ftReturned = new List<Pointer>();
 
             var i = 0;
             var j = 0;
@@ -376,9 +376,9 @@ namespace Library.ManagerReader
         ///     the elements <br></br>
         ///     Implementation : NOT Check
         /// </summary>
-        private static List<LocalPointer> MergeSortFileTypeByModifiedDate(List<LocalPointer> ftList1, List<LocalPointer> ftList2)
+        private static List<Pointer> MergeSortFileTypeByModifiedDate(List<Pointer> ftList1, List<Pointer> ftList2)
         {
-            var ftReturned = new List<LocalPointer>();
+            var ftReturned = new List<Pointer>();
 
             var i = 0;
             var j = 0;
@@ -421,19 +421,11 @@ namespace Library.ManagerReader
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<LocalPointer> SortByName(List<LocalPointer> ftList)
+        public static List<Pointer> SortByName(List<Pointer> ftList)
         {
-            var dirList = new List<LocalPointer>();
-            foreach (var ft in ftList.Where(ft => ft.IsDir))
-            {
-                dirList.Add(ft);
-            }
-
-            var fileList = new List<LocalPointer>();
-            foreach (var ft in ftList.Where(ft => !ft.IsDir))
-            {
-                fileList.Add(ft);
-            }
+            var dirList = ftList.Where(ft => ft.IsDir).ToList();
+            var fileList = ftList.Where(ft => !ft.IsDir).ToList();
+            
             fileList = DivideAndMergeAlgorithm(fileList, "name");
             fileList.Reverse();
             dirList = DivideAndMergeAlgorithm(dirList, "name");
@@ -448,21 +440,10 @@ namespace Library.ManagerReader
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<LocalPointer> SortBySize(List<LocalPointer> ftList)
+        public static List<Pointer> SortBySize(List<Pointer> ftList)
         {
-            var dirList = new List<LocalPointer>();
-            foreach (var ft in ftList.Where(ft => ft.IsDir))
-            {
-                dirList.Add(ft);
-            }
-
-            var fileList = new List<LocalPointer>();
-            foreach (var ft in ftList.Where(ft => !ft.IsDir))
-            {
-                fileList.Add(ft);
-            }
-            fileList = DivideAndMergeAlgorithm(fileList, "size");
-            dirList = DivideAndMergeAlgorithm(dirList, "size");
+            var fileList = DivideAndMergeAlgorithm(ftList.Where(ft => ft.IsDir).ToList(), "size");
+            var dirList = DivideAndMergeAlgorithm(ftList.Where(ft => !ft.IsDir).ToList(), "size");
             dirList = dirList.Concat(fileList).ToList();
             return dirList;
         }
@@ -473,7 +454,7 @@ namespace Library.ManagerReader
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>Returns the sorted list of filetype</returns>
-        public static List<LocalPointer> SortByType(List<LocalPointer> ftList)
+        public static List<Pointer> SortByType(List<Pointer> ftList)
         {
             var res =  DivideAndMergeAlgorithm(ftList, "type");
             res.Reverse();
@@ -486,19 +467,11 @@ namespace Library.ManagerReader
         /// </summary>
         /// <param name="ftList">the lit of pointer to sort</param>
         /// <returns>the sorted list of filetype</returns>
-        public static List<LocalPointer> SortByModifiedDate(List<LocalPointer> ftList)
+        public static List<Pointer> SortByModifiedDate(List<Pointer> ftList)
         {
-            var dirList = new List<LocalPointer>();
-            foreach (var ft in ftList.Where(ft => ft.IsDir))
-            {
-                dirList.Add(ft);
-            }
-
-            var fileList = new List<LocalPointer>();
-            foreach (var ft in ftList.Where(ft => !ft.IsDir))
-            {
-                fileList.Add(ft);
-            }
+            var dirList = ftList.Where(ft => ft.IsDir).ToList();
+            var fileList = ftList.Where(ft => !ft.IsDir).ToList();
+            
             fileList = DivideAndMergeAlgorithm(fileList, "date");
             dirList = DivideAndMergeAlgorithm(dirList, "date");
             dirList = dirList.Concat(fileList).ToList();
@@ -514,14 +487,14 @@ namespace Library.ManagerReader
         ///     - Implementation : Check <br></br>
         /// </summary>
         /// <returns>Returns the sorted pointer list</returns>
-        private static List<LocalPointer> DivideAndMergeAlgorithm(List<LocalPointer> ftList, string argument)
+        private static List<Pointer> DivideAndMergeAlgorithm(List<Pointer> ftList, string argument)
         {
             // If list is empty, returns it
             if (ftList.Count() <= 1) return ftList;
 
             // If not empty divide them and call the function again
-            var ftList1 = new List<LocalPointer>();
-            var ftList2 = new List<LocalPointer>();
+            var ftList1 = new List<Pointer>();
+            var ftList2 = new List<Pointer>();
             for (var i = 0; i < ftList.Count / 2; i++)
                 ftList1.Add(ftList[i]);
             for (var i = ftList.Count / 2; i < ftList.Count(); i++)
@@ -536,7 +509,7 @@ namespace Library.ManagerReader
         ///     - Implementation : Not Check
         /// </summary>
         /// <returns></returns>
-        private static List<LocalPointer> MergeSortFileType(List<LocalPointer> ftList1, List<LocalPointer> ftList2, string argument)
+        private static List<Pointer> MergeSortFileType(List<Pointer> ftList1, List<Pointer> ftList2, string argument)
         {
             return argument switch
             {
@@ -544,7 +517,7 @@ namespace Library.ManagerReader
                 "type" => MergeSortFileTypeByType(ftList1, ftList2),
                 "name" => MergeSortFileTypeByName(ftList1, ftList2),
                 "date" => MergeSortFileTypeByModifiedDate(ftList1, ftList2),
-                _ => new List<LocalPointer>()
+                _ => new List<Pointer>()
             };
         }
 
