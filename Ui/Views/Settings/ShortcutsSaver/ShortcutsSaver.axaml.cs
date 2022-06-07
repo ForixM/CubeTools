@@ -26,8 +26,8 @@ namespace Ui.Views.Settings.ShortcutsSaver
         {
             _shortcut = shortcut;
             Title = "Shortcuts : " + shortcut;
-            _display.Text =
-                ConfigLoader.Settings.ShortcutsSettings.FromKeysToString(ConfigLoader.ConfigLoader.Settings.Shortcuts[shortcut]);
+            // _display.Text =
+            //     ConfigLoader.FromKeysToString(ConfigLoader.ConfigLoader.Settings.Shortcuts[shortcut]);
         }
         
 
