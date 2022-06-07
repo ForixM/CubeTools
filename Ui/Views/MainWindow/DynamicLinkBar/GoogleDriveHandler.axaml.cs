@@ -19,7 +19,7 @@ namespace Ui.Views.MainWindow.DynamicLinkBar
             Description = this.FindControl<TextBlock>("Description");
             Image = this.FindControl<Image>("Image");
             Description.Text = "GoogleDrive";
-            Image.Source = ResourcesLoader.ResourcesIcons.GoogleDriveIcon;
+            Image.Source = ResourcesLoader.ResourcesIconsCompressed.GoogleDriveCompressed;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
