@@ -40,7 +40,7 @@ namespace Ui.Views.Settings
             }
 
             ConfigLoader.ConfigLoader.Settings.Links.Add(key, "");
-            LinksGeneratorXaml.Generator.Children.Add(new FavoriteLinkObject(key, ""));
+            LinksGeneratorXaml.Generator.Children.Add(new FavoriteLinkObject(key, "", LinksGeneratorXaml));
         }
     }
 }

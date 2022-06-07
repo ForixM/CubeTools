@@ -13,7 +13,7 @@ namespace Ui.Views.Settings.Generators
             InitializeComponent();
             Generator = this.FindControl<StackPanel>("Generator");
             foreach (var key in ConfigLoader.ConfigLoader.Settings.Links.Keys)
-                Generator.Children.Add(new FavoriteLinkObject(key, ConfigLoader.ConfigLoader.Settings.Links[key]));
+                Generator.Children.Add(new FavoriteLinkObject(key, ConfigLoader.ConfigLoader.Settings.Links[key], this));
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

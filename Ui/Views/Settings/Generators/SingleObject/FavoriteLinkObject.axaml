@@ -4,12 +4,12 @@
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader">
 	 
 	 <WrapPanel>
-		 <TextBox KeyDown="OnNameChanged" Name="Name"/>
-		 <TextBox KeyDown="OnPathChanged" Name="Path"/>
+		 <TextBox Name="Name"/>
+		 <TextBox Name="Path"/>
 		 <Button Width="40" Height="40" Click="OnButtonClick">
-			 <Image Source="{x:Static resource:ResourcesIconsCompressed.UploadCompressed}"/>
+			 <Image Source="{x:Static resource:ResourcesIconsCompressed.DownloadCompressed}"/>
 		 </Button>
-		 <Button Width="40" Height="40">
+		 <Button Width="40" Height="40" Click="OnDeleteClick">
 			 <Image Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
 		 </Button>
 	 </WrapPanel>

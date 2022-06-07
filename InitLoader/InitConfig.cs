@@ -42,9 +42,9 @@
                                     "\"AppPath\" : \".\"," +
                                     "\"Styles\" : { \"themes\" : \"default\" , \"pack\" : \"Assets/default\"}," +
                                     "\"FTP\" : { \"servers\" : [] }," +
-                                    "\"Shortcuts\" :{ }," +
+                                    "\"Shortcuts\" :{}," +
                                     "\"Application\" :{}" +
-                                    "\"Links\" : { links : [] }" +
+                                    "\"Links\" : {}" +
                                     "}";
                 sr.Write(text);
                 sr.Close();
