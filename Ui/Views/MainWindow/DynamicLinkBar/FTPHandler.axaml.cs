@@ -19,7 +19,7 @@ namespace Ui.Views.MainWindow.DynamicLinkBar
             Description = this.FindControl<TextBlock>("Description");
             Image = this.FindControl<Image>("Image");
             Description.Text = "File Transfer";
-            Image.Source = ResourcesLoader.ResourcesIcons.FtpIcon;
+            Image.Source = ResourcesLoader.ResourcesIconsCompressed.FtpCompressed;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

@@ -37,7 +37,7 @@ namespace Ui.Views.Information
         {
             InitializeComponent();
             _pointer = Pointer.NullPointer;
-            
+            this.SystemDecorations = SystemDecorations.None;
             _imageExtension = this.FindControl<Image>("ImageExtension");
             _fileName = this.FindControl<TextBlock>("FileName");
             _type = this.FindControl<TextBlock>("Type");
@@ -121,6 +121,13 @@ namespace Ui.Views.Information
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Escape) Close();
+        }
+
+        private void OnLostFocus(object? sender, RoutedEventArgs e) => Close();
+
+        private void Properties_OnClick(object? sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

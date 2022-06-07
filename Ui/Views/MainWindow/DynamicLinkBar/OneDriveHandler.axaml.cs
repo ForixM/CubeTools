@@ -23,7 +23,7 @@ namespace Ui.Views.MainWindow.DynamicLinkBar
             Description = this.FindControl<TextBlock>("Description");
             Image = this.FindControl<Image>("Image");
             Description.Text = "OneDrive";
-            Image.Source = ResourcesLoader.ResourcesIcons.OneDriveIcon;
+            Image.Source = ResourcesLoader.ResourcesIconsCompressed.OneDriveCompressed;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

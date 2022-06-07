@@ -78,7 +78,7 @@ namespace ResourcesLoader
         public static readonly IImage DocumentsCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                  "IconsCompressed/Documents.ico");
         public static readonly IImage InfoCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                            "Icons/Info.ico");
+                                                            "IconsCompressed/Info.ico");
         public static readonly IImage ThemeCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                              "IconsCompressed/Theme.ico");
         public static readonly IImage ShortcutCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
@@ -87,5 +87,9 @@ namespace ResourcesLoader
                                                                       "IconsCompressed/Upload.ico");
         public static readonly IImage DriveCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                     "IconsCompressed/Drive.ico");
+        public static readonly IImage PathCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                   "IconsCompressed/Path.ico");
+        public static readonly IImage OpenCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                  "IconsCompressed/Open.ico");
     }
 }
