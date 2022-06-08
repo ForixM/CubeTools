@@ -26,6 +26,7 @@
 
         public FileLocalPointer(string path) : base(path)
         {
+            _size = !IsDir ? ManagerReader.ManagerReader.GetFileSize(_path) : 0;
             _fileInfo = new FileInfo(path);
         }
 

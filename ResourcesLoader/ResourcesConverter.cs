@@ -1,26 +1,52 @@
-﻿using Avalonia.Media;
+﻿// using System.Drawing;
+
+using System.Drawing;
+using System.Drawing.Imaging;
+using Avalonia;
+using Avalonia.Media;
+using Avalonia.Platform;
+using Bitmap = Avalonia.Media.Imaging.Bitmap;
+using PixelFormat = Avalonia.Platform.PixelFormat;
 
 namespace ResourcesLoader
 {
     public static class ResourcesConverter
     {
-        public static IImage TypeToIcon(string type, bool isdir = false)
+        public static IImage TypeToIcon(string path, string type, bool isdir = false)
         {
             if (isdir)
                 return ResourcesIcons.FolderIcon;
             switch (type)
             {
+                case "exe":
+                    try
+                    {
+                        MemoryStream stream = new MemoryStream();
+                        Icon.ExtractAssociatedIcon(path).ToBitmap().Save(stream, ImageFormat.Icon);
+                        return new Bitmap(stream);
+                    }
+                    catch (Exception e)
+                    {
+                        return ResourcesExtensionsCompressed.ExeExtensionCompressed;
+                    }
+                // var bitmap = Icon.ExtractAssociatedIcon(path).ToBitmap();
+                    // return new Bitmap(PixelFormat.Rgba8888, AlphaFormat.Opaque, bitmap.GetHicon(),
+                    //     new PixelSize(bitmap.Width, bitmap.Height), new Vector(bitmap.Width, bitmap.Height), (int) bitmap.HorizontalResolution);
                 case "jpg":
                 case "jpeg":
                 case "png" :
                 case "ico":
+                case "gif":
                     return ResourcesExtensionsCompressed.ImageExtensionCompressed;
+                case "md":
+                case "MD":
                 case "txt":
+                case "log":
                     return ResourcesExtensionsCompressed.TextExtensionCompressed;
-                case "exe":
                 case "iso":
                     return ResourcesExtensionsCompressed.ExeExtensionCompressed;
                 case "docx":
+                case "doc":
                 case "odt":
                     return ResourcesExtensionsCompressed.DocxExtensionCompressed;
                 case "pdf":
@@ -32,12 +58,18 @@ namespace ResourcesLoader
                 case "cpp":
                     return ResourcesExtensionsCompressed.CPlusPlusExtensionCompressed;
                 case "java":
+                case "class":
                     return ResourcesExtensionsCompressed.JavaExtensionCompressed;
                 case "html":
                     return ResourcesExtensionsCompressed.HtmlExtensionCompressed;
                 case "pptx":
+                case "ppt":
+                case "odp":
                     return ResourcesExtensionsCompressed.PptxExtensionCompressed;
-                case "xlsx":
+                case "xlsx": 
+                case "xls":
+                case "csv":
+                case "ods":
                     return ResourcesExtensionsCompressed.XlsxExtensionCompressed;
                 case "gitignore":
                     return ResourcesExtensionsCompressed.GitIgnoreExtensionCompressed;
@@ -57,6 +89,21 @@ namespace ResourcesLoader
                 case "mov":
                 case "mpeg":
                     return ResourcesExtensionsCompressed.VideoExtensionCompressed;
+                case "xml":
+                case "yaml": 
+                case "yml":
+                    return ResourcesExtensionsCompressed.XmlExtensionCompressed;
+                case "reg":
+                    return ResourcesExtensionsCompressed.RegisterExtensionCompressed;
+                case "json":
+                    return ResourcesExtensionsCompressed.JsonExtensionCompressed;
+                case "ini":
+                    return ResourcesExtensionsCompressed.IniExtensionCompressed;
+                case "dll":
+                    return ResourcesExtensionsCompressed.DllExtensionCompressed;
+                case "bat":
+                    return ResourcesExtensionsCompressed.BatExtensionCompressed;
+                
                 default:
                     return ResourcesExtensionsCompressed.DefaultExtensionCompressed;
             }

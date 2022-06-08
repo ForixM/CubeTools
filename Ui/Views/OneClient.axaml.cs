@@ -7,6 +7,7 @@ using Library;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Ui.Views.Error;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views
 {
@@ -36,7 +37,7 @@ namespace Ui.Views
             NavigationView.Add(entry!);
             PointersView.Refresh();
         }
-        public OneClient(Client client)
+        public OneClient(Client client, Window Parent)
         {
             LastReference = this;
             Main = (Window) Parent;

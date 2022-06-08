@@ -59,6 +59,19 @@ namespace ResourcesLoader
 
         public static readonly IImage VideoExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                   "ExtensionsCompressed/mp4.ico");
+        
+        public static readonly IImage XmlExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                  "ExtensionsCompressed/code.ico");
+        public static readonly IImage DllExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                "ExtensionsCompressed/dll.ico");
+        public static readonly IImage IniExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                          "ExtensionsCompressed/ini.ico");
+        public static readonly IImage BatExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                          "ExtensionsCompressed/bat.ico");
+        public static readonly IImage JsonExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                           "ExtensionsCompressed/json.ico");
+        public static readonly IImage RegisterExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                               "ExtensionsCompressed/reg.ico");
 
         public static readonly IImage DefaultExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                     "ExtensionsCompressed/None.ico");
