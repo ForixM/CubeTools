@@ -3,8 +3,7 @@
              x:Class="Ui.Views.PointerItem"
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader">
      
-     <Button Background="Transparent" CornerRadius="8" Name="Button"
-             HorizontalAlignment="Left" Height="50" Width="2000"
+     <Button Background="Transparent" CornerRadius="8" Name="Button" Height="50"
              PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped">
          
          <WrapPanel VerticalAlignment="Center">
