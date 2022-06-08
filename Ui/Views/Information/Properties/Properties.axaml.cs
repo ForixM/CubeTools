@@ -57,7 +57,7 @@ namespace Ui.Views.Information.Properties
             _localPointer = localPointer;
             // TODO _pointer.LoadSize();
 
-            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(localPointer.Type, localPointer.IsDir);
+            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(localPointer.Path, localPointer.Type, localPointer.IsDir);
             _fileName.Text = localPointer.Name;
             _type.Text = localPointer.IsDir ? "folder" : localPointer.Type;
             _description.Text = localPointer.Name;

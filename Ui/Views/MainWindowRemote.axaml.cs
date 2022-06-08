@@ -16,8 +16,6 @@ namespace Ui.Views
         public OneClient LocalView;
         public OneClient RemoteView;
         public static MainWindowRemote LastReference;
-        public bool remoteSelected;
-        public List<PointerItem> selectedItems;
 
         public MainWindowRemote()
         {
@@ -31,9 +29,7 @@ namespace Ui.Views
             // Initialize variables
             LinkBarView.InitializeExpanders();
             KeysPressed = new List<Key>();
-            selectedItems = new List<PointerItem>();
             IsClosed = false;
-            remoteSelected = false;
         }
 
         public MainWindowRemote(Client clientLocal, Client clientRemote) : this()
@@ -57,9 +53,7 @@ namespace Ui.Views
             // Initialize variables
             LinkBarView.InitializeExpanders();
             KeysPressed = new List<Key>();
-            selectedItems = new List<PointerItem>();
             IsClosed = false;
-            remoteSelected = false;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

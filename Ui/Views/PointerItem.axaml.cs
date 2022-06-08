@@ -41,7 +41,7 @@ namespace Ui.Views
             _main = main;
             _name.Text = pointer.Name;
             _size.Text = pointer.Size.ToString();
-            _icon.Source = ResourcesConverter.TypeToIcon(pointer.Type, pointer.IsDir);
+            _icon.Source = ResourcesConverter.TypeToIcon(pointer.Path, pointer.Type, pointer.IsDir);
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
