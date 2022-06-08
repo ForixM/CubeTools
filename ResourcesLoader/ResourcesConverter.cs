@@ -93,6 +93,17 @@ namespace ResourcesLoader
                 case "yaml": 
                 case "yml":
                     return ResourcesExtensionsCompressed.XmlExtensionCompressed;
+                case "reg":
+                    return ResourcesExtensionsCompressed.RegisterExtensionCompressed;
+                case "json":
+                    return ResourcesExtensionsCompressed.JsonExtensionCompressed;
+                case "ini":
+                    return ResourcesExtensionsCompressed.IniExtensionCompressed;
+                case "dll":
+                    return ResourcesExtensionsCompressed.DllExtensionCompressed;
+                case "bat":
+                    return ResourcesExtensionsCompressed.BatExtensionCompressed;
+                
                 default:
                     return ResourcesExtensionsCompressed.DefaultExtensionCompressed;
             }
