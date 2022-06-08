@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
 using ResourcesLoader;
 using Pointer = Library.Pointer;
 
@@ -65,11 +64,9 @@ namespace Ui.Views
         /// </summary>
         private void OnTaped(object? sender, PointerPressedEventArgs e)
         {
-            if ((File.Exists(Pointer.Path) || Directory.Exists(Pointer.Path)) && e.MouseButton is MouseButton.Right)
-            {
-                var propertiesPopUp = new Information.MoreInformation(this, _main);
-                propertiesPopUp.Show();
-            }
+            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+                new Information.MoreInformation(this, _main).Show();
+            else _main.Refresh();
         }
 
         /// <summary>

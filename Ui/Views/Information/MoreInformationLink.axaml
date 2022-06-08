@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
         Width="211" Height="190"
-        x:Class="Ui.Views.Information.MoreInformation"
+        x:Class="Ui.Views.Information.MoreInformationLink"
         KeyDown="OnEscapePressed"
         PointerLeave="OnPointerLeave">
     
@@ -41,23 +41,16 @@
                     <Image Classes="MoreMenu" Height="35" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{x:Static resource:ResourcesIconsCompressed.OpenCompressed}"/>
                 </Grid>
                 <Grid Column="1">
-                    <StackPanel VerticalAlignment="Center">
-                        <Button Click="OpenWithDefault" Classes="MoreMenu" Width="160">
-                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Open"/>
-                        </Button>
-                        <Button Click="OpenWith" Classes="MoreMenu" Width="160">
-                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Open With"/>
-                        </Button>
-                    </StackPanel>
+                    <Button VerticalAlignment="Center" Click="OpenWithDefault" Classes="MoreMenu" Width="160">
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Open"/>
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
-        
         <Grid Row="3">
             <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="15 0 15 5" Width="180"/>
         </Grid>
         <!-- Secondary actions -->
-        
         <Grid Row="4">
             <Button Click="CopyAsPath" Classes="MoreMenu">
                 <Grid ColumnDefinitions="50, 160">
@@ -66,18 +59,6 @@
                     </Grid>
                     <Grid Column="1">
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Copy as Path"/>
-                    </Grid>
-                </Grid>
-            </Button>
-        </Grid>
-        <Grid Row="5">
-            <Button Classes="MoreMenu" Name="Compress">
-                <Grid ColumnDefinitions="50, 160">
-                    <Grid Column="0">
-                        <Image Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.CompressionCompressed}"/>
-                    </Grid>
-                    <Grid Column="1">
-                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Compress"/>
                     </Grid>
                 </Grid>
             </Button>

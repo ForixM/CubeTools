@@ -5,22 +5,23 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library;
+using Ui.Views.LinkBar;
 
 namespace Ui.Views.Information
 {
-    public class MoreInformation : Window
+    public class MoreInformationLink : Window
     {
 
         private readonly OneClient? _main;
-        private readonly PointerItem? itemXaml;
+        private readonly OneLink? itemXaml;
         
         #region Init
-        public MoreInformation()
+        public MoreInformationLink()
         {
             InitializeComponent();
             SystemDecorations = SystemDecorations.BorderOnly;
         }
-        public MoreInformation(PointerItem item, OneClient main) : this()
+        public MoreInformationLink(OneLink item, OneClient main) : this()
         {
             Position = new PixelPoint(-(int) new MouseDevice().GetPosition(item).X, 50-(int) new MouseDevice().GetPosition(item).Y);
             itemXaml = item;
@@ -58,15 +59,9 @@ namespace Ui.Views.Information
             Close();
         }
 
-        private void OpenWith(object? sender, RoutedEventArgs e)
-        {
-            _main!.AccessPath(itemXaml!.Pointer);
-            Close();
-        }
-
         private void OpenWithDefault(object? sender, RoutedEventArgs e)
         {
-            _main!.AccessPath(itemXaml!.Pointer);
+            _main!.AccessPath(itemXaml!.LocalPointer);
             Close();
         }
 
@@ -74,18 +69,20 @@ namespace Ui.Views.Information
         {
             try
             {
-                Application.Current!.Clipboard!.SetTextAsync(itemXaml!.Pointer.Path);
+                Application.Current!.Clipboard!.SetTextAsync(itemXaml!.LocalPointer.Path);
             }
             catch (Exception) {}
+            Close();
         }
         
         private void OnPropertiesOpen(object? sender, RoutedEventArgs e)
         {
             try
             {
-                new Properties.Properties(itemXaml!.Pointer, _main!.Client).Show();
+                new Properties.Properties(itemXaml!.LocalPointer, _main!.Client).Show();
             }
             catch (Exception) {}
+            Close();
         }
         
         #endregion
@@ -94,7 +91,7 @@ namespace Ui.Views.Information
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Escape) Close();
-        }
+        } 
 
         private void OnPointerLeave(object? sender, PointerEventArgs e) => Close();
     }

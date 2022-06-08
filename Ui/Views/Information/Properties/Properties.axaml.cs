@@ -4,9 +4,12 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Library;
 using Library.ManagerExceptions;
+using Library.ManagerReader;
 using Library.ManagerWriter;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Information.Properties
 {
@@ -30,13 +33,14 @@ namespace Ui.Views.Information.Properties
 
         private bool _userActivation;
 
-        private readonly LocalPointer _localPointer;
+        private readonly Library.Pointer _pointer;
+        private readonly Client _client;
         
         #region Init
         public Properties()
         {
             InitializeComponent();
-            _localPointer = LocalPointer.NullLocalPointer;
+            _pointer = LocalPointer.NullLocalPointer;
 
             _imageExtension = this.FindControl<Image>("ImageExtension");
             _fileName = this.FindControl<TextBlock>("FileName");
@@ -52,25 +56,87 @@ namespace Ui.Views.Information.Properties
 
             _userActivation = false;
         }
-        public Properties(LocalPointer localPointer) : this()
+        public Properties(Pointer pointer, Client client) : this()
         {
-            _localPointer = localPointer;
-            // TODO _pointer.LoadSize();
-
-            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(localPointer.Type, localPointer.IsDir);
-            _fileName.Text = localPointer.Name;
-            _type.Text = localPointer.IsDir ? "folder" : localPointer.Type;
-            _description.Text = localPointer.Name;
-            _path.Text = localPointer.Path;
-            _size.Text = localPointer.SizeXaml;
-            _created.Text = localPointer.Date;
-            _modified.Text = localPointer.LastDate;
-            _accessed.Text = localPointer.AccessDate;
-            _readOnly.IsChecked = localPointer.ReadOnly;
-            _hidden.IsChecked = localPointer.Hidden;
+            _pointer = pointer;
+            _client = client;
+            // 
+            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(_pointer.Type, _pointer.IsDir);
+            _fileName.Text = _pointer.Name;
+            _type.Text = _pointer.IsDir ? "folder" : _pointer.Type;
+            _description.Text = _pointer.Name;
+            _path.Text = _pointer.Path;
+            // 
+            switch (client.Type)
+            {
+                case ClientType.LOCAL :
+                    InitializeLocal();
+                    break;
+                case ClientType.FTP :
+                    InitializeFTP();
+                    break;
+                case ClientType.ONEDRIVE :
+                    InitializeOneDrive();
+                    break;
+                case ClientType.GOOGLEDRIVE:
+                    InitializeGoogleDrive();
+                    break;
+            }
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
+
+        private void InitializeLocal()
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
+            }, DispatcherPriority.Background);
+            _created.Text = _client.GetItemCreationDate(_pointer);
+            _modified.Text = _client.GetItemLastEditionDate(_pointer);
+            _accessed.Text = _client.GetItemLastEditionDate(_pointer);
+            _readOnly.IsChecked = _client.GetItemReadOnlyProperty(_pointer);
+            _hidden.IsChecked = _client.GetItemHiddenProperty(_pointer);
+        }
+        private void InitializeFTP()
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
+            });
+            _modified.Text = _client.GetItemLastEditionDate(_pointer);
+            _readOnly.IsEnabled = false;
+            _hidden.IsEnabled = false;
+        }
+        // TODO Mehdi
+        private void InitializeOneDrive()
+        {
+            _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
+            /*
+            _created.Text = _client.GetItemCreationDate(_pointer);
+            _modified.Text = _client.GetItemLastEditionDate(_pointer);
+            _accessed.Text = _client.GetItemLastEditionDate(_pointer);
+            _readOnly.IsChecked = _client.GetItemReadOnlyProperty(_pointer);
+            _hidden.IsChecked = _client.GetItemHiddenProperty(_pointer);
+             */
+            _readOnly.IsEnabled = false;
+            _hidden.IsEnabled = false;
+        }
+        // TODO Max
+        private void InitializeGoogleDrive()
+        {
+            _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
+            /*
+            _created.Text = _client.GetItemCreationDate(_pointer);
+            _modified.Text = _client.GetItemLastEditionDate(_pointer);
+            _accessed.Text = _client.GetItemLastEditionDate(_pointer);
+            _readOnly.IsChecked = _client.GetItemReadOnlyProperty(_pointer);
+            _hidden.IsChecked = _client.GetItemHiddenProperty(_pointer);
+             */
+            _readOnly.IsEnabled = false;
+            _hidden.IsEnabled = false;
+        }
+        
         
         #endregion
 
@@ -85,8 +151,7 @@ namespace Ui.Views.Information.Properties
             }
             try
             {
-                _localPointer.SetAttributes(false, FileAttributes.ReadOnly);
-                //_parentModel!.Refresh();
+                _client.SetReadOnlyProperty(_pointer, false);
             }
             catch (ManagerException exception)
             {
@@ -103,16 +168,15 @@ namespace Ui.Views.Information.Properties
                 _userActivation = false;
                 return;
             }
+
             try
             {
-                ManagerWriter.SetAttributes(_localPointer, true, FileAttributes.ReadOnly);
-                //_parentModel!.Refresh();
+                _client.SetReadOnlyProperty(_pointer, true);
             }
             catch (ManagerException exception)
             {
-                //_parentModel?.SelectErrorPopUp(exception);
                 _userActivation = true;
-                _readOnly.IsChecked = !_readOnly.IsChecked;
+                _hidden.IsChecked = !_hidden.IsChecked;
             }
         }
         
@@ -125,11 +189,10 @@ namespace Ui.Views.Information.Properties
             }
             try
             {
-                ManagerWriter.SetAttributes(_localPointer, false, FileAttributes.Hidden);
+                _client.SetHiddenProperty(_pointer, false);
             }
             catch (ManagerException exception)
             {
-                //_parentModel?.SelectErrorPopUp(exception);
                 _userActivation = true;
                 _hidden.IsChecked = !_hidden.IsChecked;
             }
@@ -144,25 +207,18 @@ namespace Ui.Views.Information.Properties
             }
             try
             {
-                ManagerWriter.SetAttributes(_localPointer, true, FileAttributes.Hidden);
-                //_parentModel?.Refresh();
+                _client.SetHiddenProperty(_pointer, true);
             }
             catch (ManagerException exception)
             {
-                //_parentModel?.SelectErrorPopUp(exception);
+                _userActivation = true;
                 _hidden.IsChecked = !_hidden.IsChecked;
             }
         }
 
-        private void OnClose(object? sender, CancelEventArgs e)
-        {
-            //_parentModel!.Refresh();
-        }
-        
-        private void OnClick(object? sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        private void OnClose(object? sender, CancelEventArgs e) => _client.Refresh();
+
+        private void OnClick(object? sender, RoutedEventArgs e) => Close();
         
         #endregion
 

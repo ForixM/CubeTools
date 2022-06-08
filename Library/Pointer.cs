@@ -15,8 +15,17 @@
         protected string _lastModified;
         
         // Getter and Setter
-        public string ParentPath => _parentPath;
-        public string LastModified => _lastModified;
+        public string ParentPath
+        {
+            get => _parentPath;
+            set => _parentPath = value;
+        }
+
+        public string LastModified
+        {
+            get => _lastModified;
+            set => _lastModified = value;
+        }
 
         public string Path
         {

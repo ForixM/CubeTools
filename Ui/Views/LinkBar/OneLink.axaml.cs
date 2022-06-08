@@ -9,6 +9,7 @@ using Library;
 using Library.DirectoryPointer;
 using Library.FilePointer;
 using Library.ManagerExceptions;
+using Ui.Views.Information;
 
 namespace Ui.Views.LinkBar
 {
@@ -51,10 +52,8 @@ namespace Ui.Views.LinkBar
         
         private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
-            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
-            {
-                
-            }
+            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+                new MoreInformationLink(this, Main).Show();
         }
     }
 }

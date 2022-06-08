@@ -60,11 +60,13 @@ namespace Ui.Views.Actions
             if (_main?.Client?.CurrentFolder is null) return;
             else if (!ManagerReader.IsPathCorrect(name))
             {
-                new ErrorBase(new PathFormatException("Format is invalid !", "CreateAFile UI")).ShowDialog<bool>(_main.Main);
+                new ErrorBase(new PathFormatException("Format is invalid !", "CreateAFile UI")).Show();
+                //new ErrorBase(new PathFormatException("Format is invalid !", "CreateAFile UI")).ShowDialog<bool>(_main.Main);
             }
             else if (_main.Client.GetItem(name) is not null)
             {
-                new ErrorBase(new ReplaceException("File already exists !", "CreateAFile UI")).ShowDialog<bool>(_main.Main);
+                new ErrorBase(new ReplaceException("File already exists !", "CreateAFile UI")).Show();
+                //new ErrorBase(new ReplaceException("File already exists !", "CreateAFile UI")).ShowDialog<bool>(_main.Main);
             }
             else
             {
@@ -79,7 +81,8 @@ namespace Ui.Views.Actions
                     if (exception is ManagerException @managerException)
                     {
                         @managerException.Errorstd = "Unable to create a new file";
-                        new ErrorBase(managerException).ShowDialog<object>(_main.Main);
+                        new ErrorBase(managerException).Show();
+                        //new ErrorBase(managerException).ShowDialog<object>(_main.Main);
                     }
                 }
             }

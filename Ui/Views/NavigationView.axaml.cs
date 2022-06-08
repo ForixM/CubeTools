@@ -50,7 +50,7 @@ namespace Ui.Views
             if (e.Key != Key.Enter) return;
             if (((TextBox) sender).Text == "")
             {
-                Main.PointersView = new Menu();
+                //Main.PointersView = new Menu();
             } 
             else
             {

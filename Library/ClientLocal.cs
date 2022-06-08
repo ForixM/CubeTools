@@ -21,6 +21,8 @@ namespace Library {
             Children = ListChildren();
         }
 
+        #region Actions
+
         public override Pointer CreateFile(string name)
         {
             try
@@ -105,6 +107,10 @@ namespace Library {
             Children = ListChildren();
         }
 
+        #endregion
+
+        #region Properties
+
         public override Pointer? GetItem(string path, bool isAbsolute = false)
         {
             if (!isAbsolute)
@@ -137,7 +143,26 @@ namespace Library {
 
         public override void InitializeProperties(Pointer pointer)
         {
-            throw new System.NotImplementedException();
+            pointer.Name = GetItemName(pointer);
+            pointer.Size = GetItemSize(pointer);
+            pointer.Type = GetItemType(pointer);
+            pointer.ParentPath = GetParentReference(pointer).Path;
         }
+
+        public override string GetItemAccessDate(Pointer pointer) => ((LocalPointer) pointer).GetPointerAccessDate();
+
+        public override string GetItemCreationDate(Pointer pointer) => ((LocalPointer) pointer).GetPointerCreationDate();
+
+        public override string GetItemLastEditionDate(Pointer pointer) => ((LocalPointer) pointer).GetPointerLastEdition();
+
+        public override bool GetItemHiddenProperty(Pointer pointer) => ((LocalPointer) pointer).IsHidden();
+
+        public override bool GetItemReadOnlyProperty(Pointer pointer) => ((LocalPointer) pointer).IsReadOnly();
+
+        public override void SetHiddenProperty(Pointer pointer, bool set) => ManagerWriter.ManagerWriter.SetAttributes((LocalPointer) pointer, set, FileAttributes.Hidden);
+
+        public override void SetReadOnlyProperty(Pointer pointer, bool set) => ManagerWriter.ManagerWriter.SetAttributes((LocalPointer) pointer, set, FileAttributes.ReadOnly);
+
+        #endregion
     }
 }
