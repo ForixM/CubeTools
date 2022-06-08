@@ -1,0 +1,33 @@
+<!-- Imports-->
+<UserControl 
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Ui.Views.Menu">
+    
+    <!-- Styles Imports -->
+    <UserControl.Styles>
+		<StyleInclude Source="/Styles/Styles.axaml"/>
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <Grid ColumnDefinitions="*">
+                <Expander Grid.Column="0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
+                    <StackPanel Name="QuickAccess"/>
+                </Expander>
+                <Expander Grid.Column="0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Favorites">
+                    <StackPanel Name="Favorites"/>
+                </Expander>
+                <Expander Grid.Column="0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Drives">
+                    <StackPanel Name="Drives"/>
+                </Expander>
+                <Expander Grid.Column="0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Clouds">
+                    <StackPanel Name="Clouds"/>
+                </Expander>
+        </Grid>
+    </ScrollViewer>
+
+</UserControl>
