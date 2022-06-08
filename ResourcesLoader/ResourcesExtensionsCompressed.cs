@@ -59,6 +59,9 @@ namespace ResourcesLoader
 
         public static readonly IImage VideoExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                   "ExtensionsCompressed/mp4.ico");
+        
+        public static readonly IImage XmlExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                  "ExtensionsCompressed/code.ico");
 
         public static readonly IImage DefaultExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                     "ExtensionsCompressed/None.ico");
