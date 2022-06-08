@@ -84,6 +84,22 @@ namespace Ui.Views.LinkBar
 		        }
 		        last = drives.Length;
 	        }
+	        while (Main.Main is MainWindowRemote {IsClosed: false})
+	        {
+		        Thread.Sleep(1000);
+		        var drives = DriveInfo.GetDrives();
+		        if (last != drives.Length)
+		        {
+			        Dispatcher.UIThread.Post(() =>
+			        {
+				        _drives.Children.Clear();
+				        foreach (var drive in DriveInfo.GetDrives())
+					        _drives.Children.Add(new OneLink(drive.Name, drive.Name,
+						        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
+			        }, DispatcherPriority.Background);
+		        }
+		        last = drives.Length;
+	        }
         }
 
         /// <summary>
@@ -92,7 +108,18 @@ namespace Ui.Views.LinkBar
         private void LaunchUpdateLinks()
         {
 	        var last = ConfigLoader.ConfigLoader.Settings.Links;
-	        while (Main.Main is MainWindow or MainWindowRemote {IsClosed: false})
+	        while (Main.Main is MainWindow {IsClosed: false})
+	        {
+		        Thread.Sleep(3000);
+		        Dispatcher.UIThread.Post(() =>
+		        {
+			        _favorites.Children.Clear();
+			        foreach (var key in ConfigLoader.ConfigLoader.Settings.Links.Keys)
+				        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key], key,
+					        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
+		        }, DispatcherPriority.Background);
+	        }
+	        while (Main.Main is MainWindowRemote {IsClosed: false})
 	        {
 		        Thread.Sleep(3000);
 		        Dispatcher.UIThread.Post(() =>
@@ -110,7 +137,29 @@ namespace Ui.Views.LinkBar
         /// </summary>
         private void LaunchUpdateStaticLinks()
         {
-	        while (Main.Main is MainWindow or MainWindowRemote {IsClosed: false})
+	        while (Main.Main is MainWindow {IsClosed: false})
+	        {
+		        Thread.Sleep(3000);
+		        Dispatcher.UIThread.Post(() =>
+		        {
+			        _quickAccess.Children.Clear();
+			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)))
+				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Me", ResourcesLoader.ResourcesIconsCompressed.UsersCompressed));
+			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)))
+				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Desktop", ResourcesLoader.ResourcesIconsCompressed.DesktopCompressed));
+			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)))
+				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Documents", ResourcesLoader.ResourcesIconsCompressed.DocumentsCompressed));
+			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)))
+				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Pictures", ResourcesLoader.ResourcesIconsCompressed.ImagesCompressed));
+			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)))	
+				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
+			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)))
+				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
+			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
+				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
+		        }, DispatcherPriority.Background);
+	        }
+	        while (Main.Main is MainWindowRemote {IsClosed: false})
 	        {
 		        Thread.Sleep(3000);
 		        Dispatcher.UIThread.Post(() =>

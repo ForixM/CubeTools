@@ -61,7 +61,7 @@ namespace Ui.Views.Information.Properties
             _pointer = pointer;
             _client = client;
             // 
-            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(_pointer.Type, _pointer.IsDir);
+            _imageExtension.Source = ResourcesLoader.ResourcesConverter.TypeToIcon(_pointer.Path, _pointer.Type, _pointer.IsDir);
             _fileName.Text = _pointer.Name;
             _type.Text = _pointer.IsDir ? "folder" : _pointer.Type;
             _description.Text = _pointer.Name;
