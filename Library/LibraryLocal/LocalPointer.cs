@@ -37,7 +37,7 @@ namespace Library
         public bool Compressed => HasAttribute(FileAttributes.Compressed);
         public bool Archived => HasAttribute(FileAttributes.Archive);
 
-        public bool IsDir => Directory.Exists(_path);
+        // public bool IsDir => Directory.Exists(_path);
         
 
         #endregion
@@ -76,7 +76,6 @@ namespace Library
             _path = path;
             // Necessary
             _name = ManagerReader.ManagerReader.GetPathToName(_path);
-            _size = !IsDir ? ManagerReader.ManagerReader.GetFileSize(_path) : 0;
             _type = ManagerReader.ManagerReader.GetFileExtension(_path);
             _parentPath = ManagerReader.ManagerReader.GetParent(_path);
         }

@@ -41,6 +41,8 @@ namespace Library.DirectoryPointer
         /// <exception cref="ManagerException">An error occured</exception>
         public DirectoryLocalPointer(string path) : base(path)
         {
+            IsDir = true;
+            _size = 0;
             _type = "";
             try
             {
