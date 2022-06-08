@@ -91,29 +91,29 @@ namespace Library.DirectoryPointer
         {
             List<LocalPointer> result = new List<LocalPointer>();
             // Add all sub directories
-            foreach (var dir in _directoryInfo.EnumerateDirectories())
+            try
             {
-                try
+                foreach (var dir in _directoryInfo.EnumerateDirectories())
                 {
                     result.Add(new DirectoryLocalPointer(dir.FullName.Replace('\\', '/')));
                 }
-                catch (Exception)
-                {
-                    // ignored
-                }
+            }
+            catch (Exception e)
+            {
+                // ignored
             }
 
             // Add all sub files
-            foreach (var file in _directoryInfo.EnumerateFiles())
+            try
             {
-                try
+                foreach (var file in _directoryInfo.EnumerateFiles())
                 {
                     result.Add(new FileLocalPointer(file.FullName.Replace('\\', '/')));
                 }
-                catch (Exception)
-                {
-                    // ignored
-                }
+            }
+            catch (Exception e)
+            {
+                // ignored
             }
 
             return result;

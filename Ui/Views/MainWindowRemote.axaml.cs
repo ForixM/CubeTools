@@ -16,20 +16,24 @@ namespace Ui.Views
         public OneClient LocalView;
         public OneClient RemoteView;
         public static MainWindowRemote LastReference;
-        
+        public bool remoteSelected;
+        public List<PointerItem> selectedItems;
+
         public MainWindowRemote()
         {
             LastReference = this;
             InitializeComponent();
             LinkBarView = this.FindControl<LinkBar.LinkBar>("LinkBar");
             // Local Client
-            LocalView = new OneClient(new ClientLocal());
+            LocalView = new OneClient(new ClientLocal(), this);
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
             LinkBarView.Main = LocalView;
             // Initialize variables
             LinkBarView.InitializeExpanders();
             KeysPressed = new List<Key>();
+            selectedItems = new List<PointerItem>();
             IsClosed = false;
+            remoteSelected = false;
         }
 
         public MainWindowRemote(Client clientLocal, Client clientRemote) : this()
@@ -39,7 +43,7 @@ namespace Ui.Views
             InitializeComponent();
             
             // Local Client
-            LocalView = new OneClient(clientLocal);
+            LocalView = new OneClient(clientLocal, this);
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
             
             // Link Bar
@@ -47,13 +51,15 @@ namespace Ui.Views
             LinkBarView.Main = LocalView;
             
             // Remote Client
-            RemoteView = new OneClient(clientRemote);
+            RemoteView = new OneClient(clientRemote, this);
             this.FindControl<Grid>("ClientRemote").Children.Add(RemoteView);
             
             // Initialize variables
             LinkBarView.InitializeExpanders();
             KeysPressed = new List<Key>();
+            selectedItems = new List<PointerItem>();
             IsClosed = false;
+            remoteSelected = false;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

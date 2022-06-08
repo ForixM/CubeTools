@@ -21,7 +21,7 @@ namespace Ui.Views
             LastReference = this;
             InitializeComponent();
             LinkBarView = this.FindControl<LinkBar.LinkBar>("LinkBar");
-            LocalView = new OneClient(new ClientLocal());
+            LocalView = new OneClient(new ClientLocal(), this);
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
             LinkBarView.Main = LocalView;
             LinkBarView.InitializeExpanders();
