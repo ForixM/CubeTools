@@ -4,6 +4,7 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Library;
 
 namespace Ui.Views.LinkBar
 {
@@ -15,6 +16,7 @@ namespace Ui.Views.LinkBar
         private StackPanel _favorites;
         private StackPanel _drives;
         private StackPanel _clouds;
+        private Image _remoteIcon;
         
         public LinkBar()
         {
@@ -24,6 +26,18 @@ namespace Ui.Views.LinkBar
             _favorites = this.FindControl<StackPanel>("Favorites");
             _drives = this.FindControl<StackPanel>("Drives");
             _clouds = this.FindControl<StackPanel>("Clouds");
+            _remoteIcon = this.FindControl<Image>("RemoteIcon");
+            
+            if (Main is not null && Main.Main is MainWindowRemote)
+            {
+	            _remoteIcon.Source = ((MainWindowRemote) Main.Main).RemoteView.Client.Type switch
+	            {
+					            ClientType.FTP => ResourcesLoader.ResourcesIcons.FtpIcon,
+					            ClientType.ONEDRIVE => ResourcesLoader.ResourcesIconsCompressed.OneDriveCompressed,
+					            ClientType.GOOGLEDRIVE => ResourcesLoader.ResourcesIcons.GoogleDriveIcon,
+					            _ => _remoteIcon.Source
+	            };
+            }
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -62,6 +76,8 @@ namespace Ui.Views.LinkBar
 	        new Thread(LaunchUpdateStaticLinks).Start();
         }
 
+        #region Workers
+        
         /// <summary>
         /// Launch the worker in background
         /// </summary>
@@ -182,6 +198,7 @@ namespace Ui.Views.LinkBar
 		        }, DispatcherPriority.Background);
 	        }
         }
-
+		
+        #endregion
     }
 }

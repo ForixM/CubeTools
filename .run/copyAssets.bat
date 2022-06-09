@@ -1,5 +1,5 @@
 rmdir /s /q "UI/bin/Debug/net6.0/Assets"
-Xcopy "InitLoader/Assets" "UI/bin/Debug/net6.0/Assets/default" /E/H/C/I
+Xcopy "InitLoader/Assets" "UI/bin/Debug/net6.0/Assets" /E/H/C/I
 
 del "UI/bin/Debug/net6.0/7z.dll"
 copy InitLoader\7z.dll UI\bin\Debug\net6.0
