@@ -38,12 +38,14 @@ namespace ConfigLoader
         /// <summary>
         /// Save the instance ConfigSettings in the json configuration file
         /// </summary>
-        public static void SaveConfiguration(string path = "Config.json")
+        public static void SaveConfiguration()
         {
             try
             {
-                File.Delete(Settings.LoadedJson + "/" + path);
-                File.CreateText(path).WriteLine(JsonSerializer.Serialize(Settings));
+                File.Delete(Settings.LoadedJson);
+                var temp = JsonConvert.SerializeObject(Settings);
+                // File.CreateText(path).WriteLine(JsonConvert.SerializeObject(Settings));
+                File.WriteAllText(Settings.LoadedJson, JsonConvert.SerializeObject(Settings));
             }
             catch (Exception e)
             {

@@ -5,12 +5,14 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Library;
+using Library.ManagerReader;
+using ResourcesLoader;
 
 namespace Ui.Views.LinkBar
 {
     public class LinkBar : UserControl
     {
-        public OneClient Main;
+        public ClientUI Main;
         
         private StackPanel _quickAccess;
         private StackPanel _favorites;
@@ -20,7 +22,7 @@ namespace Ui.Views.LinkBar
         
         public LinkBar()
         {
-            Main = OneClient.LastReference;
+            Main = ClientUI.LastReference;
             InitializeComponent();
             _quickAccess = this.FindControl<StackPanel>("QuickAccess");
             _favorites = this.FindControl<StackPanel>("Favorites");
@@ -61,8 +63,8 @@ namespace Ui.Views.LinkBar
 				_quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
 	        // Favorites
 	        if (ConfigLoader.ConfigLoader.Settings.Links is not null)
-		        foreach (var key in ConfigLoader.ConfigLoader.Settings.Links.Keys)
-			        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesLoader.ResourcesIconsCompressed.FolderCompressed));
+		        foreach (var (key, path) in ConfigLoader.ConfigLoader.Settings.Links)
+			        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesConverter.TypeToIcon(path, ManagerReader.GetFileExtension(path), Directory.Exists(path))));
 	        // Drives
 	        foreach (var drive in DriveInfo.GetDrives())
 		        _drives.Children.Add(new OneLink(drive.Name, $"{drive.VolumeLabel} ({drive.Name})", ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
@@ -130,9 +132,9 @@ namespace Ui.Views.LinkBar
 		        Dispatcher.UIThread.Post(() =>
 		        {
 			        _favorites.Children.Clear();
-			        foreach (var key in ConfigLoader.ConfigLoader.Settings.Links.Keys)
-				        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key], key,
-					        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
+			        foreach (var (key, path) in ConfigLoader.ConfigLoader.Settings.Links)
+				        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesConverter.TypeToIcon(path, ManagerReader.GetFileExtension(path), Directory.Exists(path))));
+
 		        }, DispatcherPriority.Background);
 	        }
 	        while (Main.Main is MainWindowRemote {IsClosed: false})
