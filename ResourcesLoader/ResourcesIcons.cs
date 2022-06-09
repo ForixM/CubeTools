@@ -91,5 +91,7 @@ namespace ResourcesLoader
                                                                 "Icons/Upload.ico");
         public static readonly IImage DriveIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                    "Icons/Drive.ico");
+        public static readonly IImage HomeIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                  "Icons/Home.ico");
     }
 }
