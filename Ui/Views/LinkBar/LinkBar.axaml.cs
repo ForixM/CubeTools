@@ -51,7 +51,7 @@ namespace Ui.Views.LinkBar
 			        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesLoader.ResourcesIconsCompressed.FolderCompressed));
 	        // Drives
 	        foreach (var drive in DriveInfo.GetDrives())
-		        _drives.Children.Add(new OneLink(drive.Name, drive.Name, ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
+		        _drives.Children.Add(new OneLink(drive.Name, $"{drive.VolumeLabel} ({drive.Name})", ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
 	        // Clouds
 	        _clouds.Children.Add(new FTPHandler());
 	        _clouds.Children.Add(new OneDriveHandler());
@@ -78,7 +78,7 @@ namespace Ui.Views.LinkBar
 			        {
 				        _drives.Children.Clear();
 				        foreach (var drive in DriveInfo.GetDrives())
-					        _drives.Children.Add(new OneLink(drive.Name, drive.Name,
+					        _drives.Children.Add(new OneLink(drive.Name, $"{drive.VolumeLabel} ({drive.Name})",
 						        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
 			        }, DispatcherPriority.Background);
 		        }
@@ -94,7 +94,7 @@ namespace Ui.Views.LinkBar
 			        {
 				        _drives.Children.Clear();
 				        foreach (var drive in DriveInfo.GetDrives())
-					        _drives.Children.Add(new OneLink(drive.Name, drive.Name,
+					        _drives.Children.Add(new OneLink(drive.Name, $"{drive.VolumeLabel} ({drive.Name})",
 						        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
 			        }, DispatcherPriority.Background);
 		        }
