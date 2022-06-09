@@ -16,7 +16,7 @@ namespace Library
         {
             // Necessary
             _name = ManagerReader.ManagerReader.GetPathToName(_path);
-            _size = _isSizeLoaded ? ManagerReader.ManagerReader.GetFileSize(_path) : 0;
+            _size = _isSizeLoaded ? ManagerReader.ManagerReader.GetSize(_path) : 0;
             _type = ManagerReader.ManagerReader.GetFileExtension(_path);
         }
 

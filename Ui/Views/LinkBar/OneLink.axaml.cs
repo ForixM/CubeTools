@@ -48,7 +48,7 @@ namespace Ui.Views.LinkBar
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void OpenLink(object? sender, RoutedEventArgs e) => Main.AccessPath(LocalPointer.Path);
+        private void OpenLink(object? sender, RoutedEventArgs e) => Main.AccessPath(LocalPointer);
         
         private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {

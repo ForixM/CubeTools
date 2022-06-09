@@ -3,8 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+        xmlns:ftp="clr-namespace:Ui.Views.Ftp"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="200"
-        Width="500" Height="200"
+        Width="500" Height="400"
         CanResize="False"
         x:Class="Ui.Views.Ftp.LoginFTP"
         Title="Connect to server"
@@ -27,6 +28,7 @@
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="50"/>
                                 <RowDefinition Height="50"/>
+                                <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                 
                         <Grid Grid.Row="0">
@@ -44,13 +46,20 @@
                         <Grid Grid.Row="3">
                                 <StackPanel Orientation="Horizontal" Margin="10">
                                         <TextBox Text="21" Name="Port" Watermark="Port" />
-                                        <Button Click="OnConnexionClicked" Content="Connect" Margin="45 0 0 0"/>
+                                        <Button Click="OnConnexionClicked" Content="Connect" Margin="20 0 0 0"/>
                                         <Button Click="OnCancelClick" Content="Cancel"/>
+                                        <Button Click="OnConfigAdded" Content="Add to Config"/>
                                 </StackPanel>
                         </Grid>
+                        
+                        <Grid Grid.Row="4">
+                                <ScrollViewer>
+                                        <Expander Header="Load a Configuration">
+                                                <ftp:FtpConfigDisplayer/>
+                                        </Expander>
+                                </ScrollViewer>
+                        </Grid>
                 </Grid>
-                
-
         </Grid>
         
 </Window>

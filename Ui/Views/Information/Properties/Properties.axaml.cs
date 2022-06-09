@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -9,6 +10,7 @@ using Library;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
+using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views.Information.Properties
@@ -88,51 +90,86 @@ namespace Ui.Views.Information.Properties
 
         private void InitializeLocal()
         {
-            Dispatcher.UIThread.Post(() =>
+            try
             {
-                _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
-            }, DispatcherPriority.Background);
-            _created.Text = _client.GetItemCreationDate(_pointer);
-            _modified.Text = _client.GetItemLastEditionDate(_pointer);
-            _accessed.Text = _client.GetItemLastEditionDate(_pointer);
-            _readOnly.IsChecked = _client.GetItemReadOnlyProperty(_pointer);
-            _hidden.IsChecked = _client.GetItemHiddenProperty(_pointer);
+                Dispatcher.UIThread.Post(
+                    () =>
+                    {
+                        try
+                        {
+                            _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
+                        }
+                        catch (ManagerException e)
+                        {
+                            _size.Text = "Unknown";
+                            new ErrorBase(e).Show();
+                        }
+                    },
+                    DispatcherPriority.Background);
+                _created.Text = _client.GetItemCreationDate(_pointer);
+                _modified.Text = _client.GetItemLastEditionDate(_pointer);
+                _accessed.Text = _client.GetItemLastEditionDate(_pointer);
+                _readOnly.IsChecked = _client.GetItemReadOnlyProperty(_pointer);
+                _hidden.IsChecked = _client.GetItemHiddenProperty(_pointer);
+            }
+            catch (ManagerException e)
+            {
+                new ErrorBase(e).Show();
+            }
         }
         private void InitializeFTP()
         {
-            Dispatcher.UIThread.Post(() =>
+            try
             {
-                _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
-            });
-            _modified.Text = _client.GetItemLastEditionDate(_pointer);
-            _readOnly.IsEnabled = false;
-            _hidden.IsEnabled = false;
+                Dispatcher.UIThread.Post(() =>
+                {
+                    try
+                    {
+                        _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
+                    }
+                    catch(ManagerException e) { new ErrorBase(e).Show();}
+                });
+                _modified.Text = _client.GetItemLastEditionDate(_pointer);
+                _readOnly.IsEnabled = false;
+                _hidden.IsEnabled = false;
+            }
+            catch (Exception e) {}
         }
         // TODO Mehdi
         private void InitializeOneDrive()
         {
-            _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
-            /*
-            _created.Text = _client.GetItemCreationDate(_pointer);
-            _modified.Text = _client.GetItemLastEditionDate(_pointer);
-            _accessed.Text = _client.GetItemLastEditionDate(_pointer);
-            _readOnly.IsChecked = _client.GetItemReadOnlyProperty(_pointer);
-            _hidden.IsChecked = _client.GetItemHiddenProperty(_pointer);
-             */
+            try
+            {
+                _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
+                /*
+                _created.Text = _client.GetItemCreationDate(_pointer);
+                _modified.Text = _client.GetItemLastEditionDate(_pointer);
+                _accessed.Text = _client.GetItemLastEditionDate(_pointer);
+                _readOnly.IsChecked = _client.GetItemReadOnlyProperty(_pointer);
+                _hidden.IsChecked = _client.GetItemHiddenProperty(_pointer);
+                 */
+            }
+            catch (Exception e) {}
+
             _readOnly.IsEnabled = false;
             _hidden.IsEnabled = false;
         }
         // TODO Max
         private void InitializeGoogleDrive()
         {
-            _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
-            /*
-            _created.Text = _client.GetItemCreationDate(_pointer);
-            _modified.Text = _client.GetItemLastEditionDate(_pointer);
-            _accessed.Text = _client.GetItemLastEditionDate(_pointer);
-            _readOnly.IsChecked = _client.GetItemReadOnlyProperty(_pointer);
-            _hidden.IsChecked = _client.GetItemHiddenProperty(_pointer);
-             */
+            try
+            {
+                _size.Text = ManagerReader.ByteToPowByte(_client.GetItemSize(_pointer));
+                /*
+                _created.Text = _client.GetItemCreationDate(_pointer);
+                _modified.Text = _client.GetItemLastEditionDate(_pointer);
+                _accessed.Text = _client.GetItemLastEditionDate(_pointer);
+                _readOnly.IsChecked = _client.GetItemReadOnlyProperty(_pointer);
+                _hidden.IsChecked = _client.GetItemHiddenProperty(_pointer);
+                 */
+            }
+            catch (Exception e) {}
+
             _readOnly.IsEnabled = false;
             _hidden.IsEnabled = false;
         }

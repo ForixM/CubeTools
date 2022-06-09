@@ -46,8 +46,6 @@ namespace Library.DirectoryPointer
         /// </summary>
         /// <returns>the size of the file or directory</returns>
         /// <exception cref="AccessException">the path cannot be accessed</exception>
-        /// <exception cref="DiskNotReadyException">the disk is refreshing</exception>
-        /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="ManagerException">An error occured</exception>
         public override long GetPointerSize()
         {
@@ -58,9 +56,9 @@ namespace Library.DirectoryPointer
             catch (Exception e)
             {
                 if (e is SecurityException or UnauthorizedAccessException or NullReferenceException)
-                    throw new AccessException(Path + " cannot be read", "GetFileSize");
+                    throw new AccessException(Path + " cannot be read", "GetSize");
                 throw new ManagerException("Reader error", Level.Normal, "Impossible to enumerate files",
-                    Path + " and their children could not be read", "GetFileSize");
+                    Path + " and their children could not be read", "GetSize");
             }
         }
 

@@ -287,7 +287,7 @@ namespace Library.ManagerReader
         /// <exception cref="DiskNotReadyException">the disk is refreshing</exception>
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static long GetFileSize(string path)
+        public static long GetSize(string path)
         {
             if (Directory.Exists(path))
                 try
@@ -297,9 +297,9 @@ namespace Library.ManagerReader
                 catch (Exception e)
                 {
                     if (e is SecurityException or UnauthorizedAccessException)
-                        throw new AccessException(path + " cannot be read", "GetFileSize");
+                        throw new AccessException(path + " cannot be read", "GetSize");
                     throw new ManagerException("Reader error", Level.Normal, "Impossible to enumerate files",
-                        path + " and their children could not be read", "GetFileSize");
+                        path + " and their children could not be read", "GetSize");
                 }
             if (File.Exists(path))
                 try
@@ -309,18 +309,18 @@ namespace Library.ManagerReader
                 catch (Exception e)
                 {
                     if (e is SecurityException or UnauthorizedAccessException)
-                        throw new AccessException(path + " cannot be read", "GetFileSize");
+                        throw new AccessException(path + " cannot be read", "GetSize");
                     if (e is IOException)
-                        throw new DiskNotReadyException(path + " cannot be read", "GetFileSize");
+                        throw new DiskNotReadyException(path + " cannot be read", "GetSize");
                     throw new ManagerException("Reader error", Level.Normal, "Impossible to enumerate files",
-                        path + " and their children could not be read", "GetFileSize");
+                        path + " and their children could not be read", "GetSize");
                 }
             throw new PathNotFoundException(path + " does not exist", "GetFileAccessDate");
         }
 
         /// <summary>
         ///     - Type : High Level <br></br>
-        ///     -> <see cref="GetFileSize(string)" />
+        ///     -> <see cref="GetSize" />
         /// </summary>
         /// <returns>the size of the file or directory</returns>
         /// <exception cref="AccessException">the path cannot be accessed</exception>
@@ -328,10 +328,10 @@ namespace Library.ManagerReader
         /// <exception cref="PathNotFoundException">the given path does not exist</exception>
         /// <exception cref="CorruptedPointerException">the given pointer is corrupted</exception>
         /// <exception cref="ManagerException">An error occured</exception>
-        public static long GetFileSize(LocalPointer localPointer)
+        public static long GetSize(LocalPointer localPointer)
         {
-            if (!localPointer.Exist()) throw new CorruptedPointerException("pointer of file " + localPointer.Path + " should be destroyed", "GetFileSize");
-            return GetFileSize(localPointer.Path);
+            if (!localPointer.Exist()) throw new CorruptedPointerException("pointer of file " + localPointer.Path + " should be destroyed", "GetSize");
+            return GetSize(localPointer.Path);
         }
         
         /// <summary>

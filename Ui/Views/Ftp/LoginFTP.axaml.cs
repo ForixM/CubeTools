@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using ConfigLoader.Settings;
 using Library.ManagerExceptions;
 using Library;
 using Ui.Views.Error;
@@ -12,6 +14,7 @@ namespace Ui.Views.Ftp
     public class LoginFTP : Window
     {
 
+        private FtpConfigDisplayer _configDisplayer;
         private TextBox _ip;
         private TextBox _user;
         private TextBox _mdp;
@@ -26,24 +29,24 @@ namespace Ui.Views.Ftp
             _user = this.FindControl<TextBox>("User");
             _mdp = this.FindControl<TextBox>("Mdp");
             _port = this.FindControl<TextBox>("Port");
+            _configDisplayer = this.FindControl<FtpConfigDisplayer>("FtpConfigDisplayer");
+
+            foreach (var setting in ConfigLoader.ConfigLoader.Settings.Ftp!.Servers!)
+                _configDisplayer.Generator.Children.Add(new FtpServerObject(setting, _configDisplayer));
         }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         
         #endregion
+
+        #region Events
 
         private void OnEscapePressed(object? sender, KeyEventArgs e)
         {
             if (e.Key is Key.Escape) Close();
         }
 
-        private void OnCancelClick(object? sender, RoutedEventArgs e)
-        {
-            Close();
-        }
+        private void OnCancelClick(object? sender, RoutedEventArgs e) => Close();
 
         private void OnConnexionClicked(object? sender, RoutedEventArgs e)
         {
@@ -75,6 +78,32 @@ namespace Ui.Views.Ftp
                     new ErrorBase(new ConnectionRefused("Invalid Credentials", "LoginFTP")).Show();
                 }
             }
+        }
+        
+        #endregion
+
+        #region Config
+
+        private void LoadOneConfiguration(OneFtpSettings oneSetting)
+        {
+            _ip.Text = oneSetting.Host;
+            _user.Text = oneSetting.Name;
+            _port.Text = oneSetting.Port;
+            _mdp.Text = oneSetting.Password;
+        }
+
+        #endregion
+
+        private void OnConfigAdded(object? sender, RoutedEventArgs e)
+        {
+            ConfigLoader.ConfigLoader.Settings.Ftp!.Servers!.Add(new OneFtpSettings()
+            {
+                Host = _ip.Text,
+                Login = _user.Text,
+                Password = _mdp.Text,
+                Port = _port.Text
+            });
+            _configDisplayer.Generator.Children.Add(new FtpServerObject(ConfigLoader.ConfigLoader.Settings.Ftp.Servers.Last(), _configDisplayer));
         }
     }
 }
