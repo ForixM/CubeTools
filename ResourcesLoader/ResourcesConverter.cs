@@ -88,6 +88,7 @@ namespace ResourcesLoader
                 case "mp4":
                 case "mov":
                 case "mpeg":
+                case "wmv":
                     return ResourcesExtensionsCompressed.VideoExtensionCompressed;
                 case "xml":
                 case "yaml": 
