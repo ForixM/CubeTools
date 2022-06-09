@@ -35,11 +35,11 @@ namespace Ui.Views
         public MainWindowRemote(Client clientLocal, Client clientRemote) : this()
         {
             LastReference = this;
-            
+            RemoteView = new OneClient(clientRemote, this);
+            LocalView = new OneClient(clientLocal, this);
             InitializeComponent();
             
             // Local Client
-            LocalView = new OneClient(clientLocal, this);
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
             
             // Link Bar
@@ -47,7 +47,6 @@ namespace Ui.Views
             LinkBarView.Main = LocalView;
             
             // Remote Client
-            RemoteView = new OneClient(clientRemote, this);
             this.FindControl<Grid>("ClientRemote").Children.Add(RemoteView);
             
             // Initialize variables
