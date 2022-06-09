@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -81,7 +82,14 @@ namespace Ui.Views.Actions
             data += SelectStringbyArchive(_archiveFormat);
             Dispatcher.UIThread.Post(() =>
             {
-                //LibraryCompression.Compression.CompressItems(_datas, data, _archiveFormat).GetAwaiter().OnCompleted(_main!.Refresh);
+                Task task = LibraryCompression.Compression.CompressItems(_datas,
+                    _main.Client.CurrentFolder.Path + "/" + data, _archiveFormat);
+                task.GetAwaiter().OnCompleted(() =>
+                {
+                    _main!.Refresh();
+                    Close();
+                });
+                task.Start();
             }, DispatcherPriority.MaxValue);
         }
 

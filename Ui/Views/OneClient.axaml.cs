@@ -20,6 +20,7 @@ namespace Ui.Views
         public ActionView ActionView;
         public NavigationView NavigationView;
         public PointersView PointersView;
+        public Grid Monsieur;
 
         public ClientUI()
         {

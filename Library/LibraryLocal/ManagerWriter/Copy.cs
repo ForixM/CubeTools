@@ -117,7 +117,15 @@ namespace Library.ManagerWriter
             {
                 if (File.Exists(source))
                 {
-                    File.Copy(source, dest);
+                    string filename = ManagerReader.ManagerReader.GetPathToName(source);
+                    string name = ManagerReader.ManagerReader.GetPathToNameNoExtension(source);
+                    string extension = ManagerReader.ManagerReader.GetFileExtension(source);
+                    while (File.Exists(dest + "/" + filename))
+                    {
+                        name += " - Copy";
+                        filename = $"{name}.{extension}";
+                    }
+                    File.Copy(source, dest+"/"+filename);
                     return new FilePointer.FileLocalPointer(dest);
                 }
                 else

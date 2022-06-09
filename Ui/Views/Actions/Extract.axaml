@@ -18,8 +18,8 @@
                 <Grid Grid.Column="1" RowDefinitions="50, 50">
                         <StackPanel Grid.Row="0" Name="ArchiveInformation"/>
                         <WrapPanel Grid.Row="1">
-                                <Button Content="Extract" PointerPressed="Extraction"/>
-                                <Button Content="Cancel" PointerPressed="OnCancelPressed"/>
+                                <Button Content="Extract" Click="Extraction"/>
+                                <Button Content="Cancel" Click="OnCancelPressed"/>
                         </WrapPanel>
                 </Grid>
                

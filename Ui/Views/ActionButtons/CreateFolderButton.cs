@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using ResourcesLoader;
+using Ui.Views.Actions;
 
 namespace Ui.Views.ActionButtons;
 
@@ -15,6 +16,6 @@ public class CreateFolderButton : ActionButton
     
     private void OnClick(object? sender)
     {
-        Debug.Print("Create Folder");
+        new CreateFolder(_main).Show();
     }
 }

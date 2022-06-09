@@ -180,8 +180,6 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        
-        <ProjectReference Include="..\LibraryCompression\LibraryCompression.csproj" />
         <ProjectReference Include="..\Library\Library.csproj" />
         <ProjectReference Include="..\InitLoader\InitLoader.csproj" />
         <ProjectReference Include="..\LibraryCompression\LibraryCompression.csproj" />

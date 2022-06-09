@@ -29,15 +29,7 @@ namespace Ui.Views
             LinkBarView.InitializeExpanders();
             KeysPressed = new List<Key>();
             IsClosed = false;
-            tamere += (position, size, scaling) =>
-            {
-                Debug.Print("resize");
-            };
         }
-
-        private ManagedPopupPositionerPopupImplHelper.MoveResizeDelegate test;
-
-        private event ManagedPopupPositionerPopupImplHelper.MoveResizeDelegate tamere;
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
