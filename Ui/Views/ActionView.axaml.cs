@@ -7,6 +7,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Library.ManagerExceptions;
 using Library;
+using Ui.Views.ActionButtons;
 using Ui.Views.Error;
 using Ui.Views.Actions;
 
@@ -18,17 +19,25 @@ namespace Ui.Views
         public List<PointerItem> CopiedXaml;
         public List<PointerItem> CutXaml;
 
-        public OneClient Main;
+        public ClientUI Main;
+
+        public WrapPanel generator;
 
         #region Init
         
         public ActionView()
         {
             InitializeComponent();
-            Main = OneClient.LastReference;
+            Main = ClientUI.LastReference;
             SelectedXaml = new List<PointerItem>();
             CopiedXaml = new List<PointerItem>();
             CutXaml = new List<PointerItem>();
+            generator = this.FindControl<WrapPanel>("Generator");
+            generator.ItemWidth = 45;
+            generator.Children.Add(new CreateFileButton());
+            generator.Children.Add(new CreateFolderButton());
+            generator.Children.Add(new RenameButton());
+            generator.Children.Add(new DeleteButton());
         }
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         

@@ -11,13 +11,13 @@ namespace Ui.Views.LinkBar
 {
     public class GoogleDriveHandler : UserControl
     {
-        public OneClient Main;
+        public ClientUI Main;
         public TextBlock Description;
         public Image Image;
         
         public GoogleDriveHandler()
         {
-            Main = OneClient.LastReference;
+            Main = ClientUI.LastReference;
             InitializeComponent();
             Description = this.FindControl<TextBlock>("Description");
             Image = this.FindControl<Image>("Image");

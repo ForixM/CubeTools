@@ -8,13 +8,13 @@ namespace Ui.Views.LinkBar
 {
     public class FTPHandler : UserControl
     {
-        public OneClient Main;
+        public ClientUI Main;
         public TextBlock Description;
         public Image Image;
         
         public FTPHandler()
         {
-            Main = OneClient.LastReference;
+            Main = ClientUI.LastReference;
             InitializeComponent();
             Description = this.FindControl<TextBlock>("Description");
             Image = this.FindControl<Image>("Image");

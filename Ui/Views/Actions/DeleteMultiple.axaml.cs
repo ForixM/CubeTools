@@ -16,7 +16,7 @@ namespace Ui.Views.Actions
 {
     public class DeleteMultiple : Window
     {
-        private readonly OneClient? _main;
+        private readonly ClientUI? _main;
         public readonly StackPanel GeneratorDisplay;
 
         public List<DeleteMultipleSelector> Selected;
@@ -32,7 +32,7 @@ namespace Ui.Views.Actions
             _pointers = new List<Pointer>();
         }
 
-        public DeleteMultiple(OneClient main, List<Pointer> pointer) : this()
+        public DeleteMultiple(ClientUI main, List<Pointer> pointer) : this()
         {
             _main = main;
             _pointers = pointer;

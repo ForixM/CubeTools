@@ -578,6 +578,10 @@
         <DependentUpon>FtpServerObject.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\ActionButton.axaml.cs">
+        <DependentUpon>ActionButton.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="bin\Debug\net6.0\Assets\dark" />

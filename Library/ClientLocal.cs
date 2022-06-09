@@ -23,7 +23,7 @@ namespace Library {
 
         #region Actions
 
-        public override Pointer CreateFile(string name) => ManagerWriter.ManagerWriter.Create(CurrentFolder.Path + "/" + name);
+        public override Pointer CreateFile(string name) => ManagerWriter.ManagerWriter.Create(CurrentFolder.Path+"/"+name);
 
         public override Pointer CreateFolder(string name) => ManagerWriter.ManagerWriter.CreateDir(CurrentFolder.Path + "/" + name);
 
@@ -65,15 +65,12 @@ namespace Library {
 
         public override Pointer? GetItem(string path, bool isAbsolute = false)
         {
-            try
-            {
-                if (isAbsolute) path = CurrentFolder!.Path + "/" + path;
-                return Directory.Exists(path) ? new DirectoryLocalPointer(path) : new FileLocalPointer(path);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            if (!isAbsolute)  path = CurrentFolder!.Path + "/" + path;
+            if (Directory.Exists(path))
+                return new DirectoryLocalPointer(path);
+            if (File.Exists(path))
+                return new DirectoryLocalPointer(path);
+            return null;
         }
 
         public override string GetItemName(Pointer pointer) => ManagerReader.ManagerReader.GetPathToName(pointer.Path);

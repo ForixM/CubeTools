@@ -13,7 +13,7 @@ namespace Ui.Views.Actions
 {
     public class Extract : Window
     {
-        private OneClient? _main;
+        private ClientUI? _main;
 
         private StackPanel _archiveInfo;
         private List<Pointer> _data;
@@ -28,7 +28,7 @@ namespace Ui.Views.Actions
             _main = null;
             _data = new List<Pointer>();
         }
-        public Extract(OneClient main, List<Pointer> dataIn) : this()
+        public Extract(ClientUI main, List<Pointer> dataIn) : this()
         {
             _main = main;
             _data = dataIn;
@@ -50,8 +50,9 @@ namespace Ui.Views.Actions
                 {
                     Task task = Task.Run(() =>
                     {
-                        foreach (LocalPointer pointer in _data.Where(ft => ft is LocalPointer))
-                            LibraryCompression.Compression.Extract(pointer);
+                        // foreach (LocalPointer pointer in _data.Where(ft => ft is LocalPointer))
+                        //     LibraryCompression.Compression.Extract(pointer);
+                        
                     });
                     task.GetAwaiter().OnCompleted(Close);
                 }, DispatcherPriority.MaxValue);
@@ -70,8 +71,8 @@ namespace Ui.Views.Actions
         {
             Task task = Task.Run(() =>
             {
-                foreach (LocalPointer pointer in _data.Where(pointer => pointer is LocalPointer))
-                    LibraryCompression.Compression.Extract(pointer);
+                // foreach (LocalPointer pointer in _data.Where(pointer => pointer is LocalPointer))
+                //     LibraryCompression.Compression.Extract(pointer);
             });
             task.GetAwaiter().OnCompleted(Close);
         }

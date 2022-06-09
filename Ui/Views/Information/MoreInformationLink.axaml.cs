@@ -12,7 +12,7 @@ namespace Ui.Views.Information
     public class MoreInformationLink : Window
     {
 
-        private readonly OneClient? _main;
+        private readonly ClientUI? _main;
         private readonly OneLink? itemXaml;
         
         #region Init
@@ -21,7 +21,7 @@ namespace Ui.Views.Information
             InitializeComponent();
             SystemDecorations = SystemDecorations.BorderOnly;
         }
-        public MoreInformationLink(OneLink item, OneClient main) : this()
+        public MoreInformationLink(OneLink item, ClientUI main) : this()
         {
             Position = new PixelPoint(-(int) new MouseDevice().GetPosition(item).X, 50-(int) new MouseDevice().GetPosition(item).Y);
             itemXaml = item;

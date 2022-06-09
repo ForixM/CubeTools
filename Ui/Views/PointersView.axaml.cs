@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -10,13 +11,13 @@ namespace Ui.Views
     public class PointersView : UserControl
     {
         
-        public OneClient Main;
+        public ClientUI Main;
         public StackPanel Generator;
 
         public PointersView()
         {
             InitializeComponent();
-            Main = OneClient.LastReference;
+            Main = ClientUI.LastReference;
             Generator = this.FindControl<StackPanel>("Generator");
         }
 
@@ -24,12 +25,14 @@ namespace Ui.Views
 
         public void Refresh()
         {
+            Debug.Print("this width is: ");
             Generator.Children.Clear();
             foreach (var pi in Main.Client.Children.Select(pointer => new PointerItem(pointer, Main)))
             {
                 pi.button.Background = Main.ActionView.SelectedXaml.Contains(pi)
                     ? new SolidColorBrush(new Color(255, 255, 224, 130))
                     : new SolidColorBrush(new Color(0, 255, 255, 255));
+                // pi.button.Width = Main.Main.Width - 250;
                 Generator.Children.Add(pi);
             }
         }
@@ -42,6 +45,7 @@ namespace Ui.Views
                 pi.button.Background = Main.ActionView.SelectedXaml.Contains(pi)
                     ? new SolidColorBrush(new Color(255, 255, 224, 130))
                     : new SolidColorBrush(new Color(0, 255, 255, 255));
+                // pi.button.Width = Main.Main.Width-250;
                 Generator.Children.Add(pi);
             }
         }

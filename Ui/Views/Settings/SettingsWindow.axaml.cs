@@ -22,7 +22,7 @@ namespace Ui.Views.Settings
 
         private void Save(object? sender, RoutedEventArgs e)
         {
-            ConfigLoader.ConfigLoader.SaveConfiguration(ConfigLoader.ConfigLoader.Settings.LoadedJson);
+            ConfigLoader.ConfigLoader.SaveConfiguration();
             Close();
         }
         private void Quit(object? sender, RoutedEventArgs e) => Close();

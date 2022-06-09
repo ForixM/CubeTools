@@ -15,14 +15,14 @@ namespace Ui.Views.LinkBar
 {
     public class OneLink : UserControl
     {
-        public OneClient Main;
+        public ClientUI Main;
         public LocalPointer LocalPointer;
         public TextBlock Description;
         public Image Image;
         
         public OneLink()
         {
-            Main = OneClient.LastReference;
+            Main = ClientUI.LastReference;
             LocalPointer = LocalPointer.NullLocalPointer;
             
             InitializeComponent();

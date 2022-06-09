@@ -11,17 +11,17 @@ using Pointer = Library.Pointer;
 
 namespace Ui.Views
 {
-    public class OneClient : UserControl
+    public class ClientUI : UserControl
     {
         public Client Client;
-        public static OneClient LastReference;
+        public static ClientUI LastReference;
         public Window Main;
 
         public ActionView ActionView;
         public NavigationView NavigationView;
         public PointersView PointersView;
 
-        public OneClient()
+        public ClientUI()
         {
             LastReference = this;
             Main = (Window) Parent;
@@ -37,7 +37,7 @@ namespace Ui.Views
             NavigationView.Add(entry!);
             PointersView.Refresh();
         }
-        public OneClient(Client client, Window Parent)
+        public ClientUI(Client client, Window Parent)
         {
             LastReference = this;
             Main = (Window) Parent;

@@ -27,7 +27,7 @@ namespace Ui.Views.Settings.Generators
         {
             if (ConfigLoader.ConfigLoader.Settings.Styles != null && e.AddedItems.Count == 1 &&
                 e.AddedItems[0] is TextBlock @block)
-                ConfigLoader.ConfigLoader.Settings.Styles.Pack = @block.Text;
+                ConfigLoader.ConfigLoader.Settings.Styles.Pack = "Assets/"+@block.Text;
         }
     }
 }

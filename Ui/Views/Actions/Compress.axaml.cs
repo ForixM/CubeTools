@@ -13,7 +13,7 @@ namespace Ui.Views.Actions
 {
     public class Compress : Window
     {
-        private readonly OneClient? _main;
+        private readonly ClientUI? _main;
         
         private readonly TextBox _archiveNameVisual;
         private readonly ComboBox _archiveFormatVisual;
@@ -34,7 +34,7 @@ namespace Ui.Views.Actions
             _main = null;
             _datas = new List<Pointer>();
         }
-        public Compress(OneClient main, List<Pointer> datasIn) : this()
+        public Compress(ClientUI main, List<Pointer> datasIn) : this()
         {
             _main = main;
             _datas = datasIn;

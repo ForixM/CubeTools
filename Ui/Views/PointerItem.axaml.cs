@@ -11,7 +11,7 @@ namespace Ui.Views
 {
     public class PointerItem : UserControl
     {
-        private OneClient _main;
+        private ClientUI _main;
         
         #region Variables
         
@@ -33,7 +33,7 @@ namespace Ui.Views
             button = this.FindControl<Button>("Button");
         }
 
-        public PointerItem(Pointer pointer, OneClient main) : this()
+        public PointerItem(Pointer pointer, ClientUI main) : this()
         {
             Pointer = pointer;
             _main = main;

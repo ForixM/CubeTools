@@ -274,9 +274,11 @@ namespace Ui.Views.Information.Properties
             }
             else
             {
+                // TODO Mateo
                 string key = "Link";
                 while (ConfigLoader.ConfigLoader.Settings.Links.ContainsKey(key)) key += " - New";
                 ConfigLoader.ConfigLoader.Settings.Links.Add(key, _pointer.Path);
+                ConfigLoader.ConfigLoader.SaveConfiguration();
                 _starIcon.Source = ResourcesLoader.ResourcesIcons.StarredIcon;
             }
         }

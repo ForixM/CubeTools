@@ -18,7 +18,7 @@ namespace Ui.Views.Actions
         private readonly TextBox _renameBox;
         private readonly Pointer _modifiedLocalPointer;
         private readonly List<Pointer> _itemsReference;
-        private readonly OneClient? _main;
+        private readonly ClientUI? _main;
 
         #region Init
         public Rename()
@@ -29,7 +29,7 @@ namespace Ui.Views.Actions
             _itemsReference = new List<Pointer>();
             _main = null;
         }
-        public Rename(Pointer ft, List<Pointer> items, OneClient main) : this()
+        public Rename(Pointer ft, List<Pointer> items, ClientUI main) : this()
         {
             _modifiedLocalPointer = ft;
             _itemsReference = items;

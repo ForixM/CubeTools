@@ -13,7 +13,7 @@ namespace Ui.Views
         public bool IsClosed;
         public List<Key> KeysPressed;
         public LinkBar.LinkBar LinkBarView;
-        public OneClient LocalView;
+        public ClientUI LocalView;
         public static MainWindow LastReference;
         
         public Menu()
@@ -21,7 +21,7 @@ namespace Ui.Views
             //LastReference = this;
             InitializeComponent();
             LinkBarView = this.FindControl<LinkBar.LinkBar>("LinkBar");
-            LocalView = new OneClient(new ClientLocal(), this);
+            LocalView = new ClientUI(new ClientLocal(), this);
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
             LinkBarView.Main = LocalView;
             LinkBarView.InitializeExpanders();

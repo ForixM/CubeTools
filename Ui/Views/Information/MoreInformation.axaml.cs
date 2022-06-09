@@ -13,7 +13,7 @@ namespace Ui.Views.Information
     public class MoreInformation : Window
     {
 
-        private readonly OneClient? _main;
+        private readonly ClientUI? _main;
         private readonly PointerItem? itemXaml;
         
         #region Init
@@ -22,7 +22,7 @@ namespace Ui.Views.Information
             InitializeComponent();
             SystemDecorations = SystemDecorations.BorderOnly;
         }
-        public MoreInformation(PointerItem item, OneClient main) : this()
+        public MoreInformation(PointerItem item, ClientUI main) : this()
         {
             Position = new PixelPoint(-(int) new MouseDevice().GetPosition(item).X, 50-(int) new MouseDevice().GetPosition(item).Y);
             itemXaml = item;

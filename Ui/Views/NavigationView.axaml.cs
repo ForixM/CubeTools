@@ -25,7 +25,7 @@ namespace Ui.Views
 
         #region Reference Variables
         
-        public readonly OneClient Main;
+        public readonly ClientUI Main;
         public TextBox CurrentPathXaml;
         
         #endregion
@@ -33,7 +33,7 @@ namespace Ui.Views
         #region Init
         public NavigationView()
         {
-            Main = OneClient.LastReference;
+            Main = ClientUI.LastReference;
             InitializeComponent();
             CurrentPathXaml = this.FindControl<TextBox>("CurrentPath");
             _index = -1;

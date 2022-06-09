@@ -12,7 +12,7 @@ namespace Ui.Views.Actions
 {
     public class Search : Window
     {
-        private readonly OneClient? _main;
+        private readonly ClientUI? _main;
         private readonly TextBox _textEntered;
 
         #region Init
@@ -22,7 +22,7 @@ namespace Ui.Views.Actions
             InitializeComponent();
             _textEntered = this.FindControl<TextBox>("TextEntered");
         }
-        public Search(OneClient main) : this()
+        public Search(ClientUI main) : this()
         {
             _main = main;
         }

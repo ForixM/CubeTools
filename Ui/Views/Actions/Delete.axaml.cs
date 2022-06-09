@@ -14,7 +14,7 @@ namespace Ui.Views.Actions
 {
     public class Delete : Window
     {
-        private readonly OneClient? _main;
+        private readonly ClientUI? _main;
         private readonly Pointer? _pointer;
 
         #region Init
@@ -25,7 +25,7 @@ namespace Ui.Views.Actions
             _main = null;
             _pointer = null;
         }
-        public Delete(OneClient main, Pointer pointer) : this()
+        public Delete(ClientUI main, Pointer pointer) : this()
         {
             _main = main;
             _pointer = pointer;

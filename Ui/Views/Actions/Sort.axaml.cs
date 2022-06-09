@@ -8,7 +8,7 @@ namespace Ui.Views.Actions
 {
     public class Sort : Window
     {
-        private readonly OneClient? _main;
+        private readonly ClientUI? _main;
 
         #region Init
         
@@ -18,7 +18,7 @@ namespace Ui.Views.Actions
             _main = null;
         }
         
-        public Sort(OneClient main) : this()
+        public Sort(ClientUI main) : this()
         {
             _main = main;
         }
