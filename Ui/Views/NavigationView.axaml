@@ -49,8 +49,8 @@
 				</Grid>
 				<!-- Fifth column : Path bar-->
 				<Grid Grid.Column="4">
-					<Border CornerRadius="4" Background="White" Margin="0 1" >
-						<TextBox Name="CurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" />
+					<Border CornerRadius="5" Margin="0 1" >
+						<TextBox Background="Transparent" Name="CurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" />
 					</Border>
 				</Grid>
 				<Grid Grid.Column="5">
