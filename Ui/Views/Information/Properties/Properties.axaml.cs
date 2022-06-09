@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -10,6 +11,7 @@ using Library;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
 using Library.ManagerWriter;
+using ResourcesLoader;
 using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
@@ -30,12 +32,14 @@ namespace Ui.Views.Information.Properties
         private TextBlock _accessed;
         private CheckBox _readOnly;
         private CheckBox _hidden;
+        private Image _starIcon;
+        private Button _star;
 
         #endregion
 
         private bool _userActivation;
 
-        private readonly Library.Pointer _pointer;
+        private readonly Pointer _pointer;
         private readonly Client _client;
         
         #region Init
@@ -43,7 +47,8 @@ namespace Ui.Views.Information.Properties
         {
             InitializeComponent();
             _pointer = LocalPointer.NullLocalPointer;
-
+            _star = this.FindControl<Button>("Star");
+            _starIcon = this.FindControl<Image>("StarIcon");
             _imageExtension = this.FindControl<Image>("ImageExtension");
             _fileName = this.FindControl<TextBlock>("FileName");
             _type = this.FindControl<TextBlock>("Type");
@@ -111,6 +116,8 @@ namespace Ui.Views.Information.Properties
                 _accessed.Text = _client.GetItemLastEditionDate(_pointer);
                 _readOnly.IsChecked = _client.GetItemReadOnlyProperty(_pointer);
                 _hidden.IsChecked = _client.GetItemHiddenProperty(_pointer);
+                _star.IsEnabled = true;
+                _starIcon.Source = ConfigLoader.ConfigLoader.Settings.Links.ContainsValue(_pointer.Path) ? ResourcesIcons.StarredIcon : ResourcesIcons.StarIcon;
             }
             catch (ManagerException e)
             {
@@ -132,6 +139,8 @@ namespace Ui.Views.Information.Properties
                 _modified.Text = _client.GetItemLastEditionDate(_pointer);
                 _readOnly.IsEnabled = false;
                 _hidden.IsEnabled = false;
+                _star.IsEnabled = false;
+                _starIcon.Source = ResourcesIcons.StarIcon;
             }
             catch (Exception e) {}
         }
@@ -150,7 +159,8 @@ namespace Ui.Views.Information.Properties
                  */
             }
             catch (Exception e) {}
-
+            _star.IsEnabled = false;
+            _starIcon.Source = ResourcesIcons.StarIcon;
             _readOnly.IsEnabled = false;
             _hidden.IsEnabled = false;
         }
@@ -169,7 +179,8 @@ namespace Ui.Views.Information.Properties
                  */
             }
             catch (Exception e) {}
-
+            _starIcon.Source = ResourcesIcons.StarIcon;
+            _star.IsEnabled = false;
             _readOnly.IsEnabled = false;
             _hidden.IsEnabled = false;
         }
@@ -253,6 +264,23 @@ namespace Ui.Views.Information.Properties
             }
         }
 
+        private void OnFavoriteClicked(object? sender, RoutedEventArgs e)
+        {
+            string? currentKey = ConfigLoader.ConfigLoader.Settings.Links?.Keys.Where(key => ConfigLoader.ConfigLoader.Settings.Links[key] == _pointer.Path).FirstOrDefault();
+            if (currentKey is not null)
+            {
+                ConfigLoader.ConfigLoader.Settings.Links!.Remove(currentKey);
+                _starIcon.Source = ResourcesLoader.ResourcesIcons.StarIcon;
+            }
+            else
+            {
+                string key = "Link";
+                while (ConfigLoader.ConfigLoader.Settings.Links.ContainsKey(key)) key += " - New";
+                ConfigLoader.ConfigLoader.Settings.Links.Add(key, _pointer.Path);
+                _starIcon.Source = ResourcesLoader.ResourcesIcons.StarredIcon;
+            }
+        }
+        
         private void OnClose(object? sender, CancelEventArgs e) => _client.Refresh();
 
         private void OnClick(object? sender, RoutedEventArgs e) => Close();
@@ -264,5 +292,6 @@ namespace Ui.Views.Information.Properties
         {
             if (e.Key is Key.Escape) Close();
         }
+        
     }
 }

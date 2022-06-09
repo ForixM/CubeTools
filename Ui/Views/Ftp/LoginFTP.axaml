@@ -55,7 +55,7 @@
                         <Grid Grid.Row="4">
                                 <ScrollViewer>
                                         <Expander Header="Load a Configuration">
-                                                <ftp:FtpConfigDisplayer/>
+                                                <ftp:FtpConfigDisplayer Name="FtpConfigDisplayer"/>
                                         </Expander>
                                 </ScrollViewer>
                         </Grid>

@@ -15,7 +15,7 @@
     
     <Grid RowDefinitions="100,25,50,50,25,50,50,25,50,50,30,25,60,*">
         <!-- First Row : Image and FullName-->
-        <Grid Row="0" ColumnDefinitions="150,*">
+        <Grid Row="0" ColumnDefinitions="150,*,50">
             
             <Grid Column="0">
                 <Image Height="75" Name="ImageExtension"/>
@@ -27,6 +27,12 @@
                         <TextBlock Margin="0 40 0 0" Name="FileName"/>
                     </Border>
                 </StackPanel>
+            </Grid>
+            
+            <Grid Grid.Column="2">
+                <Button Name="Star" Click="OnFavoriteClicked">
+                    <Image Name="StarIcon" Source="{x:Static resource:ResourcesIcons.StarIcon}"/>
+                </Button>
             </Grid>
             
         </Grid>
