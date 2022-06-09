@@ -91,11 +91,13 @@ namespace ResourcesLoader
                                                                    "IconsCompressed/Path.ico");
         public static readonly IImage OpenCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                   "IconsCompressed/Open.ico");
-        public static readonly IImage StarredCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                                  "IconsCompressed/Starred.ico");
         public static readonly IImage SaveCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                      "IconsCompressed/Save.ico");
         public static readonly IImage HomeCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                   "IconsCompressed/Home.ico");
+        public static readonly IImage StarCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                            "IconsCompressed/Star.ico");
+        public static readonly IImage StarredCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                              "IconsCompressed/Starred.ico");
     }
 }
