@@ -23,7 +23,7 @@
             
             <Grid Column="1">
                 <StackPanel>
-                    <Border Background="#FFFFFF">
+                    <Border>
                         <TextBlock Margin="0 40 0 0" Name="FileName"/>
                     </Border>
                 </StackPanel>
