@@ -1,7 +1,7 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
-        Width="176" Height="188"
+        Width="176" Height="223"
         x:Class="Ui.Views.Information.MoreInformation"
         KeyDown="OnEscapePressed"
         PointerLeave="OnPointerLeave">
@@ -10,7 +10,7 @@
         <StyleInclude Source="/Styles/Styles.axaml"/>
     </UserControl.Styles>
     
-    <Grid RowDefinitions="35,5,70,5,35,35">
+    <Grid RowDefinitions="35,5,70,5,35,35,35">
         <!-- Buttons for basic actions -->
         <Grid Row="0">
             <WrapPanel>
@@ -81,6 +81,8 @@
                     </Grid>
                 </Grid>
             </Button>
+        </Grid>
+        <Grid Row="6">
             <Button Classes="MoreMenu" Name="Favorite">
                 <Grid ColumnDefinitions="50, 125">
                     <Grid Column="0">
