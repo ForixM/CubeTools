@@ -12,14 +12,14 @@ namespace InitLoader
         private static void InitAssets()
         {
             // Get pack of assets
-            if (!Directory.Exists("Assets") || !Directory.Exists("Assets/default"))
+            if (!Directory.Exists("Assets") || !Directory.Exists("Assets/Default - Light"))
                 throw new ManagerException("Critical Error while loading assets", Level.Crash, "Assets not found","Assets could not be find in the given env");
-            if (ConfigLoader.ConfigLoader.Settings.AssetsPath != "Assets/default")
+            if (ConfigLoader.ConfigLoader.Settings.AssetsPath != "Assets/Default - Light")
             {
-                if (Directory.Exists("default") && Directory.EnumerateDirectories("Assets").Count() >= 2 && ConfigLoader.ConfigLoader.Settings.AssetsPath != null)
-                    _getPackagingAssets(ConfigLoader.ConfigLoader.Settings.AssetsPath, "Assets/default");
+                if (Directory.Exists("Default - Light") && Directory.EnumerateDirectories("Assets").Count() >= 2 && ConfigLoader.ConfigLoader.Settings.AssetsPath != null)
+                    _getPackagingAssets(ConfigLoader.ConfigLoader.Settings.AssetsPath, "Assets/Default - Light");
                 else
-                    ConfigLoader.ConfigLoader.Settings.AssetsPath = "Assets/default";
+                    ConfigLoader.ConfigLoader.Settings.AssetsPath = "Assets/Default - Light";
             }
             
             // 

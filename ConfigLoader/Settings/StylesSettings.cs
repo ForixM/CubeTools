@@ -11,7 +11,7 @@ namespace ConfigLoader.Settings
         public StylesSettings()
         {
             Theme = "Light";
-            Pack = "Assets/Default";
+            Pack = "Assets/Default - Light";
         }
     }
 }

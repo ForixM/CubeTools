@@ -5,13 +5,13 @@ namespace ResourcesLoader
 {
     public static class ResourcesIcons
     {
-        public static readonly IImage  CopyIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage  CopyIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "Icons/Copy.ico");
-        public static readonly IImage CompressionIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage CompressionIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "Icons/Compression.ico");
-        public static readonly IImage CreateIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage CreateIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "Icons/Create.ico");
-        public static readonly IImage CreateFolderIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage CreateFolderIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "Icons/CreateFolder.ico");
         public static readonly IImage CubeToolsIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "Icons/CubeTools.ico");
@@ -97,5 +97,17 @@ namespace ResourcesLoader
                                                             "Icons/Star.ico");
         public static readonly IImage StarredIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                             "Icons/Starred.ico");
+
+        public static void Reload()
+        {
+            CopyIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                  "Icons/Copy.ico");
+            CompressionIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                         "Icons/Compression.ico");
+            CreateIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                    "Icons/Create.ico");
+            CreateFolderIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                          "Icons/CreateFolder.ico");
+        }
     }
 }
