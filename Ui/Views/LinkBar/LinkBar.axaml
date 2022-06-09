@@ -23,7 +23,7 @@
             </Grid.ColumnDefinitions>
 			
             <Grid Grid.Column="0">
-                <Image Source="{x:Static resource:ResourcesIconsCompressed.CubeToolsCompressed}" Margin="25 0 0 0" Width="70"/>
+                <Image Name="RemoteIcon" Source="{x:Static resource:ResourcesIconsCompressed.CubeToolsCompressed}" Margin="25 0 0 0" Width="70"/>
             </Grid>
             <Grid Grid.Column="1">
                 <Image Source="{x:Static resource:ResourcesIconsCompressed.CubeToolsNameCompressed}" Margin="0 0 25 0" Width="125"/>

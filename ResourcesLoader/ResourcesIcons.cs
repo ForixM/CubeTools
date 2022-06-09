@@ -34,7 +34,7 @@ namespace ResourcesLoader
         public static readonly IImage FtpIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "Icons/FTP.ico");
         public static readonly IImage GoogleDriveIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "Icons/GoogleDrive.ico");
+                                                           "Icons/GoogleDrive (2).ico");
         public static readonly IImage ImagesIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "Icons/Images.ico");
         public static readonly IImage MusicIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
