@@ -31,9 +31,14 @@
         </Grid>
 		
         <Grid Grid.Row="1">
-			
             <ScrollViewer>
                 <StackPanel>
+                    <Button Background="Transparent" HorizontalAlignment="Center" Margin="0 0 0 5" Height="50" Width="225">
+                        <WrapPanel>
+                            <Image HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.HomeCompressed}"/>
+                            <TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Text="Home"/>
+                        </WrapPanel>
+                    </Button>
                     <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Quick Access">
                         <StackPanel Name="QuickAccess"/>
                     </Expander>

@@ -95,5 +95,7 @@ namespace ResourcesLoader
                                                                   "IconsCompressed/Starred.ico");
         public static readonly IImage SaveCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                      "IconsCompressed/Save.ico");
+        public static readonly IImage HomeCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                  "IconsCompressed/Home.ico");
     }
 }
