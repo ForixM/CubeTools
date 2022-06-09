@@ -62,10 +62,10 @@ namespace Library.FilePointer
                 throw e switch
                 {
                     SecurityException or UnauthorizedAccessException or NullReferenceException =>
-                        new AccessException(Path + " cannot be read", "GetFileSize"),
-                    IOException => new DiskNotReadyException(Path + " cannot be read", "GetFileSize"),
+                        new AccessException(Path + " cannot be read", "GetSize"),
+                    IOException => new DiskNotReadyException(Path + " cannot be read", "GetSize"),
                     _ => new ManagerException("Reader error", Level.Normal, "Unable to enumerate files",
-                        Path + " and their children could not be read", "GetFileSize")
+                        Path + " and their children could not be read", "GetSize")
                 };
             }
         }

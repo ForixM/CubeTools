@@ -80,6 +80,7 @@ namespace Ui.Views
                 }
                 else
                 {
+                    Client.AccessPath(pointer);
                     NavigationView.AccessPath(pointer);
                     PointersView.Refresh();
                 }
@@ -103,6 +104,7 @@ namespace Ui.Views
                 }
                 else
                 {
+                    Client.AccessPath(pointer);
                     NavigationView.AccessPath(pointer);
                     PointersView.Refresh();
                 }
@@ -110,16 +112,19 @@ namespace Ui.Views
         }
 
         /// <summary>
-        /// 
+        /// Access the Pointer with its path
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The path of the item</param>
         public void AccessPath(string path)
         {
             try
             {
                 AccessPath(Client.GetItem(path)!);
             }
-            catch (Exception) {}
+            catch (ManagerException e)
+            {
+                new ErrorBase(e).Show();
+            }
         }
 
         /// <summary>
@@ -129,13 +134,14 @@ namespace Ui.Views
         {
             try
             {
-                Client.Children = Client.ListChildren()!;
+                Client.Refresh();
+                NavigationView.Refresh();
+                PointersView.Refresh();
             }
-            catch (Exception e)
+            catch (ManagerException e)
             {
-                if (e is ManagerException @managerException) new ErrorBase(@managerException).ShowDialog<object>(Main);
+                new ErrorBase(e).ShowDialog<object>(Main);
             }
-            PointersView.Refresh();
         }
 
         /// <summary>
@@ -143,6 +149,21 @@ namespace Ui.Views
         /// </summary>
         /// <param name="list">the list of pointer to display</param>
         public void Refresh(List<Pointer> list) => PointersView.Refresh(list);
+
+        public void TreatError(ErrorBase error, object result)
+        {
+            switch (error.Type)
+            {
+                case PopUpAction.INFO :
+                    bool resultBool = (bool) result;
+                    if (resultBool) Refresh();
+                    break;
+                case PopUpAction.REFRESH:
+                    bool resultBool2 = (bool) result;
+                    if (resultBool2) Refresh();
+                    break;
+            }
+        }
         
         #endregion
     }

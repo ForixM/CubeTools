@@ -1,0 +1,14 @@
+ <UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
+             x:Class="Ui.Views.Ftp.FtpConfigDisplayer">
+	 
+	 <Grid RowDefinitions="*">
+		 <Grid Row="0">
+			 <StackPanel Name="Generator"/>
+			 <Button Height="40" Click="OnConfigurationAdded">
+				 <Image Source="{x:Static resource:ResourcesIcons.CreateIcon}"/>
+			 </Button>
+		 </Grid>
+	 </Grid>
+ </UserControl>

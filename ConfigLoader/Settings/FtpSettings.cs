@@ -5,7 +5,6 @@ namespace ConfigLoader.Settings
     [DataContract]
     public class FtpSettings
     {
-        [DataMember(Name="current")] public OneFtpSettings? Server { get; set; }
         [DataMember(Name = "servers")] public List<OneFtpSettings>? Servers { get; set; }
     }
 

@@ -21,12 +21,5 @@ namespace Ui.Views.Settings.Generators
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
-
-        private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-        {
-            if (ConfigLoader.ConfigLoader.Settings.Ftp != null && e.AddedItems.Count == 1 &&
-                e.AddedItems[0] is FtpServerObject @server)
-                ConfigLoader.ConfigLoader.Settings.Ftp.Server = @server.Server;
-        }
     }
 }

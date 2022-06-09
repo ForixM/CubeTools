@@ -89,7 +89,16 @@ namespace Ui.Views
         {
             if (Main.Client.CurrentFolder is not null && Main.Client.Root.Path != Main.Client.CurrentFolder.Path)
             {
-                Main.AccessPath(Main.Client.GetParentReference(Main.Client.CurrentFolder));
+                try
+                {
+                    Main.AccessPath(Main.Client.GetParentReference(Main.Client.CurrentFolder));
+                }
+                catch (ManagerException exception)
+                {
+                    exception.Errorstd = "Unable to access this path";
+                    new ErrorBase(exception).Show();
+                }
+
                 if (Main.Client.CurrentFolder is { } folder)
                     Main.NavigationView.Add(folder);
             }
@@ -114,14 +123,6 @@ namespace Ui.Views
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Refresh()
-        {
-            if (Main.Client.CurrentFolder is not null) CurrentPathXaml.Text = Main.Client.CurrentFolder.Path;
-        }
-
         private void SettingsClick(object? sender, RoutedEventArgs e) => new SettingsWindow().Show();
         
         #endregion
@@ -132,35 +133,12 @@ namespace Ui.Views
         ///     Access the path by changing the loaded pointer
         /// </summary>
         /// <param name="pointer">the given path to access</param>
-        public void AccessPath(Pointer pointer)
-        {
-            try
-            {
-                Main.Client.AccessPath(pointer);
-            }
-            catch (ManagerException e)
-            {
-                new ErrorBase(e).Show();
-                //new ErrorBase(e).ShowDialog<object>(Main.Main);
-            }
-            CurrentPathXaml.Text = Main.Client.CurrentFolder!.Path;
-        }
+        public void AccessPath(Pointer pointer) => CurrentPathXaml.Text = Main.Client.CurrentFolder!.Path;
 
         /// <summary>
         ///     Reload the pointer
         /// </summary>
-        public void ReloadPath()
-        {
-            try
-            {
-                Main.Client.Refresh();
-                Main.NavigationView.ReloadPath();
-            }
-            catch (ManagerException e)
-            {
-                new ErrorBase(e).ShowDialog<object>(Main.Main);
-            }
-        }
+        public void Refresh() => CurrentPathXaml.Text = Main.Client.CurrentFolder!.Path;
         
         /// <summary>
         /// Add a folder in the queue

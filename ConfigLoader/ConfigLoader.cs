@@ -11,7 +11,6 @@ namespace ConfigLoader
         /// </summary>
         public static ConfigSettings Settings;
         
-        
         /// <summary>
         /// Load a configuration in the ConfigSettings instance
         /// </summary>

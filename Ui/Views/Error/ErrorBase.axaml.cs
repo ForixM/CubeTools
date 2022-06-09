@@ -12,6 +12,7 @@ namespace Ui.Views.Error
         private readonly TextBlock _stdError;
         private readonly Image _imageError;
         public Grid Container;
+        public PopUpAction Type;
         public readonly ManagerException BaseException;
         
         public ErrorBase()

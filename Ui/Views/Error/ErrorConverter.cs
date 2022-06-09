@@ -11,7 +11,8 @@ namespace Ui.Views.Error
     {
         public static void SetContainer(ErrorBase reference, ManagerException exception)
         {
-            reference.Container.Children.Add(GetAction(exception) switch
+            reference.Type = GetAction(exception);
+            reference.Container.Children.Add(reference.Type switch
             {
                 PopUpAction.INFO => new ErrorInfo(reference),
                 PopUpAction.REFRESH => new RefreshAction(reference),

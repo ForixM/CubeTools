@@ -37,7 +37,7 @@ namespace Library.ManagerReader
         {
             localPointer.FileInfo = new FileInfo(localPointer.Path);
             localPointer.Type = GetFileExtension(localPointer);
-            localPointer.Size = GetFileSize(localPointer);
+            localPointer.Size = GetSize(localPointer);
             localPointer.Name = GetPathToName(localPointer);
         }
         
@@ -56,7 +56,7 @@ namespace Library.ManagerReader
         {
             localPointer.DirectoryInfo = new DirectoryInfo(localPointer.Path);
             localPointer.Type = GetFileExtension(localPointer);
-            localPointer.Size = GetFileSize(localPointer);
+            localPointer.Size = GetSize(localPointer);
             localPointer.Name = GetPathToName(localPointer);
         }
     }
