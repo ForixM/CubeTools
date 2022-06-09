@@ -1,7 +1,7 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
-        Width="211" Height="190"
+        Width="176" Height="188"
         x:Class="Ui.Views.Information.MoreInformation"
         KeyDown="OnEscapePressed"
         PointerLeave="OnPointerLeave">
@@ -32,20 +32,20 @@
             </WrapPanel>
         </Grid>
         <Grid Row="1">
-            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="15 5 15 0" Width="180"/>
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="15 5 15 0" Width="145"/>
         </Grid>
         <!-- Open actions -->
         <Grid Row="2">
-            <Grid ColumnDefinitions="50, 160">
+            <Grid ColumnDefinitions="50, 125">
                 <Grid Column="0">
-                    <Image Classes="MoreMenu" Height="35" VerticalAlignment="Center" HorizontalAlignment="Center" Source="{x:Static resource:ResourcesIconsCompressed.OpenCompressed}"/>
+                    <Image Classes="MoreMenu" Margin="10 0 0 0" Height="26" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.OpenCompressed}"/>
                 </Grid>
                 <Grid Column="1">
                     <StackPanel VerticalAlignment="Center">
-                        <Button Click="OpenWithDefault" Classes="MoreMenu" Width="160">
+                        <Button Click="OpenWithDefault" Classes="MoreMenu" Width="125">
                             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Open"/>
                         </Button>
-                        <Button Click="OpenWith" Classes="MoreMenu" Width="160">
+                        <Button Click="OpenWith" Classes="MoreMenu" Width="125">
                             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Open With"/>
                         </Button>
                     </StackPanel>
@@ -54,13 +54,13 @@
         </Grid>
         
         <Grid Row="3">
-            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="15 0 15 5" Width="180"/>
+            <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="15 0 15 5" Width="145"/>
         </Grid>
         <!-- Secondary actions -->
         
         <Grid Row="4">
             <Button Click="CopyAsPath" Classes="MoreMenu">
-                <Grid ColumnDefinitions="50, 160">
+                <Grid ColumnDefinitions="50, 125">
                     <Grid Column="0">
                         <Image Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.PathCompressed}"/>
                     </Grid>
@@ -72,7 +72,7 @@
         </Grid>
         <Grid Row="5">
             <Button Classes="MoreMenu" Name="Compress">
-                <Grid ColumnDefinitions="50, 160">
+                <Grid ColumnDefinitions="50, 125">
                     <Grid Column="0">
                         <Image Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.CompressionCompressed}"/>
                     </Grid>
