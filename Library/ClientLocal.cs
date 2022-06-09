@@ -23,15 +23,15 @@ namespace Library {
 
         #region Actions
 
-        public override Pointer CreateFile(string name) => ManagerWriter.ManagerWriter.Create(name);
+        public override Pointer CreateFile(string name) => ManagerWriter.ManagerWriter.Create(CurrentFolder.Path + "/" + name);
 
-        public override Pointer CreateFolder(string name) => ManagerWriter.ManagerWriter.CreateDir(name);
+        public override Pointer CreateFolder(string name) => ManagerWriter.ManagerWriter.CreateDir(CurrentFolder.Path + "/" + name);
 
         public override Pointer? Copy(Pointer pointer) => ManagerWriter.ManagerWriter.Copy(pointer.Path, CurrentFolder.Path);
 
         public override void Delete(Pointer pointer) =>  ManagerWriter.ManagerWriter.Delete(pointer.Path);
 
-        public override void Rename(Pointer pointer, string newName) =>  ManagerWriter.ManagerWriter.Rename(pointer.Path, newName);
+        public override void Rename(Pointer pointer, string newName) =>  ManagerWriter.ManagerWriter.Rename(pointer.Path, CurrentFolder.Path + "/" + newName);
 
         public override void UploadFile(Client source, Pointer pointer, Pointer destination)
         {
@@ -65,8 +65,15 @@ namespace Library {
 
         public override Pointer? GetItem(string path, bool isAbsolute = false)
         {
-            if (!isAbsolute)  path = CurrentFolder!.Path + "/" + path;
-            return Directory.Exists(path) ? new DirectoryLocalPointer(path) : new FileLocalPointer(path);
+            try
+            {
+                if (isAbsolute) path = CurrentFolder!.Path + "/" + path;
+                return Directory.Exists(path) ? new DirectoryLocalPointer(path) : new FileLocalPointer(path);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         public override string GetItemName(Pointer pointer) => ManagerReader.ManagerReader.GetPathToName(pointer.Path);

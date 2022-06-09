@@ -90,8 +90,7 @@ namespace Library
             {
                 try
                 {
-                    OnePointer pointer =
-                        JsonConvert.DeserializeObject<OnePointer>(_clientOneDrive.GetItemFullMetadata(path).ToString());
+                    OnePointer pointer = JsonConvert.DeserializeObject<OnePointer>(_clientOneDrive.GetItemFullMetadata(path).ToString());
                     pointer.SetVariables();
                     return pointer;
                 }
@@ -145,9 +144,6 @@ namespace Library
         }
 
         #endregion
-
-        #region Others
-
-        #endregion
+        
     }
 }

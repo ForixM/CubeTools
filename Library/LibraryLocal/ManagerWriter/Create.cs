@@ -9,7 +9,7 @@ namespace Library.ManagerWriter
 
         /// <summary>
         ///     - Type : Low Level : Create a FILE using a dest name and an extension if given <br></br>
-        ///     - Action : Create a file with the extension. If file already exists, creat one by generating a new name <br></br>
+        ///     - Action : Create a file with the extension. If file already exists, create one by generating a new name <br></br>
         ///     - Implementation : Check
         /// </summary>
         /// <param name="dest">the given FILE NAME</param>

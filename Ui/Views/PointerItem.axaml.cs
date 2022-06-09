@@ -19,7 +19,6 @@ namespace Ui.Views
         
         private Image _icon;
         private TextBlock _name;
-        private TextBlock _size;
         public Button button;
 
         #endregion
@@ -31,7 +30,6 @@ namespace Ui.Views
             InitializeComponent();
             _icon = this.FindControl<Image>("Icon");
             _name = this.FindControl<TextBlock>("Name");
-            _size = this.FindControl<TextBlock>("Size");
             button = this.FindControl<Button>("Button");
         }
 
@@ -40,7 +38,6 @@ namespace Ui.Views
             Pointer = pointer;
             _main = main;
             _name.Text = pointer.Name;
-            _size.Text = pointer.Size.ToString();
             _icon.Source = ResourcesConverter.TypeToIcon(pointer.Path, pointer.Type, pointer.IsDir);
         }
 

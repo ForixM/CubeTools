@@ -9,7 +9,6 @@
          <WrapPanel VerticalAlignment="Center">
              <Image Name="Icon" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>
              <TextBlock Name="Name" Margin="5" VerticalAlignment="Center"/>
-             <TextBlock Name="Size" Margin="5" VerticalAlignment="Center"/>
          </WrapPanel>
          
      </Button>

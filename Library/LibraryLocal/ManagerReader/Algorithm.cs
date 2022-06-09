@@ -37,19 +37,27 @@ namespace Library.ManagerReader
             {
                 var name = GetPathToNameNoExtension(path);
                 var extension = GetFileExtension(path);
-                while (File.Exists(res) || Directory.Exists(res))
-                    res = $"{dir}/{name} - Copy.{extension}";
+                if (extension == "")
+                {
+                    while (File.Exists(res) || Directory.Exists(res))
+                        res = $"{dir}/{name} - Copy";
+                }
+                else
+                {
+                    while (File.Exists(res) || Directory.Exists(res))
+                        res = $"{dir}/{name} - Copy.{extension}";
+                }
                 return res;
             }
             else
             {
-                var name = GetPathToName(path);
                 while (File.Exists(res) || Directory.Exists(res))
                     res += "- Copy";
 
                 return res;
             }
         }
+        
 
         /// <summary>
         ///     - Type : Low Level <br></br>

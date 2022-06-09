@@ -110,7 +110,7 @@ namespace Ui.Views.LinkBar
 	        var last = ConfigLoader.ConfigLoader.Settings.Links;
 	        while (Main.Main is MainWindow {IsClosed: false})
 	        {
-		        Thread.Sleep(3000);
+		        Thread.Sleep(1000);
 		        Dispatcher.UIThread.Post(() =>
 		        {
 			        _favorites.Children.Clear();
@@ -121,7 +121,7 @@ namespace Ui.Views.LinkBar
 	        }
 	        while (Main.Main is MainWindowRemote {IsClosed: false})
 	        {
-		        Thread.Sleep(3000);
+		        Thread.Sleep(1000);
 		        Dispatcher.UIThread.Post(() =>
 		        {
 			        _favorites.Children.Clear();
@@ -139,7 +139,7 @@ namespace Ui.Views.LinkBar
         {
 	        while (Main.Main is MainWindow {IsClosed: false})
 	        {
-		        Thread.Sleep(3000);
+		        Thread.Sleep(2000);
 		        Dispatcher.UIThread.Post(() =>
 		        {
 			        _quickAccess.Children.Clear();
@@ -161,7 +161,7 @@ namespace Ui.Views.LinkBar
 	        }
 	        while (Main.Main is MainWindowRemote {IsClosed: false})
 	        {
-		        Thread.Sleep(3000);
+		        Thread.Sleep(2000);
 		        Dispatcher.UIThread.Post(() =>
 		        {
 			        _quickAccess.Children.Clear();

@@ -17,7 +17,8 @@
         ExtendClientAreaTitleBarHeightHint="-1"
         KeyDown="OnKeyPressedWindow"
         KeyUp='OnKeyReleasedWindow'
-        Closing="Closed">
+        Closing="Closed"
+        TransparencyLevelHint="AcrylicBlur">
     
     <!-- Styles Imports -->
     <Window.Styles>

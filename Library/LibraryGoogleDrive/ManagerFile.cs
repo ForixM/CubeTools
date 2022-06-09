@@ -8,7 +8,7 @@ namespace Library.LibraryGoogleDrive
     {
         public static string CreateFolder(string parent, string folderName)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var DriveFolder = new Google.Apis.Drive.v3.Data.File();
             DriveFolder.Name = folderName;
             DriveFolder.MimeType = "application/vnd.google-apps.folder";
@@ -21,7 +21,7 @@ namespace Library.LibraryGoogleDrive
 
         public static string CreateFile(string folderId, string fileName)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var DriveFile = new Google.Apis.Drive.v3.Data.File();
             
             DriveFile.Name = fileName;
@@ -37,7 +37,7 @@ namespace Library.LibraryGoogleDrive
             string fileDescription = "")
         {
             Stream file = System.IO.File.OpenRead(@path);
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var DriveFile = new Google.Apis.Drive.v3.Data.File();
 
             DriveFile.Name = fileName;
@@ -56,7 +56,7 @@ namespace Library.LibraryGoogleDrive
 
         public static void DownloadFile(string fileId, string path)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var request = Service.Files.Get(fileId);
             var stream = new MemoryStream();
 
@@ -92,15 +92,17 @@ namespace Library.LibraryGoogleDrive
 
         public static void DeleteFile(string fileId)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var command = Service.Files.Delete(fileId);
             command.Execute();
         }
 
         public static string CopyFile(string fileId)
         {
-            var Service = OAuth.GetDriveService();
-            var DriveFile = Service.Files.Get(fileId).Execute();
+            var Service = ClientGoogleDrive.Service;
+            var request = Service.Files.Get(fileId);
+            request.Fields = "parents,name";
+            var DriveFile = request.Execute();
 
             string name = DriveFile.Name + "- Copy";
 
@@ -110,8 +112,8 @@ namespace Library.LibraryGoogleDrive
             }
             
             var copyFile = new Google.Apis.Drive.v3.Data.File();
-            var command = Service.Files.Copy(copyFile, fileId).Execute();
-            copyFile.Name = name;
+            copyFile = Service.Files.Copy(copyFile, fileId).Execute();
+            Rename(copyFile.Id, name);
             return copyFile.Id;
         }
 

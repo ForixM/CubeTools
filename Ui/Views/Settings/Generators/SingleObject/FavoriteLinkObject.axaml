@@ -4,8 +4,8 @@
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader">
 	 
 	 <WrapPanel>
-		 <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Height="40" Name="Name"/>
-		 <TextBox HorizontalAlignment="Left" VerticalAlignment="Center" Width="220" Height="40" Name="Path"/>
+		 <TextBox FontSize="12" MaxLength="15" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Height="40" Name="Name"/>
+		 <TextBox FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Center" Width="220" Height="40" Name="Path"/>
 		 <Button Background="Transparent" Width="40" Height="40" Click="OnButtonClick">
 			 <Image Width="30" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.SaveCompressed}"/>
 		 </Button>

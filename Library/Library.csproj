@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ConfigLoader\ConfigLoader.csproj" />
       <ProjectReference Include="..\LogErrors\LogErrors.csproj" />
     </ItemGroup>
 

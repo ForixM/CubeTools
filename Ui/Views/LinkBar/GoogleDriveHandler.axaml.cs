@@ -1,6 +1,11 @@
+using System.IO;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
+using Library;
+using Library.ManagerExceptions;
+using Ui.Views.Error;
 
 namespace Ui.Views.LinkBar
 {
@@ -24,7 +29,9 @@ namespace Ui.Views.LinkBar
 
         private void OpenClient(object? sender, RoutedEventArgs e)
         {
-            
+            ClientGoogleDrive clientRemote = new ClientGoogleDrive();
+            ClientLocal clientLocal = new ClientLocal(Directory.GetCurrentDirectory().Replace('\\','/'));
+            new MainWindowRemote(clientLocal, clientRemote).Show();
         }
 
     }

@@ -1,14 +1,22 @@
-﻿using Library.LibraryGoogleDrive;
+﻿using Google.Apis.Drive.v3;
+using Library.LibraryGoogleDrive;
 
 namespace Library
 {
     public class ClientGoogleDrive : Client
     {
-        //private OnedriveClient _clientOneDrive;
+        public static DriveService Service;
+
+        static ClientGoogleDrive()
+        {
+            Service = OAuth.GetDriveService();
+        }
 
         public ClientGoogleDrive() : base(ClientType.GOOGLEDRIVE)
         {
-            //_clientOneDrive = new OnedriveClient();
+            Root = new GoogleDriveFile("root");
+            CurrentFolder = new GoogleDriveFile("root");
+            Children = ListChildren();
         }
         
         
@@ -30,8 +38,9 @@ namespace Library
 
         public override Pointer? Copy(Pointer pointer)
         {
-            GoogleDriveFile file =
-                new GoogleDriveFile(ManagerFile.CopyFile(((GoogleDriveFile)pointer).Id));
+            GoogleDriveFile file = new GoogleDriveFile(ManagerFile.CopyFile(((GoogleDriveFile)pointer).Id));
+            string parentId = ((GoogleDriveFile) this.CurrentFolder).Id;
+            file = new GoogleDriveFile(ManagerFile.ChangeParentsFile(file.Id, parentId));
             return file;
         }
 
@@ -45,11 +54,6 @@ namespace Library
             ManagerFile.Rename(((GoogleDriveFile)pointer).Id, newName);
         }
 
-        /*public override void UploadFile(Pointer localPointer, Pointer destination)
-        {
-            ManagerFile.UploadFile(localPointer.Path, localPointer.Name, localPointer.Type, ((GoogleDriveFile)destination).Id);
-        }*/
-
         public override void UploadFile(Client source, Pointer localPointer, Pointer destination)
         {
             ManagerFile.UploadFile(localPointer.Path, localPointer.Name, "application/vnd.google-apps.folder", ((GoogleDriveFile)destination).Id);
@@ -57,18 +61,23 @@ namespace Library
 
         public override void UploadFolder(Client source, Pointer localPointer, Pointer destination)
         {
-            throw new NotImplementedException();
+            ManagerFile.UploadFile(localPointer.Path, localPointer.Name, localPointer.Type, ((GoogleDriveFile)destination).Id);
         }
 
         public override void AccessPath(Pointer destination)
         {
-            throw new NotImplementedException();
-            //destination.Path = FileReader.GetPathFromFile(((GoogleDriveFile) destination).Id);
+            CurrentFolder = new GoogleDriveFile(FileReader.GetFileIdFromPath(destination.Path));
+            foreach (var pointer in Children) pointer.Dispose();
+            GC.Collect();
+            Children.Clear();
+            Children = ListChildren();
         }
 
         public override Pointer? GetItem(string path, bool isAbsolute = false)
         {
+            if (!isAbsolute) path = CurrentFolder.Path + "/" + path;
             string fileId = FileReader.GetFileIdFromPath(path);
+            if (fileId is null) return null;
             
             GoogleDriveFile file = new GoogleDriveFile(fileId);
             return file;
@@ -85,7 +94,7 @@ namespace Library
 
         public override List<Pointer>? ListChildren()
         {
-            List<Google.Apis.Drive.v3.Data.File> files = FileReader.ListFileAndFolder(((GoogleDriveFile) this.CurrentFolder).Id);
+            List<Google.Apis.Drive.v3.Data.File> files = FileReader.ListFileAndFolder(((GoogleDriveFile) CurrentFolder).Id);
             List<Pointer> items = new List<Pointer>();
             foreach (var i in files)
             {

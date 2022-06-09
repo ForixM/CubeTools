@@ -5,6 +5,8 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library;
+using Library.ManagerExceptions;
+using Ui.Views.Error;
 
 namespace Ui.Views.Information
 {
@@ -86,6 +88,22 @@ namespace Ui.Views.Information
                 new Properties.Properties(itemXaml!.Pointer, _main!.Client).Show();
             }
             catch (Exception) {}
+        }
+        
+        private void CompressPressed(object? sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (_main!.Client.Type is ClientType.LOCAL)
+                {
+                    //_main.Client.Compress();
+                }
+            }
+            catch (ManagerException exception)
+            {
+                new ErrorBase(exception).Show();
+            }
+            
         }
         
         #endregion

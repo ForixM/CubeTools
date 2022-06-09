@@ -15,19 +15,19 @@
         <Grid Row="0">
             <WrapPanel>
                 <Button Classes="MoreMenu" Width="35" Name="CopyButton" Click="Copy" ToolTip.Tip="Copy">
-	                <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.CopyCompressed}"/>
+	                <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIcons.CopyIcon}"/>
                 </Button>
                 <Button Classes="MoreMenu" Width="35" Name="CutButton" Click="Cut" ToolTip.Tip="Cut">
-	                <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.CutCompressed}"/>
+	                <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIcons.CutIcon}"/>
                 </Button>
                 <Button Classes="MoreMenu" Width="35" Name="RenameButton" Click="Rename" ToolTip.Tip="Rename">
-	                <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.RenameCompressed}"/>
+	                <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIcons.RenameIcon}"/>
                 </Button>
                 <Button Classes="MoreMenu" Width="35" Name="DeleteButton" Click="Delete" ToolTip.Tip="Delete">
-                    <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.DeleteCompressed}"/>
+                    <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIcons.DeleteIcon}"/>
                 </Button>
                 <Button Classes="MoreMenu" Width="35" Name="Properties" Click="OnPropertiesOpen" ToolTip.Tip="Delete">
-                    <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIconsCompressed.InfoCompressed}"/>
+                    <Image Classes="MoreMenu" Height="35" Source="{x:Static resource:ResourcesIcons.InfoIcon}"/>
                 </Button>
             </WrapPanel>
         </Grid>
@@ -74,10 +74,20 @@
             <Button Classes="MoreMenu" Name="Compress">
                 <Grid ColumnDefinitions="50, 125">
                     <Grid Column="0">
-                        <Image Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.CompressionCompressed}"/>
+                        <Image Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIcons.CompressionIcon}"/>
                     </Grid>
                     <Grid Column="1">
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Compress"/>
+                    </Grid>
+                </Grid>
+            </Button>
+            <Button Classes="MoreMenu" Name="Favorite">
+                <Grid ColumnDefinitions="50, 125">
+                    <Grid Column="0">
+                        <Image Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIcons.StarIcon}"/>
+                    </Grid>
+                    <Grid Column="1">
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Add to Favorites"/>
                     </Grid>
                 </Grid>
             </Button>

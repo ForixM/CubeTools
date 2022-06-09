@@ -95,6 +95,8 @@ namespace Library
         /// <param name="localPointer">The Pointer</param>
         /// <param name="destination">The Remote Folder</param>
         public abstract void UploadFolder(Client source, Pointer localPointer, Pointer destination);
+
+        public virtual Pointer? CompressFile(Pointer pointer) => null;
         
         /// <summary>
         /// Access the path given by name <br></br>
@@ -102,16 +104,7 @@ namespace Library
         /// </summary>
         /// <param name="destination">the name folder or file</param>
         public abstract void AccessPath(Pointer destination);
-
-        /// <summary>
-        /// Refresh the children of the client
-        /// </summary>
-        public void Refresh()
-        {
-            DisposeChildren();
-            Children = ListChildren() ?? new List<Pointer>();
-        }
-
+        
         /// <summary>
         /// Get the item by its name if it exists in the current loaded folder
         /// </summary>
@@ -211,11 +204,20 @@ namespace Library
         #endregion
         
         #region Memory
+        
+        /// <summary>
+        /// Refresh the children of the client
+        /// </summary>
+        public void Refresh()
+        {
+            DisposeChildren();
+            Children = ListChildren() ?? new List<Pointer>();
+        }
 
         /// <summary>
         /// Dispose the children
         /// </summary>
-        public void DisposeChildren()
+        protected void DisposeChildren()
         {
             foreach (var item in Children) item.Dispose();
             GC.Collect();

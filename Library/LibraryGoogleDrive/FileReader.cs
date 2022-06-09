@@ -8,7 +8,7 @@ namespace Library.LibraryGoogleDrive
     {
         public static string GetFolderId(string FolderName, string Parent = "")
         {
-            var service = OAuth.GetDriveService();
+            var service = ClientGoogleDrive.Service;
 
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.PageSize = 10;
@@ -35,7 +35,7 @@ namespace Library.LibraryGoogleDrive
 
         public static string GetFileId(string FileName, string Parent = "")
         {
-            var service = OAuth.GetDriveService();
+            var service = ClientGoogleDrive.Service;
 
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.PageSize = 10;
@@ -62,7 +62,7 @@ namespace Library.LibraryGoogleDrive
 
         public static List<Google.Apis.Drive.v3.Data.File> ListFileAndFolder(string folderID)
         {
-            var service = OAuth.GetDriveService();
+            var service = ClientGoogleDrive.Service;
 
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
@@ -84,7 +84,7 @@ namespace Library.LibraryGoogleDrive
         
         public static List<Google.Apis.Drive.v3.Data.File> ListFile(string folderID)
         {
-            var service = OAuth.GetDriveService();
+            var service = ClientGoogleDrive.Service;
 
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
@@ -106,7 +106,7 @@ namespace Library.LibraryGoogleDrive
         
         public static List<Google.Apis.Drive.v3.Data.File> ListFolder(string folderID)
         {
-            var service = OAuth.GetDriveService();
+            var service = ClientGoogleDrive.Service;
 
             FilesResource.ListRequest listRequest = service.Files.List();
             listRequest.Fields = "nextPageToken, files(id, name, size, mimeType)";
@@ -128,6 +128,10 @@ namespace Library.LibraryGoogleDrive
 
         public static string GetFileIdFromPath(string path)
         {
+            if (path == "")
+            {
+                return "root";
+            }
             string[] pathList = path.Split('/');
 
             string parent = "root";
@@ -144,12 +148,19 @@ namespace Library.LibraryGoogleDrive
                 parent = GetFolderId(pathList[i], parent);
             }
 
-            return GetFileId(pathList[^1], parent);
+            string fileId = GetFileId(pathList[^1], parent);
+
+            if (fileId is null)
+            {
+                fileId = GetFolderId(pathList[^1], parent);
+            }
+
+            return fileId;
         }
 
         public static string GetFileName(string fileId)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var DriveFile = Service.Files.Get(fileId).Execute();
 
             return DriveFile.Name;
@@ -157,7 +168,7 @@ namespace Library.LibraryGoogleDrive
         
         public static string GetFileType(string fileId)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var DriveFile = Service.Files.Get(fileId).Execute();
 
             return DriveFile.MimeType;
@@ -166,7 +177,7 @@ namespace Library.LibraryGoogleDrive
         
         public static string GetFileDescription(string fileId)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var DriveFile = Service.Files.Get(fileId).Execute();
 
             return DriveFile.Description;
@@ -174,7 +185,7 @@ namespace Library.LibraryGoogleDrive
         
         public static string GetFileKind(string fileId)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var DriveFile = Service.Files.Get(fileId).Execute();
 
             return DriveFile.Kind;
@@ -182,7 +193,7 @@ namespace Library.LibraryGoogleDrive
 
         public static long GetFileSize(string fileId)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var request = Service.Files.Get(fileId);
             request.Fields = "size";
             var driveFile = request.Execute();
@@ -194,7 +205,7 @@ namespace Library.LibraryGoogleDrive
 
         public static string GetFileParent(string fileId)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var request = Service.Files.Get(fileId);
             request.Fields = "parents";
             var DriveFile = request.Execute();
@@ -204,7 +215,7 @@ namespace Library.LibraryGoogleDrive
         
         public static string GetPathFromFile(string fileId)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             string pathRes = "";
             
             var request = Service.Files.Get(fileId);
@@ -227,7 +238,7 @@ namespace Library.LibraryGoogleDrive
 
         public static List<string> GetParentsFromFile(string fileId)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             List<string> parents = new List<string>();
 
             var request = Service.Files.Get(fileId);
@@ -250,7 +261,7 @@ namespace Library.LibraryGoogleDrive
 
         public static bool IsDir(string fileId)
         {
-            var Service = OAuth.GetDriveService();
+            var Service = ClientGoogleDrive.Service;
             var DriveFile = Service.Files.Get(fileId).Execute();
 
             if (DriveFile.MimeType == "application/vnd.google-apps.folder")

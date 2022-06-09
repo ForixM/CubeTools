@@ -15,7 +15,7 @@
     
     <Grid RowDefinitions="100,25,50,50,25,50,50,25,50,50,30,25,60,*">
         <!-- First Row : Image and FullName-->
-        <Grid Row="0" ColumnDefinitions="150,*,50">
+        <Grid Row="0" ColumnDefinitions="150,*,50, 5">
             
             <Grid Column="0">
                 <Image Height="75" Name="ImageExtension"/>
