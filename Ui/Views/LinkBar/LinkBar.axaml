@@ -33,22 +33,22 @@
         <Grid Grid.Row="1">
             <ScrollViewer>
                 <StackPanel>
-                    <Button Background="Transparent" HorizontalAlignment="Center" Margin="0 0 0 5" Height="50" Width="225">
+                    <Button Background="Transparent" HorizontalAlignment="Center" Margin="0 0 0 10" Height="50" Width="225">
                         <WrapPanel>
                             <Image HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.HomeCompressed}"/>
                             <TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Text="Home"/>
                         </WrapPanel>
                     </Button>
-                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Quick Access">
+                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Quick Access" Margin="0 0 0 5">
                         <StackPanel Name="QuickAccess"/>
                     </Expander>
-                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Favorites">
+                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Favorites" Margin="0 0 0 5">
                         <StackPanel Name="Favorites"/>
                     </Expander>
-                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Drives">
+                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Drives" Margin="0 0 0 5">
                         <StackPanel Name="Drives"/>
                     </Expander>
-                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Clouds">
+                    <Expander ExpandDirection="Down" Background="Transparent" IsExpanded="True" Width="225" Header="Clouds" Margin="0 0 0 13">
                         <StackPanel Name="Clouds"/>
                     </Expander>
                 </StackPanel>
