@@ -33,7 +33,11 @@ namespace Ui.Views.LinkBar
             ClientLocal clientLocal = new ClientLocal(Directory.GetCurrentDirectory().Replace('\\','/'));
             clientRemote.Client.authenticated += (o, success) =>
             {
-                if (success) Dispatcher.UIThread.Post(() => new MainWindowRemote(clientLocal, clientRemote).Show());
+                if (success)
+                {
+                    clientRemote.Children = clientRemote.ListChildren();
+                    Dispatcher.UIThread.Post(() => new MainWindowRemote(clientLocal, clientRemote).Show());
+                }
                 else new ErrorBase(new ConnectionRefused("OneDrive connection could not be established", "Connection to OneDrive")).Show();
             };
         }

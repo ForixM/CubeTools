@@ -13,9 +13,9 @@
 	</Style>
 
 	<Style Selector="Button.TopBar">
-		<Setter Property="Height" Value="40"/>
+		<Setter Property="Height" Value="45"/>
 		<Setter Property="CornerRadius" Value="4"/>
-		<Setter Property="Width" Value="50"/>
+		<Setter Property="Width" Value="45"/>
 		<Setter Property="Background" Value="Transparent"/>
 	</Style>
 

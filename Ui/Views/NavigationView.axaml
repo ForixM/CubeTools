@@ -15,47 +15,47 @@
 			<!-- Adding columns definitions -->
 			<Grid>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="50" />
-					<ColumnDefinition Width="50" />
-					<ColumnDefinition Width="50" />
-					<ColumnDefinition Width="50" />
+					<ColumnDefinition Width="45" />
+					<ColumnDefinition Width="45" />
+					<ColumnDefinition Width="45" />
+					<ColumnDefinition Width="45" />
 					<ColumnDefinition/>
-					<ColumnDefinition Width="50" />
+					<ColumnDefinition Width="45" />
 				</Grid.ColumnDefinitions>
 
 				<!-- First column : Left Button -->
 				<Grid Grid.Column="0">
 					<Button Classes="TopBar" Name="LeftButton" Click="LeftArrowClick" ToolTip.Tip="Back">
-						<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.UndoCompressed}"/>
+						<Image Classes="Manager" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.UndoCompressed}"/>
 					</Button>
 				</Grid>
 				<!--Second column : Right Button-->
 				<Grid Grid.Column="1">
 					<Button Classes="TopBar" Name="RightButton" Click="RightArrowClick" ToolTip.Tip="Forward">
-						<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.RedoCompressed}"/>
+						<Image Classes="Manager" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.RedoCompressed}"/>
 					</Button>
 				</Grid>
 				<!--Third column : Up Button-->
 				<Grid Grid.Column="2">
 					<Button Classes="TopBar" Name="UpButton" Click="UpArrowClick" ToolTip.Tip="Up">
-						<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.UpCompressed}"/>
+						<Image Classes="Manager" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.UpCompressed}"/>
 					</Button>
 				</Grid>
 				<!--Fourth column : Refresh button-->
 				<Grid Grid.Column="3">
 					<Button Classes="TopBar" Name="SyncButton" Click="SyncClick" ToolTip.Tip="Refresh">
-						<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.RefreshCompressed}"/>
+						<Image Classes="Manager" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.RefreshCompressed}"/>
 					</Button>
 				</Grid>
 				<!-- Fifth column : Path bar-->
 				<Grid Grid.Column="4">
-					<Border CornerRadius="5" Margin="0 1" >
-						<TextBox Background="Transparent" Name="CurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" />
+					<Border CornerRadius="5" Margin="0 1" Height="40">
+						<TextBox Background="Transparent" TextAlignment="Left" Height="40" Name="CurrentPath" KeyDown="EditCurrentPath" Watermark="Enter a path" />
 					</Border>
 				</Grid>
 				<Grid Grid.Column="5">
 					<Button Classes="TopBar" Name="SettingButton" Click="SettingsClick" ToolTip.Tip="Settings">
-						<Image Classes="Manager" Source="{x:Static resource:ResourcesIconsCompressed.SettingsCompressed}"/>
+						<Image Classes="Manager" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.SettingsCompressed}"/>
 					</Button>
 				</Grid>
 			</Grid>

@@ -12,7 +12,6 @@
 	 
 	 <Grid ColumnDefinitions="*">
 		 <WrapPanel Name="Generator"></WrapPanel>
-		 <!-- <StackPanel Grid.Row="0" Name="Generator"/> -->
 	 </Grid>
 	 <!-- <Grid> -->
 		<!-- <Grid.ColumnDefinitions> -->

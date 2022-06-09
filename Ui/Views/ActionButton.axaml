@@ -3,15 +3,9 @@
              x:Class="Ui.Views.ActionButton"
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader">
      
-     <Button Background="Transparent" CornerRadius="8" Name="Button" Height="50"
+     <Button Background="Transparent" CornerRadius="8" Name="Button" Height="45"
              Click="OnClick">
-         
-         <WrapPanel VerticalAlignment="Center">
-             <Image Name="Icon" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>
-             <TextBlock Name="Name" Margin="5" VerticalAlignment="Center"/>
-             <TextBlock Name="Size" Margin="5" VerticalAlignment="Center"/>
-         </WrapPanel>
-         
+         <Image HorizontalAlignment="Center" VerticalAlignment="Center" Name="Icon" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>
      </Button>
      
  </UserControl>

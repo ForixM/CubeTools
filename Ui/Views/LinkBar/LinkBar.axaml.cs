@@ -30,16 +30,16 @@ namespace Ui.Views.LinkBar
             _clouds = this.FindControl<StackPanel>("Clouds");
             _remoteIcon = this.FindControl<Image>("RemoteIcon");
             
-            if (Main is not null && Main.Main is MainWindowRemote)
-            {
-	            _remoteIcon.Source = ((MainWindowRemote) Main.Main).RemoteView.Client.Type switch
-	            {
-					            ClientType.FTP => ResourcesLoader.ResourcesIcons.FtpIcon,
-					            ClientType.ONEDRIVE => ResourcesLoader.ResourcesIconsCompressed.OneDriveCompressed,
-					            ClientType.GOOGLEDRIVE => ResourcesLoader.ResourcesIcons.GoogleDriveIcon,
-					            _ => _remoteIcon.Source
-	            };
-            }
+            // if (Main is not null && Main.Main is MainWindowRemote) //TODO Change this
+            // {
+	           //  _remoteIcon.Source = ((MainWindowRemote) Main.Main).RemoteView.Client.Type switch
+	           //  {
+					       //      ClientType.FTP => ResourcesLoader.ResourcesIcons.FtpIcon,
+					       //      ClientType.ONEDRIVE => ResourcesLoader.ResourcesIconsCompressed.OneDriveCompressed,
+					       //      ClientType.GOOGLEDRIVE => ResourcesLoader.ResourcesIcons.GoogleDriveIcon,
+					       //      _ => _remoteIcon.Source
+	           //  };
+            // }
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
