@@ -7,7 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Ui.Views.ClientUI">
     
-    <Grid Name="monsieur">
+    <Grid Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
             <RowDefinition Height="45"/>
@@ -20,9 +20,9 @@
         <Grid Grid.Row="1">
             <views:ActionView Name="ActionView"/>
         </Grid>
-        <Grid Grid.Row="2">
-            <views:PointersView Name="PointersView"/>
-        </Grid>
+        <!-- <Grid Grid.Row="2"> -->
+        <!--     <views:PointersView Name="PointersView"/> -->
+        <!-- </Grid> -->
     </Grid>
 
 </UserControl>

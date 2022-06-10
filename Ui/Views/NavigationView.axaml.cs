@@ -48,14 +48,7 @@ namespace Ui.Views
         private void EditCurrentPath(object? sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            if (((TextBox) sender).Text == "")
-            {
-                //Main.PointersView = new Menu();
-            } 
-            else
-            {
-                Main.AccessPath(((TextBox) sender!).Text);
-            }
+            Main.AccessPath(((TextBox) sender!).Text);
         }
 
         /// <summary>

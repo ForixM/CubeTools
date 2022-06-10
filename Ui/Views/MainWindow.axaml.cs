@@ -7,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Library;
 using Ui.Views.ActionButtons;
+using Ui.Views.MenuController;
 using Ui.Views.Settings;
 
 namespace Ui.Views
@@ -31,6 +32,8 @@ namespace Ui.Views
                 new RenameButton(), new DeleteButton()
             });
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
+            // Grid grid = this.FindControl<Grid>("ClientLocal");
+            // grid.Children.Add(new Ui.Views.MenuController.Menu());
             LinkBarView.Main = LocalView;
             LinkBarView.InitializeExpanders();
             KeysPressed = new List<Key>();

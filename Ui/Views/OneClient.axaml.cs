@@ -9,6 +9,7 @@ using Library.ManagerReader;
 using Ui.Views.ActionButtons;
 using Ui.Views.Error;
 using Ui.Views.MenuController;
+using Menu = Ui.Views.MenuController.Menu;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views
@@ -22,7 +23,9 @@ namespace Ui.Views
         public ActionView ActionView;
         public NavigationView NavigationView;
         public PointersView PointersView;
-        public Grid Monsieur;
+        public Menu menu;
+        public Grid grid;
+        public Grid subGrid;
 
         public ClientUI()
         {
@@ -31,7 +34,10 @@ namespace Ui.Views
             InitializeComponent();
             ActionView = this.FindControl<ActionView>("ActionView");
             NavigationView = this.FindControl<NavigationView>("NavigationView");
-            PointersView = this.FindControl<PointersView>("PointersView");
+            grid = this.FindControl<Grid>("grid");
+            PointersView = new PointersView();
+            grid.Children.Add(PointersView);
+            // PointersView = this.FindControl<PointersView>("PointersView");
 
             string path = Directory.GetCurrentDirectory().Replace('\\', '/');
             Client = new ClientLocal();
@@ -47,7 +53,13 @@ namespace Ui.Views
             InitializeComponent();
             ActionView = this.FindControl<ActionView>("ActionView");
             NavigationView = this.FindControl<NavigationView>("NavigationView");
-            PointersView = this.FindControl<PointersView>("PointersView");
+            grid = this.FindControl<Grid>("grid");
+            PointersView = new PointersView();
+            menu = new Menu();
+            subGrid = new Grid();
+            Grid.SetRow(subGrid, 2);
+            subGrid.Children.Add(menu);
+            grid.Children.Add(subGrid);
             Client = client;
             if (Parent is not MainWindow)
             {
@@ -75,6 +87,15 @@ namespace Ui.Views
             {
                 if (File.Exists(pointer.Path))
                 {
+                    if (subGrid.Children[0] is not Views.PointersView)
+                    {
+                        subGrid.Children.Clear();
+                        subGrid.Children.Add(PointersView);
+                        grid.Children.RemoveAt(grid.Children.Count-1);
+                        grid.Children.Add(subGrid);
+                        // InitializeComponent();
+                        Main.Show();
+                    }
                     try
                     {
                         ManagerReader.AutoLaunchAppProcess(pointer.Path);
@@ -90,6 +111,15 @@ namespace Ui.Views
                 }
                 else
                 {
+                    if (subGrid.Children[0] is not Views.PointersView)
+                    {
+                        subGrid.Children.Clear();
+                        subGrid.Children.Add(PointersView);
+                        grid.Children.RemoveAt(grid.Children.Count-1);
+                        grid.Children.Add(subGrid);
+                        // InitializeComponent();
+                        Main.Show();
+                    }
                     Client.AccessPath(pointer);
                     NavigationView.AccessPath(pointer);
                     PointersView.Refresh();
@@ -129,15 +159,31 @@ namespace Ui.Views
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(path))
+                if (string.IsNullOrWhiteSpace(path) || string.IsNullOrEmpty(path))
                 {
                     NavigationView.CurrentPathXaml.Text = "";
-                    new MenuController.Menu();
-                    new MenuController.Menu(this);
+                    if (subGrid.Children[0] is not Menu)
+                    {
+                        subGrid.Children.Clear();
+                        subGrid.Children.Add(menu);
+                        grid.Children.RemoveAt(grid.Children.Count-1);
+                        grid.Children.Add(subGrid);
+                        // InitializeComponent();
+                        Main.Show();
+                    }
                 }
                 else
                 {
-                    AccessPath(Client.GetItem(path)!);
+                    if (subGrid.Children[0] is not Views.PointersView)
+                    {
+                        subGrid.Children.Clear();
+                        subGrid.Children.Add(PointersView);
+                        grid.Children.RemoveAt(grid.Children.Count-1);
+                        grid.Children.Add(subGrid);
+                        // InitializeComponent();
+                        Main.Show();
+                    }
+                    AccessPath(Client.GetItem(path, true)!);
                 }
             }
             catch (ManagerException e)

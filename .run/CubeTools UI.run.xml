@@ -14,7 +14,7 @@
     <option name="PROJECT_KIND" value="DotNetCore" />
     <option name="PROJECT_TFM" value="net6.0" />
     <method v="2">
-      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_External Tools_Assets" />
+      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_External Tools_UpdateAssets" />
       <option name="Build" />
     </method>
   </configuration>
