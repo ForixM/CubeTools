@@ -60,8 +60,8 @@ namespace Ui.Views.LinkBar
 				_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
 	        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)))
 				_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
-	        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
-				_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
+	        //if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
+			//	_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
 	        // Favorites
 	        if (ConfigLoader.ConfigLoader.Settings.Links is not null)
 		        foreach (var (key, path) in ConfigLoader.ConfigLoader.Settings.Links)
@@ -174,8 +174,8 @@ namespace Ui.Views.LinkBar
 				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)))
 				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
-			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
-				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
+			        //if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
+				    //    _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
 		        }, DispatcherPriority.Background);
 	        }
 	        while (Main.Main is MainWindowRemote {IsClosed: false})
