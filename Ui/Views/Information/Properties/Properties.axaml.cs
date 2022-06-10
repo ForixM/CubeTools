@@ -275,7 +275,7 @@ namespace Ui.Views.Information.Properties
             else
             {
                 // TODO Mateo
-                string key = "Link";
+                string key = _pointer.Name;
                 while (ConfigLoader.ConfigLoader.Settings.Links.ContainsKey(key)) key += " - New";
                 ConfigLoader.ConfigLoader.Settings.Links.Add(key, _pointer.Path);
                 ConfigLoader.ConfigLoader.SaveConfiguration();

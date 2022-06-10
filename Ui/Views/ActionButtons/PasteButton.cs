@@ -45,6 +45,7 @@ public class PasteButton : ActionButton
                 () =>
                 {
                     _main.Client.Copy(source);
+                    _main.Refresh();
                 },
                 DispatcherPriority.MaxValue);
         }
