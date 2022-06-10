@@ -3,7 +3,7 @@
              x:Class="Ui.Views.PointersView">
 	
 	<ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
-		<Grid ColumnDefinitions="*">
+		<Grid ColumnDefinitions="*" Margin="0 0 0 13">
 			<StackPanel Grid.Column="0" Name="Generator"/>
 		</Grid>
 	</ScrollViewer>

@@ -69,7 +69,7 @@ namespace Library {
             if (Directory.Exists(path))
                 return new DirectoryLocalPointer(path);
             if (File.Exists(path))
-                return new DirectoryLocalPointer(path);
+                return new FileLocalPointer(path);
             return null;
         }
 
