@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Themes.Fluent;
 using Library;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
@@ -37,7 +38,6 @@ namespace Ui.Views
             grid = this.FindControl<Grid>("grid");
             PointersView = new PointersView();
             grid.Children.Add(PointersView);
-            // PointersView = this.FindControl<PointersView>("PointersView");
 
             string path = Directory.GetCurrentDirectory().Replace('\\', '/');
             Client = new ClientLocal();
@@ -58,7 +58,10 @@ namespace Ui.Views
             menu = new Menu();
             subGrid = new Grid();
             Grid.SetRow(subGrid, 2);
-            subGrid.Children.Add(menu);
+            if (Parent is MainWindow)
+                subGrid.Children.Add(menu);
+            else
+                subGrid.Children.Add(PointersView);
             grid.Children.Add(subGrid);
             Client = client;
             if (Parent is not MainWindow)
@@ -66,10 +69,6 @@ namespace Ui.Views
                 NavigationView.AccessPath(Client.CurrentFolder);
                 NavigationView.Add(Client.CurrentFolder);
                 PointersView.Refresh();
-            }
-            else
-            {
-                
             }
         }
 
@@ -93,7 +92,6 @@ namespace Ui.Views
                         subGrid.Children.Add(PointersView);
                         grid.Children.RemoveAt(grid.Children.Count-1);
                         grid.Children.Add(subGrid);
-                        // InitializeComponent();
                         Main.Show();
                     }
                     try
@@ -117,7 +115,6 @@ namespace Ui.Views
                         subGrid.Children.Add(PointersView);
                         grid.Children.RemoveAt(grid.Children.Count-1);
                         grid.Children.Add(subGrid);
-                        // InitializeComponent();
                         Main.Show();
                     }
                     Client.AccessPath(pointer);
@@ -162,25 +159,23 @@ namespace Ui.Views
                 if (string.IsNullOrWhiteSpace(path) || string.IsNullOrEmpty(path))
                 {
                     NavigationView.CurrentPathXaml.Text = "";
-                    if (subGrid.Children[0] is not Menu)
+                    if (subGrid.Children[0] is not Menu && Client.Type is not ClientType.LOCAL)
                     {
                         subGrid.Children.Clear();
                         subGrid.Children.Add(menu);
                         grid.Children.RemoveAt(grid.Children.Count-1);
                         grid.Children.Add(subGrid);
-                        // InitializeComponent();
                         Main.Show();
                     }
                 }
                 else
                 {
-                    if (subGrid.Children[0] is not Views.PointersView)
+                    if (subGrid.Children[0] is not Views.PointersView && Client.Type is not ClientType.LOCAL)
                     {
                         subGrid.Children.Clear();
                         subGrid.Children.Add(PointersView);
                         grid.Children.RemoveAt(grid.Children.Count-1);
                         grid.Children.Add(subGrid);
-                        // InitializeComponent();
                         Main.Show();
                     }
                     AccessPath(Client.GetItem(path, true)!);

@@ -61,6 +61,8 @@ namespace Library
 
         public override Pointer? GetItem(string path, bool isAbsolute = false)
         {
+            if (path[^1] is '/' or '\\')
+                path = path.Remove(path.Length - 1);
             string name = System.IO.Path.GetFileName(path);
             int last = path.Length;
             string parentPath = path.Remove(last - name.Length, name.Length);
