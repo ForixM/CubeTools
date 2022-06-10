@@ -6,6 +6,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Themes.Fluent;
+using Library;
 using Library.ManagerExceptions;
 using Ui.Views.Error;
 using Ui.Views.Settings;
@@ -53,7 +54,14 @@ namespace Ui.Views
         private void EditCurrentPath(object? sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            Main.AccessPath(((TextBox) sender!).Text);
+            if (Main.Client.Type == ClientType.ONEDRIVE)
+            {
+                Main.AccessPath("/drive/root:"+((TextBox) sender!).Text);
+            }
+            else
+            {
+                Main.AccessPath(((TextBox) sender!).Text);
+            }
         }
 
         /// <summary>
@@ -142,12 +150,12 @@ namespace Ui.Views
         ///     Access the path by changing the loaded pointer
         /// </summary>
         /// <param name="pointer">the given path to access</param>
-        public void AccessPath(Pointer pointer) => CurrentPathXaml.Text = Main.Client.CurrentFolder!.Path;
+        public void AccessPath(Pointer pointer) => CurrentPathXaml.Text = Main.Client.CurrentFolder!.Path.Replace("/drive/root:", "");
 
         /// <summary>
         ///     Reload the pointer
         /// </summary>
-        public void Refresh() => CurrentPathXaml.Text = Main.Client.CurrentFolder!.Path;
+        public void Refresh() => CurrentPathXaml.Text = Main.Client.CurrentFolder!.Path.Replace("/drive/root:", "");
         
         /// <summary>
         /// Add a folder in the queue

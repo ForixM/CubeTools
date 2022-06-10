@@ -53,7 +53,7 @@ namespace Ui.Views
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
             _main.ActionView.SelectedXaml.Clear();
-            if (Directory.Exists(Pointer.Path)) _main.NavigationView.Add(Pointer);
+            /*if (Directory.Exists(Pointer.Path)) */_main.NavigationView.Add(Pointer);
             _main.AccessPath(Pointer);
         }
 

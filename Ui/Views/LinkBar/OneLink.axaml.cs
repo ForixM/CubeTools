@@ -57,10 +57,11 @@ namespace Ui.Views.LinkBar
         {
             try
             {
-                if (Main.Main is MainWindowRemote)
-                    ((MainWindowRemote) Main.Main).LocalView.AccessPath(LocalPointer);
-                else
-                    ((MainWindow) Main.Main).LocalView.AccessPath(LocalPointer);
+                if (LocalPointer.IsDir) Main.NavigationView.Add(LocalPointer);
+                if (Main.Main is MainWindowRemote remote)
+                    remote.LocalView.AccessPath(LocalPointer);
+                else if (Main.Main is MainWindow window)
+                    window.LocalView.AccessPath(LocalPointer);
             }
             catch (PathNotFoundException exception)
             {
