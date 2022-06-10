@@ -93,7 +93,14 @@ namespace Library.DirectoryPointer
             {
                 foreach (var dir in _directoryInfo.EnumerateDirectories())
                 {
-                    result.Add(new DirectoryLocalPointer(dir.FullName.Replace('\\', '/')));
+                    try
+                    {
+                        result.Add(new DirectoryLocalPointer(dir.FullName.Replace('\\', '/')));
+                    }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
                 }
             }
             catch (Exception e)
