@@ -113,7 +113,14 @@ namespace Library.DirectoryPointer
             {
                 foreach (var file in _directoryInfo.EnumerateFiles())
                 {
-                    result.Add(new FileLocalPointer(file.FullName.Replace('\\', '/')));
+                    try
+                    {
+                        result.Add(new FileLocalPointer(file.FullName.Replace('\\', '/')));
+                    }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
                 }
             }
             catch (Exception e)
