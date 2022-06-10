@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -7,6 +8,7 @@ using Avalonia.Markup.Xaml;
 using ConfigLoader.Settings;
 using Library.ManagerExceptions;
 using Library;
+using Ui.Views.ActionButtons;
 using Ui.Views.Error;
 
 namespace Ui.Views.Ftp
@@ -70,7 +72,13 @@ namespace Ui.Views.Ftp
                 // Initialize the connexion and the window
                 try
                 {
-                    new MainWindowRemote(new ClientLocal(), new ClientTransferProtocol(_ip.Text + ":" + _port.Text, _user.Text, _mdp.Text)).Show();
+                    var mainWindow = new MainWindowRemote(new ClientLocal(), new ClientTransferProtocol(_ip.Text + ":" + _port.Text, _user.Text, _mdp.Text));
+                    mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
+                    {
+                        new CreateFileButton(), new CreateFolderButton(), new RenameButton(), new DeleteButton(),
+                        new DownloadButton()
+                    });
+                    mainWindow.Show();
                     Close();
                 }
                 catch (Exception exception)

@@ -37,9 +37,10 @@ namespace Library
 
         public override Pointer CreateFolder(string name) => _clientOneDrive.CreateFolder(name, (OnePointer)CurrentFolder);
 
-        public override Pointer? Copy(Pointer pointer) //TODO
+        public override Pointer? Copy(Pointer pointer, Pointer destination) //TODO
         {
-            throw new NotImplementedException();
+            _clientOneDrive.Copy((OnePointer) pointer, (OnePointer) destination);
+            return null;
         }
 
         public override void Delete(Pointer pointer)
@@ -57,13 +58,13 @@ namespace Library
 
         public override LocalPointer DownloadFile(Client source, Pointer pointer, Pointer destination)
         {
-            _clientOneDrive.DownloadFile(destination.Path, (OnePointer)pointer);
+            _clientOneDrive.DownloadFile(destination.Path+"/"+pointer.Name, (OnePointer)pointer);
             return base.DownloadFile(source, pointer, destination);
         }
 
         public override LocalPointer DownloadFolder(Client source, Pointer pointer, Pointer destination)
         {
-            _clientOneDrive.DownloadFolder(destination.Path, (OnePointer)pointer);
+            _clientOneDrive.DownloadFolder(destination.Path+"/"+pointer.Name, (OnePointer)pointer);
             return base.DownloadFolder(source, pointer, destination);
         }
 

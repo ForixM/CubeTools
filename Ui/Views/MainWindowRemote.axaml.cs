@@ -3,7 +3,9 @@ using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using DynamicData;
 using Library;
+using Ui.Views.ActionButtons;
 using Ui.Views.Settings;
 
 namespace Ui.Views
@@ -41,6 +43,11 @@ namespace Ui.Views
             // Local Client
             LocalView = new ClientUI(clientLocal, this);
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
+            LocalView.ActionView.SetActionButtons(new List<ActionButton>
+            {
+                new CreateFileButton(), new CreateFolderButton(), new CopyButton(), new CutButton(), new PasteButton(),
+                new RenameButton(), new CompressButton(), new DeleteButton(), new UploadButton()
+            });
             
             // Link Bar
             LinkBarView = this.FindControl<LinkBar.LinkBar>("LinkBar");

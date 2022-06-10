@@ -49,7 +49,7 @@ namespace Library
         /// </summary>
         /// <param name="pointer"></param>
         /// <returns></returns>
-        public abstract Pointer? Copy(Pointer pointer);
+        public abstract Pointer? Copy(Pointer pointer, Pointer destination);
         
         /// <summary>
         /// Delete a folder or a file in the current folder
@@ -72,15 +72,15 @@ namespace Library
         /// <param name="pointer">the file / folder to download</param>
         /// <param name="destination">The destination</param>
         /// <returns>The </returns>
-        public virtual LocalPointer DownloadFile(Client source, Pointer pointer, Pointer destination) => new FileLocalPointer(pointer.Name);
-        
+        public virtual LocalPointer DownloadFile(Client source, Pointer pointer, Pointer destination) => null;
+
         /// <summary>
         /// Download the file or folder given by its name (name)
         /// </summary>
         /// <param name="pointer">the file / folder to download</param>
         /// <param name="destination">The destination</param>
         /// <returns>The downloaded folder</returns>
-        public virtual LocalPointer DownloadFolder(Client source, Pointer pointer, Pointer destination) => new DirectoryLocalPointer(pointer.Name);
+        public virtual LocalPointer DownloadFolder(Client source, Pointer pointer, Pointer destination) => null;
         
         /// <summary>
         /// Upload the Local Pointer to the RemoteFolder

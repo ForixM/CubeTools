@@ -28,7 +28,7 @@ namespace Library
 
         public override Pointer CreateFolder(string name) => _clientFtp.CreateFolder((FtpFolder) CurrentFolder!, name);
 
-        public override Pointer? Copy(Pointer pointer) => null;
+        public override Pointer? Copy(Pointer pointer, Pointer destination) => null;
 
         public override void Delete(Pointer pointer) => _clientFtp.Delete((FtpPointer) pointer);
 

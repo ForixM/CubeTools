@@ -38,27 +38,27 @@ namespace Ui.Views.MenuController
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void InitializeDrives()
-        {
-            foreach (var oneLink in _main.LinkBarView.QuickAccess.Children.Cast<OneLink>())
-            {
-                _quickAccess.Children.Add(
-                                new OneLink(oneLink.LocalPointer.Path, oneLink.LocalPointer.Name, oneLink.Image.Source));
-            }
-            
-            foreach (var oneLink in _main.LinkBarView.Favorites.Children.Cast<OneLink>())
-            {
-                _favorites.Children.Add(new OneLink(oneLink.LocalPointer.Path, oneLink.LocalPointer.Name, oneLink.Image.Source));
-            }
-            
-            foreach (var oneLink in _main.LinkBarView.Drives.Children.Cast<OneLink>())
-            {
-                _drives.Children.Add(new OneLink(oneLink.LocalPointer.Path, oneLink.LocalPointer.Name, oneLink.Image.Source));
-            }
-            
-            _clouds.Children.Add(new FTPHandler());
-            _clouds.Children.Add(new OneDriveHandler());
-            _clouds.Children.Add(new GoogleDriveHandler());
-        }
+        // private void InitializeDrives()
+        // {
+        //     foreach (var oneLink in _main.LinkBarView.QuickAccess.Children.Cast<OneLink>())
+        //     {
+        //         _quickAccess.Children.Add(
+        //                         new OneLink(oneLink.LocalPointer.Path, oneLink.LocalPointer.Name, oneLink.Image.Source));
+        //     }
+        //     
+        //     foreach (var oneLink in _main.LinkBarView.Favorites.Children.Cast<OneLink>())
+        //     {
+        //         _favorites.Children.Add(new OneLink(oneLink.LocalPointer.Path, oneLink.LocalPointer.Name, oneLink.Image.Source));
+        //     }
+        //     
+        //     foreach (var oneLink in _main.LinkBarView.Drives.Children.Cast<OneLink>())
+        //     {
+        //         _drives.Children.Add(new OneLink(oneLink.LocalPointer.Path, oneLink.LocalPointer.Name, oneLink.Image.Source));
+        //     }
+        //     
+        //     _clouds.Children.Add(new FTPHandler());
+        //     _clouds.Children.Add(new OneDriveHandler());
+        //     _clouds.Children.Add(new GoogleDriveHandler());
+        // }
     }
 }

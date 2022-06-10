@@ -1,5 +1,8 @@
-﻿namespace Library
+﻿using System.Runtime.Serialization.Formatters.Binary;
+
+namespace Library
 {
+    [Serializable]
     public abstract class Pointer : IDisposable
     {
         /// <summary>
@@ -68,6 +71,11 @@
         public Pointer(string path) : this()
         {
             _path = path;
+        }
+
+        public static Pointer DeepCopy(Pointer other)
+        {
+            return (Pointer) other.MemberwiseClone();
         }
 
         public void Dispose() => GC.SuppressFinalize(this);

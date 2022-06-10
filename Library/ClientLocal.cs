@@ -27,7 +27,7 @@ namespace Library {
 
         public override Pointer CreateFolder(string name) => ManagerWriter.ManagerWriter.CreateDir(CurrentFolder.Path + "/" + name);
 
-        public override Pointer? Copy(Pointer pointer) => ManagerWriter.ManagerWriter.Copy(pointer.Path, CurrentFolder.Path);
+        public override Pointer? Copy(Pointer pointer, Pointer destination) => ManagerWriter.ManagerWriter.Copy(pointer.Path, destination.Path);
 
         public override void Delete(Pointer pointer) =>  ManagerWriter.ManagerWriter.Delete(pointer.Path);
 

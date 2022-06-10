@@ -34,16 +34,21 @@ namespace Ui.Views
             CutXaml = new List<PointerItem>();
             generator = this.FindControl<WrapPanel>("Generator");
             generator.ItemWidth = 45;
-            generator.Children.Add(new CreateFileButton());
-            generator.Children.Add(new CreateFolderButton());
-            generator.Children.Add(new RenameButton());
-            generator.Children.Add(new DeleteButton());
-            generator.Children.Add(new CopyButton());
-            generator.Children.Add(new PasteButton());
-            generator.Children.Add(new CutButton());
-            generator.Children.Add(new CompressButton());
+            // generator.Children.Add(new CreateFileButton());
+            // generator.Children.Add(new CreateFolderButton());
+            // generator.Children.Add(new RenameButton());
+            // generator.Children.Add(new DeleteButton());
+            // generator.Children.Add(new CopyButton());
+            // generator.Children.Add(new PasteButton());
+            // generator.Children.Add(new CutButton());
+            // generator.Children.Add(new CompressButton());
         }
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
+
+        public void SetActionButtons(List<ActionButton> actionButtons)
+        {
+            generator.Children.AddRange(actionButtons);
+        }
         
         #endregion
 
@@ -211,7 +216,7 @@ namespace Ui.Views
                 Dispatcher.UIThread.Post(
                     () =>
                     {
-                        Main.Client.Copy(source);
+                        Main.Client.Copy(source, Main.Client.CurrentFolder);
                     },
                     DispatcherPriority.MaxValue);
             }

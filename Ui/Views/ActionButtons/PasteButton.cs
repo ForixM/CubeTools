@@ -1,11 +1,14 @@
 using System;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
+using Avalonia.Controls;
 using Avalonia.Threading;
-using Library;
 using Library.ManagerExceptions;
 using ResourcesLoader;
 using Ui.Views.Actions;
 using Ui.Views.Error;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.ActionButtons;
 
@@ -15,13 +18,19 @@ public class PasteButton : ActionButton
     {
         _icon.Source = ResourcesIconsCompressed.PasteCompressed;
         OnClickEvent += OnClick;
+        ToolTip.SetTip(this, "Paste");
     }
 
     private void OnClick(object sender)
     {
         // 1) Copy Copied
-        foreach (var item in _main.ActionView.CopiedXaml)
-            CopyPointer(item.Pointer);
+        Pointer path = Pointer.DeepCopy(_main.Client.CurrentFolder);
+        Thread copyThread = new Thread(() =>
+        {
+            foreach (var item in _main.ActionView.CopiedXaml)
+                CopyPointer(item.Pointer, path);
+        });
+        copyThread.Start();
 
         switch (_main.ActionView.CutXaml.Count)
         {
@@ -36,18 +45,20 @@ public class PasteButton : ActionButton
         }
     }
     
-    private void CopyPointer(Pointer source)
+    private void CopyPointer(Pointer source, Pointer destination)
     {
         try
         {
             // Copy Pointer
-            Dispatcher.UIThread.Post(
-                () =>
-                {
-                    _main.Client.Copy(source);
-                    _main.Refresh();
-                },
-                DispatcherPriority.MaxValue);
+            _main.Client.Copy(source, destination);
+            Dispatcher.UIThread.Post(_main.Refresh);
+            // Dispatcher.UIThread.Post(
+            //     () =>
+            //     {
+            //         _main.Client.Copy(source);
+            //         _main.Refresh();
+            //     },
+            //     DispatcherPriority.MaxValue);
         }
         catch (Exception exception)
         {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -5,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Library.ManagerExceptions;
 using Library;
+using Ui.Views.ActionButtons;
 using Ui.Views.Error;
 
 namespace Ui.Views.LinkBar
@@ -36,7 +38,16 @@ namespace Ui.Views.LinkBar
                 if (success)
                 {
                     clientRemote.Children = clientRemote.ListChildren();
-                    Dispatcher.UIThread.Post(() => new MainWindowRemote(clientLocal, clientRemote).Show());
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        var mainWindow = new MainWindowRemote(clientLocal, clientRemote);
+                        mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
+                        {
+                            new CreateFileButton(), new CreateFolderButton(), new CopyButton(), new CutButton(), new PasteButton(),
+                            new RenameButton(), new DeleteButton(), new DownloadButton()
+                        });
+                        mainWindow.Show();
+                    });
                 }
                 else new ErrorBase(new ConnectionRefused("OneDrive connection could not be established", "Connection to OneDrive")).Show();
             };

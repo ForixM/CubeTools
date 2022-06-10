@@ -6,6 +6,7 @@ using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Library;
+using Ui.Views.ActionButtons;
 using Ui.Views.Settings;
 
 namespace Ui.Views
@@ -24,6 +25,11 @@ namespace Ui.Views
             InitializeComponent();
             LinkBarView = this.FindControl<LinkBar.LinkBar>("LinkBar");
             LocalView = new ClientUI(new ClientLocal(), this);
+            LocalView.ActionView.SetActionButtons(new List<ActionButton>
+            {
+                new CreateFileButton(), new CreateFolderButton(), new CopyButton(), new CutButton(), new PasteButton(),
+                new RenameButton(), new DeleteButton()
+            });
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
             LinkBarView.Main = LocalView;
             LinkBarView.InitializeExpanders();

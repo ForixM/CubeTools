@@ -36,10 +36,10 @@ namespace Library
             return file;
         }
 
-        public override Pointer? Copy(Pointer pointer)
+        public override Pointer? Copy(Pointer pointer, Pointer destination)
         {
             GoogleDriveFile file = new GoogleDriveFile(ManagerFile.CopyFile(((GoogleDriveFile)pointer).Id));
-            string parentId = ((GoogleDriveFile) this.CurrentFolder).Id;
+            string parentId = ((GoogleDriveFile) destination).Id;
             file = new GoogleDriveFile(ManagerFile.ChangeParentsFile(file.Id, parentId));
             return file;
         }

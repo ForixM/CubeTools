@@ -168,7 +168,7 @@ namespace Library.LibraryOneDrive
         public async Task<bool> UploadFile(LocalPointer file, OnePointer destination)
         {
             if (destination.Type != OneItemType.FOLDER) return false;
-            HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_api + destination.path +
+            HttpWebRequest request = (HttpWebRequest) HttpWebRequest.Create(_api + destination.path + "/" +
                                                                             Path.GetFileName(file.Path) +
                                                                             ":/content?access_token=" +
                                                                             token.access_token);
@@ -427,7 +427,7 @@ namespace Library.LibraryOneDrive
             parentReference.Add("driveId", pointer.parentReference.driveId);
             parentReference.Add("id", newPath.id);
             body.Add("parentReference", parentReference);
-            body.Add("name", "test.docx");
+            body.Add("name", pointer.Name);
             Console.WriteLine(body);
             Task<HttpResponseMessage> response =
                 _client.PostAsync(_api + pointer.path + ":/oneDrive.copy?access_token="+token.access_token,

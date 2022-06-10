@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Library;
@@ -22,7 +23,7 @@ namespace Ui.Views.LinkBar
         
         public LinkBar()
         {
-            Main = ClientUI.LastReference;
+            // Main = ClientUI.LastReference;
             InitializeComponent();
             _quickAccess = this.FindControl<StackPanel>("QuickAccess");
             _favorites = this.FindControl<StackPanel>("Favorites");
@@ -48,26 +49,26 @@ namespace Ui.Views.LinkBar
         {
 	        // Quick Access
 	        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)))
-				_quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Me", ResourcesLoader.ResourcesIconsCompressed.UsersCompressed));
+				_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Me", ResourcesLoader.ResourcesIconsCompressed.UsersCompressed));
 	        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)))
-				_quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Desktop", ResourcesLoader.ResourcesIconsCompressed.DesktopCompressed));
+				_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Desktop", ResourcesLoader.ResourcesIconsCompressed.DesktopCompressed));
 	        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)))
-				_quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Documents", ResourcesLoader.ResourcesIconsCompressed.DocumentsCompressed));
+				_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Documents", ResourcesLoader.ResourcesIconsCompressed.DocumentsCompressed));
 	        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)))
-				_quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Pictures", ResourcesLoader.ResourcesIconsCompressed.ImagesCompressed));
+				_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Pictures", ResourcesLoader.ResourcesIconsCompressed.ImagesCompressed));
 	        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)))	
-				_quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
+				_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
 	        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)))
-				_quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
+				_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
 	        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
-				_quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
+				_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
 	        // Favorites
 	        if (ConfigLoader.ConfigLoader.Settings.Links is not null)
 		        foreach (var (key, path) in ConfigLoader.ConfigLoader.Settings.Links)
-			        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesConverter.TypeToIcon(path, ManagerReader.GetFileExtension(path), Directory.Exists(path))));
+			        _favorites.Children.Add(new OneLink(Main, ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesConverter.TypeToIcon(path, ManagerReader.GetFileExtension(path), Directory.Exists(path))));
 	        // Drives
 	        foreach (var drive in DriveInfo.GetDrives())
-		        _drives.Children.Add(new OneLink(drive.Name, $"{drive.VolumeLabel} ({drive.Name})", ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
+		        _drives.Children.Add(new OneLink(Main, drive.Name, $"{drive.VolumeLabel} ({drive.Name})", ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
 	        // Clouds
 	        _clouds.Children.Add(new FTPHandler());
 	        _clouds.Children.Add(new OneDriveHandler());
@@ -96,7 +97,7 @@ namespace Ui.Views.LinkBar
 			        {
 				        _drives.Children.Clear();
 				        foreach (var drive in DriveInfo.GetDrives())
-					        _drives.Children.Add(new OneLink(drive.Name, $"{drive.VolumeLabel} ({drive.Name})",
+					        _drives.Children.Add(new OneLink(Main, drive.Name, $"{drive.VolumeLabel} ({drive.Name})",
 						        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
 			        }, DispatcherPriority.Background);
 		        }
@@ -112,7 +113,7 @@ namespace Ui.Views.LinkBar
 			        {
 				        _drives.Children.Clear();
 				        foreach (var drive in DriveInfo.GetDrives())
-					        _drives.Children.Add(new OneLink(drive.Name, $"{drive.VolumeLabel} ({drive.Name})",
+					        _drives.Children.Add(new OneLink(Main, drive.Name, $"{drive.VolumeLabel} ({drive.Name})",
 						        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
 			        }, DispatcherPriority.Background);
 		        }
@@ -133,7 +134,7 @@ namespace Ui.Views.LinkBar
 		        {
 			        _favorites.Children.Clear();
 			        foreach (var (key, path) in ConfigLoader.ConfigLoader.Settings.Links)
-				        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesConverter.TypeToIcon(path, ManagerReader.GetFileExtension(path), Directory.Exists(path))));
+				        _favorites.Children.Add(new OneLink(Main, ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesConverter.TypeToIcon(path, ManagerReader.GetFileExtension(path), Directory.Exists(path))));
 
 		        }, DispatcherPriority.Background);
 	        }
@@ -144,7 +145,7 @@ namespace Ui.Views.LinkBar
 		        {
 			        _favorites.Children.Clear();
 			        foreach (var key in ConfigLoader.ConfigLoader.Settings.Links.Keys)
-				        _favorites.Children.Add(new OneLink(ConfigLoader.ConfigLoader.Settings.Links[key], key,
+				        _favorites.Children.Add(new OneLink(Main, ConfigLoader.ConfigLoader.Settings.Links[key], key,
 					        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
 		        }, DispatcherPriority.Background);
 	        }
@@ -162,19 +163,19 @@ namespace Ui.Views.LinkBar
 		        {
 			        _quickAccess.Children.Clear();
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Me", ResourcesLoader.ResourcesIconsCompressed.UsersCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Me", ResourcesLoader.ResourcesIconsCompressed.UsersCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Desktop", ResourcesLoader.ResourcesIconsCompressed.DesktopCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Desktop", ResourcesLoader.ResourcesIconsCompressed.DesktopCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Documents", ResourcesLoader.ResourcesIconsCompressed.DocumentsCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Documents", ResourcesLoader.ResourcesIconsCompressed.DocumentsCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Pictures", ResourcesLoader.ResourcesIconsCompressed.ImagesCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Pictures", ResourcesLoader.ResourcesIconsCompressed.ImagesCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)))	
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
 		        }, DispatcherPriority.Background);
 	        }
 	        while (Main.Main is MainWindowRemote {IsClosed: false})
@@ -184,23 +185,28 @@ namespace Ui.Views.LinkBar
 		        {
 			        _quickAccess.Children.Clear();
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Me", ResourcesLoader.ResourcesIconsCompressed.UsersCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Me", ResourcesLoader.ResourcesIconsCompressed.UsersCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Desktop)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Desktop", ResourcesLoader.ResourcesIconsCompressed.DesktopCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Desktop", ResourcesLoader.ResourcesIconsCompressed.DesktopCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Documents", ResourcesLoader.ResourcesIconsCompressed.DocumentsCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Documents", ResourcesLoader.ResourcesIconsCompressed.DocumentsCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Pictures", ResourcesLoader.ResourcesIconsCompressed.ImagesCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Pictures", ResourcesLoader.ResourcesIconsCompressed.ImagesCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)))	
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
-				        _quickAccess.Children.Add(new OneLink(Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
+				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
 		        }, DispatcherPriority.Background);
 	        }
         }
 		
         #endregion
+
+        private void OnClick(object? sender, RoutedEventArgs e)
+        {
+	        Main.AccessPath("");
+        }
     }
 }

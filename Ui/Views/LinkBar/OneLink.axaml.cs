@@ -9,6 +9,7 @@ using Library;
 using Library.DirectoryPointer;
 using Library.FilePointer;
 using Library.ManagerExceptions;
+using Library.ManagerReader;
 using Ui.Views.Information;
 
 namespace Ui.Views.LinkBar
@@ -22,7 +23,7 @@ namespace Ui.Views.LinkBar
         
         public OneLink()
         {
-            Main = ClientUI.LastReference;
+            // Main = ClientUI.LastReference;
             LocalPointer = LocalPointer.NullLocalPointer;
             
             InitializeComponent();
@@ -30,8 +31,10 @@ namespace Ui.Views.LinkBar
             Image = this.FindControl<Image>("Image");
         }
 
-        public OneLink(string link, string name, IImage image) : this()
+        public OneLink(ClientUI main, string link, string name, IImage image) : this()
         {
+            Main = main;
+            ToolTip.SetTip(this, name);
             try
             {
                 if (Directory.Exists(link)) LocalPointer = new DirectoryLocalPointer(link);
@@ -39,6 +42,8 @@ namespace Ui.Views.LinkBar
             }
             catch (PathNotFoundException)
             {
+                ConfigLoader.ConfigLoader.Settings.Links.Remove(ManagerReader.GetPathToName(link));
+                ConfigLoader.ConfigLoader.SaveConfiguration();
                 LocalPointer = LocalPointer.NullLocalPointer;
             }
 
@@ -48,7 +53,21 @@ namespace Ui.Views.LinkBar
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void OpenLink(object? sender, RoutedEventArgs e) => Main.AccessPath(LocalPointer);
+        private void OpenLink(object? sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (Main.Main is MainWindowRemote)
+                    ((MainWindowRemote) Main.Main).LocalView.AccessPath(LocalPointer);
+                else
+                    ((MainWindow) Main.Main).LocalView.AccessPath(LocalPointer);
+            }
+            catch (PathNotFoundException exception)
+            {
+                ConfigLoader.ConfigLoader.Settings.Links.Remove(ManagerReader.GetPathToName(LocalPointer.Path));
+                ConfigLoader.ConfigLoader.SaveConfiguration();
+            }
+        }
         
         private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {

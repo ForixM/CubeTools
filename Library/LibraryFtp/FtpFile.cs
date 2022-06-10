@@ -3,7 +3,7 @@ namespace  Library.LibraryFtp
     
     public class FtpFile : FtpPointer
     {
-        public FtpFile(string name, int size, string parentPath, string lastModified)
+        public FtpFile(string name, long size, string parentPath, string lastModified)
         {
             IsDir = false;
             _path = parentPath + name;
@@ -13,7 +13,7 @@ namespace  Library.LibraryFtp
             _lastModified = lastModified;
         }
     
-        public FtpFile(string name, int size, FtpPointer parent, string lastModified)
+        public FtpFile(string name, long size, FtpPointer parent, string lastModified)
         {
             IsDir = false;
             _name = name;
@@ -22,7 +22,7 @@ namespace  Library.LibraryFtp
             _lastModified = lastModified;
             _path = parent.Path + name;
         }
-
+        
         public override string ToString() => $"{{name={_name}, size={_size}, path={Path}, lastmodified={_lastModified}}}";
     }
 }

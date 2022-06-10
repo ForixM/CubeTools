@@ -6,7 +6,9 @@ using Avalonia.Markup.Xaml;
 using Library;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
+using Ui.Views.ActionButtons;
 using Ui.Views.Error;
+using Ui.Views.MenuController;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views
@@ -47,9 +49,16 @@ namespace Ui.Views
             NavigationView = this.FindControl<NavigationView>("NavigationView");
             PointersView = this.FindControl<PointersView>("PointersView");
             Client = client;
-            NavigationView.AccessPath(Client.CurrentFolder);
-            NavigationView.Add(Client.CurrentFolder);
-            PointersView.Refresh();
+            if (Parent is not MainWindow)
+            {
+                NavigationView.AccessPath(Client.CurrentFolder);
+                NavigationView.Add(Client.CurrentFolder);
+                PointersView.Refresh();
+            }
+            else
+            {
+                
+            }
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -120,7 +129,16 @@ namespace Ui.Views
         {
             try
             {
-                AccessPath(Client.GetItem(path)!);
+                if (string.IsNullOrWhiteSpace(path))
+                {
+                    NavigationView.CurrentPathXaml.Text = "";
+                    new MenuController.Menu();
+                    new MenuController.Menu(this);
+                }
+                else
+                {
+                    AccessPath(Client.GetItem(path)!);
+                }
             }
             catch (ManagerException e)
             {
