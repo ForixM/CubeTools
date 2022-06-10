@@ -6,10 +6,10 @@
      <Button Background="Transparent" CornerRadius="8" Name="Button" Height="50"
              PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped">
          
-         <WrapPanel VerticalAlignment="Center">
+         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
              <Image Name="Icon" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>
              <TextBlock Name="Name" Margin="5" VerticalAlignment="Center"/>
-         </WrapPanel>
+         </StackPanel>
          
      </Button>
      
