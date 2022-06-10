@@ -76,6 +76,12 @@ namespace Library.LibraryFtp
         
         public FtpArboresence ListDirectory(string path)
         {
+            if (path == FtpFolder.ROOT.Path)
+                return ListDirectory(FtpFolder.ROOT);
+            if (path[^1] is '/' or '\\')
+            {
+                path = path.Remove(path.Length - 1);
+            }
             FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host+path);
             request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
             request.Credentials = new NetworkCredential(_username, _password);

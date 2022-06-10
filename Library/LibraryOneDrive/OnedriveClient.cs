@@ -100,7 +100,7 @@ namespace Library.LibraryOneDrive
             if (folder.Type != OneItemType.FOLDER) return null;
             HttpClient client = new HttpClient();
             Task<string> responseString =
-                client.GetStringAsync(_api + folder.path + ":/children?access_token=" + token.access_token +
+                client.GetStringAsync(_api + folder.Path + ":/children?access_token=" + token.access_token +
                                       "&select=name,size,folder,file,parentReference,id");
             responseString.Wait();
             try

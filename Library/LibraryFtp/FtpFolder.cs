@@ -18,7 +18,7 @@ namespace Library.LibraryFtp
             }
             else
             {
-                _path = parentPath + name + "/";
+                _path = parentPath + "/" + name + "/";
                 string temp = parentPath;
                 string name1 = "";
                 if (temp[^1] == '/') temp = temp.Remove(temp.Length - 1);
