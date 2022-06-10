@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Themes.Fluent;
 using Library.ManagerExceptions;
 using Ui.Views.Error;
 using Ui.Views.Settings;
@@ -36,6 +37,10 @@ namespace Ui.Views
             Main = ClientUI.LastReference;
             InitializeComponent();
             CurrentPathXaml = this.FindControl<TextBox>("CurrentPath");
+            this.FindControl<Image>("ThemeIcon").Source =
+                ((FluentTheme) App.Current.Styles[0]).Mode == FluentThemeMode.Light
+                    ? ResourcesLoader.ResourcesIconsCompressed.DarkCompressed
+                    : ResourcesLoader.ResourcesIconsCompressed.LightCompressed;
             _index = -1;
             _queue = new List<Pointer>();
         }
@@ -116,6 +121,17 @@ namespace Ui.Views
             }
         }
 
+        private void DarkLight(object? sender, RoutedEventArgs e)
+        {
+            ((FluentTheme) App.Current.Styles[0]).Mode = ((FluentTheme) App.Current.Styles[0]).Mode == FluentThemeMode.Dark 
+                ? FluentThemeMode.Light 
+                : FluentThemeMode.Dark;
+            this.FindControl<Image>("ThemeIcon").Source =
+                ((FluentTheme) App.Current.Styles[0]).Mode == FluentThemeMode.Light
+                    ? ResourcesLoader.ResourcesIconsCompressed.DarkCompressed
+                    : ResourcesLoader.ResourcesIconsCompressed.LightCompressed;
+        }
+        
         private void SettingsClick(object? sender, RoutedEventArgs e) => new SettingsWindow().Show();
         
         #endregion

@@ -97,6 +97,10 @@ namespace ResourcesLoader
                                                             "Icons/Star.ico");
         public static readonly IImage StarredIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                             "Icons/Starred.ico");
+        public static readonly IImage DarkIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                  "Icons/Dark.ico");
+        public static readonly IImage LightIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                   "Icons/Light.ico");
         
     }
 }

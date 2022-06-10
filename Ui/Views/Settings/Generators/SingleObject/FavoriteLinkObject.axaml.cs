@@ -45,7 +45,7 @@ namespace Ui.Views.Settings.Generators.SingleObject
             if (ConfigLoader.ConfigLoader.Settings.Links.ContainsKey(_name.Text))
             {
                 int i = 1;
-                string tmp = _name.Text;
+                string tmp = _name.Text + 1;
                 while (ConfigLoader.ConfigLoader.Settings.Links.ContainsKey(tmp))
                 {
                     tmp = tmp.Remove(tmp.Length - 1, 1) + i;

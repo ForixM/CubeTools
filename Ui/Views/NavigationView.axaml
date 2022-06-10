@@ -21,6 +21,7 @@
 					<ColumnDefinition Width="45" />
 					<ColumnDefinition/>
 					<ColumnDefinition Width="45" />
+					<ColumnDefinition Width="45" />
 				</Grid.ColumnDefinitions>
 
 				<!-- First column : Left Button -->
@@ -54,6 +55,11 @@
 					</Border>
 				</Grid>
 				<Grid Grid.Column="5">
+					<Button Classes="TopBar" Click="DarkLight" ToolTip.Tip="Change Theme">
+						<Image Classes="Manager" Name="ThemeIcon" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.DarkCompressed}"/>
+					</Button>
+				</Grid>
+				<Grid Grid.Column="6">
 					<Button Classes="TopBar" Name="SettingButton" Click="SettingsClick" ToolTip.Tip="Settings">
 						<Image Classes="Manager" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.SettingsCompressed}"/>
 					</Button>

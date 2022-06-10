@@ -105,5 +105,9 @@ namespace ResourcesLoader
                                                                    "IconsCompressed/QuickAccess.ico");
         public static readonly IImage DriveMenuCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                          "IconsCompressed/DriveMenu.ico");
+        public static readonly IImage DarkCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                  "IconsCompressed/Dark.ico");
+        public static readonly IImage LightCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                  "IconsCompressed/Light.ico");
     }
 }
