@@ -47,5 +47,9 @@ namespace ResourcesLoader
         public static readonly WindowIcon ErrorWindow = new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/ErrorWindow.ico");
+
+        public static readonly WindowIcon FtpWindowIcon = new WindowIcon(
+                        ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                        "IconsCompressed/FTP.ico");
     }
 }

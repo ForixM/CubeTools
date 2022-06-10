@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
              x:Class="Ui.Views.Ftp.FtpConfigDisplayer">
-	 
+	 <!--
 	 <Grid RowDefinitions="*">
 		 <Grid Row="0">
 			 <StackPanel Name="Generator"/>
@@ -11,4 +11,12 @@
 			 </Button>
 		 </Grid>
 	 </Grid>
+	 -->
+	 <Button Height="30" Width="350">
+		 <StackPanel>
+			 <Image HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.FtpCompressed}"/>
+			 <TextBlock FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Center" Width="125" Height="35" Margin="5 0 0 0" Text="LeServeurDeTété" Name="Name"/>
+			 <TextBlock FontSize="12" HorizontalAlignment="Right" VerticalAlignment="Center" Width="220" Height="35" Text="192.168.69.69" Name="Path"/>
+		 </StackPanel>
+	 </Button>
  </UserControl>

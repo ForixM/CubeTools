@@ -97,17 +97,6 @@ namespace ResourcesLoader
                                                             "Icons/Star.ico");
         public static readonly IImage StarredIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                             "Icons/Starred.ico");
-
-        public static void Reload()
-        {
-            CopyIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                  "Icons/Copy.ico");
-            CompressionIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                         "Icons/Compression.ico");
-            CreateIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                    "Icons/Create.ico");
-            CreateFolderIcon = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                          "Icons/CreateFolder.ico");
-        }
+        
     }
 }

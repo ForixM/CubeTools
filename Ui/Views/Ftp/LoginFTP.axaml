@@ -5,60 +5,75 @@
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
         xmlns:ftp="clr-namespace:Ui.Views.Ftp"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="200"
-        Width="500" Height="400"
+        Width="625" Height="500"
         CanResize="False"
         x:Class="Ui.Views.Ftp.LoginFTP"
         Title="Connect to server"
-        Icon="{x:Static resource:ResourcesWindowIcons.ErrorWindow}"
+        Icon="{x:Static resource:ResourcesWindowIcons.FtpWindowIcon}"
         KeyDown="OnEscapePressed">
         
         <Grid>
                 <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="425"/>
                 </Grid.ColumnDefinitions>
                 
                 <Grid Grid.Column="0">
-                        <Image Source="{x:Static resource:ResourcesIcons.FtpIcon}" Height="175" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Image Margin="15 0 0 0" Source="{x:Static resource:ResourcesIcons.FtpIcon}" Height="175" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
                 
                 <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                
-                        <Grid Grid.Row="0">
-                                <TextBox Name="Ip" Text="127.0.0.1" Watermark="Enter IP" Margin="10"/>
-                        </Grid>
-                
-                        <Grid Grid.Row="1">
-                                <TextBox Name="User" Text="mateo" Watermark="Enter User" Margin="10"/>
-                        </Grid>
-                
-                        <Grid Grid.Row="2">
-                                <TextBox RevealPassword="False" Text="1234" PasswordChar="*" Name="Mdp" Watermark="Enter Password" Margin="10"/>
-                        </Grid>
-                
-                        <Grid Grid.Row="3">
-                                <StackPanel Orientation="Horizontal" Margin="10">
-                                        <TextBox Text="21" Name="Port" Watermark="Port" />
-                                        <Button Click="OnConnexionClicked" Content="Connect" Margin="20 0 0 0"/>
-                                        <Button Click="OnCancelClick" Content="Cancel"/>
-                                        <Button Click="OnConfigAdded" Content="Add to Config"/>
-                                </StackPanel>
-                        </Grid>
+                        <ScrollViewer>
+                                <StackPanel>
+                                        <Expander VerticalAlignment="Center" Margin="20 18 20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Load Configuration">
+                                                <ftp:FtpConfigDisplayer Name="FtpConfigDisplayer"/>
+                                        </Expander>
                         
+                                        <Expander VerticalAlignment="Center" Margin="20 5" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Connect to FTP Server">
+                                                <StackPanel>
+                                                        <TextBox Name="Ip" Watermark="IP Adress" Margin="0 0 0 5"/>
+                                                        <TextBox Name="User" Watermark="Username" Margin="0 0 0 5"/>                                 
+                                                        <TextBox RevealPassword="False" PasswordChar="*" Name="Mdp" Watermark="Password" Margin="0 0 0 5"/> 
+                                                        <StackPanel Orientation="Horizontal">
+                                                                <TextBox Name="Port" Watermark="Port" Margin="0 0 5 0"/>
+                                                                <Button Click="OnConnexionClicked" Content="Connect"/>
+                                                                <Button Click="OnCancelClick" Content="Cancel"/>
+                                                                <Button Click="OnConfigAdded" Content="Save Configuration"/>
+                                                        </StackPanel>
+                                                </StackPanel>
+                                        </Expander>
+                        
+                        
+                        
+                                        <Expander VerticalAlignment="Center" Margin="20 0 20 18" ExpandDirection="Down" Background="Transparent" IsExpanded="False" Header="Recent">
+                                
+                                        </Expander>
+                                </StackPanel>
+                        </ScrollViewer>
+                        
+                        <!--
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <TextBox Name="Ip" Watermark="Enter IP" Margin="10"/>     Text="127.0.0.1"
+                        <TextBox Name="User" Watermark="Enter User" Margin="10"/>                                 Text="mateo" 
+                        <TextBox RevealPassword="False" PasswordChar="*" Name="Mdp" Watermark="Enter Password" Margin="10"/>    Text="1234"
+                        <WrapPanel>
+                                <TextBox Name="Port" Watermark="Port"/>                                       Text="21" 
+                                <Button Click="OnConnexionClicked" Content="Connect"/>
+                                <Button Click="OnCancelClick" Content="Cancel"/>
+                                <Button Click="OnConfigAdded" Content="Save Configuration"/>
+                        </WrapPanel>
+                        </StackPanel>
+                        -->
+                        
+                        <!--
                         <Grid Grid.Row="4">
                                 <ScrollViewer>
                                         <Expander Header="Load a Configuration">
-                                                <ftp:FtpConfigDisplayer Name="FtpConfigDisplayer"/>
+                                                
                                         </Expander>
                                 </ScrollViewer>
                         </Grid>
+                        -->
                 </Grid>
         </Grid>
         
