@@ -524,7 +524,7 @@
         <DependentUpon>NavigationView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\OneClient.axaml.cs">
+      <Compile Update="Views\ClientUI.axaml.cs">
         <DependentUpon>OneClient.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>

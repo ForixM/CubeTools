@@ -220,7 +220,7 @@ namespace Library.LibraryFtp
         public void Rename(FtpPointer pointer, string newName) //TODO Implement
         {
             string path = pointer.Path;
-            path = path.Remove(path.Length - 1);
+            // path = path.Remove(path.Length - 1);
             FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + path);
             request.Method = WebRequestMethods.Ftp.Rename;
             request.Credentials = new NetworkCredential(_username, _password);
