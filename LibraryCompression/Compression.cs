@@ -123,7 +123,7 @@ namespace LibraryCompression
             return compressor.CompressFilesAsync(dest, filePaths);
         }
 
-        public static Task CompressItems(List<LocalPointer> directories, string dest, OutArchiveFormat archiveFormat,
+        public static Task CompressItems(List<Pointer> directories, string dest, OutArchiveFormat archiveFormat,
             Action<object, ProgressEventArgs>? compressingEvent = null, Action<object, EventArgs>? finishedEvent = null)
         {
             if (!_initialized)

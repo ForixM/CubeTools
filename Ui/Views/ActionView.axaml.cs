@@ -38,6 +38,10 @@ namespace Ui.Views
             generator.Children.Add(new CreateFolderButton());
             generator.Children.Add(new RenameButton());
             generator.Children.Add(new DeleteButton());
+            generator.Children.Add(new CopyButton());
+            generator.Children.Add(new PasteButton());
+            generator.Children.Add(new CutButton());
+            generator.Children.Add(new CompressButton());
         }
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
         

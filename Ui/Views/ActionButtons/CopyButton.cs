@@ -12,8 +12,8 @@ public class CopyButton : ActionButton
 
     private void OnClick(object sender)
     {
-        // CopiedXaml.Clear();
-        // CutXaml.Clear();
-        // foreach (var item in SelectedXaml) CopiedXaml.Add(item);
+        _main.ActionView.CopiedXaml.Clear();
+        _main.ActionView.CutXaml.Clear();
+        foreach (var item in _main.ActionView.SelectedXaml) _main.ActionView.CopiedXaml.Add(item);
     }
 }

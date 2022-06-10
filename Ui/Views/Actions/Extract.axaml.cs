@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Library;
@@ -50,8 +51,8 @@ namespace Ui.Views.Actions
                 {
                     Task task = Task.Run(() =>
                     {
-                        // foreach (LocalPointer pointer in _data.Where(ft => ft is LocalPointer))
-                        //     LibraryCompression.Compression.Extract(pointer);
+                        foreach (LocalPointer pointer in _data.Where(ft => ft is LocalPointer))
+                            LibraryCompression.Compression.Extract(pointer);
                         
                     });
                     task.GetAwaiter().OnCompleted(Close);
@@ -59,7 +60,7 @@ namespace Ui.Views.Actions
             }
         }
 
-        private void OnCancelPressed(object? sender, PointerPressedEventArgs e) => Close();
+        private void OnCancelPressed(object? sender, RoutedEventArgs routedEventArgs) => Close();
         
         private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
         {
@@ -67,12 +68,12 @@ namespace Ui.Views.Actions
             if (e.Key is Key.Enter) OnEnterPressed(sender, new KeyEventArgs() { Key = Key.Enter});
         }
 
-        private void Extraction(object? sender, PointerPressedEventArgs e)
+        private void Extraction(object? sender, RoutedEventArgs routedEventArgs)
         {
             Task task = Task.Run(() =>
             {
-                // foreach (LocalPointer pointer in _data.Where(pointer => pointer is LocalPointer))
-                //     LibraryCompression.Compression.Extract(pointer);
+                foreach (LocalPointer pointer in _data.Where(pointer => pointer is LocalPointer))
+                    LibraryCompression.Compression.Extract(pointer);
             });
             task.GetAwaiter().OnCompleted(Close);
         }

@@ -7,13 +7,13 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Ui.Views.ClientUI">
     
-    <Grid>
+    <Grid Name="monsieur">
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
             <RowDefinition Height="45"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-				
+				    
         <Grid Grid.Row="0">
             <views:NavigationView Name="NavigationView"/>
         </Grid>
