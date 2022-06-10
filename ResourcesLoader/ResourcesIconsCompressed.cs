@@ -99,5 +99,11 @@ namespace ResourcesLoader
                                                             "IconsCompressed/Star.ico");
         public static readonly IImage StarredCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                               "IconsCompressed/Starred.ico");
+        public static readonly IImage CloudCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                     "IconsCompressed/Cloud.ico");
+        public static readonly IImage QuickAccessCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                   "IconsCompressed/QuickAccess.ico");
+        public static readonly IImage DriveMenuCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                         "IconsCompressed/DriveMenu.ico");
     }
 }
