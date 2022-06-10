@@ -3,10 +3,10 @@
              x:Class="Ui.Views.LinkBar.OneLink" MaxHeight="50" MaxWidth="192">
 	
 	<Button CornerRadius="8" Click="OpenLink" Background="Transparent" PointerPressed="OnPointerPressed" Height="50" Width="192">
-		<WrapPanel>
+		<StackPanel Orientation="Horizontal">
 			<Image HorizontalAlignment="Left" Name="Image"/>
-			<TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Name="Description"/>
-		</WrapPanel>
+			<TextBlock VerticalAlignment="Center" TextWrapping="NoWrap" Margin="10 0 0 0" Name="Description"/>
+		</StackPanel>
 	</Button>
 	
 </UserControl>

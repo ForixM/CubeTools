@@ -1,4 +1,5 @@
 using System.Linq;
+using Avalonia.Controls;
 using ResourcesLoader;
 using Ui.Views.Actions;
 
@@ -10,6 +11,7 @@ public class CompressButton : ActionButton
     {
         _icon.Source = ResourcesIconsCompressed.CompressionCompressed;
         OnClickEvent += OnClick;
+        ToolTip.SetTip(this, "Compress");
     }
 
     private void OnClick(object sender)

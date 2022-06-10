@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using ResourcesLoader;
 
 namespace Ui.Views.ActionButtons;
@@ -8,6 +9,7 @@ public class CutButton : ActionButton
     {
         _icon.Source = ResourcesIconsCompressed.CutCompressed;
         OnClickEvent += OnClick;
+        ToolTip.SetTip(this, "Cut");
     }
 
     private void OnClick(object sender)

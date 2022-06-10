@@ -1,4 +1,5 @@
 using System.Linq;
+using Avalonia.Controls;
 using ResourcesLoader;
 using Ui.Views.Actions;
 
@@ -10,6 +11,7 @@ public class DeleteButton : ActionButton
     {
         _icon.Source = ResourcesIconsCompressed.DeleteCompressed;
         OnClickEvent += OnClick;
+        ToolTip.SetTip(this, "Delete");
     }
 
     private void OnClick(object sender)

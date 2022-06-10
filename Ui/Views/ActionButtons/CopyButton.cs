@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using ResourcesLoader;
 
 namespace Ui.Views.ActionButtons;
@@ -8,6 +9,7 @@ public class CopyButton : ActionButton
     {
         _icon.Source = ResourcesIconsCompressed.CopyCompressed;
         OnClickEvent += OnClick;
+        ToolTip.SetTip(this, "Copy");
     }
 
     private void OnClick(object sender)

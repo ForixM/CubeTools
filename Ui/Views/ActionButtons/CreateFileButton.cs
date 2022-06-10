@@ -14,6 +14,7 @@ public class CreateFileButton : ActionButton
     {
         _icon.Source = ResourcesIconsCompressed.CreateCompressed;
         OnClickEvent += OnClick;
+        ToolTip.SetTip(this, "Create File");
     }
 
     private void OnClick(object? sender)

@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using Library.ManagerExceptions;
 using ResourcesLoader;
 using Ui.Views.Actions;
@@ -11,6 +12,7 @@ public class RenameButton : ActionButton
     {
         _icon.Source = ResourcesIconsCompressed.RenameCompressed;
         OnClickEvent += OnClick;
+        ToolTip.SetTip(this, "Rename");
     }
     
     private void OnClick(object? sender)

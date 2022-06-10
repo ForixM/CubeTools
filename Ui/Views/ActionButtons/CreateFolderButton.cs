@@ -12,6 +12,7 @@ public class CreateFolderButton : ActionButton
     {
         _icon.Source = ResourcesIconsCompressed.CreateFolderCompressed;
         OnClickEvent += OnClick;
+        ToolTip.SetTip(this, "Create Folder");
     }
     
     private void OnClick(object? sender)
