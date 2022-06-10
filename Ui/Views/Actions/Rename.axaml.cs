@@ -57,7 +57,6 @@ namespace Ui.Views.Actions
         {
             if (e.Key is Key.Enter) RenamePointer();
             else if (e.Key is Key.Escape) Close();
-                
         }
         
         #endregion

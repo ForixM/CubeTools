@@ -7,7 +7,9 @@
              Title="Settings"
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
              Width="500" Height="750"
-             MinWidth="500" MinHeight="750">
+             MinWidth="500" MinHeight="750"
+             Topmost="True" 
+             KeyDown="OnKeyPressedWindow">
 	 
 	 <ScrollViewer>
 		 <StackPanel>

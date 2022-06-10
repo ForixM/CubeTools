@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Ui.Views.Settings.Generators;
@@ -40,6 +41,12 @@ namespace Ui.Views.Settings
 
             ConfigLoader.ConfigLoader.Settings.Links.Add(key, "");
             LinksGeneratorXaml.Generator.Children.Add(new FavoriteLinkObject(key, "", LinksGeneratorXaml));
+        }
+
+        private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
+        {
+            if (e.Key is Key.Enter) Save(this, e);
+            else if (e.Key is Key.Escape) Close();
         }
     }
 }
