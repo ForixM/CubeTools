@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using Avalonia.Controls;
+using Avalonia.Threading;
 using Library;
 using Library.LibraryOneDrive;
 using ResourcesLoader;
@@ -17,19 +20,27 @@ public class DownloadButton : ActionButton
 
     private void OnClick(object sender)
     {
-        foreach (PointerItem item in _main.ActionView.SelectedXaml)
+        Thread downloadThread = new Thread(() =>
         {
-            if (item.Pointer.IsDir)
+            Pointer temp = _main.ActionView.SelectedXaml[0].Pointer;
+            List<Pointer> pointers = new List<Pointer>();
+            foreach (PointerItem item in _main.ActionView.SelectedXaml)
             {
-                _main.Client.DownloadFolder(_main.Client, item.Pointer, ((MainWindowRemote)_main.Main).LocalView.Client.CurrentFolder);
+                pointers.Add(Pointer.DeepCopy(item.Pointer));
             }
-            else
+            foreach (Pointer item in pointers)
             {
-                _main.Client.DownloadFile(_main.Client, item.Pointer, ((MainWindowRemote)_main.Main).LocalView.Client.CurrentFolder);
+                if (item.IsDir)
+                {
+                    _main.Client.DownloadFolder(_main.Client, item, ((MainWindowRemote)_main.Main).LocalView.Client.CurrentFolder);
+                }
+                else
+                {
+                    _main.Client.DownloadFile(_main.Client, item, ((MainWindowRemote)_main.Main).LocalView.Client.CurrentFolder);
+                }
+                Dispatcher.UIThread.Post(() => ((MainWindowRemote) _main.Main).LocalView.Refresh());
             }
-
-        }
-        ((MainWindowRemote) _main.Main).LocalView.Refresh();
-        Debug.Print("download");
+        });
+        downloadThread.Start();
     }
 }

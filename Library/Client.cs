@@ -24,7 +24,7 @@ namespace Library
             // Attributes
             Type = type;
             Children = new List<Pointer>();
-            CurrentFolder = Root;
+            // CurrentFolder = Root;
             CurrentFolder = null;
         }
 

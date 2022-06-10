@@ -20,6 +20,7 @@ namespace Ui.Views.LinkBar
         private StackPanel _drives;
         private StackPanel _clouds;
         private Image _remoteIcon;
+        public StackPanel stackPanel;
         
         public LinkBar()
         {
@@ -30,16 +31,17 @@ namespace Ui.Views.LinkBar
             _drives = this.FindControl<StackPanel>("Drives");
             _clouds = this.FindControl<StackPanel>("Clouds");
             _remoteIcon = this.FindControl<Image>("RemoteIcon");
-            
+            stackPanel = this.FindControl<StackPanel>("stackPanel");
+
             // if (Main is not null && Main.Main is MainWindowRemote) //TODO Change this
             // {
-	           //  _remoteIcon.Source = ((MainWindowRemote) Main.Main).RemoteView.Client.Type switch
-	           //  {
-					       //      ClientType.FTP => ResourcesLoader.ResourcesIcons.FtpIcon,
-					       //      ClientType.ONEDRIVE => ResourcesLoader.ResourcesIconsCompressed.OneDriveCompressed,
-					       //      ClientType.GOOGLEDRIVE => ResourcesLoader.ResourcesIcons.GoogleDriveIcon,
-					       //      _ => _remoteIcon.Source
-	           //  };
+            //  _remoteIcon.Source = ((MainWindowRemote) Main.Main).RemoteView.Client.Type switch
+            //  {
+            //      ClientType.FTP => ResourcesLoader.ResourcesIcons.FtpIcon,
+            //      ClientType.ONEDRIVE => ResourcesLoader.ResourcesIconsCompressed.OneDriveCompressed,
+            //      ClientType.GOOGLEDRIVE => ResourcesLoader.ResourcesIcons.GoogleDriveIcon,
+            //      _ => _remoteIcon.Source
+            //  };
             // }
         }
 

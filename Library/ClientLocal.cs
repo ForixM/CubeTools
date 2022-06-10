@@ -16,7 +16,7 @@ namespace Library {
 
         public ClientLocal(string path) : base(ClientType.FTP)
         {
-            Root = new DirectoryLocalPointer(path);
+            Root = new DirectoryLocalPointer(Directory.GetDirectoryRoot(path));
             CurrentFolder = new DirectoryLocalPointer(path);
             Children = ListChildren();
         }

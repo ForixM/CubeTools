@@ -52,6 +52,7 @@ namespace Ui.Views
             // Link Bar
             LinkBarView = this.FindControl<LinkBar.LinkBar>("LinkBar");
             LinkBarView.Main = LocalView;
+            LinkBarView.stackPanel.Children.RemoveAt(0);
             
             // Remote Client
             RemoteView = new ClientUI(clientRemote, this);

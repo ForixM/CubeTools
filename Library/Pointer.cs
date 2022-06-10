@@ -2,7 +2,7 @@
 
 namespace Library
 {
-    [Serializable]
+    // [Serializable]
     public abstract class Pointer : IDisposable
     {
         /// <summary>
