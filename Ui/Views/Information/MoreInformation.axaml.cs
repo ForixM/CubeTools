@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -14,20 +15,25 @@ namespace Ui.Views.Information
     {
 
         private readonly ClientUI? _main;
-        private readonly PointerItem? itemXaml;
+        private readonly PointerItem? _itemXaml;
+        private Image _starIcon;
         
         #region Init
         public MoreInformation()
         {
             InitializeComponent();
             SystemDecorations = SystemDecorations.BorderOnly;
+            _starIcon = this.FindControl<Image>("StarIcon");
         }
         public MoreInformation(PointerItem item, ClientUI main) : this()
         {
             Position = new PixelPoint(-(int) new MouseDevice().GetPosition(item).X, 50-(int) new MouseDevice().GetPosition(item).Y);
-            itemXaml = item;
+            _itemXaml = item;
             _main = main;
             if (_main.Client.Type is not ClientType.LOCAL) this.FindControl<Button>("Compress").IsVisible = false;
+            _starIcon.Source = (ConfigLoader.ConfigLoader.Settings.Links.ContainsValue(_itemXaml.Pointer.Path))
+                ? ResourcesLoader.ResourcesIconsCompressed.StarredCompressed
+                : ResourcesLoader.ResourcesIconsCompressed.StarCompressed;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -62,13 +68,13 @@ namespace Ui.Views.Information
 
         private void OpenWith(object? sender, RoutedEventArgs e)
         {
-            _main!.AccessPath(itemXaml!.Pointer);
+            _main!.AccessPath(_itemXaml!.Pointer);
             Close();
         }
 
         private void OpenWithDefault(object? sender, RoutedEventArgs e)
         {
-            _main!.AccessPath(itemXaml!.Pointer);
+            _main!.AccessPath(_itemXaml!.Pointer);
             Close();
         }
 
@@ -76,7 +82,7 @@ namespace Ui.Views.Information
         {
             try
             {
-                Application.Current!.Clipboard!.SetTextAsync(itemXaml!.Pointer.Path);
+                Application.Current!.Clipboard!.SetTextAsync(_itemXaml!.Pointer.Path);
             }
             catch (Exception) {}
         }
@@ -85,7 +91,7 @@ namespace Ui.Views.Information
         {
             try
             {
-                new Properties.Properties(itemXaml!.Pointer, _main!.Client).Show();
+                new Properties.Properties(_itemXaml!.Pointer, _main!.Client).Show();
             }
             catch (Exception) {}
         }
@@ -103,7 +109,39 @@ namespace Ui.Views.Information
             {
                 new ErrorBase(exception).Show();
             }
+        }
+
+        private void AddToFavorite(object? sender, RoutedEventArgs e)
+        {
+            if (_itemXaml is null || ConfigLoader.ConfigLoader.Settings.Links is null) return;
             
+            if (!ConfigLoader.ConfigLoader.Settings.Links.ContainsValue(_itemXaml.Pointer.Path))
+            {
+                if (ConfigLoader.ConfigLoader.Settings.Links.ContainsKey(_itemXaml.Pointer.Name))
+                {
+                    int i = 1;
+                    string tmp = _itemXaml.Pointer.Name;
+                    while (ConfigLoader.ConfigLoader.Settings.Links.ContainsKey(tmp))
+                    {
+                        tmp = tmp.Remove(tmp.Length - 1, 1) + i;
+                        i++;
+                    }
+
+                    ConfigLoader.ConfigLoader.Settings.Links.Add(tmp, _itemXaml.Pointer.Path);
+                }
+                else ConfigLoader.ConfigLoader.Settings.Links.Add(_itemXaml.Pointer.Name, _itemXaml.Pointer.Path);
+                _starIcon.Source = ResourcesLoader.ResourcesIconsCompressed.StarredCompressed;
+            }
+            else
+            {
+                foreach (var key in ConfigLoader.ConfigLoader.Settings.Links.Keys.Where(key => ConfigLoader.ConfigLoader.Settings.Links[key] == _itemXaml.Pointer.Path))
+                {
+                    ConfigLoader.ConfigLoader.Settings.Links.Remove(key);
+                    break;
+                }
+
+                _starIcon.Source = ResourcesLoader.ResourcesIconsCompressed.StarCompressed;
+            }
         }
         
         #endregion

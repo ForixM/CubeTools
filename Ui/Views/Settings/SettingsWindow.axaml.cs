@@ -34,8 +34,7 @@ namespace Ui.Views.Settings
             int i = 1;
             while (ConfigLoader.ConfigLoader.Settings.Links.ContainsKey(key))
             {
-                key.Remove(key.Length - 1, 1);
-                key += i;
+                key = key.Remove(key.Length - 1, 1) + i;
                 i++;
             }
 

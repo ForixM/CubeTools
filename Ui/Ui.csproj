@@ -585,7 +585,6 @@
       <Folder Include="bin\Debug\net6.0\Assets\dark" />
       <Folder Include="bin\Debug\net6.0\Assets\default" />
       <Folder Include="bin\Debug\net6.0\Assets\light" />
-      <Folder Include="Models" />
     </ItemGroup>
     <ItemGroup>
       <AvaloniaXaml Remove="Views\PopUps\DeletePopUp.axaml" />

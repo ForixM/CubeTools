@@ -83,10 +83,10 @@
             </Button>
         </Grid>
         <Grid Row="6">
-            <Button Classes="MoreMenu" Name="Favorite">
+            <Button Click="AddToFavorite" Classes="MoreMenu" Name="Favorite">
                 <Grid ColumnDefinitions="50, 125">
                     <Grid Column="0">
-                        <Image Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIcons.StarIcon}"/>
+                        <Image Name="StarIcon" Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIcons.StarIcon}"/>
                     </Grid>
                     <Grid Column="1">
                         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Add to Favorites"/>

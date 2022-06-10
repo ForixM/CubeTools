@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -41,8 +42,23 @@ namespace Ui.Views.Settings.Generators.SingleObject
         private void OnButtonClick(object? sender, RoutedEventArgs e)
         {
             ConfigLoader.ConfigLoader.Settings.Links.Remove(_lastKey);
-            ConfigLoader.ConfigLoader.Settings.Links.Add(_name.Text, _path.Text);
-            _lastKey = _name.Text;
+            if (ConfigLoader.ConfigLoader.Settings.Links.ContainsKey(_name.Text))
+            {
+                int i = 1;
+                string tmp = _name.Text;
+                while (ConfigLoader.ConfigLoader.Settings.Links.ContainsKey(tmp))
+                {
+                    tmp = tmp.Remove(tmp.Length - 1, 1) + i;
+                    i++;
+                }
+                _lastKey = tmp;
+                ConfigLoader.ConfigLoader.Settings.Links.Add(tmp, _path.Text);
+            }
+            else
+            {
+                ConfigLoader.ConfigLoader.Settings.Links.Add(_name.Text, _path.Text);
+                _lastKey = _name.Text;
+            }
         }
 
         private void OnDeleteClick(object? sender, RoutedEventArgs e)
