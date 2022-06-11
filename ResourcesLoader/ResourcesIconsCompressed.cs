@@ -33,10 +33,7 @@ namespace ResourcesLoader
                                                            "IconsCompressed/File.ico");
         public static readonly IImage FolderCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                      "IconsCompressed/Folder.ico");
-        public static readonly IImage FtpCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "IconsCompressed/FTP.ico");
-        public static readonly IImage GoogleDriveCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "IconsCompressed/GoogleDrive.ico");
+        
         public static readonly IImage ImagesCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Images.ico");
         public static readonly IImage MusicCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
@@ -47,6 +44,10 @@ namespace ResourcesLoader
                                                            "IconsCompressed/NoneFolder.ico");
         public static readonly IImage OneDriveCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/OneDrive.ico");
+        public static readonly IImage FtpCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                 "IconsCompressed/FTP.ico");
+        public static readonly IImage GoogleDriveCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                         "IconsCompressed/GoogleDrive.ico");
         public static readonly IImage PasteCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Paste.ico");
         public static readonly IImage RedoCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +

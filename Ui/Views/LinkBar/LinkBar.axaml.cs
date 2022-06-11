@@ -32,17 +32,20 @@ namespace Ui.Views.LinkBar
             _clouds = this.FindControl<StackPanel>("Clouds");
             _remoteIcon = this.FindControl<Image>("RemoteIcon");
             stackPanel = this.FindControl<StackPanel>("stackPanel");
+        }
 
-            // if (Main is not null && Main.Main is MainWindowRemote) //TODO Change this
-            // {
-            //  _remoteIcon.Source = ((MainWindowRemote) Main.Main).RemoteView.Client.Type switch
-            //  {
-            //      ClientType.FTP => ResourcesLoader.ResourcesIcons.FtpIcon,
-            //      ClientType.ONEDRIVE => ResourcesLoader.ResourcesIconsCompressed.OneDriveCompressed,
-            //      ClientType.GOOGLEDRIVE => ResourcesLoader.ResourcesIcons.GoogleDriveIcon,
-            //      _ => _remoteIcon.Source
-            //  };
-            // }
+        public void ChangeLinkBarIcon()
+        {
+	        if (Main is not null && Main.Main is MainWindowRemote) //TODO Change this
+	        {
+		        _remoteIcon.Source = ((MainWindowRemote) Main.Main).RemoteView.Client.Type switch
+		        {
+						        ClientType.FTP => ResourcesLoader.ResourcesIconsCompressed.FtpCompressed,
+						        ClientType.ONEDRIVE => ResourcesLoader.ResourcesIconsCompressed.OneDriveCompressed,
+						        ClientType.GOOGLEDRIVE => ResourcesLoader.ResourcesIconsCompressed.GoogleDriveCompressed,
+						        _ => _remoteIcon.Source
+		        };
+	        }
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -198,8 +201,8 @@ namespace Ui.Views.LinkBar
 				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)))
 				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
-			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
-				        _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
+			        //if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
+				    //    _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
 		        }, DispatcherPriority.Background);
 	        }
         }

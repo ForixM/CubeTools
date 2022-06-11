@@ -54,9 +54,12 @@ namespace Ui.Views
             LinkBarView.Main = LocalView;
             LinkBarView.stackPanel.Children.RemoveAt(0);
             
+            
             // Remote Client
             RemoteView = new ClientUI(clientRemote, this);
             this.FindControl<Grid>("ClientRemote").Children.Add(RemoteView);
+            
+            LinkBarView.ChangeLinkBarIcon();
             
             // Initialize variables
             LinkBarView.InitializeExpanders();
