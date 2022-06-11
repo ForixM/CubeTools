@@ -26,7 +26,6 @@ namespace Ui.Views
         private TextBlock _name;
         private TextBlock _size;
         public Button button;
-        public Grid grid;
 
         #endregion
 
@@ -45,7 +44,6 @@ namespace Ui.Views
         protected ActionButton(int def)
         {
             InitializeComponent();
-            grid = this.FindControl<Grid>("Grid");
             Grid.SetColumn(this, def);
             _main = ClientUI.LastReference;
             _icon = this.FindControl<Image>("Icon");

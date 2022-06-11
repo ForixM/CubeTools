@@ -1,7 +1,9 @@
 using System.IO;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using ResourcesLoader;
@@ -33,12 +35,16 @@ namespace Ui.Views
             button = this.FindControl<Button>("Button");
         }
 
-        public PointerItem(Pointer pointer, ClientUI main) : this()
+        public PointerItem(Pointer pointer, ClientUI main, PointersView view) : this()
         {
             Pointer = pointer;
             _main = main;
             _name.Text = pointer.Name;
             _icon.Source = ResourcesConverter.TypeToIcon(pointer.Path, pointer.Type, pointer.IsDir);
+            Grid infoGrid = this.FindControl<Grid>("infoGrid");
+            // HorizontalAlignment = HorizontalAlignment.Stretch;
+            button.HorizontalAlignment = HorizontalAlignment.Stretch;
+            button.CornerRadius = new CornerRadius(8);
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

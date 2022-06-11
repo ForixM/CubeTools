@@ -5,13 +5,11 @@
              x:Class="Ui.Views.ActionButton"
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader">
      
-     <Grid Name="Grid">
-         <Button Background="Transparent" CornerRadius="8" Name="Button" Height="45"
-                 Click="OnClick">
-             <StackPanel>
-                 <Image HorizontalAlignment="Center" VerticalAlignment="Center" Name="Icon" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>
-             </StackPanel>
-         </Button>
-     </Grid>
+     <Button Background="Transparent" CornerRadius="8" Name="Button" Height="45"
+             Click="OnClick">
+         <StackPanel>
+             <Image HorizontalAlignment="Center" VerticalAlignment="Center" Name="Icon" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>
+         </StackPanel>
+     </Button>
      
  </UserControl>
