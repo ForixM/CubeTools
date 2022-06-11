@@ -42,9 +42,9 @@ namespace Ui.Views.LinkBar
             var mainWindow = new MainWindowRemote(clientLocal, clientRemote);
             mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
             {
-                new CreateFileButton(_main, 0), new CreateFolderButton(_main, 1), new CopyButton(_main, 2),
-                new CutButton(_main, 3), new PasteButton(_main, 4), new RenameButton(_main, 5),
-                new DeleteButton(_main, 6), new DownloadButton(_main, 7)
+                new CreateFileButton(mainWindow.RemoteView, 0), new CreateFolderButton(mainWindow.RemoteView, 1), new CopyButton(mainWindow.RemoteView, 2),
+                new CutButton(mainWindow.RemoteView, 3), new PasteButton(mainWindow.RemoteView, 4), new RenameButton(mainWindow.RemoteView, 5),
+                new DeleteButton(mainWindow.RemoteView, 6), new DownloadButton(mainWindow.RemoteView, 7)
             });
             mainWindow.Show();
         }

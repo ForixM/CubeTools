@@ -87,10 +87,10 @@ namespace Ui.Views
                             var mainWindow = new MainWindowRemote(clientLocal, clientRemote);
                             mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
                             {
-                                new CreateFileButton(LocalView, 0), new CreateFolderButton(LocalView, 1),
-                                new CopyButton(LocalView, 2), new CutButton(LocalView, 3),
-                                new PasteButton(LocalView, 4), new RenameButton(LocalView, 5),
-                                new DeleteButton(LocalView, 6), new DownloadButton(LocalView, 7)
+                                new CreateFileButton(mainWindow.RemoteView, 0), new CreateFolderButton(mainWindow.RemoteView, 1),
+                                new CopyButton(mainWindow.RemoteView, 2), new CutButton(mainWindow.RemoteView, 3),
+                                new PasteButton(mainWindow.RemoteView, 4), new RenameButton(mainWindow.RemoteView, 5),
+                                new DeleteButton(mainWindow.RemoteView, 6), new DownloadButton(mainWindow.RemoteView, 7)
                             });
                             mainWindow.Show();
                         });
@@ -105,9 +105,9 @@ namespace Ui.Views
                 var mainWindow = new MainWindowRemote(clientLocal, clientRemote);
                 mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
                 {
-                    new CreateFileButton(LocalView, 0), new CreateFolderButton(LocalView, 1),
-                    new CopyButton(LocalView, 2), new CutButton(LocalView, 3), new PasteButton(LocalView, 4),
-                    new RenameButton(LocalView, 5), new DeleteButton(LocalView, 6), new DownloadButton(LocalView, 7)
+                    new CreateFileButton(mainWindow.RemoteView, 0), new CreateFolderButton(mainWindow.RemoteView, 1),
+                    new CopyButton(mainWindow.RemoteView, 2), new CutButton(mainWindow.RemoteView, 3), new PasteButton(mainWindow.RemoteView, 4),
+                    new RenameButton(mainWindow.RemoteView, 5), new DeleteButton(mainWindow.RemoteView, 6), new DownloadButton(mainWindow.RemoteView, 7)
                 });
                 mainWindow.Show();
             }

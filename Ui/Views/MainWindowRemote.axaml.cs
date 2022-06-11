@@ -1,12 +1,22 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
+using Avalonia.Threading;
 using DynamicData;
 using Library;
+using Library.ManagerExceptions;
 using Ui.Views.ActionButtons;
+using Ui.Views.Actions;
+using Ui.Views.Error;
+using Ui.Views.Ftp;
 using Ui.Views.Settings;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views
 {
@@ -67,29 +77,156 @@ namespace Ui.Views
 
         #region Events
         
+        private void CheckEssentials()
+        {
+            if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["close"]))
+                Close();
+            else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["newWindow"]))
+            {
+                new MainWindow().Show();
+                KeysPressed.Clear();
+            }
+            else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["settings"]))
+            {
+                new SettingsWindow(this).Show();
+            }
+            else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["openFTP"]))
+            {
+                new LoginFTP().Show();
+            }
+            else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["openOneDrive"]))
+            {
+                ClientOneDrive clientRemote = new ClientOneDrive();
+                ClientLocal clientLocal = new ClientLocal(Directory.GetCurrentDirectory().Replace('\\','/'));
+                clientRemote.Client.authenticated += (o, success) =>
+                {
+                    if (success)
+                    {
+                        clientRemote.Children = clientRemote.ListChildren();
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            var mainWindow = new MainWindowRemote(clientLocal, clientRemote);
+                            mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
+                            {
+                                new CreateFileButton(mainWindow.RemoteView, 0), new CreateFolderButton(mainWindow.RemoteView, 1),
+                                new CopyButton(mainWindow.RemoteView, 2), new CutButton(mainWindow.RemoteView, 3),
+                                new PasteButton(mainWindow.RemoteView, 4), new RenameButton(mainWindow.RemoteView, 5),
+                                new DeleteButton(mainWindow.RemoteView, 6), new DownloadButton(mainWindow.RemoteView, 7)
+                            });
+                            mainWindow.Show();
+                        });
+                    }
+                    else new ErrorBase(new ConnectionRefused("OneDrive connection could not be established", "Connection to OneDrive")).Show();
+                };
+            }
+            else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["openGoogleDrive"]))
+            {
+                ClientGoogleDrive clientRemote = new ClientGoogleDrive();
+                ClientLocal clientLocal = new ClientLocal(Directory.GetCurrentDirectory().Replace('\\', '/'));
+                var mainWindow = new MainWindowRemote(clientLocal, clientRemote);
+                mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
+                {
+                    new CreateFileButton(mainWindow.RemoteView, 0), new CreateFolderButton(mainWindow.RemoteView, 1),
+                    new CopyButton(mainWindow.RemoteView, 2), new CutButton(mainWindow.RemoteView, 3), new PasteButton(mainWindow.RemoteView, 4),
+                    new RenameButton(mainWindow.RemoteView, 5), new DeleteButton(mainWindow.RemoteView, 6), new DownloadButton(mainWindow.RemoteView, 7)
+                });
+                mainWindow.Show();
+            }
+        }
+        
         private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
         {
-            
             if (KeysPressed.Contains(e.Key)) return;
             KeysPressed.Add(e.Key);
-            if (IsListInListList(KeysPressed,ConfigLoader.ConfigLoader.Settings.ListShortcuts))
+            if (IsListInListList(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts))
             {
-                if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["close"]))
-                    Close();
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createDir"]))
-                    LocalView.ActionView.CreatDir(sender, e);
+                CheckEssentials();
+                if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createDir"]))
+                {
+                    if (LocalView.ActionView.SelectedXaml.Count != 0)
+                        LocalView.ActionView.CreatDir(sender, e);
+                    else
+                        RemoteView.ActionView.CreatDir(sender, e);
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createFile"]))
-                    LocalView.ActionView.CreateFile(sender, e);
+                {
+                    if (LocalView.ActionView.SelectedXaml.Count != 0)
+                        LocalView.ActionView.CreateFile(sender, e);
+                    else
+                        RemoteView.ActionView.CreateFile(sender, e);
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["cut"]))
-                    LocalView.ActionView.Cut(sender, e);
+                {
+                    if (LocalView.ActionView.SelectedXaml.Count != 0)
+                        LocalView.ActionView.Cut(sender, e);
+                    else
+                        RemoteView.ActionView.Cut(sender, e);
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["copy"]))
-                    LocalView.ActionView.Copy(sender, e);
-                else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts["delete"])
-                    LocalView.ActionView.Delete(sender, e);
+                {
+                    if (LocalView.ActionView.SelectedXaml.Count != 0)
+                        LocalView.ActionView.Copy(sender, e);
+                    else
+                        RemoteView.ActionView.Copy(sender, e);
+                }
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["delete"]))
+                {
+                    Thread deleteThread = new Thread(() =>
+                    {
+                        ClientUI selected = null;
+                        if (LocalView.ActionView.SelectedXaml.Count != 0)
+                            selected = LocalView;
+                        else selected = RemoteView;
+                        foreach (PointerItem item in selected.ActionView.SelectedXaml)
+                        {
+                            try
+                            {
+                                selected.Client.Delete(item.Pointer);
+                                // if (LocalView.ActionView.SelectedXaml.Count != 0)
+                                //     LocalView.Client.Delete(item.Pointer);
+                                // else
+                                //     RemoteView.Client.Delete(item.Pointer);
+                            }
+                            catch (Exception exception)
+                            {
+                                if (exception is ManagerException @managerException)
+                                {
+                                    @managerException.Errorstd = $"Unable to delete {item.Pointer.Name}";
+                                    new ErrorBase(@managerException).ShowDialog<object>(this);
+                                }
+                            }
+                        }
+                        selected.ActionView.SelectedXaml.Clear();
+                        // LocalView.ActionView.SelectedXaml.Clear();
+                        // RemoteView.ActionView.SelectedXaml.Clear();
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            selected.Refresh();
+                            // if (LocalView.ActionView.SelectedXaml.Count != 0)
+                            //     LocalView.Refresh();
+                            // else
+                            //     RemoteView.Refresh();
+                        }, DispatcherPriority.Render);
+                    });
+                    deleteThread.Start();
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["paste"]))
-                    LocalView.ActionView.Paste(sender, e);
+                {
+                    if (LocalView.ActionView.SelectedXaml.Count != 0)
+                    {
+                        LocalView.ActionView.Paste(sender, e);
+                        LocalView.ActionView.SelectedXaml.Clear();
+                    }
+                    else
+                    {
+                        RemoteView.ActionView.Paste(sender, e);
+                        RemoteView.ActionView.SelectedXaml.Clear();
+                    }
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["search"]))
-                    LocalView.ActionView.Search(sender,e);
+                {
+                    LocalView.ActionView.Search(sender, e);
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["selectAll"]))
                 {
                     // All items are selected
@@ -101,6 +238,8 @@ namespace Ui.Views
                         {
                             LocalView.ActionView.SelectedXaml.Add((PointerItem) LocalView.PointersView.Generator.Children[i]);
                             size = LocalView.PointersView.Generator.Children.Count;
+                            foreach (var control in LocalView.ActionView.SelectedXaml)
+                                control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
                         }
                     }
                     else
@@ -111,38 +250,36 @@ namespace Ui.Views
                             if (!LocalView.ActionView.SelectedXaml.Contains((PointerItem) LocalView.PointersView.Generator.Children[i]))
                                 LocalView.ActionView.SelectedXaml.Add((PointerItem) LocalView.PointersView.Generator.Children[i]);
                             size = LocalView.PointersView.Generator.Children.Count;
+                            foreach (var control in LocalView.ActionView.SelectedXaml)
+                                control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
                         }
                         
                     }
                 }
-                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["newWindow"]))
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["rename"]))
                 {
-                    switch (RemoteView.Client.Type)
+                    if (LocalView.ActionView.SelectedXaml.Count == 1)
                     {
-                        case ClientType.FTP:
-                            var castFTP = (ClientTransferProtocol) RemoteView.Client;
-                            new MainWindowRemote(
-                                new ClientLocal(LocalView.Client.CurrentFolder!.Path), 
-                                new ClientTransferProtocol(castFTP.Host, castFTP.Username, castFTP.Password)).Show();
-                            break;
-                        case ClientType.ONEDRIVE :
-                            new MainWindowRemote(
-                                new ClientLocal(LocalView.Client.CurrentFolder!.Path), 
-                                new ClientOneDrive()).Show();
-                            break;
-                        case ClientType.GOOGLEDRIVE:
-                            new MainWindowRemote(
-                                new ClientLocal(LocalView.Client.CurrentFolder.Path), 
-                                new ClientGoogleDrive()).Show();
-                            break;
+                        new Rename(LocalView.ActionView.SelectedXaml[0].Pointer, LocalView.Client.Children, LocalView).Show();
                     }
                 }
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["rename"]))
-                    LocalView.ActionView.Rename(sender, e);
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["reload"]))
+                {
                     LocalView.Refresh();
-                else if (KeysPressed ==ConfigLoader.ConfigLoader.Settings.Shortcuts["settings"])
-                    new SettingsWindow(this).Show();
+                }
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["compress"]))
+                {
+                    List<Pointer> pointers = new List<Pointer>();
+                    foreach (PointerItem item in LocalView.ActionView.SelectedXaml)
+                    {
+                        pointers.Add(item.Pointer);
+                    }
+                    new Compress(LocalView, pointers).Show();
+                }
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["sort"]))
+                {
+                    new Sort(LocalView).Show();
+                }
             }
         }
         private void OnKeyReleasedWindow(object? sender, KeyEventArgs e) => KeysPressed.Remove(e.Key);
@@ -151,9 +288,9 @@ namespace Ui.Views
         
         #region Process
 
-        private static bool IsListInListList(List<Key> list, List<List<Key>> listList)
+        private static bool IsListInListList(List<Key> list, Dictionary<string, List<Key>> listList)
         {
-            foreach (var list2 in listList)
+            foreach (var (name, list2) in listList)
             {
                 if (list2.Count == list.Count)
                 {

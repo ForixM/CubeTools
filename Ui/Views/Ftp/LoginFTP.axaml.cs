@@ -100,8 +100,9 @@ namespace Ui.Views.Ftp
                     var mainWindow = new MainWindowRemote(new ClientLocal(), new ClientTransferProtocol(Ip.Text + ":" + Port.Text, User.Text, Mdp.Text));
                     mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
                     {
-                        new CreateFileButton( _main, 0), new CreateFolderButton(_main, 1), new RenameButton(_main, 2), new DeleteButton(_main, 3),
-                        new DownloadButton(_main, 4)
+                        new CreateFileButton(mainWindow.RemoteView, 0),
+                        new CreateFolderButton(mainWindow.RemoteView, 1), new RenameButton(mainWindow.RemoteView, 2),
+                        new DeleteButton(mainWindow.RemoteView, 3), new DownloadButton(mainWindow.RemoteView, 4)
                     });
                     mainWindow.Show();
                     ConfigLoader.ConfigLoader.Settings.Ftp.LastServers.Add(new OneFtpSettings("New Recent", Ip.Text, User.Text, Mdp.Text, Port.Text));
