@@ -24,7 +24,7 @@
                 
                 <Grid Grid.Column="1">
                         <StackPanel Margin="10">
-                                <TextBox Name="TextEntered" Watermark="Enter a file name" Text="New File" KeyDown="OnEnterPressed"/>
+                                <TextBox Name="TextEntered" Watermark="Enter a file name" Text="New File"/>
                                 <WrapPanel>
                                         <Button Click="OnPressed" HorizontalAlignment="Center" Margin="0 10 0 0" Content="Create"/>
                                         <Button Click="OnCancelPressed" HorizontalAlignment="Center" Margin="0 10 0 0" Content="Cancel"/>

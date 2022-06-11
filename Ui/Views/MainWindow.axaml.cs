@@ -18,6 +18,7 @@ using Ui.Views.Error;
 using Ui.Views.MenuController;
 using Ui.Views.Settings;
 using Menu = Ui.Views.MenuController.Menu;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views
 {
@@ -158,9 +159,18 @@ namespace Ui.Views
                 {
                     LocalView.Refresh();
                 }
-                else if (KeysPressed ==ConfigLoader.ConfigLoader.Settings.Shortcuts["settings"])
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["settings"]))
                 {
                     new SettingsWindow().Show();
+                }
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["compress"]))
+                {
+                    List<Pointer> pointers = new List<Pointer>();
+                    foreach (PointerItem item in LocalView.ActionView.SelectedXaml)
+                    {
+                        pointers.Add(item.Pointer);
+                    }
+                    new Compress(LocalView, pointers).Show();
                 }
             }
         }

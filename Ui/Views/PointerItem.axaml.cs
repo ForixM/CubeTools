@@ -59,6 +59,7 @@ namespace Ui.Views
             // Grid infoGrid = this.FindControl<Grid>("infoGrid");
             // HorizontalAlignment = HorizontalAlignment.Stretch;
             button.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _name.HorizontalAlignment = HorizontalAlignment.Left;
             button.CornerRadius = new CornerRadius(8);
         }
 
