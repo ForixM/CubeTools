@@ -38,15 +38,15 @@
 				 <Expander IsExpanded="False" Header="Change Theme" Margin="20 0">
 					 <Grid ColumnDefinitions="213, 212">
 						 <Grid Grid.Column="0">
-							 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-								 <Image Height="30" Margin="0 5" Source="{x:Static resource:ResourcesIconsCompressed.LightCompressed}"/>
-								 <generators:PackGenerator/>
+							 <StackPanel VerticalAlignment="Center">
+								 <Image Height="30" HorizontalAlignment="Center" Margin="0 5" Source="{x:Static resource:ResourcesIconsCompressed.LightCompressed}"/>
+								 <generators:PackGenerator HorizontalAlignment="Center"/>
 							 </StackPanel>
 						 </Grid>
 						 <Grid Grid.Column="1">
-							 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-								 <Image Height="30" Margin="0 5" Source="{x:Static resource:ResourcesIconsCompressed.DarkCompressed}"/>
-								 <generators:PackGenerator/>
+							 <StackPanel VerticalAlignment="Center">
+								 <Image Height="30" HorizontalAlignment="Center" Margin="0 5" Source="{x:Static resource:ResourcesIconsCompressed.DarkCompressed}"/>
+								 <generators:PackGenerator HorizontalAlignment="Center"/>
 							 </StackPanel>
 						 </Grid>
 					 </Grid>
