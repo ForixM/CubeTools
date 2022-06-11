@@ -26,7 +26,7 @@
 			 </StackPanel>
 			 
 			 <StackPanel Margin="0 20 0 0">
-				 <Grid ColumnDefinitions="100, 750">
+				 <Grid ColumnDefinitions="100, 400">
 					 <Grid Grid.Column="0">
 						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.ThemeCompressed}"/>
 					 </Grid>
@@ -34,7 +34,27 @@
 						 <TextBlock Text="Theme" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 					 </Grid>
 				 </Grid>
-				 <StackPanel>
+				 
+				 <Expander IsExpanded="False" Header="Change Theme" Margin="20 0">
+					 <Grid ColumnDefinitions="213, 212">
+						 <Grid Grid.Column="0">
+							 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+								 <Image Height="30" Margin="0 5" Source="{x:Static resource:ResourcesIconsCompressed.LightCompressed}"/>
+								 <generators:PackGenerator/>
+							 </StackPanel>
+						 </Grid>
+						 <Grid Grid.Column="1">
+							 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+								 <Image Height="30" Margin="0 5" Source="{x:Static resource:ResourcesIconsCompressed.DarkCompressed}"/>
+								 <generators:PackGenerator/>
+							 </StackPanel>
+						 </Grid>
+					 </Grid>
+				 </Expander>
+				 
+					 
+					 
+					 <!--
 					 <Grid ColumnDefinitions="150, *">
 						 <Grid Grid.Column="0" Margin="25 5 0 0">
 							 <TextBlock Text = "Theme Pack :"/>
@@ -43,7 +63,15 @@
 							 <generators:PackGenerator/>
 						 </Grid>
 					 </Grid>
-				 </StackPanel>
+					 <Grid ColumnDefinitions="150, *">
+						 <Grid Grid.Column="0" Margin="25 5 0 0">
+							 <TextBlock Text = "Theme Pack :"/>
+						 </Grid>
+						 <Grid Grid.Column="1">
+							 <generators:PackGenerator/>
+						 </Grid>
+					 </Grid>
+					 -->
 			 </StackPanel>
 			 
 			 <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 15" Width="350"/>
