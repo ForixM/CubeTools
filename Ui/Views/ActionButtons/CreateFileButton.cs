@@ -10,7 +10,7 @@ namespace Ui.Views.ActionButtons;
 public class CreateFileButton : ActionButton
 {
     
-    public CreateFileButton()
+    public CreateFileButton(int def) : base(def)
     {
         _icon.Source = ResourcesIconsCompressed.CreateCompressed;
         OnClickEvent += OnClick;

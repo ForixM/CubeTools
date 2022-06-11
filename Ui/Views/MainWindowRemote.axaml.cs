@@ -45,8 +45,8 @@ namespace Ui.Views
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
             LocalView.ActionView.SetActionButtons(new List<ActionButton>
             {
-                new CreateFileButton(), new CreateFolderButton(), new CopyButton(), new CutButton(), new PasteButton(),
-                new RenameButton(), new CompressButton(), new DeleteButton(), new UploadButton()
+                new CreateFileButton(0), new CreateFolderButton(1), new CopyButton(2), new CutButton(3), new PasteButton(4),
+                new RenameButton(5), new CompressButton(6), new DeleteButton(7), new UploadButton(8)
             });
             
             // Link Bar

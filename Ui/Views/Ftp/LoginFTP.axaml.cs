@@ -75,8 +75,8 @@ namespace Ui.Views.Ftp
                     var mainWindow = new MainWindowRemote(new ClientLocal(), new ClientTransferProtocol(_ip.Text + ":" + _port.Text, _user.Text, _mdp.Text));
                     mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
                     {
-                        new CreateFileButton(), new CreateFolderButton(), new RenameButton(), new DeleteButton(),
-                        new DownloadButton()
+                        new CreateFileButton(0), new CreateFolderButton(1), new RenameButton(2), new DeleteButton(3),
+                        new DownloadButton(4)
                     });
                     mainWindow.Show();
                     Close();

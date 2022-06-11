@@ -11,6 +11,7 @@ namespace  Library.LibraryFtp
             _size = size;
             _parentPath = parentPath;
             _lastModified = lastModified;
+            _type = ManagerReader.ManagerReader.GetFileExtension(_path);
         }
     
         public FtpFile(string name, long size, FtpPointer parent, string lastModified)
@@ -21,6 +22,7 @@ namespace  Library.LibraryFtp
             _parent = parent;
             _lastModified = lastModified;
             _path = parent.Path + name;
+            _type = ManagerReader.ManagerReader.GetFileExtension(_path);
         }
         
         public override string ToString() => $"{{name={_name}, size={_size}, path={Path}, lastmodified={_lastModified}}}";

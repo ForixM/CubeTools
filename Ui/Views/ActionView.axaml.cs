@@ -21,7 +21,7 @@ namespace Ui.Views
 
         public ClientUI Main;
 
-        public WrapPanel generator;
+        public Grid generator;
 
         #region Init
         
@@ -32,16 +32,35 @@ namespace Ui.Views
             SelectedXaml = new List<PointerItem>();
             CopiedXaml = new List<PointerItem>();
             CutXaml = new List<PointerItem>();
-            generator = this.FindControl<WrapPanel>("Generator");
-            generator.ItemWidth = 45;
-            // generator.Children.Add(new CreateFileButton());
-            // generator.Children.Add(new CreateFolderButton());
-            // generator.Children.Add(new RenameButton());
-            // generator.Children.Add(new DeleteButton());
-            // generator.Children.Add(new CopyButton());
-            // generator.Children.Add(new PasteButton());
-            // generator.Children.Add(new CutButton());
-            // generator.Children.Add(new CompressButton());
+            generator = this.FindControl<Grid>("Generator");
+            
+            generator.ColumnDefinitions.Clear();
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3)));
+
+            // ColumnDefinition def = new ColumnDefinition(new GridLength(45));
+            // generator.ColumnDefinitions.Add(def);
+            // generator.ColumnDefinitions.Add(def);
+            // generator.ColumnDefinitions.Add(def);
+            // generator.ColumnDefinitions.Add(def);
+            // generator.ColumnDefinitions.Add(def);
+            // generator.ColumnDefinitions.Add(def);
+            // generator.ColumnDefinitions.Add(def);
+            // generator.ColumnDefinitions.Add(def);
+            // generator.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+            // generator.ColumnDefinitions.Add(def);
         }
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 

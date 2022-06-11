@@ -159,7 +159,7 @@ namespace Ui.Views
                 if (string.IsNullOrWhiteSpace(path) || string.IsNullOrEmpty(path))
                 {
                     NavigationView.CurrentPathXaml.Text = "";
-                    if (subGrid.Children[0] is not Menu && Client.Type is not ClientType.LOCAL)
+                    if (subGrid.Children[0] is not Menu && Client.Type is ClientType.LOCAL)
                     {
                         subGrid.Children.Clear();
                         subGrid.Children.Add(menu);
@@ -170,7 +170,7 @@ namespace Ui.Views
                 }
                 else
                 {
-                    if (subGrid.Children[0] is not Views.PointersView && Client.Type is not ClientType.LOCAL)
+                    if (subGrid.Children[0] is not Views.PointersView && Client.Type is ClientType.LOCAL)
                     {
                         subGrid.Children.Clear();
                         subGrid.Children.Add(PointersView);
@@ -178,7 +178,16 @@ namespace Ui.Views
                         grid.Children.Add(subGrid);
                         Main.Show();
                     }
-                    AccessPath(Client.GetItem(path, true)!);
+
+                    var item = Client.GetItem(path, true);
+                    if (item != null)
+                    {
+                        AccessPath(item);
+                    }
+                    else
+                    {
+                        new ErrorBase(new PathNotFoundException("Path not found", path)).Show();
+                    }
                 }
             }
             catch (ManagerException e)

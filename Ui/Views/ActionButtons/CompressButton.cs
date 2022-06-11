@@ -7,7 +7,7 @@ namespace Ui.Views.ActionButtons;
 
 public class CompressButton : ActionButton
 {
-    public CompressButton()
+    public CompressButton(int def) : base(def)
     {
         _icon.Source = ResourcesIconsCompressed.CompressionCompressed;
         OnClickEvent += OnClick;

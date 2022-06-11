@@ -10,9 +10,29 @@
 		<StyleInclude Source="/Styles/Styles.axaml"/>
 	</UserControl.Styles>
 	 
-	 <Grid ColumnDefinitions="*">
-		 <WrapPanel Name="Generator"></WrapPanel>
+	 <!-- <Grid ColumnDefinitions="*"> -->
+		<!--  <StackPanel Orientation="Horizontal" Name="Generator"></StackPanel> -->
+	 <!-- </Grid> -->
+	 
+	 <Grid Name="Generator">
+		 <Grid.ColumnDefinitions>
+			 <ColumnDefinition Width="45" />
+			 	<ColumnDefinition Width="45"/>
+			 	<ColumnDefinition Width="45" />
+			 	<ColumnDefinition Width="45" />
+			 	<ColumnDefinition Width="45" />
+			 	<ColumnDefinition Width="45" />
+			 	<ColumnDefinition Width="45"/>
+			 	<ColumnDefinition Width="45"/>
+			 	<ColumnDefinition Width="*"/>
+			 	<ColumnDefinition Width="45"/>
+			 	<ColumnDefinition Width="45"/>
+			 	<ColumnDefinition Width="45"/>
+			 	<ColumnDefinition Width="45"/>
+			 	<ColumnDefinition Width="3"/>
+			 </Grid.ColumnDefinitions>
 	 </Grid>
+	 
 	 <!-- <Grid> -->
 		<!-- <Grid.ColumnDefinitions> -->
 		<!-- 	<ColumnDefinition Width="45" /> -->

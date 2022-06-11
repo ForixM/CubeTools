@@ -7,7 +7,7 @@ namespace Ui.Views.ActionButtons;
 
 public class DeleteButton : ActionButton
 {
-    public DeleteButton()
+    public DeleteButton(int def) : base(def)
     {
         _icon.Source = ResourcesIconsCompressed.DeleteCompressed;
         OnClickEvent += OnClick;

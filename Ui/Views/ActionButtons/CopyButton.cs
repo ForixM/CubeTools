@@ -5,7 +5,7 @@ namespace Ui.Views.ActionButtons;
 
 public class CopyButton : ActionButton
 {
-    public CopyButton()
+    public CopyButton(int def) : base(def)
     {
         _icon.Source = ResourcesIconsCompressed.CopyCompressed;
         OnClickEvent += OnClick;

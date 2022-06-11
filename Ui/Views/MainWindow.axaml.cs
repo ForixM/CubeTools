@@ -28,8 +28,10 @@ namespace Ui.Views
             LocalView = new ClientUI(new ClientLocal(), this);
             LocalView.ActionView.SetActionButtons(new List<ActionButton>
             {
-                new CreateFileButton(), new CreateFolderButton(), new CopyButton(), new CutButton(), new PasteButton(),
-                new RenameButton(), new DeleteButton()
+                new CreateFileButton(0), new CreateFolderButton(1), new CopyButton(2), new CutButton(3),
+                new PasteButton(4),
+                new RenameButton(5), new DeleteButton(7), new CompressButton(6), new SortButton(9),
+                new SearchButton(10), new SnapdropButton(11), new SmashButton(12)
             });
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
             // Grid grid = this.FindControl<Grid>("ClientLocal");

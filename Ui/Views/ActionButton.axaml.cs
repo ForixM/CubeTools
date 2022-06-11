@@ -2,6 +2,7 @@ using System.IO;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using ResourcesLoader;
@@ -25,6 +26,7 @@ namespace Ui.Views
         private TextBlock _name;
         private TextBlock _size;
         public Button button;
+        public Grid grid;
 
         #endregion
 
@@ -33,6 +35,18 @@ namespace Ui.Views
         public ActionButton()
         {
             InitializeComponent();
+            _main = ClientUI.LastReference;
+            _icon = this.FindControl<Image>("Icon");
+            _name = this.FindControl<TextBlock>("Name");
+            _size = this.FindControl<TextBlock>("Size");
+            button = this.FindControl<Button>("Button");
+        }
+
+        protected ActionButton(int def)
+        {
+            InitializeComponent();
+            grid = this.FindControl<Grid>("Grid");
+            Grid.SetColumn(this, def);
             _main = ClientUI.LastReference;
             _icon = this.FindControl<Image>("Icon");
             _name = this.FindControl<TextBlock>("Name");
@@ -49,7 +63,7 @@ namespace Ui.Views
         /// <summary>
         /// On click event
         /// </summary>
-        private void OnClick(object? sender, RoutedEventArgs e)
+        protected void OnClick(object? sender, RoutedEventArgs e)
         {
             OnClickEvent?.Invoke(this);
         }

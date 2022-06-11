@@ -5,7 +5,7 @@ namespace Ui.Views.ActionButtons;
 
 public class CutButton : ActionButton
 {
-    public CutButton()
+    public CutButton(int def) : base(def)
     {
         _icon.Source = ResourcesIconsCompressed.CutCompressed;
         OnClickEvent += OnClick;
