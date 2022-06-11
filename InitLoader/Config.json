@@ -8,14 +8,7 @@
   },
   "FTP" :
   {
-    "current" :
-      {
-        "name" : "Default",
-        "host" : "",
-        "login" : "",
-        "password" : "",
-        "port" : ""
-      },
+    "last_servers" : [],
     "servers" : []
   },
   "Shortcuts" :
