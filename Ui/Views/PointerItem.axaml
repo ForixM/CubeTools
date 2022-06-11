@@ -18,7 +18,7 @@
              <Grid Grid.Column="1">
                  <StackPanel VerticalAlignment="Center">
                      <Border>
-                         <TextBlock Name="Name" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                         <TextBlock Name="Name" TextTrimming="CharacterEllipsis" Margin="5 0 0 0" VerticalAlignment="Center"/>
                      </Border>
                  </StackPanel>
              </Grid>
