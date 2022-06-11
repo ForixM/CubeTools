@@ -1,6 +1,6 @@
  <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Ui.Views.Settings.Generators.SingleObject.ShortcutObject">
+             x:Class="Ui.Views.Settings.Generators.SingleObject.ShortcutSettingObject">
 	 
 	 <WrapPanel>
 		 

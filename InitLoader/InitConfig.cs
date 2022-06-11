@@ -1,4 +1,6 @@
-﻿namespace InitLoader
+﻿using Library.ManagerExceptions;
+
+namespace InitLoader
 {
     /// <summary>
     /// This class will help to initialize directories and path needed for the application so that it can run correctly
@@ -33,23 +35,7 @@
                 {
                     LogErrors.LogErrors.LogWrite("Unable to find json file for configuration", e);
                 }
-
-                // Create manually a default one
-                var stream = File.Create("Config.default.json");
-                StreamWriter sr = new StreamWriter(stream);
-                const string text = "{" +
-                                    "\"AssetsPath\" : \"Assets\"," +
-                                    "\"AppPath\" : \".\"," +
-                                    "\"Styles\" : { \"themes\" : \"default\" , \"pack\" : \"Assets/default\"}," +
-                                    "\"FTP\" : { \"servers\" : [] }," +
-                                    "\"Shortcuts\" :{}," +
-                                    "\"Application\" :{}" +
-                                    "\"Links\" : {}" +
-                                    "}";
-                sr.Write(text);
-                sr.Close();
-                // Generate configuration
-                ConfigLoader.ConfigLoader.LoadConfiguration("Config.default.json");
+                throw new ManagerException("JSON Serialize failure", Level.Crash, "Crash occured", "CubeTools was unable to get a config", "InitConfig");
             }
         }
     }

@@ -37,6 +37,7 @@ namespace Ui.Views.Ftp
         {
             ConfigLoader.ConfigLoader.Settings.Ftp.Servers.Remove(_server);
             _container.Children.Remove(this);
+            ConfigLoader.ConfigLoader.SaveConfiguration();
         }
 
         private void LoadClicked(object? sender, RoutedEventArgs e)

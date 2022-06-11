@@ -1,10 +1,10 @@
 {
-  "AssetsPath" : "Assets",
-  "AppPath" : "",
   "Styles" : 
   {
-    "theme" : "default",
-    "pack" : "Assets/Default - Dark"
+    "folder_light" : "Default - Light",
+    "folder_dark" : "Default - Dark",
+    "is_light" : true
+    
   },
   "FTP" :
   {

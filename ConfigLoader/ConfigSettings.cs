@@ -8,7 +8,6 @@ namespace ConfigLoader
     public class ConfigSettings
     {
         // Global
-        [DataMember(Name="AssetsPath")] public string? AssetsPath { get; set; }
         public string AppPath { get; set; }
         /// <summary>
         /// Application Settings : All settings related to the way other program will be executed --
@@ -50,7 +49,7 @@ namespace ConfigLoader
         /// </summary>
         [DataMember(Name = "Links")] public Dictionary<string, string>? Links { get; set; }
 
-        public string ResourcePath => AppPath + "/" + (Styles != null ? Styles.Pack : "Assets/default") + "/";
+        public string ResourcePath => $"{AppPath}/Assets/{(Styles.IsLight ? Styles.FolderLight : Styles.FolderDark)}/";
         public string LoadedJson;
         public ConfigSettings()
         {

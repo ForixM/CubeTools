@@ -38,7 +38,7 @@ namespace Ui.Views.MenuController
         public Menu(ClientUI client) : this()
         {
             _client = client;
-            _main = (MainWindow)_client.Main;
+            _main = (MainWindow) _client.Main;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

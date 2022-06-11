@@ -420,20 +420,12 @@
         <DependentUpon>SettingsWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Settings\Generators\ShortcutsGenerator.axaml.cs">
-        <DependentUpon>ShortcutsGenerator.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Settings\Generators\SingleObject\ShortcutObject.axaml.cs">
+      <Compile Update="Views\Settings\Generators\SingleObject\ShortcutSettingObject.axaml.cs">
         <DependentUpon>ShortcutObject.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Settings\Generators\SingleObject\FavoriteLinkObject.axaml.cs">
+      <Compile Update="Views\Settings\Generators\SingleObject\LinkSettingObject.axaml.cs">
         <DependentUpon>FavoriteLinkObject.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Settings\Generators\LinksGenerators.axaml.cs">
-        <DependentUpon>LinksGenerators.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\OneClient\Actions\Compress.axaml.cs">
@@ -566,10 +558,6 @@
       </Compile>
       <Compile Update="Views\Information\MoreInformationLink.axaml.cs">
         <DependentUpon>MoreInformationLink.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Ftp\FtpDisplayer.axaml.cs">
-        <DependentUpon>FtpGenerator.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\Ftp\FtpServerObject.axaml.cs">

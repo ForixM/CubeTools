@@ -1,6 +1,5 @@
  <Window xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:generators="clr-namespace:Ui.Views.Settings.Generators"
              x:Class="Ui.Views.Settings.SettingsWindow"
              WindowStartupLocation="CenterScreen"
              CanResize="False"
@@ -8,8 +7,10 @@
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
              Width="500" Height="750"
              MinWidth="500" MinHeight="750"
-             Topmost="True" 
-             KeyDown="OnKeyPressedWindow">
+             Topmost="False" 
+             KeyDown="OnKeyPressedWindow"
+             Closing="OnClosing"
+             Icon="{x:Static resource:ResourcesWindowIcons.SettingsWindowIcon}">
 	 
 	 <ScrollViewer>
 		 <StackPanel>
@@ -40,38 +41,17 @@
 						 <Grid Grid.Column="0">
 							 <StackPanel VerticalAlignment="Center">
 								 <Image Height="30" HorizontalAlignment="Center" Margin="0 5" Source="{x:Static resource:ResourcesIconsCompressed.LightCompressed}"/>
-								 <generators:PackGenerator HorizontalAlignment="Center"/>
+								 <ComboBox SelectionChanged="OnLightSelectionChanged" Name="LightPackGenerator" HorizontalAlignment="Center"/>
 							 </StackPanel>
 						 </Grid>
 						 <Grid Grid.Column="1">
 							 <StackPanel VerticalAlignment="Center">
 								 <Image Height="30" HorizontalAlignment="Center" Margin="0 5" Source="{x:Static resource:ResourcesIconsCompressed.DarkCompressed}"/>
-								 <generators:PackGenerator HorizontalAlignment="Center"/>
+								 <ComboBox SelectionChanged="OnDarkSelectionChanged" Name="DarkPackGenerator" HorizontalAlignment="Center"/>
 							 </StackPanel>
 						 </Grid>
 					 </Grid>
 				 </Expander>
-				 
-					 
-					 
-					 <!--
-					 <Grid ColumnDefinitions="150, *">
-						 <Grid Grid.Column="0" Margin="25 5 0 0">
-							 <TextBlock Text = "Theme Pack :"/>
-						 </Grid>
-						 <Grid Grid.Column="1">
-							 <generators:PackGenerator/>
-						 </Grid>
-					 </Grid>
-					 <Grid ColumnDefinitions="150, *">
-						 <Grid Grid.Column="0" Margin="25 5 0 0">
-							 <TextBlock Text = "Theme Pack :"/>
-						 </Grid>
-						 <Grid Grid.Column="1">
-							 <generators:PackGenerator/>
-						 </Grid>
-					 </Grid>
-					 -->
 			 </StackPanel>
 			 
 			 <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 15" Width="350"/>
@@ -86,7 +66,7 @@
 					 </Grid>
 				 </Grid>
 				 <Expander IsExpanded="False" Header="Custom Shortcuts" Margin="20 0">
-					 <generators:ShortcutsGenerator/>
+					 <StackPanel Name="ShortcutsGenerator"/>
 				 </Expander>
 			 </StackPanel>
 			 
@@ -103,11 +83,27 @@
 				 </Grid>
 				 <Expander IsExpanded="False" Header="Custom Links" Margin="20 5 20 0">
 					 <StackPanel>
-						 <generators:LinksGenerator Width="425" Name="LinksGenerator"/>
+						 <StackPanel Name="LinksGenerator"/>
 						 <Button Width="425" Background="Transparent" Click="CreateLink">
 								 <Image Width="30" Height="30" HorizontalAlignment="Center" Source="{x:Static resource:ResourcesIconsCompressed.CreateCompressed}"/>
 						 </Button>
 					 </StackPanel>
+				 </Expander>
+			 </StackPanel>
+			 
+			 <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 15" Width="350"/>
+			 
+			 <StackPanel Margin="0 5 0 0">
+				 <Grid ColumnDefinitions="100, 750">
+					 <Grid Grid.Column="0">
+						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="60" Source="{x:Static resource:ResourcesIconsCompressed.FtpCompressed}"/>
+					 </Grid>
+					 <Grid Grid.Column="1">
+						 <TextBlock Text="Favorites" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+					 </Grid>
+				 </Grid>
+				 <Expander IsExpanded="False" Header="My FTP Servers" Margin="20 5 20 0">
+					 <StackPanel Name="FtpGenerator"/>
 				 </Expander>
 			 </StackPanel>
 			 

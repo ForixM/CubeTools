@@ -1,35 +1,27 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using ConfigLoader.Settings;
-using DynamicData;
-using Tmds.DBus;
 
 namespace Ui.Views.Settings.Generators.SingleObject
 {
-    public class FavoriteLinkObject : UserControl
+    public class LinkSettingObject : UserControl
     {
 
-        private LinksGenerator _main;
+        private SettingsWindow _main;
         
         private TextBox _name;
         private TextBox _path;
 
         private string _lastKey;
 
-        public FavoriteLinkObject()
+        public LinkSettingObject()
         {
             InitializeComponent();
             _name = this.FindControl<TextBox>("Name");
             _path = this.FindControl<TextBox>("Path");
             _lastKey = "";
         }
-        public FavoriteLinkObject(string name, string path, LinksGenerator main) : this()
+        public LinkSettingObject(string name, string path, SettingsWindow main) : this()
         {
             _name.Text = name;
             _path.Text = path;
@@ -63,7 +55,7 @@ namespace Ui.Views.Settings.Generators.SingleObject
 
         private void OnDeleteClick(object? sender, RoutedEventArgs e)
         {
-            _main.Generator.Children.Remove(this);
+            _main.LinksGenerator.Children.Remove(this);
             ConfigLoader.ConfigLoader.Settings.Links.Remove(_lastKey);
         }
     }

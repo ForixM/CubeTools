@@ -5,13 +5,8 @@ namespace ConfigLoader.Settings
     [DataContract]
     public class StylesSettings
     {
-        [DataMember(Name = "theme")] public string Theme { get; set; }
-        [DataMember(Name = "pack")] public string Pack { get; set; }
-
-        public StylesSettings()
-        {
-            Theme = "Light";
-            Pack = "Assets/Default - Light";
-        }
+        [DataMember(Name = "folder_light")] public string? FolderLight { get; set; }
+        [DataMember(Name = "folder_dark")] public string? FolderDark { get; set; }
+        [DataMember(Name = "is_light")] public bool IsLight { get; set; }
     }
 }

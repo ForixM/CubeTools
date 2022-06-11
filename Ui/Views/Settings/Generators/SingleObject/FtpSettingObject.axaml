@@ -1,24 +1,24 @@
  <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Ui.Views.Settings.Generators.SingleObject.FtpServerObject">
+             x:Class="Ui.Views.Settings.Generators.SingleObject.FtpSettingObject">
 	 
 	 <StackPanel>
-		 <TextBlock Name="Name" />
+		 <TextBox KeyDown="OnNameModified" Name="Name" />
 		 <WrapPanel>
 			 <TextBlock Text="IP :"/>
-			 <TextBox TextInput="OnIPModified" Name="Ip"/>
+			 <TextBox KeyDown="OnIPModified" Name="Ip"/>
 		 </WrapPanel>
 		 <WrapPanel>
 			 <TextBlock Text="Login : "/>
-			 <TextBox  TextInput="OnLoginModified" Name="Login"/>
+			 <TextBox KeyDown="OnLoginModified" Name="Login"/>
 		 </WrapPanel>
 		 <WrapPanel>
 			 <TextBlock Text="Password : "/>
-			 <TextBox TextInput="OnPasswordModified" Name="Password"/>
+			 <TextBox KeyDown="OnPasswordModified" Name="Password"/>
 		 </WrapPanel>
 		 <WrapPanel>
 			 <TextBlock Text="Port : "/>
-			 <TextBox TextInput="OnPortModified" Name="Port"/>
+			 <TextBox KeyDown="OnPortModified" Name="Port"/>
 		 </WrapPanel>
 	 </StackPanel>
  </UserControl>

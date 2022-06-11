@@ -23,6 +23,5 @@ namespace Ui.Views.Error.Information
         
         // EVENTS
         private void CloseClick(object? sender, RoutedEventArgs e) => popup!.Close(false);
-        private void TryReloadClick(object? sender, RoutedEventArgs e) => popup!.Close(true);
     }
 }

@@ -98,9 +98,10 @@ namespace Ui.Views.Ftp
                     });
                     mainWindow.Show();
                     ConfigLoader.ConfigLoader.Settings.Ftp.LastServers.Add(new OneFtpSettings("New Recent", Ip.Text, User.Text, Mdp.Text, Port.Text));
+                    ConfigLoader.ConfigLoader.SaveConfiguration();
                     Close();
                 }
-                catch (Exception exception)
+                catch (ManagerException exception)
                 {
                     new ErrorBase(new ConnectionRefused("Invalid Credentials", "LoginFTP")).Show();
                 }
@@ -116,6 +117,7 @@ namespace Ui.Views.Ftp
             ConfigLoader.ConfigLoader.Settings.Ftp!.Servers!.Add(new OneFtpSettings("New Config", Ip.Text, User.Text,
                 Mdp.Text, Port.Text));
             _ftpServersGenerator.Children.Add(new FtpServerObject(ConfigLoader.ConfigLoader.Settings.Ftp.Servers.Last(), this, _ftpServersGenerator));
+            ConfigLoader.ConfigLoader.SaveConfiguration();
         }
 
         #endregion
