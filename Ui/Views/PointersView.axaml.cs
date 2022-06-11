@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Avalonia.Controls;
+using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Library;
 
 namespace Ui.Views
@@ -21,6 +24,16 @@ namespace Ui.Views
             InitializeComponent();
             Main = ClientUI.LastReference;
             Generator = this.FindControl<Grid>("Grid");
+            // Generator.HorizontalAlignment = HorizontalAlignment.Stretch;
+            // Generator.MaxWidth = Main.Main.Width - 250;
+            Thread thread = new Thread(HandleSize);
+            thread.Start();
+        }
+
+        private void HandleSize()
+        {
+            Dispatcher.UIThread.Post(() => Generator.MaxWidth = Main.Main.Width, DispatcherPriority.Render);
+            Thread.Sleep(100);
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -40,6 +53,8 @@ namespace Ui.Views
                 Generator.Children.Add(pi);
                 i++;
             }
+
+            var temp = Main.Main.Width;
         }
         
         public void Refresh(IEnumerable<Pointer> list)

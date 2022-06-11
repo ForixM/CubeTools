@@ -36,7 +36,7 @@
                         <Expander Grid.Column="0" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
                             <WrapPanel Name="QuickAccess"/>
                         </Expander>
-                        <Expander Grid.Column="1" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
+                        <Expander Grid.Column="1" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Favorites">
                             <WrapPanel Name="Favorites"/>
                         </Expander>
                     </Grid>
@@ -49,10 +49,10 @@
                     </Grid>
                     
                     <Grid Grid.Row="1" Grid.ColumnDefinitions="*,*" Margin="0 10 0 0">
-                        <Expander Grid.Column="0" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
+                        <Expander Grid.Column="0" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Drives">
                             <WrapPanel Name="Drives"/>
                         </Expander>
-                        <Expander Grid.Column="1" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
+                        <Expander Grid.Column="1" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Clouds">
                             <WrapPanel Name="Clouds"/>
                         </Expander>
                     </Grid>

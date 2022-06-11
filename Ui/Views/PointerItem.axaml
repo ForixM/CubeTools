@@ -16,9 +16,9 @@
                  <Image Name="Icon" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>
              </Grid>
              <Grid Grid.Column="1">
-                 <StackPanel>
+                 <StackPanel VerticalAlignment="Center">
                      <Border>
-                         <TextBlock Name="Name" TextWrapping="NoWrap" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                         <TextBlock Name="Name" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center"/>
                      </Border>
                  </StackPanel>
              </Grid>

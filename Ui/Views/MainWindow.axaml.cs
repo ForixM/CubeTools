@@ -46,6 +46,8 @@ namespace Ui.Views
 
         #region Events
         
+        
+        
         private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
         {
             

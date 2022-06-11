@@ -15,10 +15,10 @@ namespace Ui.Views.LinkBar
     {
         public ClientUI Main;
         
-        private StackPanel _quickAccess;
-        private StackPanel _favorites;
-        private StackPanel _drives;
-        private StackPanel _clouds;
+        public StackPanel _quickAccess;
+        public StackPanel _favorites;
+        public StackPanel _drives;
+        public StackPanel _clouds;
         private Image _remoteIcon;
         public StackPanel stackPanel;
         
