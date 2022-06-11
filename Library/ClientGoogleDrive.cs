@@ -74,9 +74,15 @@ namespace Library
             ManagerFile.Rename(((GoogleDriveFile)pointer).Id, newName);
         }
 
+        public override LocalPointer DownloadFile(Client source, Pointer pointer, Pointer destination)
+        {
+            ManagerFile.DownloadFile(((GoogleDriveFile)pointer).Id, destination.Path);
+            return base.DownloadFile(source, pointer, destination);
+        }
+
         public override void UploadFile(Client source, Pointer localPointer, Pointer destination)
         {
-            ManagerFile.UploadFile(localPointer.Path, localPointer.Name, "application/vnd.google-apps.folder", ((GoogleDriveFile)destination).Id);
+            ManagerFile.UploadFile(localPointer.Path, localPointer.Name, MimeTypes.GetMimeType(localPointer.Name), ((GoogleDriveFile)destination).Id);
         }
 
         public override void UploadFolder(Client source, Pointer localPointer, Pointer destination)
@@ -99,6 +105,15 @@ namespace Library
 
         public override Pointer? GetItem(string path, bool isAbsolute = false)
         {
+            if (!isAbsolute)
+            {
+                foreach (Pointer pointer in Children)
+                {
+                    if (pointer.Name == path) return pointer;
+                }
+
+                return null;
+            }
             if (!isAbsolute) path = CurrentFolder.Path + "/" + path;
             string fileId = FileReader.GetFileIdFromPath(path);
             if (fileId is null) return null;

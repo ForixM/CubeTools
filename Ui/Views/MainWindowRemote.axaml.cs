@@ -92,7 +92,7 @@ namespace Ui.Views
             }
             else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["openFTP"]))
             {
-                new LoginFTP().Show();
+                new LoginFTP(LocalView).Show();
             }
             else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["openOneDrive"]))
             {

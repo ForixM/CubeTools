@@ -55,7 +55,7 @@ namespace Ui.Views.Ftp
             new Thread(FtpRecentServersRefresher).Start();
         }
 
-        public LoginFTP(ClientUI main)
+        public LoginFTP(ClientUI main) : this()
         {
             _main = main;
         }
