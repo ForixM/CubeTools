@@ -7,10 +7,11 @@
              xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
              Width="500" Height="750"
              MinWidth="500" MinHeight="750"
-             Topmost="False" 
+             Topmost="True" 
              KeyDown="OnKeyPressedWindow"
              Closing="OnClosing"
-             Icon="{x:Static resource:ResourcesWindowIcons.SettingsWindowIcon}">
+             Icon="{x:Static resource:ResourcesWindowIcons.SettingsWindowIcon}"
+             KeyUp="OnKeyReleased">
 	 
 	 <ScrollViewer>
 		 <StackPanel>

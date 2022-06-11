@@ -23,8 +23,13 @@ namespace Ui.Views
         public PointersView()
         {
             InitializeComponent();
-            Main = ClientUI.LastReference;
+            // Main = ClientUI.LastReference;
             Generator = this.FindControl<Grid>("Grid");
+        }
+
+        public PointersView(ClientUI main) : this()
+        {
+            Main = main;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

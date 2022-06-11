@@ -5,7 +5,7 @@ namespace Ui.Views.ActionButtons;
 
 public class SmashButton : ActionButton
 {
-    public SmashButton(int def) : base(def)
+    public SmashButton(ClientUI main, int def) : base(main, def)
     {
         _icon.Source = ResourcesIconsCompressed.SmashCompressed;
         OnClickEvent += OnClick;

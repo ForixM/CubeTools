@@ -17,11 +17,9 @@ namespace Ui.Views
         public LinkBar.LinkBar LinkBarView;
         public ClientUI LocalView;
         public ClientUI RemoteView;
-        public static MainWindowRemote LastReference;
 
         public MainWindowRemote()
         {
-            LastReference = this;
             InitializeComponent();
             LinkBarView = this.FindControl<LinkBar.LinkBar>("LinkBar");
             // Local Client
@@ -36,8 +34,6 @@ namespace Ui.Views
 
         public MainWindowRemote(Client clientLocal, Client clientRemote) : this()
         {
-            LastReference = this;
-            
             InitializeComponent();
             
             // Local Client
@@ -45,8 +41,8 @@ namespace Ui.Views
             this.FindControl<Grid>("ClientLocal").Children.Add(LocalView);
             LocalView.ActionView.SetActionButtons(new List<ActionButton>
             {
-                new CreateFileButton(0), new CreateFolderButton(1), new CopyButton(2), new CutButton(3), new PasteButton(4),
-                new RenameButton(5), new CompressButton(6), new DeleteButton(7), new UploadButton(8)
+                new CreateFileButton(LocalView, 0), new CreateFolderButton(LocalView, 1), new CopyButton(LocalView, 2), new CutButton(LocalView, 3), new PasteButton(LocalView, 4),
+                new RenameButton(LocalView, 5), new CompressButton(LocalView, 6), new DeleteButton(LocalView, 7), new UploadButton(LocalView, 8)
             });
             
             // Link Bar
@@ -146,7 +142,7 @@ namespace Ui.Views
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["reload"]))
                     LocalView.Refresh();
                 else if (KeysPressed ==ConfigLoader.ConfigLoader.Settings.Shortcuts["settings"])
-                    new SettingsWindow().Show();
+                    new SettingsWindow(this).Show();
             }
         }
         private void OnKeyReleasedWindow(object? sender, KeyEventArgs e) => KeysPressed.Remove(e.Key);

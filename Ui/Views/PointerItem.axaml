@@ -16,11 +16,11 @@
                  <Image Name="Icon" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>
              </Grid>
              <Grid Grid.Column="1">
-                 <StackPanel VerticalAlignment="Center">
-                     <Border>
+                 <!-- <StackPanel VerticalAlignment="Center"> -->
+                     <!-- <Border> -->
                          <TextBlock Name="Name" TextTrimming="CharacterEllipsis" Margin="5 0 0 0" VerticalAlignment="Center"/>
-                     </Border>
-                 </StackPanel>
+                     <!-- </Border> -->
+                 <!-- </StackPanel> -->
              </Grid>
              <Grid Grid.Column="2">
                  <TextBlock Name="LastModified" HorizontalAlignment="Right" Text="05/06/2021" Margin="5" VerticalAlignment="Center"/>

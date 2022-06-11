@@ -18,7 +18,7 @@ namespace Ui.Views
     public class ClientUI : UserControl
     {
         public Client Client;
-        public static ClientUI LastReference;
+        // public static ClientUI LastReference;
         public Window Main;
 
         public ActionView ActionView;
@@ -30,13 +30,15 @@ namespace Ui.Views
 
         public ClientUI()
         {
-            LastReference = this;
+            // LastReference = this;
             Main = (Window) Parent;
             InitializeComponent();
             ActionView = this.FindControl<ActionView>("ActionView");
+            ActionView.Main = this;
             NavigationView = this.FindControl<NavigationView>("NavigationView");
+            NavigationView.Main = this;
             grid = this.FindControl<Grid>("grid");
-            PointersView = new PointersView();
+            PointersView = new PointersView(this);
             grid.Children.Add(PointersView);
 
             string path = Directory.GetCurrentDirectory().Replace('\\', '/');
@@ -48,13 +50,15 @@ namespace Ui.Views
         }
         public ClientUI(Client client, Window Parent)
         {
-            LastReference = this;
+            // LastReference = this;
             Main = (Window) Parent;
             InitializeComponent();
             ActionView = this.FindControl<ActionView>("ActionView");
+            ActionView.Main = this;
             NavigationView = this.FindControl<NavigationView>("NavigationView");
+            NavigationView.Main = this;
             grid = this.FindControl<Grid>("grid");
-            PointersView = new PointersView();
+            PointersView = new PointersView(this);
             subGrid = new Grid();
             Grid.SetRow(subGrid, 2);
             if (Parent is not MainWindow)

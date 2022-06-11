@@ -1,5 +1,6 @@
 ﻿using Google.Apis.Drive.v3;
 using Library.LibraryGoogleDrive;
+using File = Google.Apis.Drive.v3.Data.File;
 
 namespace Library
 {
@@ -14,8 +15,11 @@ namespace Library
 
         public ClientGoogleDrive() : base(ClientType.GOOGLEDRIVE)
         {
-            Root = new GoogleDriveFile("root");
-            CurrentFolder = new GoogleDriveFile("root");
+            var service = ClientGoogleDrive.Service;
+            FilesResource.GetRequest getRequest = service.Files.Get("root");
+            File getFile = getRequest.Execute();
+            Root = new GoogleDriveFile(getFile);
+            CurrentFolder = new GoogleDriveFile(getFile);
             Children = ListChildren();
         }
         
@@ -24,23 +28,39 @@ namespace Library
 
         public override Pointer CreateFile(string name)
         {
+            var id = ManagerFile.CreateFile(((GoogleDriveFile) this.CurrentFolder).Id, name);
+            var service = ClientGoogleDrive.Service;
+            FilesResource.GetRequest getRequest = service.Files.Get(id);
+            File getFile = getRequest.Execute();
             GoogleDriveFile file =
-                new GoogleDriveFile(ManagerFile.CreateFile(((GoogleDriveFile) this.CurrentFolder).Id, name));
+                new GoogleDriveFile(getFile);
             return file;
         }
 
         public override Pointer CreateFolder(string name)
         {
+            var id = ManagerFile.CreateFolder(((GoogleDriveFile) this.CurrentFolder).Id, name);
+            var service = ClientGoogleDrive.Service;
+            FilesResource.GetRequest getRequest = service.Files.Get(id);
+            File getFile = getRequest.Execute();
             GoogleDriveFile file =
-                new GoogleDriveFile(ManagerFile.CreateFolder(((GoogleDriveFile) this.CurrentFolder).Id, name));
+                new GoogleDriveFile(getFile);
             return file;
         }
 
         public override Pointer? Copy(Pointer pointer, Pointer destination)
         {
-            GoogleDriveFile file = new GoogleDriveFile(ManagerFile.CopyFile(((GoogleDriveFile)pointer).Id));
+            var service = ClientGoogleDrive.Service;
+            string id = ManagerFile.CopyFile(((GoogleDriveFile) pointer).Id);
+            FilesResource.GetRequest getRequest = service.Files.Get(id);
+            File getFile = getRequest.Execute();
+            GoogleDriveFile file = new GoogleDriveFile(getFile);
             string parentId = ((GoogleDriveFile) destination).Id;
-            file = new GoogleDriveFile(ManagerFile.ChangeParentsFile(file.Id, parentId));
+
+            id = ManagerFile.ChangeParentsFile(file.Id, parentId);
+            getRequest = service.Files.Get(id);
+            getFile = getRequest.Execute();
+            file = new GoogleDriveFile(getFile);
             return file;
         }
 
@@ -66,7 +86,11 @@ namespace Library
 
         public override void AccessPath(Pointer destination)
         {
-            CurrentFolder = new GoogleDriveFile(FileReader.GetFileIdFromPath(destination.Path));
+            var service = ClientGoogleDrive.Service;
+            FilesResource.GetRequest getRequest = service.Files.Get(((GoogleDriveFile)destination).Id);
+            getRequest.Fields = "parents, id, name, size, mimeType";
+            File getFile = getRequest.Execute();
+            CurrentFolder = new GoogleDriveFile(getFile);
             foreach (var pointer in Children) pointer.Dispose();
             GC.Collect();
             Children.Clear();
@@ -79,15 +103,26 @@ namespace Library
             string fileId = FileReader.GetFileIdFromPath(path);
             if (fileId is null) return null;
             
-            GoogleDriveFile file = new GoogleDriveFile(fileId);
+            var service = ClientGoogleDrive.Service;
+            FilesResource.GetRequest getRequest = service.Files.Get(fileId);
+            File getFile = getRequest.Execute();
+
+            GoogleDriveFile file = new GoogleDriveFile(getFile);
             return file;
         }
 
         public override Pointer GetParentReference(Pointer pointer)
         {
-            string parent = FileReader.GetFileParent(((GoogleDriveFile) pointer).Id);
+            var service = ClientGoogleDrive.Service;
+            // FilesResource.GetRequest getRequest = service.Files.Get(((GoogleDriveFile) pointer).Id);
+            // File file = getRequest.Execute();
+            // string fileId = FileReader.GetFileIdFromPath(((GoogleDriveFile)pointer).Parents[0]);
+            string fileId = ((GoogleDriveFile)pointer).Parents[0];
+            FilesResource.GetRequest getRequest = service.Files.Get(fileId);
+            File file = getRequest.Execute();
+            // string parent = FileReader.GetFileParent(((GoogleDriveFile) pointer).Id);
 
-            GoogleDriveFile fileParent = new GoogleDriveFile(parent);
+            GoogleDriveFile fileParent = new GoogleDriveFile(file);
 
             return fileParent;
         }
@@ -95,10 +130,12 @@ namespace Library
         public override List<Pointer>? ListChildren()
         {
             List<Google.Apis.Drive.v3.Data.File> files = FileReader.ListFileAndFolder(((GoogleDriveFile) CurrentFolder).Id);
+
             List<Pointer> items = new List<Pointer>();
             foreach (var i in files)
             {
-                Pointer pointer = new GoogleDriveFile(i.Id);
+                
+                Pointer pointer = new GoogleDriveFile(i);
                 items.Add(pointer);
             }
 

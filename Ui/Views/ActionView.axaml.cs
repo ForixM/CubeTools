@@ -28,7 +28,7 @@ namespace Ui.Views
         public ActionView()
         {
             InitializeComponent();
-            Main = ClientUI.LastReference;
+            // Main = ClientUI.LastReference;
             SelectedXaml = new List<PointerItem>();
             CopiedXaml = new List<PointerItem>();
             CutXaml = new List<PointerItem>();

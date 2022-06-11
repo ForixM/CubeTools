@@ -13,18 +13,23 @@ namespace Ui.Views.LinkBar
 {
     public class OneDriveHandler : UserControl
     {
-        public ClientUI Main;
         public TextBlock Description;
         public Image Image;
-        
+
+        private ClientUI _main;
+
         public OneDriveHandler()
         {
-            Main = ClientUI.LastReference;
             InitializeComponent();
             Description = this.FindControl<TextBlock>("Description");
             Image = this.FindControl<Image>("Image");
             Description.Text = "OneDrive";
             Image.Source = ResourcesLoader.ResourcesIconsCompressed.OneDriveCompressed;
+        }
+        
+        public OneDriveHandler(ClientUI main) : this()
+        {
+            _main = main;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -43,8 +48,9 @@ namespace Ui.Views.LinkBar
                         var mainWindow = new MainWindowRemote(clientLocal, clientRemote);
                         mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
                         {
-                            new CreateFileButton(0), new CreateFolderButton(1), new CopyButton(2), new CutButton(3), new PasteButton(4),
-                            new RenameButton(5), new DeleteButton(6), new DownloadButton(7)
+                            new CreateFileButton(_main, 0), new CreateFolderButton(_main, 1), new CopyButton(_main, 2),
+                            new CutButton(_main, 3), new PasteButton(_main, 4), new RenameButton(_main, 5),
+                            new DeleteButton(_main, 6), new DownloadButton(_main, 7)
                         });
                         mainWindow.Show();
                     });

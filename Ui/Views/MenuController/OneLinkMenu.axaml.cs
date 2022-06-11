@@ -22,7 +22,7 @@ namespace Ui.Views.LinkBar
         
         public OneLinkMenu()
         {
-            Main = ClientUI.LastReference;
+            // Main = ClientUI.LastReference;
             LocalPointer = LocalPointer.NullLocalPointer;
             
             InitializeComponent();
@@ -30,8 +30,9 @@ namespace Ui.Views.LinkBar
             Image = this.FindControl<Image>("Image");
         }
 
-        public OneLinkMenu(string link, string name, IImage image) : this()
+        public OneLinkMenu(ClientUI main, string link, string name, IImage image) : this()
         {
+            Main = main;
             try
             {
                 if (Directory.Exists(link)) LocalPointer = new DirectoryLocalPointer(link);

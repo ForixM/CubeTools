@@ -14,7 +14,7 @@ namespace Ui.Views.ActionButtons;
 
 public class PasteButton : ActionButton
 {
-    public PasteButton(int def) : base(def)
+    public PasteButton(ClientUI main, int def) : base(main, def)
     {
         _icon.Source = ResourcesIconsCompressed.PasteCompressed;
         OnClickEvent += OnClick;

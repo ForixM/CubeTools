@@ -11,7 +11,7 @@ namespace Ui.Views.ActionButtons;
 
 public class DownloadButton : ActionButton
 {
-    public DownloadButton(int def) : base(def)
+    public DownloadButton(ClientUI main, int def) : base(main, def)
     {
         _icon.Source = ResourcesIconsCompressed.DownloadCompressed;
         OnClickEvent += OnClick;

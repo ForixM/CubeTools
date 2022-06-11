@@ -10,7 +10,7 @@ namespace Ui.Views.ActionButtons;
 
 public class UploadButton : ActionButton
 {
-    public UploadButton(int def) : base(def)
+    public UploadButton(ClientUI main, int def) : base(main, def)
     {
         _icon.Source = ResourcesIconsCompressed.UploadCompressed;
         OnClickEvent += OnClick;

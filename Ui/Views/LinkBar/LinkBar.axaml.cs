@@ -75,9 +75,9 @@ namespace Ui.Views.LinkBar
 	        foreach (var drive in DriveInfo.GetDrives())
 		        _drives.Children.Add(new OneLink(Main, drive.Name, $"{drive.VolumeLabel} ({drive.Name})", ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
 	        // Clouds
-	        _clouds.Children.Add(new FTPHandler());
-	        _clouds.Children.Add(new OneDriveHandler());
-	        _clouds.Children.Add(new GoogleDriveHandler());
+	        _clouds.Children.Add(new FTPHandler(Main));
+	        _clouds.Children.Add(new OneDriveHandler(Main));
+	        _clouds.Children.Add(new GoogleDriveHandler(Main));
 			// Workers
 			new Thread(LaunchUpdaterDrivers).Start();
 	        new Thread(LaunchUpdateLinks).Start();

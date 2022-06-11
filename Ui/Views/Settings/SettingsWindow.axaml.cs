@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -29,7 +27,8 @@ namespace Ui.Views.Settings
         #endregion
 
         #region Init
-
+        public Window _main;
+        
         public SettingsWindow()
         {
             InitializeComponent();
@@ -53,6 +52,11 @@ namespace Ui.Views.Settings
             new Thread(LinksGeneratorRefresher).Start();
             new Thread(DarkPackGeneratorRefresher).Start();
             new Thread(LightPackGeneratorRefresher).Start();
+        }
+        
+        public SettingsWindow(Window main) : this()
+        {
+            this._main = main;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -116,6 +120,17 @@ namespace Ui.Views.Settings
                 DarkPackGenerator.SelectedItem = @block.Text;
                 ConfigLoader.ConfigLoader.Settings.Styles.FolderDark = @block.Text;
                 RefreshDarkPackGenerator();
+            }
+        }
+
+        private void OnKeyReleased(object? sender, KeyEventArgs e)
+        {
+            if (_main is MainWindow window)
+            {
+                window.KeysPressed.Remove(e.Key);
+            } else if (_main is MainWindowRemote remote)
+            {
+                remote.KeysPressed.Remove(e.Key);
             }
         }
 

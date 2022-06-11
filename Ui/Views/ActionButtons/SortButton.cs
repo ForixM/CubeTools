@@ -6,7 +6,7 @@ namespace Ui.Views.ActionButtons;
 
 public class SortButton : ActionButton
 {
-    public SortButton(int def) : base(def)
+    public SortButton(ClientUI main, int def) : base(main, def)
     {
         _icon.Source = ResourcesIconsCompressed.SortCompressed;
         OnClickEvent += OnClick;

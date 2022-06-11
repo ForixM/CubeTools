@@ -24,7 +24,6 @@ namespace Ui.Views.LinkBar
         
         public OneLinkMenuDrives()
         {
-            Main = ClientUI.LastReference;
             LocalPointer = LocalPointer.NullLocalPointer;
             
             InitializeComponent();
@@ -32,8 +31,9 @@ namespace Ui.Views.LinkBar
             Image = this.FindControl<Image>("Image");
         }
 
-        public OneLinkMenuDrives(string link, string name, IImage image) : this()
+        public OneLinkMenuDrives(ClientUI main, string link, string name, IImage image) : this()
         {
+            Main = main;
             try
             {
                 if (Directory.Exists(link)) LocalPointer = new DirectoryLocalPointer(link);

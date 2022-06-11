@@ -5,7 +5,7 @@ namespace Ui.Views.ActionButtons;
 
 public class SnapdropButton : ActionButton
 {
-    public SnapdropButton(int def) : base(def)
+    public SnapdropButton(ClientUI main, int def) : base(main, def)
     {
         _icon.Source = ResourcesIconsCompressed.SnapDropCompressed;
         OnClickEvent += OnClick;

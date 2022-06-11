@@ -7,7 +7,7 @@ namespace Ui.Views.ActionButtons;
 
 public class SearchButton : ActionButton
 {
-    public SearchButton(int def) : base(def)
+    public SearchButton(ClientUI main, int def) : base(main, def)
     {
         _icon.Source = ResourcesIconsCompressed.SearchCompressed;
         OnClickEvent += OnClick;

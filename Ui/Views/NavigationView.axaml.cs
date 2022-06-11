@@ -27,7 +27,7 @@ namespace Ui.Views
 
         #region Reference Variables
         
-        public readonly ClientUI Main;
+        public ClientUI Main;
         public TextBox CurrentPathXaml;
         
         #endregion
@@ -35,9 +35,10 @@ namespace Ui.Views
         #region Init
         public NavigationView()
         {
-            Main = ClientUI.LastReference;
+            // Main = ClientUI.LastReference;
             InitializeComponent();
             CurrentPathXaml = this.FindControl<TextBox>("CurrentPath");
+            CurrentPathXaml.Text = "";
             this.FindControl<Image>("ThemeIcon").Source =
                 ((FluentTheme) App.Current.Styles[0]).Mode == FluentThemeMode.Light
                     ? ResourcesLoader.ResourcesIconsCompressed.DarkCompressed
@@ -140,7 +141,7 @@ namespace Ui.Views
                     : ResourcesLoader.ResourcesIconsCompressed.LightCompressed;
         }
         
-        private void SettingsClick(object? sender, RoutedEventArgs e) => new SettingsWindow().Show();
+        private void SettingsClick(object? sender, RoutedEventArgs e) => new SettingsWindow(Main.Main).Show();
         
         #endregion
         

@@ -8,13 +8,12 @@ namespace Ui.Views.LinkBar
 {
     public class FTPHandler : UserControl
     {
-        public ClientUI Main;
         public TextBlock Description;
         public Image Image;
+        private ClientUI _main;
         
         public FTPHandler()
         {
-            Main = ClientUI.LastReference;
             InitializeComponent();
             Description = this.FindControl<TextBlock>("Description");
             Image = this.FindControl<Image>("Image");
@@ -22,9 +21,14 @@ namespace Ui.Views.LinkBar
             Image.Source = ResourcesLoader.ResourcesIconsCompressed.FtpCompressed;
         }
 
+        public FTPHandler(ClientUI main) : this()
+        {
+            _main = main;
+        }
+
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void OpenClient(object? sender, RoutedEventArgs e) => new LoginFTP().Show();
+        private void OpenClient(object? sender, RoutedEventArgs e) => new LoginFTP(_main).Show();
 
     }
 }

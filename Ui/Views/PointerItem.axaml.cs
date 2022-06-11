@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -6,6 +8,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Library.FilePointer;
 using Library.ManagerReader;
 using ResourcesLoader;
@@ -25,6 +28,7 @@ namespace Ui.Views
         private TextBlock _name;
         private TextBlock _lastModified;
         private TextBlock _size;
+        private Grid infoGrid;
         public Button button;
 
         #endregion
@@ -39,6 +43,7 @@ namespace Ui.Views
             _lastModified = this.FindControl<TextBlock>("LastModified");
             _size = this.FindControl<TextBlock>("Size");
             button = this.FindControl<Button>("Button");
+            infoGrid = this.FindControl<Grid>("infoGrid");
         }
 
         public PointerItem(Pointer pointer, ClientUI main, PointersView view) : this()
@@ -56,8 +61,6 @@ namespace Ui.Views
             {
                 _size.Text = pointer.IsDir ? "" : ManagerReader.ByteToPowByte(pointer.Size);
             }
-            // Grid infoGrid = this.FindControl<Grid>("infoGrid");
-            // HorizontalAlignment = HorizontalAlignment.Stretch;
             button.HorizontalAlignment = HorizontalAlignment.Stretch;
             _name.HorizontalAlignment = HorizontalAlignment.Left;
             button.CornerRadius = new CornerRadius(8);

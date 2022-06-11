@@ -8,7 +8,7 @@ namespace Ui.Views.ActionButtons;
 
 public class RenameButton : ActionButton
 {
-    public RenameButton(int def) : base(def)
+    public RenameButton(ClientUI main, int def) : base(main, def)
     {
         _icon.Source = ResourcesIconsCompressed.RenameCompressed;
         OnClickEvent += OnClick;

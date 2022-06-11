@@ -30,6 +30,8 @@ namespace Ui.Views.Ftp
         public TextBox Mdp;
         public TextBox Port;
 
+        private ClientUI _main;
+
         #region Init
         
         public LoginFTP()
@@ -51,6 +53,11 @@ namespace Ui.Views.Ftp
             // Launching Workers
             new Thread(FtpServersRefresher).Start();
             new Thread(FtpRecentServersRefresher).Start();
+        }
+
+        public LoginFTP(ClientUI main)
+        {
+            _main = main;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -93,8 +100,8 @@ namespace Ui.Views.Ftp
                     var mainWindow = new MainWindowRemote(new ClientLocal(), new ClientTransferProtocol(Ip.Text + ":" + Port.Text, User.Text, Mdp.Text));
                     mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
                     {
-                        new CreateFileButton(0), new CreateFolderButton(1), new RenameButton(2), new DeleteButton(3),
-                        new DownloadButton(4)
+                        new CreateFileButton( _main, 0), new CreateFolderButton(_main, 1), new RenameButton(_main, 2), new DeleteButton(_main, 3),
+                        new DownloadButton(_main, 4)
                     });
                     mainWindow.Show();
                     ConfigLoader.ConfigLoader.Settings.Ftp.LastServers.Add(new OneFtpSettings("New Recent", Ip.Text, User.Text, Mdp.Text, Port.Text));
@@ -166,5 +173,17 @@ namespace Ui.Views.Ftp
         }
 
         #endregion
+
+        private void OnKeyReleased(object? sender, KeyEventArgs e)
+        {
+            if (_main.Main is MainWindow window)
+            {
+                window.KeysPressed.Remove(e.Key);
+            }
+            else if (_main.Main is MainWindowRemote remote)
+            {
+                remote.KeysPressed.Remove(e.Key);
+            }
+        }
     }
 }
