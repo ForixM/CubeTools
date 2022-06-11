@@ -1,15 +1,20 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Threading;
 using Library;
+using Library.ManagerExceptions;
 using Ui.Views.ActionButtons;
 using Ui.Views.Actions;
+using Ui.Views.Error;
 using Ui.Views.MenuController;
 using Ui.Views.Settings;
 using Menu = Ui.Views.MenuController.Menu;
@@ -79,7 +84,27 @@ namespace Ui.Views
                 }
                 else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["delete"]))
                 {
-                    LocalView.ActionView.Delete(sender, e);
+                    Thread deleteThread = new Thread(() =>
+                    {
+                        foreach (PointerItem item in LocalView.ActionView.SelectedXaml)
+                        {
+                            try
+                            {
+                                LocalView.Client.Delete(item.Pointer);
+                            }
+                            catch (Exception exception)
+                            {
+                                if (exception is ManagerException @managerException)
+                                {
+                                    @managerException.Errorstd = $"Unable to delete {item.Pointer.Name}";
+                                    new ErrorBase(@managerException).ShowDialog<object>(this);
+                                }
+                            }
+                        }
+                        LocalView.ActionView.SelectedXaml.Clear();
+                        Dispatcher.UIThread.Post(() => LocalView.Refresh(), DispatcherPriority.Render);
+                    });
+                    deleteThread.Start();
                 }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["paste"]))
                 {

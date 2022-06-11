@@ -9,6 +9,7 @@
         Topmost="True"
         Title="Rename"
         WindowStartupLocation="CenterScreen"
+        KeyDown="OnKeyPressedWindow"
         KeyUp="OnKeyReleased">
     
     <Grid>
@@ -23,7 +24,7 @@
                 
         <Grid Grid.Column="1">
             <StackPanel Margin="10">
-                <TextBox Watermark="Enter to rename" Name="Rename" KeyDown="OnRename"/>
+                <TextBox Watermark="Enter to rename" Name="Rename"/>
                 <Button HorizontalAlignment="Center" Margin="0 10 0 0" Click="OnClickRename" Content="Rename"/>
             </StackPanel>
         </Grid>
