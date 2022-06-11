@@ -1,40 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using ConfigLoader.Settings;
 using Library.ManagerExceptions;
 using Library;
 using Ui.Views.ActionButtons;
 using Ui.Views.Error;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Ftp
 {
     public class LoginFTP : Window
     {
 
-        private FtpConfigDisplayer _configDisplayer;
-        private TextBox _ip;
-        private TextBox _user;
-        private TextBox _mdp;
-        private TextBox _port;
+        private bool _isClosed;
+        
+        private StackPanel _ftpServersGenerator;
+        private StackPanel _ftpRecentServersGenerator;
+        
+        public TextBox Ip;
+        public TextBox User;
+        public TextBox Mdp;
+        public TextBox Port;
 
         #region Init
         
         public LoginFTP()
         {
             InitializeComponent();
-            _ip = this.FindControl<TextBox>("Ip");
-            _user = this.FindControl<TextBox>("User");
-            _mdp = this.FindControl<TextBox>("Mdp");
-            _port = this.FindControl<TextBox>("Port");
-            _configDisplayer = this.FindControl<FtpConfigDisplayer>("FtpConfigDisplayer");
-
-            foreach (var setting in ConfigLoader.ConfigLoader.Settings.Ftp!.Servers!)
-                _configDisplayer.Generator.Children.Add(new FtpServerObject(setting, _configDisplayer));
+            Ip = this.FindControl<TextBox>("Ip");
+            User = this.FindControl<TextBox>("User");
+            Mdp = this.FindControl<TextBox>("Mdp");
+            Port = this.FindControl<TextBox>("Port");
+            // Load User's Servers
+            _ftpServersGenerator = this.FindControl<StackPanel>("FtpServersGenerator");
+            foreach (var server in ConfigLoader.ConfigLoader.Settings.Ftp!.Servers!)
+                _ftpServersGenerator.Children.Add(new FtpServerObject(server, this, _ftpServersGenerator));
+            // Load Recent Servers
+            _ftpRecentServersGenerator = this.FindControl<StackPanel>("FtpRecentServersGenerator");
+            foreach (var server in ConfigLoader.ConfigLoader.Settings.Ftp!.LastServers!)
+                _ftpRecentServersGenerator.Children.Add(new FtpServerObject(server, this, _ftpRecentServersGenerator));
+            
+            // Launching Workers
+            new Thread(FtpServersRefresher).Start();
+            new Thread(FtpRecentServersRefresher).Start();
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -47,38 +63,41 @@ namespace Ui.Views.Ftp
         {
             if (e.Key is Key.Escape) Close();
         }
+        
+        private void OnClosing(object? sender, CancelEventArgs e) => _isClosed = true;
 
         private void OnCancelClick(object? sender, RoutedEventArgs e) => Close();
 
         private void OnConnexionClicked(object? sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(_ip.Text) || string.IsNullOrEmpty(_user.Text) || string.IsNullOrEmpty(_mdp.Text) ||
-                string.IsNullOrEmpty(_port.Text))
+            if (string.IsNullOrEmpty(Ip.Text) || string.IsNullOrEmpty(User.Text) || string.IsNullOrEmpty(Mdp.Text) ||
+                string.IsNullOrEmpty(Port.Text))
             {
-                if (string.IsNullOrEmpty(_ip.Text)) _ip.Watermark = "Missing information !";
-                else _ip.Watermark = "Enter IP";
+                if (string.IsNullOrEmpty(Ip.Text)) Ip.Watermark = "Missing information !";
+                else Ip.Watermark = "Enter IP";
 
-                if (string.IsNullOrEmpty(_user.Text)) _user.Watermark = "Missing information !";
-                else _user.Watermark = "Enter Username";
+                if (string.IsNullOrEmpty(User.Text)) User.Watermark = "Missing information !";
+                else User.Watermark = "Enter Username";
 
-                if (string.IsNullOrEmpty(_mdp.Text)) _mdp.Watermark = "Missing information !";
-                else _mdp.Watermark = "Enter Password";
+                if (string.IsNullOrEmpty(Mdp.Text)) Mdp.Watermark = "Missing information !";
+                else Mdp.Watermark = "Enter Password";
 
-                if (string.IsNullOrEmpty(_port.Text)) _port.Watermark = "Missing Information !";
-                else _port.Watermark = "Enter Port";
+                if (string.IsNullOrEmpty(Port.Text)) Port.Watermark = "Missing Information !";
+                else Port.Watermark = "Enter Port";
             }
             else
             {
                 // Initialize the connexion and the window
                 try
                 {
-                    var mainWindow = new MainWindowRemote(new ClientLocal(), new ClientTransferProtocol(_ip.Text + ":" + _port.Text, _user.Text, _mdp.Text));
+                    var mainWindow = new MainWindowRemote(new ClientLocal(), new ClientTransferProtocol(Ip.Text + ":" + Port.Text, User.Text, Mdp.Text));
                     mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
                     {
                         new CreateFileButton(0), new CreateFolderButton(1), new RenameButton(2), new DeleteButton(3),
                         new DownloadButton(4)
                     });
                     mainWindow.Show();
+                    ConfigLoader.ConfigLoader.Settings.Ftp.LastServers.Add(new OneFtpSettings("New Recent", Ip.Text, User.Text, Mdp.Text, Port.Text));
                     Close();
                 }
                 catch (Exception exception)
@@ -91,27 +110,59 @@ namespace Ui.Views.Ftp
         #endregion
 
         #region Config
-
-        private void LoadOneConfiguration(OneFtpSettings oneSetting)
+        
+        private void OnConfigAdded(object? sender, RoutedEventArgs e)
         {
-            _ip.Text = oneSetting.Host;
-            _user.Text = oneSetting.Name;
-            _port.Text = oneSetting.Port;
-            _mdp.Text = oneSetting.Password;
+            ConfigLoader.ConfigLoader.Settings.Ftp!.Servers!.Add(new OneFtpSettings("New Config", Ip.Text, User.Text,
+                Mdp.Text, Port.Text));
+            _ftpServersGenerator.Children.Add(new FtpServerObject(ConfigLoader.ConfigLoader.Settings.Ftp.Servers.Last(), this, _ftpServersGenerator));
         }
 
         #endregion
 
-        private void OnConfigAdded(object? sender, RoutedEventArgs e)
+        #region Workers
+
+        private void FtpServersRefresher()
         {
-            ConfigLoader.ConfigLoader.Settings.Ftp!.Servers!.Add(new OneFtpSettings()
+            int last = ConfigLoader.ConfigLoader.Settings.Ftp!.Servers!.Count;
+            while (!_isClosed)
             {
-                Host = _ip.Text,
-                Login = _user.Text,
-                Password = _mdp.Text,
-                Port = _port.Text
-            });
-            _configDisplayer.Generator.Children.Add(new FtpServerObject(ConfigLoader.ConfigLoader.Settings.Ftp.Servers.Last(), _configDisplayer));
+                Thread.Sleep(1500);
+                if (ConfigLoader.ConfigLoader.Settings.Ftp.Servers.Count != last)
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        _ftpServersGenerator.Children.Clear();
+                        foreach (var server in ConfigLoader.ConfigLoader.Settings.Ftp!.Servers!)
+                            _ftpServersGenerator.Children.Add(new FtpServerObject(server, this,
+                                _ftpServersGenerator));
+                    });
+                }
+                last = ConfigLoader.ConfigLoader.Settings.Ftp.Servers.Count;
+            }
         }
+
+        private void FtpRecentServersRefresher()
+        {
+            int last = ConfigLoader.ConfigLoader.Settings.Ftp!.LastServers!.Count;
+            while (!_isClosed)
+            {
+                Thread.Sleep(1500);
+                if (ConfigLoader.ConfigLoader.Settings.Ftp.LastServers.Count != last)
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        _ftpRecentServersGenerator.Children.Clear();
+                        foreach (var server in ConfigLoader.ConfigLoader.Settings.Ftp!.Servers!)
+                            _ftpRecentServersGenerator.Children.Add(new FtpServerObject(server, this,
+                                _ftpRecentServersGenerator));
+                    }, DispatcherPriority.Background);
+                }
+                last = ConfigLoader.ConfigLoader.Settings.Ftp.LastServers.Count;
+            }
+
+        }
+
+        #endregion
     }
 }

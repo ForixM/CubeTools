@@ -3,10 +3,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
-        xmlns:ftp="clr-namespace:Ui.Views.Ftp"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="200"
         Width="625" Height="500"
         CanResize="False"
+        Closing="OnClosing"
         x:Class="Ui.Views.Ftp.LoginFTP"
         Title="Connect to server"
         Icon="{x:Static resource:ResourcesWindowIcons.FtpWindowIcon}"
@@ -26,7 +26,7 @@
                         <ScrollViewer>
                                 <StackPanel>
                                         <Expander VerticalAlignment="Center" Margin="20 18 20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Load Configuration">
-                                                <ftp:FtpConfigDisplayer Name="FtpConfigDisplayer"/>
+                                                <StackPanel Name="FtpServersGenerator"/>
                                         </Expander>
                         
                                         <Expander VerticalAlignment="Center" Margin="20 5" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Connect to FTP Server">
@@ -43,37 +43,11 @@
                                                 </StackPanel>
                                         </Expander>
                         
-                        
-                        
                                         <Expander VerticalAlignment="Center" Margin="20 0 20 18" ExpandDirection="Down" Background="Transparent" IsExpanded="False" Header="Recent">
-                                
+                                                <StackPanel Name="FtpRecentServersGenerator"/>
                                         </Expander>
                                 </StackPanel>
                         </ScrollViewer>
-                        
-                        <!--
-                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                        <TextBox Name="Ip" Watermark="Enter IP" Margin="10"/>     Text="127.0.0.1"
-                        <TextBox Name="User" Watermark="Enter User" Margin="10"/>                                 Text="mateo" 
-                        <TextBox RevealPassword="False" PasswordChar="*" Name="Mdp" Watermark="Enter Password" Margin="10"/>    Text="1234"
-                        <WrapPanel>
-                                <TextBox Name="Port" Watermark="Port"/>                                       Text="21" 
-                                <Button Click="OnConnexionClicked" Content="Connect"/>
-                                <Button Click="OnCancelClick" Content="Cancel"/>
-                                <Button Click="OnConfigAdded" Content="Save Configuration"/>
-                        </WrapPanel>
-                        </StackPanel>
-                        -->
-                        
-                        <!--
-                        <Grid Grid.Row="4">
-                                <ScrollViewer>
-                                        <Expander Header="Load a Configuration">
-                                                
-                                        </Expander>
-                                </ScrollViewer>
-                        </Grid>
-                        -->
                 </Grid>
         </Grid>
         
