@@ -10,7 +10,8 @@
         x:Class="Ui.Views.Ftp.LoginFTP"
         Title="Connect to server"
         Icon="{x:Static resource:ResourcesWindowIcons.FtpWindowIcon}"
-        KeyDown="OnEscapePressed">
+        KeyDown="OnEscapePressed"
+        KeyUp="OnKeyReleased">
         
         <Grid>
                 <Grid.ColumnDefinitions>
