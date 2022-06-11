@@ -15,72 +15,70 @@
 
     <ScrollViewer>
         <Grid ColumnDefinitions="*">
-            <StackPanel Grid.Column="0" Margin="0 0 0 14">
+            <StackPanel Grid.Column="0" Margin="0 25 0 14">
                 
-                <!-- QUICK ACCESS --> 
-                
-                <StackPanel>
-                    <Grid ColumnDefinitions="100, *" Margin="0 35 0 0">
-                        <Grid Grid.Column="0">
-                            <Image VerticalAlignment="Center" HorizontalAlignment="Right" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.QuickAccessCompressed}"/>
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <StackPanel>
-                                <Expander VerticalAlignment="Center" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
-                                    <WrapPanel Name="QuickAccess"/>
-                                </Expander>
-                            </StackPanel>
-                        </Grid>
-                    </Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Height="75" Source="{x:Static resource:ResourcesIconsCompressed.HomeCompressed}"/>
+                    <TextBlock Margin="0 5 0 0" VerticalAlignment="Center" Text="Home" FontWeight="Bold" FontSize="30"/>
                 </StackPanel>
                 
                 
-                <!-- FAVORITES --> 
+                <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 15"/>
                 
-                <StackPanel>
-                    <Grid ColumnDefinitions="100, *" Margin="0 35 0 0">
-                        <Grid Grid.Column="0">
-                            <Image VerticalAlignment="Center" HorizontalAlignment="Right" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.StarredCompressed}"/>
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Expander VerticalAlignment="Center" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Favorites">
-                                <WrapPanel Name="Favorites"/>
-                            </Expander>
-                        </Grid>
+                
+                <Grid Grid.RowDefinitions="100,*,100,*">
+                    <Grid Grid.Row="0" Grid.ColumnDefinitions="*,*" Margin="0 25 0 0">
+                        <Image Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.QuickAccessCompressed}"/>
+                        <Image Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.StarredCompressed}"/>
                     </Grid>
-                </StackPanel>
-                
-                
-                <!-- DRIVES --> 
-                
-                <StackPanel>
-                    <Grid ColumnDefinitions="100, *" Margin="0 35 0 0">
-                        <Grid Grid.Column="0">
-                            <Image VerticalAlignment="Center" HorizontalAlignment="Right" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.DriveMenuCompressed}"/>
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Expander VerticalAlignment="Center" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Drives">
-                                <WrapPanel Name="Drives"/>
-                            </Expander>
-                        </Grid>
+                    
+                    <Grid Grid.Row="1" Grid.ColumnDefinitions="*,*" Margin="0 10 0 0">
+                        <Expander Grid.Column="0" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
+                            <WrapPanel Name="QuickAccess"/>
+                        </Expander>
+                        <Expander Grid.Column="1" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
+                            <WrapPanel Name="Favorites"/>
+                        </Expander>
                     </Grid>
-                </StackPanel>
+                </Grid>
+                
+                <Grid Grid.RowDefinitions="100,*,100,*">
+                    <Grid Grid.Row="0" Grid.ColumnDefinitions="*,*" Margin="0 25 0 0">
+                        <Image Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.DriveMenuCompressed}"/>
+                        <Image Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.CloudCompressed}"/>
+                    </Grid>
+                    
+                    <Grid Grid.Row="1" Grid.ColumnDefinitions="*,*" Margin="0 10 0 0">
+                        <Expander Grid.Column="0" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
+                            <WrapPanel Name="Drives"/>
+                        </Expander>
+                        <Expander Grid.Column="1" VerticalAlignment="Top" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
+                            <WrapPanel Name="Clouds"/>
+                        </Expander>
+                    </Grid>
+                </Grid>
+                <!--
+                <Grid Grid.ColumnDefinitions="*, *" Margin="0 50 0 0">
+                
+                    <StackPanel Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center">
+                        <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.DriveMenuCompressed}"/>
+                        <Expander Grid.Column="0" VerticalAlignment="Center" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
+                            <WrapPanel Name="Drives"/>
+                        </Expander>
+                    </StackPanel>
                 
                 
-                <!-- CLOUDS --> 
-                
-                <StackPanel>
-                    <Grid ColumnDefinitions="100, *" Margin="0 35 0 0">
-                        <Grid Grid.Column="0">
-                            <Image VerticalAlignment="Center" HorizontalAlignment="Right" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.CloudCompressed}"/>
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Expander VerticalAlignment="Center" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Clouds">
+                    <StackPanel Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+                        <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="75" Source="{x:Static resource:ResourcesIconsCompressed.CloudCompressed}"/>
+                        <StackPanel>
+                            <Expander VerticalAlignment="Center" Margin="20 0" ExpandDirection="Down" Background="Transparent" IsExpanded="True" Header="Quick Access">
                                 <WrapPanel Name="Clouds"/>
                             </Expander>
-                        </Grid>
-                    </Grid>
-                </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+                -->
+                
             </StackPanel>
         </Grid>
     </ScrollViewer>
