@@ -9,6 +9,7 @@ using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
+using Library;
 using Library.FilePointer;
 using Library.ManagerReader;
 using ResourcesLoader;
@@ -114,21 +115,15 @@ namespace Ui.Views
             else if (_main.Main is MainWindowRemote mainRemote)
             {
                 // Remove all not ctrl pressed
-                if (mainRemote.LocalView.ActionView.SelectedXaml.Count > 0 && _main.Equals(mainRemote.RemoteView))
+                if (mainRemote.localFocused && _main.Client.Type is not ClientType.LOCAL)
                 {
-                    mainRemote.LocalView.ActionView.SelectedXaml.Clear();
-                    foreach (var control in mainRemote.LocalView.PointersView.Generator.Children)
-                        ((PointerItem) control).button.Background = new SolidColorBrush(new Color(0, 255, 255, 255));
-                    foreach (var control in mainRemote.LocalView.ActionView.SelectedXaml)
-                        control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
+                    RefreshButtons(mainRemote.LocalView);
+                    mainRemote.localFocused = false;
                 }
-                else if (mainRemote.RemoteView.ActionView.SelectedXaml.Count > 0 && _main.Equals(mainRemote.LocalView))
+                else if (!mainRemote.localFocused && _main.Client.Type is ClientType.LOCAL)
                 {
-                    mainRemote.RemoteView.ActionView.SelectedXaml.Clear();
-                    foreach (var control in mainRemote.RemoteView.PointersView.Generator.Children)
-                        ((PointerItem) control).button.Background = new SolidColorBrush(new Color(0, 255, 255, 255));
-                    foreach (var control in mainRemote.RemoteView.ActionView.SelectedXaml)
-                        control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
+                    RefreshButtons(mainRemote.RemoteView);
+                    mainRemote.localFocused = true;
                 }
                 else if (!mainRemote.KeysPressed.Contains(Key.LeftCtrl) && !mainRemote.KeysPressed.Contains(Key.RightCtrl))
                     _main.ActionView.SelectedXaml.Clear();
@@ -141,8 +136,15 @@ namespace Ui.Views
                 foreach (var control in _main.ActionView.SelectedXaml)
                     control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
             }
-            
-                
+        }
+
+        private void RefreshButtons(ClientUI view)
+        {
+            view.ActionView.SelectedXaml.Clear();
+            foreach (var control in view.PointersView.Generator.Children)
+                ((PointerItem) control).button.Background = new SolidColorBrush(new Color(0, 255, 255, 255));
+            foreach (var control in view.ActionView.SelectedXaml)
+                control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
         }
 
         #endregion

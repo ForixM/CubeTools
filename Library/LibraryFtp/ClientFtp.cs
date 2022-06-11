@@ -78,7 +78,11 @@ namespace Library.LibraryFtp
         {
             if (path == FtpFolder.ROOT.Path)
                 return ListDirectory(FtpFolder.ROOT);
-            if (path[^1] is '/' or '\\')
+            if (path == "")
+            {
+                path = "/";
+            }
+            else if (path[^1] is '/' or '\\')
             {
                 path = path.Remove(path.Length - 1);
             }

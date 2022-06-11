@@ -27,6 +27,7 @@ namespace Ui.Views
         public LinkBar.LinkBar LinkBarView;
         public ClientUI LocalView;
         public ClientUI RemoteView;
+        public bool localFocused = true;
 
         public MainWindowRemote()
         {
@@ -141,42 +142,27 @@ namespace Ui.Views
             if (IsListInListList(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts))
             {
                 CheckEssentials();
+                ClientUI selected = localFocused ? LocalView : RemoteView;
                 if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createDir"]))
                 {
-                    if (LocalView.ActionView.SelectedXaml.Count != 0)
-                        LocalView.ActionView.CreatDir(sender, e);
-                    else
-                        RemoteView.ActionView.CreatDir(sender, e);
+                    selected.ActionView.CreatDir(sender, e);
                 }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createFile"]))
                 {
-                    if (LocalView.ActionView.SelectedXaml.Count != 0)
-                        LocalView.ActionView.CreateFile(sender, e);
-                    else
-                        RemoteView.ActionView.CreateFile(sender, e);
+                    selected.ActionView.CreateFile(sender, e);
                 }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["cut"]))
                 {
-                    if (LocalView.ActionView.SelectedXaml.Count != 0)
-                        LocalView.ActionView.Cut(sender, e);
-                    else
-                        RemoteView.ActionView.Cut(sender, e);
+                    selected.ActionView.Cut(sender, e);
                 }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["copy"]))
                 {
-                    if (LocalView.ActionView.SelectedXaml.Count != 0)
-                        LocalView.ActionView.Copy(sender, e);
-                    else
-                        RemoteView.ActionView.Copy(sender, e);
+                    selected.ActionView.Copy(sender, e);
                 }
                 else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["delete"]))
                 {
                     Thread deleteThread = new Thread(() =>
                     {
-                        ClientUI selected = null;
-                        if (LocalView.ActionView.SelectedXaml.Count != 0)
-                            selected = LocalView;
-                        else selected = RemoteView;
                         foreach (PointerItem item in selected.ActionView.SelectedXaml)
                         {
                             try
@@ -212,45 +198,37 @@ namespace Ui.Views
                 }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["paste"]))
                 {
-                    if (LocalView.ActionView.SelectedXaml.Count != 0)
-                    {
-                        LocalView.ActionView.Paste(sender, e);
-                        LocalView.ActionView.SelectedXaml.Clear();
-                    }
-                    else
-                    {
-                        RemoteView.ActionView.Paste(sender, e);
-                        RemoteView.ActionView.SelectedXaml.Clear();
-                    }
+                        selected.ActionView.Paste(sender, e);
+                        selected.ActionView.SelectedXaml.Clear();
                 }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["search"]))
                 {
-                    LocalView.ActionView.Search(sender, e);
+                    selected.ActionView.Search(sender, e);
                 }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["selectAll"]))
                 {
                     // All items are selected
-                    if (LocalView.ActionView.SelectedXaml.Count == LocalView.PointersView.Generator.Children.Count)
+                    if (selected.ActionView.SelectedXaml.Count == selected.PointersView.Generator.Children.Count)
                     {
-                        LocalView.ActionView.SelectedXaml.Clear();
-                        int size = LocalView.PointersView.Generator.Children.Count;
+                        selected.ActionView.SelectedXaml.Clear();
+                        int size = selected.PointersView.Generator.Children.Count;
                         for (int i = 0; i < size; i++)
                         {
-                            LocalView.ActionView.SelectedXaml.Add((PointerItem) LocalView.PointersView.Generator.Children[i]);
-                            size = LocalView.PointersView.Generator.Children.Count;
-                            foreach (var control in LocalView.ActionView.SelectedXaml)
+                            selected.ActionView.SelectedXaml.Add((PointerItem) selected.PointersView.Generator.Children[i]);
+                            size = selected.PointersView.Generator.Children.Count;
+                            foreach (var control in selected.ActionView.SelectedXaml)
                                 control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
                         }
                     }
                     else
                     {
-                        int size = LocalView.PointersView.Generator.Children.Count;
+                        int size = selected.PointersView.Generator.Children.Count;
                         for (int i = 0; i < size; i++)
                         {
-                            if (!LocalView.ActionView.SelectedXaml.Contains((PointerItem) LocalView.PointersView.Generator.Children[i]))
-                                LocalView.ActionView.SelectedXaml.Add((PointerItem) LocalView.PointersView.Generator.Children[i]);
-                            size = LocalView.PointersView.Generator.Children.Count;
-                            foreach (var control in LocalView.ActionView.SelectedXaml)
+                            if (!selected.ActionView.SelectedXaml.Contains((PointerItem) selected.PointersView.Generator.Children[i]))
+                                selected.ActionView.SelectedXaml.Add((PointerItem) selected.PointersView.Generator.Children[i]);
+                            size = selected.PointersView.Generator.Children.Count;
+                            foreach (var control in selected.ActionView.SelectedXaml)
                                 control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
                         }
                         
@@ -258,27 +236,27 @@ namespace Ui.Views
                 }
                 else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["rename"]))
                 {
-                    if (LocalView.ActionView.SelectedXaml.Count == 1)
+                    if (selected.ActionView.SelectedXaml.Count == 1)
                     {
-                        new Rename(LocalView.ActionView.SelectedXaml[0].Pointer, LocalView.Client.Children, LocalView).Show();
+                        new Rename(selected.ActionView.SelectedXaml[0].Pointer, selected.Client.Children, selected).Show();
                     }
                 }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["reload"]))
                 {
-                    LocalView.Refresh();
+                    selected.Refresh();
                 }
                 else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["compress"]))
                 {
                     List<Pointer> pointers = new List<Pointer>();
-                    foreach (PointerItem item in LocalView.ActionView.SelectedXaml)
+                    foreach (PointerItem item in selected.ActionView.SelectedXaml)
                     {
                         pointers.Add(item.Pointer);
                     }
-                    new Compress(LocalView, pointers).Show();
+                    new Compress(selected, pointers).Show();
                 }
                 else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["sort"]))
                 {
-                    new Sort(LocalView).Show();
+                    new Sort(selected).Show();
                 }
             }
         }
