@@ -1,7 +1,9 @@
 using System.IO;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using ResourcesLoader;
@@ -19,6 +21,8 @@ namespace Ui.Views
         
         private Image _icon;
         private TextBlock _name;
+        private TextBlock _lastModified;
+        private TextBlock _size;
         public Button button;
 
         #endregion
@@ -30,15 +34,23 @@ namespace Ui.Views
             InitializeComponent();
             _icon = this.FindControl<Image>("Icon");
             _name = this.FindControl<TextBlock>("Name");
+            _lastModified = this.FindControl<TextBlock>("LastModified");
+            _size = this.FindControl<TextBlock>("Size");
             button = this.FindControl<Button>("Button");
         }
 
-        public PointerItem(Pointer pointer, ClientUI main) : this()
+        public PointerItem(Pointer pointer, ClientUI main, PointersView view) : this()
         {
             Pointer = pointer;
             _main = main;
             _name.Text = pointer.Name;
             _icon.Source = ResourcesConverter.TypeToIcon(pointer.Path, pointer.Type, pointer.IsDir);
+            _lastModified.Text = pointer.LastModified;
+            _size.Text = pointer.IsDir ? "" : pointer.Size + " o";
+            // Grid infoGrid = this.FindControl<Grid>("infoGrid");
+            // HorizontalAlignment = HorizontalAlignment.Stretch;
+            button.HorizontalAlignment = HorizontalAlignment.Stretch;
+            button.CornerRadius = new CornerRadius(8);
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

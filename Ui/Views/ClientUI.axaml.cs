@@ -55,7 +55,8 @@ namespace Ui.Views
             NavigationView = this.FindControl<NavigationView>("NavigationView");
             grid = this.FindControl<Grid>("grid");
             PointersView = new PointersView();
-            menu = new Menu();
+            menu = new Menu(this);
+            menu.InitializeExpanders();
             subGrid = new Grid();
             Grid.SetRow(subGrid, 2);
             if (Parent is MainWindow)

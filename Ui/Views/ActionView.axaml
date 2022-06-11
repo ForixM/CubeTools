@@ -15,22 +15,6 @@
 	 <!-- </Grid> -->
 	 
 	 <Grid Name="Generator">
-		 <Grid.ColumnDefinitions>
-			 <ColumnDefinition Width="45" />
-			 	<ColumnDefinition Width="45"/>
-			 	<ColumnDefinition Width="45" />
-			 	<ColumnDefinition Width="45" />
-			 	<ColumnDefinition Width="45" />
-			 	<ColumnDefinition Width="45" />
-			 	<ColumnDefinition Width="45"/>
-			 	<ColumnDefinition Width="45"/>
-			 	<ColumnDefinition Width="*"/>
-			 	<ColumnDefinition Width="45"/>
-			 	<ColumnDefinition Width="45"/>
-			 	<ColumnDefinition Width="45"/>
-			 	<ColumnDefinition Width="45"/>
-			 	<ColumnDefinition Width="3"/>
-			 </Grid.ColumnDefinitions>
 	 </Grid>
 	 
 	 <!-- <Grid> -->

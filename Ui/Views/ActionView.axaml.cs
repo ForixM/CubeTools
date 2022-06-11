@@ -33,40 +33,25 @@ namespace Ui.Views
             CopiedXaml = new List<PointerItem>();
             CutXaml = new List<PointerItem>();
             generator = this.FindControl<Grid>("Generator");
-            
-            generator.ColumnDefinitions.Clear();
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
-            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3)));
-
-            // ColumnDefinition def = new ColumnDefinition(new GridLength(45));
-            // generator.ColumnDefinitions.Add(def);
-            // generator.ColumnDefinitions.Add(def);
-            // generator.ColumnDefinitions.Add(def);
-            // generator.ColumnDefinitions.Add(def);
-            // generator.ColumnDefinitions.Add(def);
-            // generator.ColumnDefinitions.Add(def);
-            // generator.ColumnDefinitions.Add(def);
-            // generator.ColumnDefinitions.Add(def);
-            // generator.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
-            // generator.ColumnDefinitions.Add(def);
         }
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         public void SetActionButtons(List<ActionButton> actionButtons)
         {
-            generator.Children.AddRange(actionButtons);
+            int precedent = 0;
+            generator.ColumnDefinitions.Clear();
+            foreach (ActionButton button in actionButtons)
+            {
+                if (Grid.GetColumn(button) - precedent > 1)
+                {
+                    generator.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+                }
+                generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(45)));
+                generator.Children.Add(button);
+
+                precedent = Grid.GetColumn(button);
+            }
+            generator.ColumnDefinitions.Add(new ColumnDefinition(new GridLength(3)));
         }
         
         #endregion

@@ -5,11 +5,30 @@
      
      <Button Background="Transparent" CornerRadius="8" Name="Button" Height="50"
              PointerPressed="OnTaped" Click="OnClick" DoubleTapped="OnDoubleTaped">
-         
-         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-             <Image Name="Icon" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>
-             <TextBlock Name="Name" Margin="5" VerticalAlignment="Center"/>
-         </StackPanel>
+         <Grid Name="infoGrid">
+             <Grid.ColumnDefinitions>
+             	<ColumnDefinition Width="30" />
+             	<ColumnDefinition Width="*" />
+             	<ColumnDefinition Width="120" />
+             	<ColumnDefinition Width="80" />
+             </Grid.ColumnDefinitions>
+             <Grid Grid.Column="0">
+                 <Image Name="Icon" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIconsCompressed.NoneCompressed}" Height="30"/>
+             </Grid>
+             <Grid Grid.Column="1">
+                 <StackPanel VerticalAlignment="Center">
+                     <Border>
+                         <TextBlock Name="Name" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                     </Border>
+                 </StackPanel>
+             </Grid>
+             <Grid Grid.Column="2">
+                 <TextBlock Name="LastModified" HorizontalAlignment="Right" Text="05/06/2021" Margin="5" VerticalAlignment="Center"/>
+             </Grid>
+             <Grid Grid.Column="3">
+                 <TextBlock Name="Size" HorizontalAlignment="Right" Text="128Ko" Margin="5" VerticalAlignment="Center"/>
+             </Grid>
+         </Grid>
          
      </Button>
      
