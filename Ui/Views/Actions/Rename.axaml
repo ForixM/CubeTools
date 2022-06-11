@@ -9,7 +9,7 @@
         Topmost="True"
         Title="Rename"
         WindowStartupLocation="CenterScreen"
-        KeyDown="OnKeyPressedWindow">
+        KeyUp="OnKeyReleased">
     
     <Grid>
         <Grid.ColumnDefinitions>

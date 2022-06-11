@@ -9,7 +9,8 @@
         Icon="{x:Static resource:ResourcesWindowIcons.CreateFolderWindowIcon}"
         WindowStartupLocation="CenterScreen"
         Topmost="True"
-        KeyDown="OnKeyPressedWindow">
+        KeyDown="OnKeyPressedWindow"
+        KeyUp="OnKeyReleased">
         
         <Grid>
                 <Grid.ColumnDefinitions>

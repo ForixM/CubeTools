@@ -221,6 +221,7 @@ namespace Ui.Views
                     () =>
                     {
                         Main.Client.Copy(source, Main.Client.CurrentFolder);
+                        Main.Refresh();
                     },
                     DispatcherPriority.MaxValue);
             }

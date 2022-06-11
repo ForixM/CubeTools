@@ -8,7 +8,8 @@
         Topmost="True"
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
         Icon="{x:Static resource:ResourcesWindowIcons.DeleteWindowIcon}"
-        KeyDown="OnKeyPressedWindow">
+        KeyDown="OnKeyPressedWindow"
+        KeyUp="OnKeyReleased">
         
         <Grid ColumnDefinitions="100,*">
 
