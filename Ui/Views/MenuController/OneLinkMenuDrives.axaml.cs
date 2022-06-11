@@ -9,21 +9,22 @@ using Library;
 using Library.DirectoryPointer;
 using Library.FilePointer;
 using Library.ManagerExceptions;
-using Library.ManagerReader;
 using Ui.Views.Information;
 
 namespace Ui.Views.LinkBar
 {
-    public class OneLink : UserControl
+    public class OneLinkMenuDrives : UserControl
     {
         public ClientUI Main;
         public LocalPointer LocalPointer;
         public TextBlock Description;
         public Image Image;
         
-        public OneLink()
+        
+        
+        public OneLinkMenuDrives()
         {
-            // Main = ClientUI.LastReference;
+            Main = ClientUI.LastReference;
             LocalPointer = LocalPointer.NullLocalPointer;
             
             InitializeComponent();
@@ -31,10 +32,8 @@ namespace Ui.Views.LinkBar
             Image = this.FindControl<Image>("Image");
         }
 
-        public OneLink(ClientUI main, string link, string name, IImage image) : this()
+        public OneLinkMenuDrives(string link, string name, IImage image) : this()
         {
-            Main = main;
-            ToolTip.SetTip(this, name);
             try
             {
                 if (Directory.Exists(link)) LocalPointer = new DirectoryLocalPointer(link);
@@ -42,8 +41,6 @@ namespace Ui.Views.LinkBar
             }
             catch (PathNotFoundException)
             {
-                ConfigLoader.ConfigLoader.Settings.Links.Remove(ManagerReader.GetPathToName(link));
-                ConfigLoader.ConfigLoader.SaveConfiguration();
                 LocalPointer = LocalPointer.NullLocalPointer;
             }
 
@@ -53,27 +50,14 @@ namespace Ui.Views.LinkBar
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void OpenLink(object? sender, RoutedEventArgs e)
-        {
-            try
-            {   // TODO
-                if (LocalPointer.IsDir) Main.NavigationView.Add(LocalPointer);
-                if (Main.Main is MainWindowRemote remote)
-                    remote.LocalView.AccessPath(LocalPointer);
-                else if (Main.Main is MainWindow window)
-                    window.LocalView.AccessPath(LocalPointer);
-            }
-            catch (PathNotFoundException exception)
-            {
-                ConfigLoader.ConfigLoader.Settings.Links.Remove(ManagerReader.GetPathToName(LocalPointer.Path));
-                ConfigLoader.ConfigLoader.SaveConfiguration();
-            }
-        }
+        private void OpenLink(object? sender, RoutedEventArgs e) => Main.AccessPath(LocalPointer);
         
         private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
         {
+            /*
             if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
                 new MoreInformationLink(this, Main).Show();
+                */
         }
     }
 }
