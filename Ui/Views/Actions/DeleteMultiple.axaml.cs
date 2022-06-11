@@ -106,5 +106,17 @@ namespace Ui.Views.Actions
                 }
             }
         }
+
+        private void OnKeyReleased(object? sender, KeyEventArgs e)
+        {
+            if (_main.Main is MainWindow window)
+            {
+                window.KeysPressed.Remove(e.Key);
+            }
+            else if (_main.Main is MainWindowRemote windowRemote)
+            {
+                windowRemote.KeysPressed.Remove(e.Key);
+            };
+        }
     }
 }

@@ -8,7 +8,8 @@
         Icon="{x:Static resource:ResourcesWindowIcons.SortWindowIcon}"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
-        KeyDown="OnEscapePressed">
+        KeyDown="OnEscapePressed"
+        KeyUp="OnKeyReleased">
     
     <Grid>
         <Grid.ColumnDefinitions>

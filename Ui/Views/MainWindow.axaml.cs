@@ -1,14 +1,24 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives.PopupPositioning;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
+using Avalonia.Threading;
 using Library;
+using Library.ManagerExceptions;
 using Ui.Views.ActionButtons;
+using Ui.Views.Actions;
+using Ui.Views.Error;
 using Ui.Views.MenuController;
 using Ui.Views.Settings;
+using Menu = Ui.Views.MenuController.Menu;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views
 {
@@ -50,27 +60,61 @@ namespace Ui.Views
         
         private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
         {
-            
             if (KeysPressed.Contains(e.Key)) return;
+            if (LocalView.subGrid.Children[0] is Menu) return;
             KeysPressed.Add(e.Key);
-            if (IsListInListList(KeysPressed,ConfigLoader.ConfigLoader.Settings.ListShortcuts))
+            if (IsListInListList(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts))
             {
                 if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["close"]))
                     Close();
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createDir"]))
+                {
                     LocalView.ActionView.CreatDir(sender, e);
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["createFile"]))
+                {
                     LocalView.ActionView.CreateFile(sender, e);
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["cut"]))
+                {
                     LocalView.ActionView.Cut(sender, e);
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["copy"]))
+                {
                     LocalView.ActionView.Copy(sender, e);
-                else if (KeysPressed == ConfigLoader.ConfigLoader.Settings.Shortcuts["delete"])
-                    LocalView.ActionView.Delete(sender, e);
+                }
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["delete"]))
+                {
+                    Thread deleteThread = new Thread(() =>
+                    {
+                        foreach (PointerItem item in LocalView.ActionView.SelectedXaml)
+                        {
+                            try
+                            {
+                                LocalView.Client.Delete(item.Pointer);
+                            }
+                            catch (Exception exception)
+                            {
+                                if (exception is ManagerException @managerException)
+                                {
+                                    @managerException.Errorstd = $"Unable to delete {item.Pointer.Name}";
+                                    new ErrorBase(@managerException).ShowDialog<object>(this);
+                                }
+                            }
+                        }
+                        LocalView.ActionView.SelectedXaml.Clear();
+                        Dispatcher.UIThread.Post(() => LocalView.Refresh(), DispatcherPriority.Render);
+                    });
+                    deleteThread.Start();
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["paste"]))
+                {
                     LocalView.ActionView.Paste(sender, e);
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["search"]))
-                    LocalView.ActionView.Search(sender,e);
+                {
+                    LocalView.ActionView.Search(sender, e);
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["selectAll"]))
                 {
                     // All items are selected
@@ -82,6 +126,8 @@ namespace Ui.Views
                         {
                             LocalView.ActionView.SelectedXaml.Add((PointerItem) LocalView.PointersView.Generator.Children[i]);
                             size = LocalView.PointersView.Generator.Children.Count;
+                            foreach (var control in LocalView.ActionView.SelectedXaml)
+                                control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
                         }
                     }
                     else
@@ -92,29 +138,55 @@ namespace Ui.Views
                             if (!LocalView.ActionView.SelectedXaml.Contains((PointerItem) LocalView.PointersView.Generator.Children[i]))
                                 LocalView.ActionView.SelectedXaml.Add((PointerItem) LocalView.PointersView.Generator.Children[i]);
                             size = LocalView.PointersView.Generator.Children.Count;
+                            foreach (var control in LocalView.ActionView.SelectedXaml)
+                                control.button.Background = new SolidColorBrush(new Color(255, 255, 224, 130));
                         }
                         
                     }
                 }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["newWindow"]))
+                {
                     new MainWindow().Show();
-                else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["rename"]))
-                    LocalView.ActionView.Rename(sender, e);
+                }
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["rename"]))
+                {
+                    if (LocalView.ActionView.SelectedXaml.Count == 1)
+                    {
+                        new Rename(LocalView.ActionView.SelectedXaml[0].Pointer, LocalView.Client.Children, LocalView).Show();
+                    }
+                }
                 else if (AreListsEqual(KeysPressed,ConfigLoader.ConfigLoader.Settings.Shortcuts["reload"]))
+                {
                     LocalView.Refresh();
-                else if (KeysPressed ==ConfigLoader.ConfigLoader.Settings.Shortcuts["settings"])
+                }
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["settings"]))
+                {
                     new SettingsWindow().Show();
+                }
+                else if (AreListsEqual(KeysPressed, ConfigLoader.ConfigLoader.Settings.Shortcuts["compress"]))
+                {
+                    List<Pointer> pointers = new List<Pointer>();
+                    foreach (PointerItem item in LocalView.ActionView.SelectedXaml)
+                    {
+                        pointers.Add(item.Pointer);
+                    }
+                    new Compress(LocalView, pointers).Show();
+                }
             }
         }
-        private void OnKeyReleasedWindow(object? sender, KeyEventArgs e) => KeysPressed.Remove(e.Key);
+
+        public void OnKeyReleasedWindow(object? sender, KeyEventArgs e)
+        {
+            KeysPressed.Remove(e.Key);
+        }
         
         #endregion
         
         #region Process
 
-        private static bool IsListInListList(List<Key> list, List<List<Key>> listList)
+        private static bool IsListInListList(List<Key> list, Dictionary<string, List<Key>> listList)
         {
-            foreach (var list2 in listList)
+            foreach (var (name, list2) in listList)
             {
                 if (list2.Count == list.Count)
                 {

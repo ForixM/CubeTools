@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Ui.Views.LinkBar.OneLinkMenu" MaxWidth="250">
 	
-	<Button CornerRadius="8" Background="Transparent" Width="250" Height="50"> <!-- PointerPressed="" Click="" -->
+	<Button CornerRadius="8" Background="Transparent" Width="250" Height="50" Click="OpenLink"> <!-- PointerPressed="" Click="" -->
 		<StackPanel Orientation="Horizontal">
 			<Image HorizontalAlignment="Left" Width="35" Name="Image"/>
 			<TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Name="Description"/>

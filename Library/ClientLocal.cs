@@ -29,7 +29,7 @@ namespace Library {
 
         public override Pointer? Copy(Pointer pointer, Pointer destination) => ManagerWriter.ManagerWriter.Copy(pointer.Path, destination.Path);
 
-        public override void Delete(Pointer pointer) =>  ManagerWriter.ManagerWriter.Delete(pointer.Path);
+        public override void Delete(Pointer pointer) =>  ManagerWriter.ManagerWriter.Delete(pointer.Path, true);
 
         public override void Rename(Pointer pointer, string newName) =>  ManagerWriter.ManagerWriter.Rename(pointer.Path, CurrentFolder.Path + "/" + newName);
 

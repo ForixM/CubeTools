@@ -55,7 +55,8 @@ namespace Ui.Views.Actions
         
         private void OnKeyPressedWindow(object? sender, KeyEventArgs e)
         {
-            if (e.Key is Key.Enter) RenamePointer();
+            if (e.Key is Key.Enter)
+                RenamePointer();
             else if (e.Key is Key.Escape) Close();
         }
         
@@ -90,6 +91,18 @@ namespace Ui.Views.Actions
                 _main?.Refresh();
                 Close(null);
             }
+        }
+
+        private void OnKeyReleased(object? sender, KeyEventArgs e)
+        {
+            if (_main.Main is MainWindow window)
+            {
+                window.KeysPressed.Remove(e.Key);
+            }
+            else if (_main.Main is MainWindowRemote windowRemote)
+            {
+                windowRemote.KeysPressed.Remove(e.Key);
+            };
         }
     }
 }

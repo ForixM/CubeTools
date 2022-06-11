@@ -9,7 +9,8 @@
         Title="Compression"
         Topmost="True"
         Width="300" Height="100"
-        KeyDown="OnKeyPressedWindow">
+        KeyDown="OnKeyPressedWindow"
+        KeyUp="OnKeyReleased">
     
     <Grid ColumnDefinitions="100,200">
         <Grid Grid.Column="0">

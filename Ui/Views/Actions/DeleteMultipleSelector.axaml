@@ -2,9 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Ui.Views.Actions.DeleteMultipleSelector">
      
-     <WrapPanel VerticalAlignment="Center">
+     <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
          <CheckBox Name="CheckBox" Checked="OnCheckBoxChecked" Unchecked="OnCheckBoxUnchecked"/>
          <TextBlock Name="Name" Margin="5" VerticalAlignment="Center"/>
-     </WrapPanel>
+     </StackPanel>
      
  </UserControl>

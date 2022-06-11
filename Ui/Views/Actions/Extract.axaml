@@ -8,7 +8,8 @@
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
         Icon="{x:Static resource:ResourcesWindowIcons.CompressWindowIcon}"
         WindowStartupLocation="CenterScreen"
-        KeyDown="OnKeyPressedWindow">
+        KeyDown="OnKeyPressedWindow"
+        KeyUp="OnKeyReleased">
         
         <Grid ColumnDefinitions="100,200">
                 <Grid Grid.Column="0">

@@ -55,13 +55,9 @@ namespace Ui.Views
             NavigationView = this.FindControl<NavigationView>("NavigationView");
             grid = this.FindControl<Grid>("grid");
             PointersView = new PointersView();
-            menu = new Menu(this);
-            menu.InitializeExpanders();
             subGrid = new Grid();
             Grid.SetRow(subGrid, 2);
-            if (Parent is MainWindow)
-                subGrid.Children.Add(menu);
-            else
+            if (Parent is not MainWindow)
                 subGrid.Children.Add(PointersView);
             grid.Children.Add(subGrid);
             Client = client;
@@ -70,6 +66,12 @@ namespace Ui.Views
                 NavigationView.AccessPath(Client.CurrentFolder);
                 NavigationView.Add(Client.CurrentFolder);
                 PointersView.Refresh();
+            }
+            else
+            {
+                menu = new Menu(this);
+                menu.InitializeExpanders();
+                subGrid.Children.Add(menu);
             }
         }
 

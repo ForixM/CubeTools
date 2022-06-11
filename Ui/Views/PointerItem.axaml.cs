@@ -6,6 +6,8 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Library.FilePointer;
+using Library.ManagerReader;
 using ResourcesLoader;
 using Pointer = Library.Pointer;
 
@@ -46,10 +48,18 @@ namespace Ui.Views
             _name.Text = pointer.Name;
             _icon.Source = ResourcesConverter.TypeToIcon(pointer.Path, pointer.Type, pointer.IsDir);
             _lastModified.Text = pointer.LastModified;
-            _size.Text = pointer.IsDir ? "" : pointer.Size + " o";
+            if (pointer is FileLocalPointer localPointer)
+            {
+                _size.Text = localPointer.SizeXaml;
+            }
+            else
+            {
+                _size.Text = pointer.IsDir ? "" : ManagerReader.ByteToPowByte(pointer.Size);
+            }
             // Grid infoGrid = this.FindControl<Grid>("infoGrid");
             // HorizontalAlignment = HorizontalAlignment.Stretch;
             button.HorizontalAlignment = HorizontalAlignment.Stretch;
+            _name.HorizontalAlignment = HorizontalAlignment.Left;
             button.CornerRadius = new CornerRadius(8);
         }
 

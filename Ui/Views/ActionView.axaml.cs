@@ -214,26 +214,27 @@ namespace Ui.Views
         /// <param name="source">The pointer that we want to make a copy</param>
         private void CopyPointer(Pointer source)
         {
-            try
-            {
-                // Copy Pointer
-                Dispatcher.UIThread.Post(
-                    () =>
+            
+            // Copy Pointer
+            Dispatcher.UIThread.Post(
+                () =>
+                {
+                    try
                     {
                         Main.Client.Copy(source, Main.Client.CurrentFolder);
-                    },
-                    DispatcherPriority.MaxValue);
-            }
-            catch (Exception exception)
-            {
-                if (exception is ManagerException @managerException)
-                {
-                    @managerException.Errorstd = $"Unable to copy {source.Name}";
-                    new ErrorBase(@managerException).ShowDialog<object>(Main.Main);
-                }
-            }
+                        Main.Refresh();
+                    }
+                    catch (Exception exception)
+                    {
+                        if (exception is ManagerException @managerException)
+                        {
+                            @managerException.Errorstd = $"Unable to copy {source.Name}";
+                            new ErrorBase(@managerException).ShowDialog<object>(Main.Main);
+                        }
+                    }
+                },
+                DispatcherPriority.MaxValue);
         }
-
         #endregion
     }
 }

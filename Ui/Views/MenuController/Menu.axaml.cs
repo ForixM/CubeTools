@@ -66,7 +66,7 @@ namespace Ui.Views.MenuController
 			        _favorites.Children.Add(new OneLinkMenu(ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesConverter.TypeToIcon(path, ManagerReader.GetFileExtension(path), Directory.Exists(path))));
 	        // Drives
 	        foreach (var drive in DriveInfo.GetDrives())
-		        _drives.Children.Add(new OneLinkMenu(drive.Name, $"{drive.VolumeLabel} ({drive.Name})", ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
+		        _drives.Children.Add(new OneLinkMenuDrives(drive.Name, $"{drive.VolumeLabel} ({drive.Name})", ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
 	        // Clouds
 	        _clouds.Children.Add(new FTPHandler());
 	        _clouds.Children.Add(new OneDriveHandler());

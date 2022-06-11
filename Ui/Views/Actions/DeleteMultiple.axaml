@@ -8,7 +8,8 @@
         Topmost="True"
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
         Icon="{x:Static resource:ResourcesWindowIcons.DeleteWindowIcon}"
-        KeyDown="OnKeyPressedWindow">
+        KeyDown="OnKeyPressedWindow"
+        KeyUp="OnKeyReleased">
         
         <Grid ColumnDefinitions="100,*">
 
@@ -19,11 +20,11 @@
                 <Grid Grid.Column="1">
                         <StackPanel Margin="10">
                                 <TextBlock Text="Are you sure to delete ?" />
-                                <WrapPanel>
+                                <StackPanel Orientation="Horizontal">
                                         <Button Click="OnDeleteAllClick" HorizontalAlignment="Center" Margin="0 10 0 5" Content="Delete All"/>
                                         <Button Click="OnDeleteSelectedClick" HorizontalAlignment="Center" Margin="0 10 0 5" Content="Delete Selected"/>
                                         <Button Click="OnCancelClicked" HorizontalAlignment="Center" Margin="0 10 0 5" Content="Cancel"/>
-                                </WrapPanel>
+                                </StackPanel>
                                 <ScrollViewer Height="200">
                                         <StackPanel Name="GeneratorDisplay"/>
                                 </ScrollViewer>

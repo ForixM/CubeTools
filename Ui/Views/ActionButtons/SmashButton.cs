@@ -13,11 +13,18 @@ public class SmashButton : ActionButton
 
     private void OnClick(object sender)
     {
+        var uri = "https://www.fromsmash.com";
+        var psi = new System.Diagnostics.ProcessStartInfo();
+        psi.UseShellExecute = true;
+        psi.FileName = uri;
+        System.Diagnostics.Process.Start(psi);
+        /*
         const string uri = "https://www.fromsmash.com";
         var psi = new System.Diagnostics.ProcessStartInfo
         {
             FileName = uri
         };
         System.Diagnostics.Process.Start(psi);
+        */
     }
 }
