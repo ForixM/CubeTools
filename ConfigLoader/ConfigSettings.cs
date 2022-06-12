@@ -37,9 +37,5 @@ namespace ConfigLoader
 
         public string ResourcePath => $"{ConfigLoader.AppPath}/Assets/{(Styles.IsLight ? Styles.FolderLight : Styles.FolderDark)}/";
         public string? LoadedJson;
-
-        public ConfigSettings()
-        {
-        }
     }
 }

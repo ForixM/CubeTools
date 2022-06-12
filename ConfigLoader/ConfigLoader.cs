@@ -9,7 +9,7 @@ namespace ConfigLoader
         /// All Settings wrapping up in one single variable
         /// </summary>
         public static ConfigSettings Settings;
-        public static string AppPath = Directory.GetCurrentDirectory().Replace('\\','/');
+        public static string AppPath;
         
         /// <summary>
         /// Load a configuration in the ConfigSettings instance

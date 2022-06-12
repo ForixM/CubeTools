@@ -11,6 +11,7 @@ namespace InitLoader
         private static void InitConfig()
         {
             ConfigSettings settings = new ConfigSettings();
+            ConfigLoader.ConfigLoader.AppPath = Directory.GetCurrentDirectory().Replace('\\', '/');
             // Try to find a json config file : default one is Config.json
             if (File.Exists("Config.json"))
                 ConfigLoader.ConfigLoader.LoadConfiguration();
