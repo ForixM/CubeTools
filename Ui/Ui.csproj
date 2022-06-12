@@ -568,6 +568,9 @@
         <DependentUpon>ActionButton.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\MenuController\OneLinkMenuDrives.axaml.cs">
+        <DependentUpon>OneLinkMenuDrives.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <Folder Include="bin\Debug\net6.0\Assets\dark" />

@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Ui.Views.Settings.ShortcutsSaver
 {
@@ -12,28 +13,30 @@ namespace Ui.Views.Settings.ShortcutsSaver
         private string _shortcut;
         private List<Key> _keys;
         private TextBlock _display;
-        
+        private TextBlock _lastDisplay;
+
         public ShortcutsSaver()
         {
             InitializeComponent();
             _keys = new List<Key>();
             _display = this.FindControl<TextBlock>("Display");
-            SystemDecorations = SystemDecorations.None;
+            _lastDisplay = this.FindControl<TextBlock>("LastDisplay");
+            SystemDecorations = SystemDecorations.BorderOnly;
             _shortcut = "";
         }
 
         public ShortcutsSaver(string shortcut) : this()
         {
             _shortcut = shortcut;
-            Title = "Shortcuts : " + shortcut;
-            // _display.Text =
-            //     ConfigLoader.FromKeysToString(ConfigLoader.ConfigLoader.Settings.Shortcuts[shortcut]);
+            _lastDisplay.Text = "Last Shortcut : " + ConfigLoader.ConfigLoader.Settings.Shortcuts![shortcut].Aggregate("", (current, key) => current + (Enum.GetName(typeof(Key), key) + "+"));
+            Title = "Shortcuts : " + shortcut ;
+            UpdateText();
         }
-        
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void UpdateText() => _display.Text = "";//ConfigLoader.ConfigLoader.Settings.Shortcuts.FromKeysToString(_keys);
+        private void UpdateText() =>
+            _display.Text = _keys.Aggregate("", (current, key) => current + (Enum.GetName(typeof(Key), key) + "+"));
 
         private void OnKeyDown(object? sender, KeyEventArgs e)
         {
@@ -63,5 +66,6 @@ namespace Ui.Views.Settings.ShortcutsSaver
         {
             if (sender != this) Close(null);
         }
+
     }
 }

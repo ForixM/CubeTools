@@ -10,6 +10,7 @@ namespace ConfigLoader
         /// All Settings wrapping up in one single variable
         /// </summary>
         public static ConfigSettings Settings;
+        public static string AppPath = Directory.GetCurrentDirectory().Replace('\\','/');
         
         /// <summary>
         /// Load a configuration in the ConfigSettings instance
@@ -24,8 +25,7 @@ namespace ConfigLoader
                     name = "Config.json";
                 }
                 Settings = (ConfigSettings) JsonConvert.DeserializeObject(new StreamReader(name).ReadToEnd(), typeof(ConfigSettings))!;
-                Settings.AppPath = Directory.GetCurrentDirectory().Replace('\\','/');
-                Settings.LoadedJson = Path.Combine(Settings.AppPath, name);
+                Settings.LoadedJson = AppPath + "/" + name;
             }
             catch (Exception e)
             {

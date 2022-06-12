@@ -11,7 +11,7 @@ using Library.FilePointer;
 using Library.ManagerExceptions;
 using Ui.Views.Information;
 
-namespace Ui.Views.LinkBar
+namespace Ui.Views.MenuController
 {
     public class OneLinkMenu : UserControl
     {
@@ -42,7 +42,6 @@ namespace Ui.Views.LinkBar
             {
                 LocalPointer = LocalPointer.NullLocalPointer;
             }
-
             Description.Text = name;
             Image.Source = image;
         }
@@ -50,13 +49,5 @@ namespace Ui.Views.LinkBar
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void OpenLink(object? sender, RoutedEventArgs e) => Main.AccessPath(LocalPointer);
-        
-        private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
-        {
-            /*
-            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-                new MoreInformationLink(this, Main).Show();
-                */
-        }
     }
 }

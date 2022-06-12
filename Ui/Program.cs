@@ -22,9 +22,11 @@ namespace Ui
             // Initialization
             InitLoader.InitLoader.Start();
             // Initialization of views and Avalonia process
+            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            /*
             try 
             {
-                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+                
             }
             catch (Exception e)
             {
@@ -37,6 +39,7 @@ namespace Ui
                 Environment.Exit(1);
             }
             Environment.Exit(0);
+            */
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.

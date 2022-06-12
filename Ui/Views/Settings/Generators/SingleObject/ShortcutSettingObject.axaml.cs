@@ -10,6 +10,7 @@ namespace Ui.Views.Settings.Generators.SingleObject
     public class ShortcutSettingObject : UserControl
     {
         private string _shortcutName;
+        
         public ShortcutSettingObject()
         {
             InitializeComponent();

@@ -1,4 +1,5 @@
-﻿using Library.ManagerExceptions;
+﻿using ConfigLoader;
+using Library.ManagerExceptions;
 
 namespace InitLoader
 {
@@ -9,6 +10,7 @@ namespace InitLoader
     {
         private static void InitConfig()
         {
+            ConfigSettings settings = new ConfigSettings();
             // Try to find a json config file : default one is Config.json
             if (File.Exists("Config.json"))
                 ConfigLoader.ConfigLoader.LoadConfiguration();
@@ -23,12 +25,9 @@ namespace InitLoader
                     path = Directory.GetCurrentDirectory();
                     foreach (var file in Directory.EnumerateFiles(path))
                     {
-                        if (file.StartsWith("Config"))
-                        {
-                            ConfigLoader.ConfigLoader.LoadConfiguration(file);
-                            ConfigLoader.ConfigLoader.Settings.AppPath = Directory.GetCurrentDirectory().Replace('\\','/');
-                            return;
-                        }
+                        if (!file.StartsWith("Config")) continue;
+                        ConfigLoader.ConfigLoader.LoadConfiguration(file);
+                        return;
                     }
                 }
                 catch (Exception e)

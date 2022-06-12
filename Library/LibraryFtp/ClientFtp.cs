@@ -38,7 +38,6 @@ namespace Library.LibraryFtp
             FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host+folder.Path);
             request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
             request.Credentials = new NetworkCredential(_username, _password);
-
             FtpWebResponse response = (FtpWebResponse) request.GetResponse();
             Stream stream = response.GetResponseStream();
             StreamReader reader = new StreamReader(stream!);

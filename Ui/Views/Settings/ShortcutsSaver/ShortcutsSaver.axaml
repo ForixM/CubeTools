@@ -5,14 +5,15 @@
              CanResize="False"
              Topmost="True"
              Title="Register your shortcut"
-             Width="200" Height="200"
+             Width="250" Height="250"
              KeyDown="OnKeyDown"
              LostFocus="OnLostFocus">
      
      <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-         <TextBlock Text="Type commands to modify the shortcut :"/>
-         <TextBlock Name="Display"/>
-         <WrapPanel>
+         <TextBlock HorizontalAlignment="Center" Text="Type to modify the shortcut :"/>
+         <TextBlock HorizontalAlignment="Left" Name="LastDisplay"/>
+         <TextBlock HorizontalAlignment="Left" Name="Display"/>
+         <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
              <Button Content="Valid" Click="Valid"/>
              <Button Content="Clear" Click="Clear"/>
              <Button Content="Cancel" Click="Cancel"/>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -13,7 +14,6 @@ using Library.ManagerExceptions;
 using Library;
 using Ui.Views.ActionButtons;
 using Ui.Views.Error;
-using Pointer = Library.Pointer;
 
 namespace Ui.Views.Ftp
 {
@@ -97,14 +97,25 @@ namespace Ui.Views.Ftp
                 // Initialize the connexion and the window
                 try
                 {
-                    var mainWindow = new MainWindowRemote(new ClientLocal(), new ClientTransferProtocol(Ip.Text + ":" + Port.Text, User.Text, Mdp.Text));
-                    mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
+                    try
                     {
-                        new CreateFileButton(mainWindow.RemoteView, 0),
-                        new CreateFolderButton(mainWindow.RemoteView, 1), new RenameButton(mainWindow.RemoteView, 2),
-                        new DeleteButton(mainWindow.RemoteView, 3), new DownloadButton(mainWindow.RemoteView, 4)
-                    });
-                    mainWindow.Show();
+                        var mainWindow = new MainWindowRemote(new ClientLocal(),
+                            new ClientTransferProtocol(Ip.Text + ":" + Port.Text, User.Text, Mdp.Text));
+                        mainWindow.RemoteView.ActionView.SetActionButtons(new List<ActionButton>
+                        {
+                            new CreateFileButton(mainWindow.RemoteView, 0),
+                            new CreateFolderButton(mainWindow.RemoteView, 1),
+                            new RenameButton(mainWindow.RemoteView, 2),
+                            new DeleteButton(mainWindow.RemoteView, 3), new DownloadButton(mainWindow.RemoteView, 4)
+                        });
+                        mainWindow.Show();
+                    }
+                    catch (Exception exception)
+                    {
+                        if (e is WebException) new ErrorBase(new ConnectionRefused("Unable to reach this server","LoginFtp")).Show();
+                    }
+
+                    
                     ConfigLoader.ConfigLoader.Settings.Ftp.LastServers.Add(new OneFtpSettings("New Recent", Ip.Text, User.Text, Mdp.Text, Port.Text));
                     ConfigLoader.ConfigLoader.SaveConfiguration();
                     Close();

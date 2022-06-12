@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -7,6 +10,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using ConfigLoader.Settings;
 using Ui.Views.Settings.Generators.SingleObject;
 
 namespace Ui.Views.Settings
@@ -48,7 +52,6 @@ namespace Ui.Views.Settings
             
             // Launching Workers
             new Thread(FtpGeneratorRefresher).Start();
-            new Thread(ShortcutsGeneratorRefresher).Start();
             new Thread(LinksGeneratorRefresher).Start();
             new Thread(DarkPackGeneratorRefresher).Start();
             new Thread(LightPackGeneratorRefresher).Start();
@@ -68,6 +71,7 @@ namespace Ui.Views.Settings
         private void Save(object? sender, RoutedEventArgs e)
         {
             ConfigLoader.ConfigLoader.SaveConfiguration();
+            ConfigLoader.ConfigLoader.LoadConfiguration(ConfigLoader.ConfigLoader.Settings.LoadedJson);
             Close();
         }
         
@@ -117,7 +121,8 @@ namespace Ui.Views.Settings
         {
             if (e.AddedItems.Count == 1 && e.AddedItems[0] is TextBlock @block)
             {
-                DarkPackGenerator.SelectedItem = @block.Text;
+                DarkPackGenerator.SelectedItem = @block;
+                DarkPackGenerator.PlaceholderText = @block.Text;
                 ConfigLoader.ConfigLoader.Settings.Styles.FolderDark = @block.Text;
                 RefreshDarkPackGenerator();
             }
@@ -128,7 +133,8 @@ namespace Ui.Views.Settings
             if (_main is MainWindow window)
             {
                 MainWindow.KeysPressed.Remove(e.Key);
-            } else if (_main is MainWindowRemote remote)
+            } 
+            else if (_main is MainWindowRemote remote)
             {
                 remote.KeysPressed.Remove(e.Key);
             }
@@ -165,24 +171,24 @@ namespace Ui.Views.Settings
         private void RefreshDarkPackGenerator()
         {
             DarkPackGenerator.SelectedItem =
-                Directory.Exists(ConfigLoader.ConfigLoader.Settings.AppPath + "/Assets/" +
+                Directory.Exists(ConfigLoader.ConfigLoader.AppPath + "/Assets/" +
                                  ConfigLoader.ConfigLoader.Settings.Styles.FolderDark)
                     ? ConfigLoader.ConfigLoader.Settings.Styles.FolderDark
                     : "";
             DarkPackGenerator.Items = Directory
-                .EnumerateDirectories(ConfigLoader.ConfigLoader.Settings.AppPath + "/Assets")
+                .EnumerateDirectories(ConfigLoader.ConfigLoader.AppPath + "/Assets")
                 .Select(enumerateDirectory => new TextBlock {Text = Path.GetFileName(enumerateDirectory)});
         }
 
         private void RefreshLightPackGenerator()
         {
             DarkPackGenerator.SelectedItem =
-                Directory.Exists(ConfigLoader.ConfigLoader.Settings.AppPath + "/Assets/" +
+                Directory.Exists(ConfigLoader.ConfigLoader.AppPath + "/Assets/" +
                                  ConfigLoader.ConfigLoader.Settings.Styles.FolderLight)
                     ? ConfigLoader.ConfigLoader.Settings.Styles.FolderLight
                     : "";
             LightPackGenerator.Items = Directory
-                .EnumerateDirectories(ConfigLoader.ConfigLoader.Settings.AppPath + "/Assets")
+                .EnumerateDirectories(ConfigLoader.ConfigLoader.AppPath + "/Assets")
                 .Select(enumerateDirectory => new TextBlock {Text = Path.GetFileName(enumerateDirectory)});
         }
 
@@ -192,28 +198,25 @@ namespace Ui.Views.Settings
 
         private void FtpGeneratorRefresher()
         {
+            var last = ConfigLoader.ConfigLoader.Settings.Ftp.Servers;
             while (!_isClosed)
             {
                 Thread.Sleep(2000);
-                Dispatcher.UIThread.Post(RefreshFtpGenerator);
-            }
-        }
-
-        private void ShortcutsGeneratorRefresher()
-        {
-            while (!_isClosed)
-            {
-                Thread.Sleep(2000);
-                Dispatcher.UIThread.Post(RefreshFtpGenerator);
+                if (!AreFtpDictionaryEqual(ConfigLoader.ConfigLoader.Settings.Ftp.Servers,last))
+                    Dispatcher.UIThread.Post(RefreshFtpGenerator);
+                last = FtpSettingsDeepCopy(ConfigLoader.ConfigLoader.Settings.Ftp.Servers);
             }
         }
 
         private void LinksGeneratorRefresher()
         {
+            var last = ConfigLoader.ConfigLoader.Settings.Links;
             while (!_isClosed)
             {
                 Thread.Sleep(2000);
-                Dispatcher.UIThread.Post(RefreshLinksGenerator);
+                if (!AreLinksDictionaryEqual(last,ConfigLoader.ConfigLoader.Settings.Links))
+                    Dispatcher.UIThread.Post(RefreshLinksGenerator);
+                last = LinksDeepCopy(ConfigLoader.ConfigLoader.Settings.Links);
             }
         }
 
@@ -235,5 +238,44 @@ namespace Ui.Views.Settings
             }
         }
         #endregion
+
+        #region Dictionnary
+
+        private static bool AreLinksDictionaryEqual(Dictionary<string, string> dictionary1,
+            Dictionary<string, string> dictionary2)
+        {
+            if (dictionary1.Count != dictionary2.Count) return false;
+            foreach (var (key, value) in dictionary1)
+            {
+                if (!dictionary2.ContainsKey(key) || dictionary2[key] != value) return false;
+            }
+            return true;
+        }
+
+        private static bool AreFtpDictionaryEqual(List<OneFtpSettings> dictionary1, List<OneFtpSettings> dictionary2)
+        {
+            if (dictionary1.Count != dictionary2.Count) return false;
+            return !dictionary1
+                .Where((t, i) => 
+                t.Host != dictionary2[i].Host || 
+                t.Login != dictionary2[i].Login || 
+                t.Name != dictionary2[i].Name || 
+                t.Password != dictionary2[i].Password || 
+                t.Port != dictionary2[i].Port)
+                .Any();
+        }
+        
+        private static Dictionary<string, string> LinksDeepCopy(Dictionary<string, string> dictionary) => dictionary.Keys.ToDictionary(key => key, key => dictionary[key]);
+
+        private static List<OneFtpSettings> FtpSettingsDeepCopy(List<OneFtpSettings> servers)
+            => servers.Select(oneFtpSetting => new OneFtpSettings(oneFtpSetting.Name, oneFtpSetting.Host, oneFtpSetting.Login, oneFtpSetting.Password, oneFtpSetting.Port)).ToList();
+
+        #endregion
+
+        private void OnUninstalledClicked(object? sender, RoutedEventArgs e)
+        {
+            if (File.Exists(ConfigLoader.ConfigLoader.AppPath + "/unins000.exe")) Process.Start(ConfigLoader.ConfigLoader.AppPath + "/unins000.exe");
+            Environment.Exit(0);
+        }
     }
 }

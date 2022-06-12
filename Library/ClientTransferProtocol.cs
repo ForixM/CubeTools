@@ -53,8 +53,7 @@ namespace Library
 
         public override void AccessPath(Pointer destination)
         {
-            foreach (var item in Children) item.Dispose();
-            Children.Clear();
+            DisposeChildren();
             foreach (var item in _clientFtp.ListDirectory((FtpFolder) destination).Items) Children.Add(item);
             CurrentFolder = destination;
         }

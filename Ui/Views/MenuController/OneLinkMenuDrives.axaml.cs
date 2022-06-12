@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -10,68 +11,58 @@ using Library.DirectoryPointer;
 using Library.FilePointer;
 using Library.ManagerExceptions;
 using Library.ManagerReader;
-using Ui.Views.Information;
 
-namespace Ui.Views.LinkBar
+namespace Ui.Views.MenuController
 {
     public class OneLinkMenuDrives : UserControl
     {
-        public ClientUI Main;
-        public LocalPointer LocalPointer;
-        public TextBlock Description;
-        public Image Image;
+        private ClientUI _main;
+        private LocalPointer _localPointer;
+        private TextBlock _description;
+        private Image _image;
+        private ProgressBar _progressBar;
         private ProgressBar runProgress;
-        private TextBlock SpaceInfo;
+        private TextBlock _spaceInfo;
         
         public OneLinkMenuDrives()
         {
-            LocalPointer = LocalPointer.NullLocalPointer;
+            _localPointer = LocalPointer.NullLocalPointer;
             
             InitializeComponent();
-            Description = this.FindControl<TextBlock>("Description");
-            Image = this.FindControl<Image>("Image");
-            SpaceInfo = this.FindControl<TextBlock>("SpaceInfo");
+            _description = this.FindControl<TextBlock>("Description");
+            _image = this.FindControl<Image>("Image");
+            _progressBar = this.FindControl<ProgressBar>("ProgressBar");
+            _spaceInfo = this.FindControl<TextBlock>("SpaceInfo");
         }
 
         public OneLinkMenuDrives(ClientUI main, string link, string name, IImage image) : this()
         {
-            Main = main;
+            _main = main;
             try
             {
-                if (Directory.Exists(link)) LocalPointer = new DirectoryLocalPointer(link);
-                else LocalPointer = new FileLocalPointer(link);
+                if (Directory.Exists(link)) _localPointer = new DirectoryLocalPointer(link);
+                else _localPointer = new FileLocalPointer(link);
             }
             catch (PathNotFoundException)
             {
-                LocalPointer = LocalPointer.NullLocalPointer;
+                _localPointer = LocalPointer.NullLocalPointer;
             }
-
-            Description.Text = name;
-            Image.Source = image;
+            _description.Text = $"{name} ({link})";
+            _image.Source = image;
             runProgress = this.FindControl<ProgressBar>("RunProgress");
             foreach (DriveInfo drive in DriveInfo.GetDrives())
             {
                 if (drive.Name == link)
                 {
                     runProgress.Value = 100d - (double)((double)drive.AvailableFreeSpace / (double)drive.TotalSize) * 100.0d;
-                    SpaceInfo.Text = $"{ManagerReader.ByteToPowByte(drive.AvailableFreeSpace)} free of {ManagerReader.ByteToPowByte(drive.TotalSize)}";
+                    _spaceInfo.Text = $"{ManagerReader.ByteToPowByte(drive.AvailableFreeSpace)} free of {ManagerReader.ByteToPowByte(drive.TotalSize)}";
                 }
             }
-            // runProgress.Value = 50;
-            // DriveInfo info = DriveInfo.GetDrives()[0];
-            // info.TotalSize - info.AvailableFreeSpace;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
-        private void OpenLink(object? sender, RoutedEventArgs e) => Main.AccessPath(LocalPointer);
+        private void OpenLink(object? sender, RoutedEventArgs e) => _main.AccessPath(_localPointer);
         
-        private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
-        {
-            /*
-            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-                new MoreInformationLink(this, Main).Show();
-                */
-        }
     }
 }

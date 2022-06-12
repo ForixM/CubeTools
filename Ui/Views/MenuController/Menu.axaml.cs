@@ -58,15 +58,13 @@ namespace Ui.Views.MenuController
 				_quickAccess.Children.Add(new OneLinkMenu(_client,Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
 	        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)))
 				_quickAccess.Children.Add(new OneLinkMenu(_client,Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
-	        //if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
-			//	_quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
 	        // Favorites
 	        if (ConfigLoader.ConfigLoader.Settings.Links is not null)
 		        foreach (var (key, path) in ConfigLoader.ConfigLoader.Settings.Links)
 			        _favorites.Children.Add(new OneLinkMenu(_client,ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesConverter.TypeToIcon(path, ManagerReader.GetFileExtension(path), Directory.Exists(path))));
 	        // Drives
 	        foreach (var drive in DriveInfo.GetDrives())
-		        _drives.Children.Add(new OneLinkMenuDrives(_client,drive.Name, $"{drive.VolumeLabel} ({drive.Name})", ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
+		        _drives.Children.Add(new OneLinkMenuDrives(_client,drive.Name, drive.VolumeLabel, ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
 	        // Clouds
 	        _clouds.Children.Add(new FTPHandler());
 	        _clouds.Children.Add(new OneDriveHandler(_client));
@@ -76,25 +74,27 @@ namespace Ui.Views.MenuController
 	        new Thread(LaunchUpdateLinks).Start();
 	        new Thread(LaunchUpdateStaticLinks).Start();
         }
-        
+
+        #region Workers
+
         private void LaunchUpdaterDrivers()
         {
 	        int last = DriveInfo.GetDrives().Length;
 	        while (_main is MainWindow {IsClosed: false})
 	        {
 		        Thread.Sleep(1000);
-		        var drives = DriveInfo.GetDrives();
-		        if (last != drives.Length)
+		        var nbDrives = DriveInfo.GetDrives().Length;
+		        if (last != nbDrives)
 		        {
 			        Dispatcher.UIThread.Post(() =>
 			        {
 				        _drives.Children.Clear();
 				        foreach (var drive in DriveInfo.GetDrives())
 					        _drives.Children.Add(new OneLinkMenuDrives(_client,drive.Name, $"{drive.VolumeLabel} ({drive.Name})",
-						        ResourcesLoader.ResourcesIconsCompressed.DriveCompressed));
+						        ResourcesIconsCompressed.DriveCompressed));
 			        }, DispatcherPriority.Background);
 		        }
-		        last = drives.Length;
+		        last = nbDrives;
 	        }
         }
 
@@ -106,14 +106,20 @@ namespace Ui.Views.MenuController
 	        var last = ConfigLoader.ConfigLoader.Settings.Links;
 	        while (_main is MainWindow {IsClosed: false})
 	        {
-		        Thread.Sleep(1000);
-		        Dispatcher.UIThread.Post(() =>
+		        if (AreLinksDictionaryEqual(last,ConfigLoader.ConfigLoader.Settings.Links))
 		        {
-			        _favorites.Children.Clear();
-			        foreach (var (key, path) in ConfigLoader.ConfigLoader.Settings.Links)
-				        _favorites.Children.Add(new OneLinkMenu(_client,ConfigLoader.ConfigLoader.Settings.Links[key],key, ResourcesConverter.TypeToIcon(path, ManagerReader.GetFileExtension(path), Directory.Exists(path))));
-
-		        }, DispatcherPriority.Background);
+			        Thread.Sleep(1000);
+			        Dispatcher.UIThread.Post(() =>
+			        {
+				        _favorites.Children.Clear();
+				        foreach (var (key, path) in ConfigLoader.ConfigLoader.Settings.Links)
+					        _favorites.Children.Add(
+						        new OneLinkMenu(_client, ConfigLoader.ConfigLoader.Settings.Links[key], key,
+							        ResourcesConverter.TypeToIcon(path, ManagerReader.GetFileExtension(path),
+								        Directory.Exists(path))));
+			        }, DispatcherPriority.Background);
+			        last = LinksDeepCopy(ConfigLoader.ConfigLoader.Settings.Links);
+		        }
 	        }
         }
 
@@ -140,11 +146,11 @@ namespace Ui.Views.MenuController
 				        _quickAccess.Children.Add(new OneLinkMenu(_client,Environment.GetFolderPath(Environment.SpecialFolder.MyMusic), "Music", ResourcesLoader.ResourcesIconsCompressed.MusicCompressed));
 			        if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyVideos)))
 				        _quickAccess.Children.Add(new OneLinkMenu(_client,Environment.GetFolderPath(Environment.SpecialFolder.MyVideos), "Videos", ResourcesLoader.ResourcesIconsCompressed.VideoCompressed));
-			        //if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.Favorites)))
-				    //    _quickAccess.Children.Add(new OneLink(Main, Environment.GetFolderPath(Environment.SpecialFolder.Favorites), "Favorites", ResourcesLoader.ResourcesIconsCompressed.FavoritesCompressed));
 		        }, DispatcherPriority.Background);
 	        }
         }
+        
+        #endregion
 
         public void InitializeComponents()
         {
@@ -165,5 +171,21 @@ namespace Ui.Views.MenuController
                 _quickAccess.Children.Add(control);
             }
         }
+        
+        #region Dictionnary
+
+        private static bool AreLinksDictionaryEqual(Dictionary<string, string> dictionary1, Dictionary<string, string> dictionary2)
+        {
+	        if (dictionary1.Count != dictionary2.Count) return false;
+	        foreach (var (key, value) in dictionary1)
+	        {
+		        if (!dictionary2.ContainsKey(key) || dictionary2[key] != value) return false;
+	        }
+	        return true;
+        }
+
+        private static Dictionary<string, string> LinksDeepCopy(Dictionary<string, string> dictionary) => dictionary.Keys.ToDictionary(key => key, key => dictionary[key]);
+
+        #endregion
     }
 }
