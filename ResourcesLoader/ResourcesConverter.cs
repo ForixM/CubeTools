@@ -91,12 +91,15 @@ namespace ResourcesLoader
                 case "key":
                     return ResourcesExtensionsCompressed.KeyExtensionCompressed;
                 case "mp3":
+                case "m4a":
                 case "alac":
                 case "flac": 
                 case "wav":
                     return ResourcesExtensionsCompressed.MusicExtensionCompressed;
                 case "mp4":
+                case "MP4":
                 case "mov":
+                case "MOV":
                 case "mpeg":
                 case "wmv":
                     return ResourcesExtensionsCompressed.VideoExtensionCompressed;
