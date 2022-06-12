@@ -13,6 +13,7 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Library;
 using Library.ManagerExceptions;
+using Library.ManagerReader;
 using Ui.Views.ActionButtons;
 using Ui.Views.Actions;
 using Ui.Views.Error;

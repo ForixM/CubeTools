@@ -9,6 +9,7 @@ using Library;
 using Library.DirectoryPointer;
 using Library.FilePointer;
 using Library.ManagerExceptions;
+using Library.ManagerReader;
 using Ui.Views.Information;
 
 namespace Ui.Views.LinkBar
@@ -19,8 +20,8 @@ namespace Ui.Views.LinkBar
         public LocalPointer LocalPointer;
         public TextBlock Description;
         public Image Image;
-        
-        
+        private ProgressBar runProgress;
+        private TextBlock SpaceInfo;
         
         public OneLinkMenuDrives()
         {
@@ -29,6 +30,7 @@ namespace Ui.Views.LinkBar
             InitializeComponent();
             Description = this.FindControl<TextBlock>("Description");
             Image = this.FindControl<Image>("Image");
+            SpaceInfo = this.FindControl<TextBlock>("SpaceInfo");
         }
 
         public OneLinkMenuDrives(ClientUI main, string link, string name, IImage image) : this()
@@ -46,6 +48,18 @@ namespace Ui.Views.LinkBar
 
             Description.Text = name;
             Image.Source = image;
+            runProgress = this.FindControl<ProgressBar>("RunProgress");
+            foreach (DriveInfo drive in DriveInfo.GetDrives())
+            {
+                if (drive.Name == link)
+                {
+                    runProgress.Value = 100d - (double)((double)drive.AvailableFreeSpace / (double)drive.TotalSize) * 100.0d;
+                    SpaceInfo.Text = $"{ManagerReader.ByteToPowByte(drive.AvailableFreeSpace)} free of {ManagerReader.ByteToPowByte(drive.TotalSize)}";
+                }
+            }
+            // runProgress.Value = 50;
+            // DriveInfo info = DriveInfo.GetDrives()[0];
+            // info.TotalSize - info.AvailableFreeSpace;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);

@@ -72,9 +72,12 @@ namespace Ui.Views
 
         private void Deselection(object? sender, PointerPressedEventArgs e)
         {
-            Main.ActionView.SelectedXaml.Clear();
-            foreach (var control in Main.PointersView.Generator.Children)
-                ((PointerItem) control).button.Background = new SolidColorBrush(new Color(0, 255, 255, 255));
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+            {
+                Main.ActionView.SelectedXaml.Clear();
+                foreach (var control in Main.PointersView.Generator.Children)
+                    ((PointerItem) control).button.Background = new SolidColorBrush(new Color(0, 255, 255, 255));
+            }
         }
     }
 }
