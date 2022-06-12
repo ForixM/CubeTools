@@ -131,7 +131,7 @@ namespace Ui.Views.Actions
         {
             if (_main.Main is MainWindow window)
             {
-                window.KeysPressed.Remove(e.Key);
+                MainWindow.KeysPressed.Remove(e.Key);
             }
             else if (_main.Main is MainWindowRemote windowRemote)
             {

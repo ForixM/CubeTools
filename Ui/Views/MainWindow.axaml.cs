@@ -28,7 +28,7 @@ namespace Ui.Views
     public class MainWindow : Window
     {
         public bool IsClosed;
-        public List<Key> KeysPressed;
+        public static List<Key> KeysPressed;
         public LinkBar.LinkBar LinkBarView;
         public ClientUI LocalView;
         

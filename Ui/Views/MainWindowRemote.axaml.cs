@@ -260,7 +260,12 @@ namespace Ui.Views
                 }
             }
         }
-        private void OnKeyReleasedWindow(object? sender, KeyEventArgs e) => KeysPressed.Remove(e.Key);
+
+        private void OnKeyReleasedWindow(object? sender, KeyEventArgs e)
+        {
+            KeysPressed.Remove(e.Key);
+            MainWindow.KeysPressed.Remove(e.Key);
+        }
         
         #endregion
         
