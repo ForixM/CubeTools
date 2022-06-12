@@ -62,6 +62,9 @@ namespace Library.ManagerWriter
             // Source and dest are the same
             if (source == dest) return;
             
+            FileSystem.RenameDirectory(source, ManagerReader.ManagerReader.GetPathToName(dest));
+            return;
+            
             // Trying to get the directory info attached to the source path and Create a new One
             DirectoryInfo? sourceDirectoryInfo;
             DirectoryInfo? destDirectoryInfo;
@@ -89,6 +92,7 @@ namespace Library.ManagerWriter
             // DirectoryInfo is supposed to be not null (and so loaded)
             if (destDirectoryInfo is null || sourceDirectoryInfo is null)
                 throw new AccessException($"Access to {source} or {dest} is impossible", "RenameDirectory");
+            
             
             // Rename files
             foreach (var fi in sourceDirectoryInfo.EnumerateFiles())

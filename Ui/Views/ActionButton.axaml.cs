@@ -34,18 +34,19 @@ namespace Ui.Views
         public ActionButton()
         {
             InitializeComponent();
-            _main = ClientUI.LastReference;
+            // _main = ClientUI.LastReference;
             _icon = this.FindControl<Image>("Icon");
             _name = this.FindControl<TextBlock>("Name");
             _size = this.FindControl<TextBlock>("Size");
             button = this.FindControl<Button>("Button");
         }
 
-        protected ActionButton(int def)
+        protected ActionButton(ClientUI main, int def)
         {
             InitializeComponent();
             Grid.SetColumn(this, def);
-            _main = ClientUI.LastReference;
+            _main = main;
+            // _main = ClientUI.LastReference;
             _icon = this.FindControl<Image>("Icon");
             _name = this.FindControl<TextBlock>("Name");
             _size = this.FindControl<TextBlock>("Size");

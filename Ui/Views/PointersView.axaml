@@ -1,9 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Ui.Views.PointersView">
+             x:Class="Ui.Views.PointersView" PointerPressed="Deselection">
 	
 	<ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
-		<Grid Grid.ColumnDefinitions="*" Margin="0 0 0 13" Name="Grid">
+		<Grid Grid.ColumnDefinitions="*" Margin="0 0 0 13" Name="Grid" HorizontalAlignment="Stretch">
 			<!-- <StackPanel Grid.Column="0" Name="Generator"/> -->
 		</Grid>
 	</ScrollViewer>

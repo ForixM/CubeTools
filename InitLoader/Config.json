@@ -1,71 +1,126 @@
 {
-  "AssetsPath" : "Assets",
-  "AppPath" : "",
-  "Styles" : 
-  {
-    "theme" : "default",
-    "pack" : "Assets/Default - Dark"
-  },
-  "FTP" :
-  {
-    "current" :
-      {
-        "name" : "Default",
-        "host" : "",
-        "login" : "",
-        "password" : "",
-        "port" : ""
-      },
-    "servers" : []
-  },
-  "Shortcuts" :
-  {
-    "copy" : [118, 46],
-    "cut" : [118, 67],
-    "close" : [118, 66],
-    "paste" : [118,65],
-    "newWindow" : [118,57],
-    "search" : [118, 49],
-    "delete" : [32],
-    "deletePermanent" : [116, 32],
-    "selectAll" : [118, 44],
-    "createFile" : [118,116,49],
-    "createDir" : [118,116,47],
-    "rename" : [91],
-    "settings" : [118, 52],
-    "reload" : [118, 61]
-  },
-  "Application" :
-  {
-    "default" : "",
-    "txt" : "",
-    "pdf" : "",
-    "jpg" : "",
-    "jpeg" : "",
-    "png" : "",
-    "ico" : "",
-    "exe" : "",
-    "iso" : "",
-    "docx" : "",
-    "odt" : "",
-    "pptx" : "",
-    "xlsx" : "",
-    "key" : "",
-    "py": "",
-    "cs": "",
-    "c++" : "",
-    "java" : "",
-    "html" : "",
-    "gitignore" : "",
-    "zip" : "",
-    "rar" : "",
-    "mp3" : "",
-    "alac" : "",
-    "flac" : "",
-    "wav" : "",
-    "mp4" : "",
-    "mov" : "",
-    "mpeg" : ""
-  },
-  "Links" :  {}
+	"Styles": {
+		"folder_light": "Default - Light",
+		"folder_dark": "Default - Dark",
+		"is_light": true
+	},
+	"FTP": {
+		"last_servers": [],
+		"servers": []
+	},
+	"Shortcuts": {
+		"copy": [
+			118,
+			46
+		],
+		"cut": [
+			118,
+			67
+		],
+		"close": [
+			118,
+			66
+		],
+		"paste": [
+			118,
+			65
+		],
+		"newWindow": [
+			118,
+			57
+		],
+		"closeWindow": [
+			118,
+			66
+		],
+		"search": [
+			118,
+			49
+		],
+		"sort": [
+			118,
+			62
+		],
+		"delete": [
+			32
+		],
+		"deletePermanent": [
+			116,
+			32
+		],
+		"selectAll": [
+			118,
+			44
+		],
+		"createFile": [
+			118,
+			116,
+			49
+		],
+		"createDir": [
+			118,
+			116,
+			47
+		],
+		"rename": [
+			91
+		],
+		"settings": [
+			118,
+			52
+		],
+		"reload": [
+			118,
+			61
+		],
+		"compress": [
+			118,
+			116,
+			46
+		],
+		"openFTP": [
+			118,
+			35
+		],
+		"openOneDrive": [
+			118,
+			36
+		],
+		"openGoogleDrive": [
+			118,
+			37
+		]
+	},
+	"Application": {
+		"default": "",
+		"txt": "",
+		"pdf": "",
+		"jpg": "",
+		"jpeg": "",
+		"png": "",
+		"ico": "",
+		"exe": "",
+		"iso": "",
+		"docx": "",
+		"odt": "",
+		"pptx": "",
+		"xlsx": "",
+		"key": "",
+		"py": "",
+		"cs": "",
+		"c++": "",
+		"java": "",
+		"html": "",
+		"gitignore": "",
+		"zip": "",
+		"rar": "",
+		"mp3": "",
+		"alac": "",
+		"flac": "",
+		"wav": "",
+		"mp4": "",
+		"mov": "",
+		"mpeg": ""
+	},
+	"Links": {}
 }

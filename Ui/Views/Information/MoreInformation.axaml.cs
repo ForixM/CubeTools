@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -7,7 +8,9 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Library;
 using Library.ManagerExceptions;
+using Ui.Views.Actions;
 using Ui.Views.Error;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Information
 {
@@ -102,7 +105,12 @@ namespace Ui.Views.Information
             {
                 if (_main!.Client.Type is ClientType.LOCAL)
                 {
-                    //_main.Client.Compress();
+                    List<Pointer> pointers = new List<Pointer>();
+                    foreach (PointerItem item in _main.ActionView.SelectedXaml)
+                    {
+                        pointers.Add(item.Pointer);
+                    }
+                    new Compress(_main, pointers).Show();
                 }
             }
             catch (ManagerException exception)

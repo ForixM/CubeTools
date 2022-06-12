@@ -71,7 +71,7 @@
             </Button>
         </Grid>
         <Grid Row="5">
-            <Button Classes="MoreMenu" Name="Compress">
+            <Button Classes="MoreMenu" Name="Compress" Click="CompressPressed">
                 <Grid ColumnDefinitions="50, 125">
                     <Grid Column="0">
                         <Image Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIcons.CompressionIcon}"/>
@@ -89,7 +89,7 @@
                         <Image Name="StarIcon" Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIcons.StarIcon}"/>
                     </Grid>
                     <Grid Column="1">
-                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Add to Favorites"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Favorites"/>
                     </Grid>
                 </Grid>
             </Button>

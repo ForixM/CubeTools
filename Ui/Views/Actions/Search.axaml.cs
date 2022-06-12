@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Library.ManagerReader;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views.Actions
 {
@@ -69,7 +70,8 @@ namespace Ui.Views.Actions
                 var children = new List<Library.Pointer>();
                 Task.Run(() =>
                 {
-                    //children = ManagerReader.FastSearchByName(_main.Client.Children, _textEntered.Text, 100).ToList();
+                    children.Clear();
+                    children.AddRange(ManagerReader.FastSearchByName(_main.Client.CurrentFolder.Path, _textEntered.Text, 100).Cast<Pointer>());
                 }).GetAwaiter().OnCompleted(() =>
                 {
                     _main.Refresh(children);
@@ -78,6 +80,17 @@ namespace Ui.Views.Actions
             });
             
         }
-        
+
+        private void OnKeyReleased(object? sender, KeyEventArgs e)
+        {
+            if (_main.Main is MainWindow window)
+            {
+                MainWindow.KeysPressed.Remove(e.Key);
+            }
+            else if (_main.Main is MainWindowRemote windowRemote)
+            {
+                windowRemote.KeysPressed.Remove(e.Key);
+            };
+        }
     }
 }

@@ -9,6 +9,7 @@
         xmlns:resource="clr-namespace:ResourcesLoader;assembly=ResourcesLoader"
         Icon="{x:Static resource:ResourcesWindowIcons.SearchWindowIcon}"
         KeyDown="OnKeyPressed"
+        KeyUp="OnKeyReleased"
         WindowStartupLocation="CenterScreen">
         
         <Grid>

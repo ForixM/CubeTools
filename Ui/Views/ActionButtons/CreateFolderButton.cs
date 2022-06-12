@@ -8,7 +8,7 @@ namespace Ui.Views.ActionButtons;
 
 public class CreateFolderButton : ActionButton
 {
-    public CreateFolderButton(int def) : base(def)
+    public CreateFolderButton(ClientUI main, int def) : base(main, def)
     {
         _icon.Source = ResourcesIconsCompressed.CreateFolderCompressed;
         OnClickEvent += OnClick;

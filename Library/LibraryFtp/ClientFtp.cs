@@ -38,7 +38,6 @@ namespace Library.LibraryFtp
             FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host+folder.Path);
             request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
             request.Credentials = new NetworkCredential(_username, _password);
-
             FtpWebResponse response = (FtpWebResponse) request.GetResponse();
             Stream stream = response.GetResponseStream();
             StreamReader reader = new StreamReader(stream!);
@@ -78,7 +77,11 @@ namespace Library.LibraryFtp
         {
             if (path == FtpFolder.ROOT.Path)
                 return ListDirectory(FtpFolder.ROOT);
-            if (path[^1] is '/' or '\\')
+            if (path == "")
+            {
+                path = "/";
+            }
+            else if (path[^1] is '/' or '\\')
             {
                 path = path.Remove(path.Length - 1);
             }
@@ -226,7 +229,8 @@ namespace Library.LibraryFtp
         public void Rename(FtpPointer pointer, string newName) //TODO Implement
         {
             string path = pointer.Path;
-            // path = path.Remove(path.Length - 1);
+            if (path[^1] is '/' or '\\')
+                path = path.Remove(path.Length - 1);
             FtpWebRequest request = (FtpWebRequest) WebRequest.Create(_host + path);
             request.Method = WebRequestMethods.Ftp.Rename;
             request.Credentials = new NetworkCredential(_username, _password);

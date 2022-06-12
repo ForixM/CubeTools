@@ -7,8 +7,5 @@
                 <Grid Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Button Click="CloseClick" Content="Close"/>
                 </Grid>
-                <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <Button Click="TryReloadClick" Content="Refresh"/>
-                </Grid>
         </Grid>
 </UserControl>

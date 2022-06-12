@@ -2,8 +2,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Ui.Views.Ftp.FtpServerObject">
 	 
-	 <WrapPanel>
-		 <TextBlock Name="Name" FontSize="15" Margin="5 0 5 0"/>
-		 <TextBlock Name="Ip"/>
-	 </WrapPanel>
+	 <StackPanel Orientation="Horizontal">
+		 <TextBlock VerticalAlignment="Center" Name="Name" Margin="0 0 25 0"/>
+		 <TextBlock VerticalAlignment="Center" Margin="0 0 40 0" Name="Ip"/>
+		 <Button HorizontalAlignment="Center" Click="LoadClicked" Content="Load"/>
+		 <Button HorizontalAlignment="Center" Click="RemoveClicked" Content="Remove"/>
+	 </StackPanel>
+	 
  </UserControl>

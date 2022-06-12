@@ -1,0 +1,32 @@
+ <UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Ui.Views.Settings.Generators.SingleObject.FtpSettingObject">
+	 
+	 <StackPanel>
+		 <StackPanel Margin="0 5 0 5">
+			 <StackPanel Orientation="Horizontal">
+				 <TextBlock VerticalAlignment="Center" Width="100" Text="Name :"/>
+				 <TextBox Width="325" KeyDown="OnNameModified" Name="Name" />
+			 </StackPanel>
+			 <StackPanel Orientation="Horizontal">
+				 <TextBlock VerticalAlignment="Center" Width="100" Text="IP :"/>
+				 <TextBox Width="325" KeyDown="OnIPModified" Name="Ip"/>
+			 </StackPanel>
+			 <StackPanel Orientation="Horizontal">
+				 <TextBlock VerticalAlignment="Center" Width="100" Text="Login : "/>
+				 <TextBox Width="325" KeyDown="OnLoginModified" Name="Login"/>
+			 </StackPanel>
+			 <StackPanel Orientation="Horizontal">
+				 <TextBlock VerticalAlignment="Center" Width="100" Text="Password : "/>
+				 <TextBox Width="325" KeyDown="OnPasswordModified" Name="Password"/>
+			 </StackPanel>
+			 <StackPanel Orientation="Horizontal">
+				 <TextBlock VerticalAlignment="Center" Width="100" Text="Port : "/>
+				 <TextBox Width="325" KeyDown="OnPortModified" Name="Port"/>
+			 </StackPanel>
+		 </StackPanel>
+		 <Canvas Background="#FFC56F00" VerticalAlignment="Center" Height="2" Margin="75 10"/>
+	 </StackPanel>
+	 
+	 
+ </UserControl>

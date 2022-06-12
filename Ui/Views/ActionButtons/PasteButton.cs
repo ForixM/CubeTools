@@ -14,7 +14,7 @@ namespace Ui.Views.ActionButtons;
 
 public class PasteButton : ActionButton
 {
-    public PasteButton(int def) : base(def)
+    public PasteButton(ClientUI main, int def) : base(main, def)
     {
         _icon.Source = ResourcesIconsCompressed.PasteCompressed;
         OnClickEvent += OnClick;
@@ -65,7 +65,7 @@ public class PasteButton : ActionButton
             if (exception is ManagerException @managerException)
             {
                 @managerException.Errorstd = $"Unable to copy {source.Name}";
-                new ErrorBase(@managerException).ShowDialog<object>(_main.Main);
+                Dispatcher.UIThread.Post(() => new ErrorBase(@managerException).ShowDialog<object>(_main.Main));
             }
         }
     }

@@ -78,15 +78,28 @@ namespace ResourcesLoader
                     return ResourcesExtensionsCompressed.CompressExtensionCompressed;
                 case "rar":
                     return ResourcesExtensionsCompressed.ArchiveExtensionCompressed;
+                case "gdoc":
+                    return ResourcesExtensionsCompressed.GoogleDocCompressed;
+                case "gsheet":
+                    return ResourcesExtensionsCompressed.GoogleSheetCompressed;
+                case "gslide":
+                    return ResourcesExtensionsCompressed.GoogleSlideCompressed;
+                case "pages":
+                    return ResourcesExtensionsCompressed.PagesCompressed;
+                case "numbers":
+                    return ResourcesExtensionsCompressed.NumbersCompressed;
                 case "key":
                     return ResourcesExtensionsCompressed.KeyExtensionCompressed;
                 case "mp3":
+                case "m4a":
                 case "alac":
                 case "flac": 
                 case "wav":
                     return ResourcesExtensionsCompressed.MusicExtensionCompressed;
                 case "mp4":
+                case "MP4":
                 case "mov":
+                case "MOV":
                 case "mpeg":
                 case "wmv":
                     return ResourcesExtensionsCompressed.VideoExtensionCompressed;

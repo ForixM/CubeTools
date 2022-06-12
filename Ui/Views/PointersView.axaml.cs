@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
-using Library;
+using Avalonia.Threading;
+using Pointer = Library.Pointer;
 
 namespace Ui.Views
 {
@@ -19,8 +23,13 @@ namespace Ui.Views
         public PointersView()
         {
             InitializeComponent();
-            Main = ClientUI.LastReference;
+            // Main = ClientUI.LastReference;
             Generator = this.FindControl<Grid>("Grid");
+        }
+
+        public PointersView(ClientUI main) : this()
+        {
+            Main = main;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -40,6 +49,8 @@ namespace Ui.Views
                 Generator.Children.Add(pi);
                 i++;
             }
+
+            var temp = Main.Main.Width;
         }
         
         public void Refresh(IEnumerable<Pointer> list)
@@ -56,6 +67,16 @@ namespace Ui.Views
                 Grid.SetRow(pi, i);
                 Generator.Children.Add(pi);
                 i++;
+            }
+        }
+
+        private void Deselection(object? sender, PointerPressedEventArgs e)
+        {
+            if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+            {
+                Main.ActionView.SelectedXaml.Clear();
+                foreach (var control in Main.PointersView.Generator.Children)
+                    ((PointerItem) control).button.Background = new SolidColorBrush(new Color(0, 255, 255, 255));
             }
         }
     }

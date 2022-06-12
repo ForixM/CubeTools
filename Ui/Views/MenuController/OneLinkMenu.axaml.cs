@@ -11,7 +11,7 @@ using Library.FilePointer;
 using Library.ManagerExceptions;
 using Ui.Views.Information;
 
-namespace Ui.Views.LinkBar
+namespace Ui.Views.MenuController
 {
     public class OneLinkMenu : UserControl
     {
@@ -22,7 +22,7 @@ namespace Ui.Views.LinkBar
         
         public OneLinkMenu()
         {
-            Main = ClientUI.LastReference;
+            // Main = ClientUI.LastReference;
             LocalPointer = LocalPointer.NullLocalPointer;
             
             InitializeComponent();
@@ -30,8 +30,9 @@ namespace Ui.Views.LinkBar
             Image = this.FindControl<Image>("Image");
         }
 
-        public OneLinkMenu(string link, string name, IImage image) : this()
+        public OneLinkMenu(ClientUI main, string link, string name, IImage image) : this()
         {
+            Main = main;
             try
             {
                 if (Directory.Exists(link)) LocalPointer = new DirectoryLocalPointer(link);
@@ -41,7 +42,6 @@ namespace Ui.Views.LinkBar
             {
                 LocalPointer = LocalPointer.NullLocalPointer;
             }
-
             Description.Text = name;
             Image.Source = image;
         }
@@ -49,13 +49,5 @@ namespace Ui.Views.LinkBar
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void OpenLink(object? sender, RoutedEventArgs e) => Main.AccessPath(LocalPointer);
-        
-        private void OnPointerPressed(object? sender, PointerPressedEventArgs e)
-        {
-            /*
-            if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
-                new MoreInformationLink(this, Main).Show();
-                */
-        }
     }
 }

@@ -56,7 +56,7 @@ namespace Ui.Views.LinkBar
         private void OpenLink(object? sender, RoutedEventArgs e)
         {
             try
-            {
+            {   // TODO
                 if (LocalPointer.IsDir) Main.NavigationView.Add(LocalPointer);
                 if (Main.Main is MainWindowRemote remote)
                     remote.LocalView.AccessPath(LocalPointer);

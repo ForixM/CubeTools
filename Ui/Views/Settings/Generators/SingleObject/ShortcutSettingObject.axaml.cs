@@ -7,14 +7,15 @@ using Avalonia.Markup.Xaml;
 
 namespace Ui.Views.Settings.Generators.SingleObject
 {
-    public class ShortcutObject : UserControl
+    public class ShortcutSettingObject : UserControl
     {
         private string _shortcutName;
-        public ShortcutObject()
+        
+        public ShortcutSettingObject()
         {
             InitializeComponent();
         }
-        public ShortcutObject(string shortcutName) : this()
+        public ShortcutSettingObject(string shortcutName) : this()
         {
             _shortcutName = shortcutName;
             this.FindControl<TextBlock>("ShortcutName").Text = shortcutName;

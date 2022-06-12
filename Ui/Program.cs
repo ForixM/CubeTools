@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Avalonia;
 using Avalonia.Input;
 using Avalonia.ReactiveUI;
+using Avalonia.Threading;
+using Library.ManagerExceptions;
 using Newtonsoft.Json;
+using Ui.Views.Error;
 
 namespace Ui
 {
@@ -19,6 +23,23 @@ namespace Ui
             InitLoader.InitLoader.Start();
             // Initialization of views and Avalonia process
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            /*
+            try 
+            {
+                
+            }
+            catch (Exception e)
+            {
+                if (e is ManagerException exception) Dispatcher.UIThread.Post(new ErrorBase(exception).Show);
+                else 
+                    Dispatcher.UIThread.Post(new ErrorBase(new ManagerException("App Crash", Level.Crash, "Unable to resolve the error",
+                    "An unresolved error occured, the app has crashed")).Show);
+                
+                Thread.Sleep(2000);
+                Environment.Exit(1);
+            }
+            Environment.Exit(0);
+            */
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.

@@ -1,12 +1,12 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="Ui.Views.LinkBar.OneLinkMenu" MaxHeight="50" MaxWidth="192">
+             x:Class="Ui.Views.MenuController.OneLinkMenu" MaxWidth="250">
 	
-	<Button CornerRadius="8" Background="Transparent" Height="75"> <!-- PointerPressed="" Click="" -->
-		<WrapPanel>
-			<Image HorizontalAlignment="Left" Name="Image"/>
+	<Button CornerRadius="8" Background="Transparent" Width="250" Height="50" Click="OpenLink"> <!-- PointerPressed="" Click="" -->
+		<StackPanel Orientation="Horizontal">
+			<Image HorizontalAlignment="Left" Width="35" Name="Image"/>
 			<TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Name="Description"/>
-		</WrapPanel>
+		</StackPanel>
 	</Button>
 	
 </UserControl>

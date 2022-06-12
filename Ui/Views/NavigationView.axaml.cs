@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Themes.Fluent;
+using Avalonia.Threading;
 using Library;
 using Library.ManagerExceptions;
 using Ui.Views.Error;
@@ -27,23 +29,26 @@ namespace Ui.Views
 
         #region Reference Variables
         
-        public readonly ClientUI Main;
+        public ClientUI Main;
         public TextBox CurrentPathXaml;
+        private Image _themeIcon;
         
         #endregion
         
         #region Init
         public NavigationView()
         {
-            Main = ClientUI.LastReference;
+            // Main = ClientUI.LastReference;
             InitializeComponent();
+            // UI
             CurrentPathXaml = this.FindControl<TextBox>("CurrentPath");
-            this.FindControl<Image>("ThemeIcon").Source =
-                ((FluentTheme) App.Current.Styles[0]).Mode == FluentThemeMode.Light
-                    ? ResourcesLoader.ResourcesIconsCompressed.DarkCompressed
-                    : ResourcesLoader.ResourcesIconsCompressed.LightCompressed;
+            CurrentPathXaml.Text = "";
+            _themeIcon = this.FindControl<Image>("ThemeIcon");
+            // Variables
             _index = -1;
             _queue = new List<Pointer>();
+            // Workers
+            new Thread(RefreshDarkLightTheme).Start();
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
@@ -84,7 +89,15 @@ namespace Ui.Views
             if (_index < _queue.Count - 1)
             {
                 _index++;
-                Main.AccessPath(_queue[_index]);
+                try
+                {
+                    Main.AccessPath(_queue[_index]);
+                }
+                catch (PathNotFoundException)
+                {
+                    _queue.RemoveAt(_index);
+                    _index--;
+                }
             }
         }
 
@@ -98,15 +111,26 @@ namespace Ui.Views
                 try
                 {
                     Main.AccessPath(Main.Client.GetParentReference(Main.Client.CurrentFolder));
+                    if (Main.Client.CurrentFolder is { } folder)
+                        Main.NavigationView.Add(folder);
                 }
                 catch (ManagerException exception)
                 {
                     exception.Errorstd = "Unable to access this path";
                     new ErrorBase(exception).Show();
                 }
-
-                if (Main.Client.CurrentFolder is { } folder)
-                    Main.NavigationView.Add(folder);
+                catch (Exception)
+                {
+                    try
+                    {
+                        Main.AccessPath(Main.Client.Root);
+                        Main.NavigationView.Add(Main.Client.Root);
+                    }
+                    catch (Exception)
+                    {
+                        Main.Main.Close();
+                    }
+                }
             }
         }
 
@@ -129,18 +153,7 @@ namespace Ui.Views
             }
         }
 
-        private void DarkLight(object? sender, RoutedEventArgs e)
-        {
-            ((FluentTheme) App.Current.Styles[0]).Mode = ((FluentTheme) App.Current.Styles[0]).Mode == FluentThemeMode.Dark 
-                ? FluentThemeMode.Light 
-                : FluentThemeMode.Dark;
-            this.FindControl<Image>("ThemeIcon").Source =
-                ((FluentTheme) App.Current.Styles[0]).Mode == FluentThemeMode.Light
-                    ? ResourcesLoader.ResourcesIconsCompressed.DarkCompressed
-                    : ResourcesLoader.ResourcesIconsCompressed.LightCompressed;
-        }
-        
-        private void SettingsClick(object? sender, RoutedEventArgs e) => new SettingsWindow().Show();
+        private void SettingsClick(object? sender, RoutedEventArgs e) => new SettingsWindow(Main.Main).Show();
         
         #endregion
         
@@ -171,6 +184,68 @@ namespace Ui.Views
             }
 
             _index++;
+        }
+
+        private void DarkLightClicked(object? sender, RoutedEventArgs e)
+        {
+            ConfigLoader.ConfigLoader.Settings.Styles.IsLight = !ConfigLoader.ConfigLoader.Settings.Styles.IsLight;
+            ConfigLoader.ConfigLoader.SaveConfiguration();
+        }
+
+        #endregion
+        
+        #region Workers
+
+        private void RefreshDarkLightTheme()
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                ((FluentTheme) App.Current.Styles[0]).Mode = ConfigLoader.ConfigLoader.Settings.Styles.IsLight
+                    ? FluentThemeMode.Light 
+                    : FluentThemeMode.Dark;
+                _themeIcon.Source = ConfigLoader.ConfigLoader.Settings.Styles.IsLight
+                    ? ResourcesLoader.ResourcesIconsCompressed.DarkCompressed
+                    : ResourcesLoader.ResourcesIconsCompressed.LightCompressed;
+            });
+            
+            bool last = ConfigLoader.ConfigLoader.Settings.Styles.IsLight;
+            while (Main is null) Thread.Sleep(500);
+            while (Main.Main is MainWindow {IsClosed: false})
+            {
+                Thread.Sleep(250);
+                if (last != ConfigLoader.ConfigLoader.Settings.Styles.IsLight)
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        ((FluentTheme) App.Current.Styles[0]).Mode = ConfigLoader.ConfigLoader.Settings.Styles.IsLight
+                            ? FluentThemeMode.Light 
+                            : FluentThemeMode.Dark;
+                        
+                        _themeIcon.Source = ConfigLoader.ConfigLoader.Settings.Styles.IsLight
+                            ? ResourcesLoader.ResourcesIconsCompressed.DarkCompressed
+                            : ResourcesLoader.ResourcesIconsCompressed.LightCompressed;
+                    });
+                }
+
+                last = ConfigLoader.ConfigLoader.Settings.Styles.IsLight;
+            }
+            while (Main.Main is MainWindowRemote {IsClosed: false})
+            {
+                Thread.Sleep(250);
+                if (last != ConfigLoader.ConfigLoader.Settings.Styles.IsLight)
+                {
+                    Dispatcher.UIThread.Post(() =>
+                    {
+                        ((FluentTheme) App.Current.Styles[0]).Mode = ConfigLoader.ConfigLoader.Settings.Styles.IsLight
+                            ? FluentThemeMode.Light 
+                            : FluentThemeMode.Dark;
+                        _themeIcon.Source = ConfigLoader.ConfigLoader.Settings.Styles.IsLight
+                            ? ResourcesLoader.ResourcesIconsCompressed.DarkCompressed
+                            : ResourcesLoader.ResourcesIconsCompressed.LightCompressed;
+                    });
+                }
+                last = ConfigLoader.ConfigLoader.Settings.Styles.IsLight;
+            }
         }
         
         #endregion

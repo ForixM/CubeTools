@@ -3,6 +3,7 @@
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <ApplicationIcon>AppIcon.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
@@ -420,20 +421,12 @@
         <DependentUpon>SettingsWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Settings\Generators\ShortcutsGenerator.axaml.cs">
-        <DependentUpon>ShortcutsGenerator.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Settings\Generators\SingleObject\ShortcutObject.axaml.cs">
+      <Compile Update="Views\Settings\Generators\SingleObject\ShortcutSettingObject.axaml.cs">
         <DependentUpon>ShortcutObject.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Settings\Generators\SingleObject\FavoriteLinkObject.axaml.cs">
+      <Compile Update="Views\Settings\Generators\SingleObject\LinkSettingObject.axaml.cs">
         <DependentUpon>FavoriteLinkObject.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Settings\Generators\LinksGenerators.axaml.cs">
-        <DependentUpon>LinksGenerators.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Views\OneClient\Actions\Compress.axaml.cs">
@@ -568,10 +561,6 @@
         <DependentUpon>MoreInformationLink.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Ftp\FtpDisplayer.axaml.cs">
-        <DependentUpon>FtpGenerator.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\Ftp\FtpServerObject.axaml.cs">
         <DependentUpon>FtpServerObject.axaml</DependentUpon>
         <SubType>Code</SubType>
@@ -579,6 +568,9 @@
       <Compile Update="Views\ActionButton.axaml.cs">
         <DependentUpon>ActionButton.axaml</DependentUpon>
         <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\MenuController\OneLinkMenuDrives.axaml.cs">
+        <DependentUpon>OneLinkMenuDrives.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
     <ItemGroup>
