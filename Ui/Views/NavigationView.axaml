@@ -55,7 +55,7 @@
 					</Border>
 				</Grid>
 				<Grid Grid.Column="5">
-					<Button Classes="TopBar" Click="DarkLight" ToolTip.Tip="Change Theme">
+					<Button Classes="TopBar" Click="DarkLightClicked" ToolTip.Tip="Change Theme">
 						<Image Classes="Manager" Name="ThemeIcon" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Source="{x:Static resource:ResourcesIconsCompressed.DarkCompressed}"/>
 					</Button>
 				</Grid>

@@ -34,6 +34,7 @@ namespace Ui.Views
         
         public MainWindow()
         {
+            IsClosed = false;
             InitializeComponent();
             LinkBarView = this.FindControl<LinkBar.LinkBar>("LinkBar");
             LocalView = new ClientUI(new ClientLocal(), this);
@@ -50,7 +51,6 @@ namespace Ui.Views
             LinkBarView.Main = LocalView;
             LinkBarView.InitializeExpanders();
             KeysPressed = new List<Key>();
-            IsClosed = false;
         }
 
         private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
