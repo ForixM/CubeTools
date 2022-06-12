@@ -54,7 +54,16 @@ namespace Ui.Views.MenuController
             {
                 if (drive.Name == link)
                 {
-                    runProgress.Value = 100d - (double)((double)drive.AvailableFreeSpace / (double)drive.TotalSize) * 100.0d;
+                    runProgress.Value = 100d - (drive.AvailableFreeSpace / (double)drive.TotalSize) * 100.0d;
+                    switch (runProgress.Value)
+                    {
+                        case >= 90:
+                            runProgress.Foreground = Brush.Parse("#ff5900");
+                            break;
+                        case >= 75:
+                            runProgress.Foreground = Brush.Parse("#ff9e00");
+                            break;
+                    }
                     _spaceInfo.Text = $"{ManagerReader.ByteToPowByte(drive.AvailableFreeSpace)} free of {ManagerReader.ByteToPowByte(drive.TotalSize)}";
                 }
             }

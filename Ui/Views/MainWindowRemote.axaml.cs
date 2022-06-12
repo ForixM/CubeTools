@@ -178,7 +178,7 @@ namespace Ui.Views
                                 if (exception is ManagerException @managerException)
                                 {
                                     @managerException.Errorstd = $"Unable to delete {item.Pointer.Name}";
-                                    new ErrorBase(@managerException).ShowDialog<object>(this);
+                                    Dispatcher.UIThread.Post(() => new ErrorBase(@managerException).ShowDialog<object>(this));
                                 }
                             }
                         }
