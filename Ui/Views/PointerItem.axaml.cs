@@ -78,9 +78,28 @@ namespace Ui.Views
         /// </summary>
         private void OnDoubleTaped(object? sender, RoutedEventArgs e)
         {
-            _main.ActionView.SelectedXaml.Clear();
-            /*if (Directory.Exists(Pointer.Path)) */_main.NavigationView.Add(Pointer);
-            _main.AccessPath(Pointer);
+            if (_main.Client.Type is ClientType.LOCAL)
+            {
+                _main.ActionView.SelectedXaml.Clear();
+                /*if (Directory.Exists(Pointer.Path)) */
+                _main.NavigationView.Add(Pointer);
+                _main.AccessPath(Pointer);
+            }
+            else
+            {
+                if (Pointer.IsDir)
+                {
+                    _main.Client.DownloadFolder(_main.Client, Pointer,
+                        ((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder);
+                }
+                else
+                {
+                    _main.Client.DownloadFile(_main.Client, Pointer,
+                        ((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder);
+                }
+                ((MainWindowRemote)_main.Main).LocalView.AccessPath(((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder.Path+"/"+Pointer.Name);
+                ((MainWindowRemote)_main.Main).LocalView.Refresh();
+            }
         }
 
         /// <summary>
