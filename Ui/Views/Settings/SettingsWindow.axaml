@@ -100,7 +100,7 @@
 						 <Image VerticalAlignment="Center" HorizontalAlignment="Center" Height="60" Source="{x:Static resource:ResourcesIconsCompressed.FtpCompressed}"/>
 					 </Grid>
 					 <Grid Grid.Column="1">
-						 <TextBlock Text="Favorites" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+						 <TextBlock Text="FTP Servers" FontWeight="Bold" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 					 </Grid>
 				 </Grid>
 				 <Expander IsExpanded="False" Header="My FTP Servers" Margin="20 5 20 0">

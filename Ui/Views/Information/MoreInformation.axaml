@@ -89,7 +89,7 @@
                         <Image Name="StarIcon" Classes="MoreMenu" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Source="{x:Static resource:ResourcesIcons.StarIcon}"/>
                     </Grid>
                     <Grid Column="1">
-                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Add to Favorites"/>
+                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="Favorites"/>
                     </Grid>
                 </Grid>
             </Button>
