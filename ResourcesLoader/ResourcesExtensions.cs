@@ -69,8 +69,19 @@ namespace ResourcesLoader
                                                                   "Extensions/json.ico");
         public static readonly IImage RegisterExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                   "Extensions/reg.ico");
+        public static readonly IImage GoogleDoc = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                             "Extensions/gdoc.ico");
+        public static readonly IImage GoogleSheet = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                               "Extensions/gsheet.ico");
+        public static readonly IImage GoogleSlide = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                               "Extensions/gslide.ico");
+        public static readonly IImage Pages = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                         "Extensions/pages.ico");
+        public static readonly IImage Numbers = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                           "Extensions/numbers.ico");
 
         public static readonly IImage DefaultExtension = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                     "Extensions/None.ico");
+        
     }
 }

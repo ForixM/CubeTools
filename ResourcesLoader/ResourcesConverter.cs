@@ -78,6 +78,16 @@ namespace ResourcesLoader
                     return ResourcesExtensionsCompressed.CompressExtensionCompressed;
                 case "rar":
                     return ResourcesExtensionsCompressed.ArchiveExtensionCompressed;
+                case "gdoc":
+                    return ResourcesExtensionsCompressed.GoogleDocCompressed;
+                case "gsheet":
+                    return ResourcesExtensionsCompressed.GoogleSheetCompressed;
+                case "gslide":
+                    return ResourcesExtensionsCompressed.GoogleSlideCompressed;
+                case "pages":
+                    return ResourcesExtensionsCompressed.PagesCompressed;
+                case "numbers":
+                    return ResourcesExtensionsCompressed.NumbersCompressed;
                 case "key":
                     return ResourcesExtensionsCompressed.KeyExtensionCompressed;
                 case "mp3":

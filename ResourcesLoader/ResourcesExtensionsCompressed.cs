@@ -72,8 +72,19 @@ namespace ResourcesLoader
                                                                            "ExtensionsCompressed/json.ico");
         public static readonly IImage RegisterExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                                "ExtensionsCompressed/reg.ico");
+        public static readonly IImage GoogleDocCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                       "ExtensionsCompressed/gdoc.ico");
+        public static readonly IImage GoogleSheetCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                         "ExtensionsCompressed/gsheet.ico");
+        public static readonly IImage GoogleSlideCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                         "ExtensionsCompressed/gslide.ico");
+        public static readonly IImage PagesCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                   "ExtensionsCompressed/pages.ico");
+        public static readonly IImage NumbersCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                                     "ExtensionsCompressed/numbers.ico");
 
         public static readonly IImage DefaultExtensionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                     "ExtensionsCompressed/None.ico");
+        
     }
 }
