@@ -6,21 +6,23 @@ namespace Library
 {
     public class ClientGoogleDrive : Client
     {
-        public static DriveService Service;
-
-        static ClientGoogleDrive()
-        {
-            Service = OAuth.GetDriveService();
-        }
+        public static DriveService Service = OAuth.GetDriveService();
 
         public ClientGoogleDrive() : base(ClientType.GOOGLEDRIVE)
         {
-            var service = ClientGoogleDrive.Service;
-            FilesResource.GetRequest getRequest = service.Files.Get("root");
-            File getFile = getRequest.Execute();
-            Root = new GoogleDriveFile(getFile);
-            CurrentFolder = new GoogleDriveFile(getFile);
-            Children = ListChildren();
+            try
+            {
+                var service = ClientGoogleDrive.Service;
+                FilesResource.GetRequest getRequest = service.Files.Get("root");
+                File getFile = getRequest.Execute();
+                Root = new GoogleDriveFile(getFile);
+                CurrentFolder = new GoogleDriveFile(getFile);
+                Children = ListChildren();
+            }
+            catch (Exception e)
+            {
+                LogErrors.LogErrors.LogWrite("exception: ", e);
+            }
         }
         
         

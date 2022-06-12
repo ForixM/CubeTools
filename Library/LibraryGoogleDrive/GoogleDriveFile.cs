@@ -41,7 +41,25 @@ namespace Library.LibraryGoogleDrive
             // var request = Service.Files.Get(fileId);
             // request.Fields = "size, mimeType, parents, name, description";
             // var driveFile = request.Execute();
-            _type = ManagerReader.ManagerReader.GetFileExtension(file.Name);
+            if (ManagerReader.ManagerReader.GetFileExtension(file.Name) == "")
+            {
+                switch (file.MimeType)
+                {
+                    case "application/vnd.google-apps.document":
+                        _type = "gdoc";
+                        break;
+                    case "application/vnd.google-apps.presentation":
+                        _type = "gslide";
+                        break;
+                    case "application/vnd.google-apps.spreadsheet":
+                        _type = "gsheet";
+                        break;
+                }
+            }
+            else
+            {
+                _type = ManagerReader.ManagerReader.GetFileExtension(file.Name);   
+            }
             // _type = file.MimeType;
             _name = file.Name;
             _size = file.Size ?? 0;
