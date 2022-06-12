@@ -70,12 +70,67 @@ html {
 .download .content .button-text,
 .download .content i,
 .documentation .content .documentation-text,
-.documentation .content i {
+.documentation .content i,
+.multiple-download .content,
+.multiple-download img{
   color: #FFF;
   font-size: 20px;
+  height: 30px;
 }
 
 .download .content .button-text,
 .documentation .content .documentation-text {
   margin-left: 8px;
 }
+
+.multiple-download {
+  position: absolute;
+  background: #f0921f;
+  margin: 5% 0 10% 0;
+  height: 55px;
+  width: 150px;
+  border-radius: 20px;
+}
+
+.n1 {
+  top: 88%;
+  left: 26%;
+}
+
+.n2 {
+  top: 97%;
+  left: 26%;
+}
+
+.n3 {
+  top: 106%;
+  left: 26%;
+}
+
+.n4 {
+  top:88%;
+  left: 69%;
+}
+
+.n5 {
+  top: 97%;
+  left: 69%;
+}
+
+.multiple-download .content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(7px);
+}
+
+.multiple-download img {
+  display: flex;
+  position: absolute;
+  transform: translateY(14px);
+  left: 3%;
+}
+
+
