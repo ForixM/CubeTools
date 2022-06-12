@@ -89,16 +89,18 @@ namespace Ui.Views
             {
                 if (Pointer.IsDir)
                 {
-                    _main.Client.DownloadFolder(_main.Client, Pointer,
-                        ((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder);
+                    _main.ActionView.SelectedXaml.Clear();
+                    /*if (Directory.Exists(Pointer.Path)) */
+                    _main.NavigationView.Add(Pointer);
+                    _main.AccessPath(Pointer);
                 }
                 else
                 {
                     _main.Client.DownloadFile(_main.Client, Pointer,
                         ((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder);
+                    ((MainWindowRemote)_main.Main).LocalView.AccessPath(((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder.Path+"/"+Pointer.Name);
+                    ((MainWindowRemote)_main.Main).LocalView.Refresh();
                 }
-                ((MainWindowRemote)_main.Main).LocalView.AccessPath(((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder.Path+"/"+Pointer.Name);
-                ((MainWindowRemote)_main.Main).LocalView.Refresh();
             }
         }
 
@@ -120,7 +122,7 @@ namespace Ui.Views
             if (_main.Main is MainWindow main)
             {
                 // Remove all not ctrl pressed
-                if (!main.KeysPressed.Contains(Key.LeftCtrl) && !main.KeysPressed.Contains(Key.RightCtrl))
+                if (!MainWindow.KeysPressed.Contains(Key.LeftCtrl) && !MainWindow.KeysPressed.Contains(Key.RightCtrl))
                     _main.ActionView.SelectedXaml.Clear();
                 // Add or Remove
                 if (_main.ActionView.SelectedXaml.Contains(this)) _main.ActionView.SelectedXaml.Remove(this);

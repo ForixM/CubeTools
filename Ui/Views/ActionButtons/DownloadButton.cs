@@ -20,6 +20,7 @@ public class DownloadButton : ActionButton
 
     private void OnClick(object sender)
     {
+        if (_main.ActionView.SelectedXaml.Count == 0) return;
         Thread downloadThread = new Thread(() =>
         {
             Pointer temp = _main.ActionView.SelectedXaml[0].Pointer;

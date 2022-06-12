@@ -19,6 +19,7 @@ public class UploadButton : ActionButton
 
     private void OnClick(object sender)
     {
+        if (_main.ActionView.SelectedXaml.Count == 0) return;
         Thread uploadThread = new Thread(() =>
         {
             Pointer temp = _main.ActionView.SelectedXaml[0].Pointer;
