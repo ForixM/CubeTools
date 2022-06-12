@@ -205,7 +205,8 @@ namespace Library.ManagerWriter
                 // Get Subdirectories
                 var dirs = dir.GetDirectories();
                 // Create the destination directory
-                if (!Directory.Exists(dest))
+                // if (!Directory.Exists(dest))
+                dest += "/" + ManagerReader.ManagerReader.GetPathToName(source);
                     Directory.CreateDirectory(dest);
                 // Get the files in the source directory and copy to the destination directory
                 foreach (var file in dir.GetFiles())

@@ -174,6 +174,11 @@ namespace Ui.Views
                         grid.Children.Add(subGrid);
                         Main.Show();
                     }
+
+                    if (Client.Type is not ClientType.LOCAL)
+                    {
+                        AccessPath(Client.Root);
+                    }
                 }
                 else
                 {

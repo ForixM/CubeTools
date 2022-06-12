@@ -89,7 +89,15 @@ namespace Ui.Views
             if (_index < _queue.Count - 1)
             {
                 _index++;
-                Main.AccessPath(_queue[_index]);
+                try
+                {
+                    Main.AccessPath(_queue[_index]);
+                }
+                catch (PathNotFoundException)
+                {
+                    _queue.RemoveAt(_index);
+                    _index--;
+                }
             }
         }
 
@@ -103,15 +111,26 @@ namespace Ui.Views
                 try
                 {
                     Main.AccessPath(Main.Client.GetParentReference(Main.Client.CurrentFolder));
+                    if (Main.Client.CurrentFolder is { } folder)
+                        Main.NavigationView.Add(folder);
                 }
                 catch (ManagerException exception)
                 {
                     exception.Errorstd = "Unable to access this path";
                     new ErrorBase(exception).Show();
                 }
-
-                if (Main.Client.CurrentFolder is { } folder)
-                    Main.NavigationView.Add(folder);
+                catch (Exception)
+                {
+                    try
+                    {
+                        Main.AccessPath(Main.Client.Root);
+                        Main.NavigationView.Add(Main.Client.Root);
+                    }
+                    catch (Exception)
+                    {
+                        Main.Main.Close();
+                    }
+                }
             }
         }
 
