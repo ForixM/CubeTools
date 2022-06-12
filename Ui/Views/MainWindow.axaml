@@ -11,7 +11,7 @@
         x:Class="Ui.Views.MainWindow"
         Title="CubeTools"
         Width="1000" Height="750"
-        MinWidth="850" MinHeight="695" 
+        MinWidth="900" MinHeight="700" 
         WindowStartupLocation="CenterScreen"
         ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaTitleBarHeightHint="-1"

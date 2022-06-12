@@ -21,15 +21,15 @@ namespace InitLoader
             
             if (ConfigLoader.ConfigLoader.Settings.Styles.FolderLight != "Default - Light")
             {
-                if (Directory.Exists("Default - Light") && Directory.EnumerateDirectories("Assets").Count() >= 2)
-                    _getPackagingAssets(ConfigLoader.ConfigLoader.Settings.Styles!.FolderLight!, "Assets/Default - Light");
+                if (Directory.Exists("Default - Light") && Directory.EnumerateDirectories(Directory.GetCurrentDirectory()).Count() >= 2)
+                    _getPackagingAssets(ConfigLoader.ConfigLoader.Settings.Styles!.FolderLight!, "Default - Light");
                 else
                     ConfigLoader.ConfigLoader.Settings.Styles.FolderLight = "Default - Light";
             }
 
             if (ConfigLoader.ConfigLoader.Settings.Styles.FolderDark != "Default - Dark")
             {
-                if (Directory.Exists("Default - Dark") && Directory.EnumerateDirectories("Assets").Count() >= 2)
+                if (Directory.Exists("Default - Dark") && Directory.EnumerateDirectories(Directory.GetCurrentDirectory()).Count() >= 2)
                     _getPackagingAssets(ConfigLoader.ConfigLoader.Settings.Styles!.FolderLight!, "Default - Dark");
                 else
                     ConfigLoader.ConfigLoader.Settings.Styles.FolderLight = "Default - Dark";
@@ -51,7 +51,14 @@ namespace InitLoader
             foreach (var file in filesDefault)
             {
                 string dest = packPath + "/" + ManagerReader.GetPathToName(file);;
-                if (!filesPack.Contains(dest)) File.Copy(file, dest);
+                if (!filesPack.Contains(dest))
+                {
+                    try
+                    {
+                        File.Copy(file, dest);
+                    }
+                    catch (Exception e) {}
+                }
             }
             // 2) Browsing directories
             var dirsPack = Directory.EnumerateDirectories(packPath);
@@ -60,7 +67,14 @@ namespace InitLoader
             {
                 string dest = packPath + "/" + ManagerReader.GetPathToName(dir);
                 if (dirsPack.Contains(dest)) _getPackagingAssets(dest, dir);
-                else ManagerWriter.CopyDirectory(dir, dest, true);
+                else
+                {
+                    try
+                    {
+                        ManagerWriter.CopyDirectory(dir, dest, true);
+                    }
+                    catch (Exception e) {}
+                }
             }
         }
     }
