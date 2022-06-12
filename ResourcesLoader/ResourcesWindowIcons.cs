@@ -4,51 +4,51 @@ namespace ResourcesLoader
 {
     public static class ResourcesWindowIcons
     {
-        public static readonly WindowIcon  MainWindowIcon = new WindowIcon(
+        public static WindowIcon  MainWindowIcon => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/MainWindow.ico");
 
-        public static readonly WindowIcon CreateFileWindowIcon = new WindowIcon(
+        public static WindowIcon CreateFileWindowIcon => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/CreateFileWindow.ico");
         
-        public static readonly WindowIcon CreateFolderWindowIcon = new WindowIcon(
+        public static WindowIcon CreateFolderWindowIcon => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/CreateFolderWindow.ico");
         
-        public static readonly WindowIcon DeleteWindowIcon = new WindowIcon(
+        public static WindowIcon DeleteWindowIcon => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/DeleteWindow.ico");
         
-        public static readonly WindowIcon RenameWindowIcon = new WindowIcon(
+        public static WindowIcon RenameWindowIcon => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/RenameWindow.ico");
         
-        public static readonly WindowIcon SearchWindowIcon = new WindowIcon(
+        public static WindowIcon SearchWindowIcon => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/SearchWindow.ico");
         
-        public static readonly WindowIcon SortWindowIcon = new WindowIcon(
+        public static WindowIcon SortWindowIcon => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/SortWindow.ico");
         
-        public static readonly WindowIcon SettingsWindowIcon = new WindowIcon(
+        public static WindowIcon SettingsWindowIcon => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/SettingsWindow.ico");
         
-        public static readonly WindowIcon PropertiesWindowIcon = new WindowIcon(
+        public static WindowIcon PropertiesWindowIcon => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/PropertiesWindow.ico");
 
-        public static readonly WindowIcon CompressWindowIcon = new WindowIcon(
+        public static WindowIcon CompressWindowIcon => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/CompressWindow.ico");
         
-        public static readonly WindowIcon ErrorWindow = new WindowIcon(
+        public static WindowIcon ErrorWindow => new WindowIcon(
             ConfigLoader.ConfigLoader.Settings.ResourcePath +
             "Window/ErrorWindow.ico");
 
-        public static readonly WindowIcon FtpWindowIcon = new WindowIcon(
+        public static WindowIcon FtpWindowIcon => new WindowIcon(
                         ConfigLoader.ConfigLoader.Settings.ResourcePath +
                         "IconsCompressed/FTP.ico");
     }

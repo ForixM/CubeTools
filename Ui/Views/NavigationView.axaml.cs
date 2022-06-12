@@ -179,6 +179,16 @@ namespace Ui.Views
 
         private void RefreshDarkLightTheme()
         {
+            Dispatcher.UIThread.Post(() =>
+            {
+                ((FluentTheme) App.Current.Styles[0]).Mode = ConfigLoader.ConfigLoader.Settings.Styles.IsLight
+                    ? FluentThemeMode.Light 
+                    : FluentThemeMode.Dark;
+                _themeIcon.Source = ConfigLoader.ConfigLoader.Settings.Styles.IsLight
+                    ? ResourcesLoader.ResourcesIconsCompressed.DarkCompressed
+                    : ResourcesLoader.ResourcesIconsCompressed.LightCompressed;
+            });
+            
             bool last = ConfigLoader.ConfigLoader.Settings.Styles.IsLight;
             while (Main is null) Thread.Sleep(500);
             while (Main.Main is MainWindow {IsClosed: false})
@@ -191,6 +201,7 @@ namespace Ui.Views
                         ((FluentTheme) App.Current.Styles[0]).Mode = ConfigLoader.ConfigLoader.Settings.Styles.IsLight
                             ? FluentThemeMode.Light 
                             : FluentThemeMode.Dark;
+                        
                         _themeIcon.Source = ConfigLoader.ConfigLoader.Settings.Styles.IsLight
                             ? ResourcesLoader.ResourcesIconsCompressed.DarkCompressed
                             : ResourcesLoader.ResourcesIconsCompressed.LightCompressed;

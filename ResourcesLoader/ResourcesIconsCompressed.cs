@@ -5,110 +5,110 @@ namespace ResourcesLoader
 {
     public static class ResourcesIconsCompressed
     {
-        public static readonly IImage  CopyCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage  CopyCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Copy.ico");
-        public static readonly IImage CompressionCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage CompressionCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Compression.ico");
-        public static readonly IImage CreateCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage CreateCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Create.ico");
-        public static readonly IImage CreateFolderCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage CreateFolderCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/CreateFolder.ico");
-        public static readonly IImage CubeToolsCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage CubeToolsCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/CubeTools.ico");
-        public static readonly IImage CubeToolsNameCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage CubeToolsNameCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/CubeToolsName.ico");
-        public static readonly IImage CutCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage CutCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Cut.ico");
-        public static readonly IImage DeleteCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage DeleteCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Delete.ico");
-        public static readonly IImage DesktopCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage DesktopCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Desktop.ico");
-        public static readonly IImage DownloadsCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage DownloadsCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Downloads.ico");
-        public static readonly IImage DownloadCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage DownloadCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                       "IconsCompressed/Download.ico");
-        public static readonly IImage FavoritesCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage FavoritesCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Favorites.ico");
-        public static readonly IImage FileCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage FileCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/File.ico");
-        public static readonly IImage FolderCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage FolderCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                      "IconsCompressed/Folder.ico");
         
-        public static readonly IImage ImagesCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage ImagesCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Images.ico");
-        public static readonly IImage MusicCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage MusicCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Music.ico");
-        public static readonly IImage NoneCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage NoneCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/None.ico");
-        public static readonly IImage NoneFolderCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage NoneFolderCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/NoneFolder.ico");
-        public static readonly IImage OneDriveCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage OneDriveCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/OneDrive.ico");
-        public static readonly IImage FtpCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage FtpCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                  "IconsCompressed/FTP.ico");
-        public static readonly IImage GoogleDriveCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage GoogleDriveCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                          "IconsCompressed/GoogleDrive.ico");
-        public static readonly IImage PasteCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage PasteCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Paste.ico");
-        public static readonly IImage RedoCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage RedoCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Redo.ico");
-        public static readonly IImage RefreshCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage RefreshCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Refresh.ico");
-        public static readonly IImage RenameCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage RenameCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Rename.ico");
-        public static readonly IImage SearchCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage SearchCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Search.ico");
-        public static readonly IImage SettingsCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage SettingsCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Settings.ico");
-        public static readonly IImage SmashCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage SmashCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Smash.ico");
-        public static readonly IImage SnapDropCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage SnapDropCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Snapdrop.ico");
-        public static readonly IImage NearbysendCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage NearbysendCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                   "Icons/nearbysend.ico");
-        public static readonly IImage SortCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage SortCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Sort.ico");
-        public static readonly IImage UndoCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage UndoCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                            "IconsCompressed/Undo.ico");
-        public static readonly IImage UpCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
-                                                           "IconsCompressed/Up.ico");
-        public static readonly IImage VideoCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath + 
+        public static IImage UpCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+                                                        "IconsCompressed/Up.ico");
+        public static IImage VideoCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath + 
                                                              "IconsCompressed/Video.ico");
-        public static readonly IImage UsersCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage UsersCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                             "IconsCompressed/Users.ico");
-        public static readonly IImage DocumentsCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage DocumentsCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                  "IconsCompressed/Documents.ico");
-        public static readonly IImage InfoCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage InfoCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                             "IconsCompressed/Info.ico");
-        public static readonly IImage ThemeCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage ThemeCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                              "IconsCompressed/Theme.ico");
-        public static readonly IImage ShortcutCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage ShortcutCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                 "IconsCompressed/Shortcut.ico");
-        public static readonly IImage UploadCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage UploadCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                       "IconsCompressed/Upload.ico");
-        public static readonly IImage DriveCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage DriveCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                     "IconsCompressed/Drive.ico");
-        public static readonly IImage PathCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage PathCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                    "IconsCompressed/Path.ico");
-        public static readonly IImage OpenCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage OpenCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                   "IconsCompressed/Open.ico");
-        public static readonly IImage SaveCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage SaveCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                      "IconsCompressed/Save.ico");
-        public static readonly IImage HomeCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage HomeCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                   "IconsCompressed/Home.ico");
-        public static readonly IImage StarCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage StarCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                             "IconsCompressed/Star.ico");
-        public static readonly IImage StarredCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage StarredCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                               "IconsCompressed/Starred.ico");
-        public static readonly IImage CloudCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage CloudCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                      "IconsCompressed/Cloud.ico");
-        public static readonly IImage QuickAccessCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage QuickAccessCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                    "IconsCompressed/QuickAccess.ico");
-        public static readonly IImage DriveMenuCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage DriveMenuCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                          "IconsCompressed/DriveMenu.ico");
-        public static readonly IImage DarkCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage DarkCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                   "IconsCompressed/Dark.ico");
-        public static readonly IImage LightCompressed = new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
+        public static IImage LightCompressed => new Bitmap(ConfigLoader.ConfigLoader.Settings.ResourcePath +
                                                                   "IconsCompressed/Light.ico");
     }
 }
