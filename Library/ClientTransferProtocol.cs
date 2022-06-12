@@ -60,8 +60,14 @@ namespace Library
 
         public override Pointer? GetItem(string path, bool isAbsolute = false)
         {
+            if (isAbsolute && path is "/" or "\\" or "")
+                return FtpFolder.ROOT;
             if (path[^1] is '/' or '\\')
                 path = path.Remove(path.Length - 1);
+            if (!isAbsolute)
+            {
+                path = CurrentFolder.Path + path;
+            }
             string name = Path.GetFileName(path);
             int last = path.Length;
             string parentPath = path.Remove(last - name.Length, name.Length);

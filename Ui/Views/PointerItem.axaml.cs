@@ -11,8 +11,10 @@ using Avalonia.Media;
 using Avalonia.Threading;
 using Library;
 using Library.FilePointer;
+using Library.ManagerExceptions;
 using Library.ManagerReader;
 using ResourcesLoader;
+using Ui.Views.Error;
 using Pointer = Library.Pointer;
 
 namespace Ui.Views
@@ -96,10 +98,19 @@ namespace Ui.Views
                 }
                 else
                 {
-                    _main.Client.DownloadFile(_main.Client, Pointer,
-                        ((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder);
-                    ((MainWindowRemote)_main.Main).LocalView.AccessPath(((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder.Path+"/"+Pointer.Name);
-                    ((MainWindowRemote)_main.Main).LocalView.Refresh();
+                    try
+                    {
+                        _main.Client.DownloadFile(_main.Client, Pointer,
+                            ((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder);
+                        ((MainWindowRemote) _main.Main).LocalView.AccessPath(
+                            ((MainWindowRemote) _main.Main).LocalView.Client.CurrentFolder.Path + "/" + Pointer.Name);
+                        ((MainWindowRemote) _main.Main).LocalView.Refresh();
+                    }
+                    catch (Exception)
+                    {
+                        new ErrorBase(new ManagerException("Download error", Level.Normal, "Download error",
+                            $"Could not download this item: {Pointer.Name}")).Show();
+                    }
                 }
             }
         }

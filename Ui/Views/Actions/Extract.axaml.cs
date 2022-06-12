@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -47,16 +48,17 @@ namespace Ui.Views.Actions
         {
             if (e.Key is Key.Enter)
             {
-                Dispatcher.UIThread.Post(() =>
+                Thread compressionThread = new Thread(() =>
                 {
-                    Task task = Task.Run(() =>
+                    foreach (LocalPointer pointer in _data.Where(ft => ft is LocalPointer))
+                        LibraryCompression.Compression.Extract(pointer);
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        foreach (LocalPointer pointer in _data.Where(ft => ft is LocalPointer))
-                            LibraryCompression.Compression.Extract(pointer);
-                        
-                    });
-                    task.GetAwaiter().OnCompleted(Close);
-                }, DispatcherPriority.MaxValue);
+                        _main.Refresh();
+                        Close();
+                    }, DispatcherPriority.Render);
+                });
+                compressionThread.Start();
             }
         }
 
@@ -70,12 +72,17 @@ namespace Ui.Views.Actions
 
         private void Extraction(object? sender, RoutedEventArgs routedEventArgs)
         {
-            Task task = Task.Run(() =>
+            Thread compressionThread = new Thread(() =>
             {
-                foreach (LocalPointer pointer in _data.Where(pointer => pointer is LocalPointer))
+                foreach (LocalPointer pointer in _data.Where(ft => ft is LocalPointer))
                     LibraryCompression.Compression.Extract(pointer);
+                Dispatcher.UIThread.Post(() =>
+                {
+                    _main.Refresh();
+                    Close();
+                }, DispatcherPriority.Render);
             });
-            task.GetAwaiter().OnCompleted(Close);
+            compressionThread.Start();
         }
         
         #endregion
