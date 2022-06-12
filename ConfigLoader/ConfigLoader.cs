@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using JsonException = System.Text.Json.JsonException;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace ConfigLoader
 {

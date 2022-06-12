@@ -90,7 +90,7 @@ namespace Ui.Views.MenuController
 			        {
 				        _drives.Children.Clear();
 				        foreach (var drive in DriveInfo.GetDrives())
-					        _drives.Children.Add(new OneLinkMenuDrives(_client,drive.Name, $"{drive.VolumeLabel} ({drive.Name})",
+					        _drives.Children.Add(new OneLinkMenuDrives(_client,drive.Name, drive.VolumeLabel,
 						        ResourcesIconsCompressed.DriveCompressed));
 			        }, DispatcherPriority.Background);
 		        }
